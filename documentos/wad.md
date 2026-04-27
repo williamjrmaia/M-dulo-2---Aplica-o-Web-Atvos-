@@ -56,9 +56,23 @@
 
 ### 2.1.2. Análise SWOT da Instituição Parceira (sprint 1)
 
-*Preencha com até 100 palavras – sem necessidade de fonte*
+A análise SWOT é uma ferramenta que avalia as forças, fraquezas, oportunidades e ameaças.
 
-*Apresente uma visão geral da situação do parceiro com base na matriz SWOT (forças, fraquezas, oportunidades e ameaças). Foque na relação com os concorrentes e o posicionamento da instituição.*
+FORÇAS                                                                                                          | FRAQUEZAS                                                                                                          |
+| :------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
+| É a segunda maior empresa de etanol do Brasil, possuindo também uma linha de produtos diversificada(Etanol, açúcar VHP, energia elétrica, CBIOs)            | Gestão de clientes e parceiros ainda manual, assim não atingindo o resultado que poderiam alcançar. |
+
+
+
+<br>
+
+
+| OPORTUNIDADES (OPPORTUNITIES)                                                                                                                                                                                                                | AMEAÇAS (THREATS)                                                                                                                                                                                                                    |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Monetização de Dados:** Utilização estratégica de inteligência de dados (ICVA) para converter informações em valor, oferecendo consultoria especializada e produtos personalizados que atendam às demandas específicas do mercado moderno. | **Consolidação do Pix:** O avanço acelerado do Pix no mercado brasileiro reduz drasticamente a receita vinda de taxas de cartões de débito tradicionais, exigindo novas estratégias de monetização para as instituições financeiras. |
+
+
+---
 
 ### 2.1.3. Solução (sprints 1 a 5)
 
