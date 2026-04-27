@@ -56,6 +56,8 @@ O poder de barganha dos fornecedores é moderado e distinto. A necessidade de pr
 
 O poder de barganha dos clientes é alto. Distribuidoras como Raízen, Vibra e Ipiranga concentram mais de 53% do mercado de etanol e açúcar VHP (ANP, 2024), diminuindo o poder de precificação da ATVOS (Porter, 1979). A venda direta a postos (Lei n.º 14.292/2022) e a liderança em CBIOs via RenovaBio (ATVOS, 2025) oferecem diferenciação parcial junto a compradores com metas climáticas (Agência Brasil, 2022).
 
+A rivalidade entre concorrentes é alta. O setor disputa terras, fornecedores e CBIOs em um mercado consolidado, onde ineficiências internas ampliam a vulnerabilidade frente a concorrentes mais estruturados.
+
 Em resumo, a ATVOS opera em um ambiente de pressões competitivas estruturais relevantes, em que a maturidade em gestão de dados pode ser determinante para preservar margens, fidelizar clientes estratégicos e sustentar vantagem competitiva no longo prazo.
 
 ### 2.1.2. Análise SWOT da Instituição Parceira (sprint 1)
@@ -404,6 +406,10 @@ INTELI. Adalove. Disponível em: https://adalove.inteli.edu.br/feed. Acesso em: 
 Canal Rural. (2026). Usinas ampliam canaviais por arrendamento. https://www.canalrural.com.br/agricultura/cana/usinas-ampliam-canaviais-por-arrendamento-e-mudam-estrutura-fundiaria-em-sao-paulo/ 
 
 Agroadvance. (2025). Preço do ATR no CONSECANA-SP. https://agroadvance.com.br/blog-consecana-preco-do-atr/ 
+
+AGROADVANCE. 15 maiores grupos do setor sucroalcooleiro no Brasil em 2024/25. 2025. Disponível em: https://agroadvance.com.br/blog-maiores-grupos-do-setor-sucroalcooleiro/. Acesso em: 23 abr. 2026.
+
+INTELI — INSTITUTO DE TECNOLOGIA E LIDERANÇA. Projeto Parceiro ATVOS: 1AMD2 — Aplicação Web. São Paulo, 2026.
 
 
 # <a name="c9"></a>Anexos
