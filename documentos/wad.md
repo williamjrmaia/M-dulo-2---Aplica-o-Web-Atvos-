@@ -415,6 +415,22 @@ AGROADVANCE. 15 maiores grupos do setor sucroalcooleiro no Brasil em 2024/25. 20
 
 INTELI — INSTITUTO DE TECNOLOGIA E LIDERANÇA. Projeto Parceiro ATVOS: 1AMD2 — Aplicação Web. São Paulo, 2026.
 
+ATVOS (2023) : Reuters: Atvos aposta em etanol, não em açúcar, em novo investimento em cana no Brasil.
+https://atvos.com/reuters-atvos-aposta-em-etanol-nao-em-acucar-em-novo-investimento-em-cana-no-brasil/
+
+
+Brasilagro (2021) : País terá dilema com carros elétricos em 2030:o que fazer com tanto etanol?
+https://www.brasilagro.com.br/conteudo/pais-tera-dilema-com-carros-eletricos-em-2030o-que-fazer-com-tanto-etanol.html
+
+
+AgFeed (2023) : Fora da RJ, Atvos refaz planos e mira biometano, etanol de milho e de aviação
+https://agfeed.com.br/negocios/fora-da-rj-atvos-refaz-planos-e-mira-biometano-etanol-de-milho-e-de-aviacao/
+
+
+Eixo (2025) : Hidrogênio e biometano: os gases do futuro.
+https://eixos.com.br/hidrogenio/hidrogenio-e-biometano-os-gases-do-futuro/
+
+
 NPagro. (2024). Investimentos em usinas de etanol de milho somam R$ 23 bilhões no país. https://www.npagro.com.br/materias/investimentos-em-usinas-de-etanol-de-milho-somam-r-23-bilhoes-no-pais/
 
 Portal da Indústria. (2023). Setor sucroenergético precisa de investimentos de US$ 31 bilhões para contribuir com metas de redução de emissões de CO₂. Confederação Nacional da Indústria. https://noticias.portaldaindustria.com.br/noticias/economia/setor-sucroenergetico-precisa-de-investimentos-de-us-31-bilhoes-para-contribuir-com-metas-de-reducao-de-emissoes-de-co2/
