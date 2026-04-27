@@ -60,16 +60,18 @@ A análise SWOT é uma ferramenta que avalia as forças, fraquezas, oportunidade
 
 FORÇAS                                                                                                          | FRAQUEZAS                                                                                                          |
 | :------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| É a segunda maior empresa de etanol do Brasil, possuindo também uma linha de produtos diversificada(Etanol, açúcar VHP, energia elétrica, CBIOs)            | Gestão de clientes e parceiros ainda manual, assim não atingindo o resultado que poderiam alcançar. |
+| É a segunda maior empresa de etanol do Brasil, possuindo também uma linha de produtos diversificada.           | Gestão de clientes e parceiros ainda manual, assim não atingindo o resultado que poderiam alcançar. |
 
 
 
 <br>
 
 
-| OPORTUNIDADES (OPPORTUNITIES)                                                                                                                                                                                                                | AMEAÇAS (THREATS)                                                                                                                                                                                                                    |
+| OPORTUNIDADES                                                                                                                                                                                                                 | AMEAÇAS                                                                                                                                                                                                                   |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Monetização de Dados:** Utilização estratégica de inteligência de dados (ICVA) para converter informações em valor, oferecendo consultoria especializada e produtos personalizados que atendam às demandas específicas do mercado moderno. | **Consolidação do Pix:** O avanço acelerado do Pix no mercado brasileiro reduz drasticamente a receita vinda de taxas de cartões de débito tradicionais, exigindo novas estratégias de monetização para as instituições financeiras. |
+| Descarbonização da aviação com SAF de cana com alta rentabilidade. RenovaBio impulsiona Atvos com metas de CBIOs para distribuidoras de combustíveis.|Mudanças climáticas ameaçam safras de cana com secas e chuvas intensas.  |
+
+Conclui-se que a Atvos, enfrenta riscos climáticos e operacionais, possuindo oportunidades estratégicas em SAF e CBIOs impulsionando sua rentabilidade. 
 
 
 ---
