@@ -157,12 +157,21 @@ Critérios INVEST | *(Por que é Independente? Por que é Negociável? Por que �
 
 ### 3.1.1. Requisitos Funcionais (sprint 1, refinar até sprint 5)
 
-*Liste os RF numerados de forma objetiva e verificável. Cada RF deve poder ser convertido em caso de teste.*
+| ID    | Descrição                                                                                                                 | Prioridade | Status    |
+| ----- | ------------------------------------------------------------------------------------------------------------------------- | ---------- | --------- |
+| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, editor e observador.             | Alta       | Planejado |
+| RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                    | Alta       | Planejado |
+| RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                        | Alta       | Planejado |
+| RF004 | O sistema deve permitir que o editor cadastre novos parceiros agrícolas.                                                  | Alta       | Planejado |
+| RF005 | O sistema deve permitir que o editor edite dados cadastrais de parceiros agrícolas existentes.                            | Alta       | Planejado |
+| RF006 | O sistema deve permitir que o editor registre dados de relacionamento e histórico de interações com parceiros agrícolas.  | Alta       | Planejado |
+| RF007 | O sistema deve permitir que o observador visualize a lista de parceiros agrícolas cadastrados.                            | Alta       | Planejado |
+| RF008 | O sistema deve permitir que o observador consulte o perfil detalhado de um parceiro agrícola.                             | Alta       | Planejado |
+| RF009 | O sistema deve permitir a aplicação de filtros por nome, região, área contratada, potencial agrícola ou tipo de parceiro. | Média      | Planejado |
+| RF010 | O sistema deve exibir dashboards com estatísticas sobre a base de parceiros, segmentações e histórico de interações.      | Média      | Planejado |
+| RF011 | O sistema deve permitir a exportação de listas básicas de contatos e parceiros.                                           | Média      | Planejado |
+| RF012 | O sistema deve registrar a data de criação e última atualização dos cadastros de parceiros.                               | Média      | Planejado |
 
-| ID    | Descrição | Prioridade | Status       |
-|-------|-----------|------------|--------------|
-| RF001 | ...       | Alta       | Implementado |
-| RF002 | ...       | Média      | Planejado    |
 
 ### 3.1.2. Regras de Negócio (sprint 1, refinar até sprint 5)
 
@@ -177,16 +186,16 @@ Critérios INVEST | *(Por que é Independente? Por que é Negociável? Por que �
 
 *Preencha os 8 eixos. Cada eixo deve ter ao menos um RNF verificável (com métrica, limite ou critério concreto) ou justificativa explícita de ausência. Evolua do conceitual (sprint 1) ao técnico mensurável (sprint 5).*
 
-| Eixo                     | Requisito | Métrica / Critério | Como atendido |
-|--------------------------|-----------|--------------------|---------------|
-| USAB — Usabilidade       | ...       | ...                | ...           |
-| CONF — Confiabilidade    | ...       | ...                | ...           |
-| DES — Desempenho         | ...       | p95 < X ms         | ...           |
-| SUP — Suportabilidade    | ...       | ...                | ...           |
-| SEG — Segurança          | ...       | ...                | ...           |
-| CAP — Capacidade         | ...       | ...                | ...           |
-| REST — Restrições Design | ...       | ...                | ...           |
-| ORG — Organizacionais    | ...       | ...                | ...           |
+| Eixo | Requisito | Métrica / Critério | Como será atendido |
+|---|---|---|---|
+| **USAB — Usabilidade** | O sistema deve permitir navegação simples para consulta de parceiros. | ≥ 80% dos usuários acessam o perfil em até 4 cliques. | Será projetada uma navegação direta (lista → detalhe) com foco em simplicidade. |
+| **CONF — Confiabilidade** | O sistema deve garantir persistência correta dos dados cadastrados. | 100% dos dados submetidos são armazenados sem perda. | Será utilizado banco de dados com validações para garantir integridade. |
+| **DES — Desempenho** | O sistema deve responder rapidamente consultas de parceiros. | p95 < 3 segundos para consultas com até 50 registros. | Será validado por testes de consulta conforme evolução do sistema. |
+| **SUP — Suportabilidade** | O sistema deve permitir manutenção e evolução simples. | Alterações simples implementadas em até 1 dia. | Será adotada arquitetura separando frontend e backend. |
+| **SEG — Segurança** | O sistema deve restringir ações conforme perfil de usuário. | 100% das ações protegidas por controle de perfil. | Será implementado controle de permissões por perfil (admin, editor, observador). |
+| **CAP — Capacidade** | O sistema deve suportar uso simultâneo por múltiplos usuários. | Até 20 usuários simultâneos sem falhas. | Será considerado ambiente de execução compatível com múltiplos acessos simultâneos. |
+| **REST — Restrições de Design** | O sistema deve ser acessível como aplicação web. | Compatível com navegadores modernos (Chrome/Edge). | Será desenvolvido como aplicação web baseada em tecnologias padrão. |
+| **ORG — Organizacionais** | O sistema deve respeitar o escopo do projeto definido no TAP. | 100% das funcionalidades dentro do escopo (sem integrações externas). | Será seguido o escopo definido e validado com stakeholders. |
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
