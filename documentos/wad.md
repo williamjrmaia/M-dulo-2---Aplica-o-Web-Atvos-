@@ -131,7 +131,11 @@ O sucesso será avaliado pela entrega do MVP funcional com cadastro centralizado
 
 ## 2.2. Personas (sprint 1)
 
-*Posicione aqui suas Personas em forma de texto markdown com imagens, ou como imagem de template preenchido. Atualize esta seção ao longo do módulo se necessário.*
+<div align="center">
+  <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
+  <img src="/documentos/assets/persona1_JulianoSoares.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores. (Imagem de pessoa produzida pelo Gemini)</sup>
+</div>
 
 ## 2.3. User Stories (sprints 1 a 5)
 
