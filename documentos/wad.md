@@ -148,8 +148,19 @@ Critérios INVEST | *(Por que é Independente? Por que é Negociável? Por que �
 
 | ID   | Descrição | RF associado |
 |------|-----------|--------------|
-| RN01 | ...       | RF001        |
-| RN02 | ...       | RF001        |
+| RN01 | Um usuário deve possuir um unico e-mail associado. | - |
+| RN02 | Somente usuários cadastrados internamente podem acessar o sistema. | - |
+| RN03 | Não há distinção de níveis de acesso - todos usuários podem inserir, atualizar, visualizar e excluir dados. | - |
+| RN04 | A exclusão de dados é lógica - o registro não é apagado, apenas marcado como excluído. | - |
+| RN05 | Registros excluídos não aparecem em consultas normais. | - |
+| RN06 | Registros duplicados devem ser rejeitados ou sinalizados. | - |
+| RN07 | Campos obrigatórios, como CPF e CNPJ, não podem ser nulos. | - |
+| RN08 | Dados criados e alterados devem estar associados as datas de criação ou atualização. | - |
+| RN09 | Dados alterados devem manter suas versões antigas salvas, que podem ser visualizadas. | - |
+| RN10 | Parceiros podem possuir mais de uma terra cadastrada. | - |
+| RN11 | Terras podem possuir mais de um parceiro associado. | - |
+| RN12 | Dados que dizem quanto ao rendimento das terras podem ser visualizados em gráficos. | RF010 |
+| RN13 | A pesquisa dos dados pode ser filtrada. | RF009 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
