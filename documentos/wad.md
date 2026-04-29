@@ -36,13 +36,10 @@
 
 # <a name="c1"></a>1. Introdução (sprints 1 a 5)
 
-*Preencha com até 300 palavras – sem necessidade de fonte*
+A empresa ATVOS possui seus dados de gestão de parceiros de terras e fornecedores dispersos em diferentes planilhas, sem uma organização adequada e centralizada. Dessa forma, a perda do histórico de informações dos clientes e parceiros se torna um evento muito comum, dificultando o acompanhamento das relações já estabelecidas e prejudicando diretamente a tomada de decisão ágil e estratégica. Além disso, essa falta de integração entre os dados compromete a continuidade de relacionamentos de longo prazo, gerando retrabalho, falhas de comunicação e menor eficiência operacional.
 
-*Contextualize aqui a problemática trazida pelo parceiro de projeto.*
+Com isso, será desenvolvida uma Aplicação Web full stack com o objetivo de centralizar cadastros, registrar o histórico de interações e ainda oferecer dashboards estatísticos para facilitar a visualização e análise das informações. Essa solução permitirá maior controle e segurança no armazenamento dos dados, além de otimizar processos internos. Ainda nessa Aplicação Web, haverá telas de cadastro integradas ao banco de dados, proporcionando uma visão única, confiável e segura das informações dos parceiros de terras e fornecedores, agregando mais valor à gestão e à tomada de decisões da empresa.
 
-*Descreva brevemente a solução desenvolvida para o parceiro de negócios. Descreva os aspectos essenciais para a criação de valor do produto, com o objetivo de ajudar a entender melhor a realidade do cliente e entregar uma solução que está alinhado com o que ele espera.*
-
-*Observe a seção 2 e verifique que ali é possível trazer mais detalhes, portanto seja objetivo aqui. Atualize esta descrição até a entrega final, conforme desenvolvimento.*
 
 # <a name="c2"></a>2. Visão Geral da Aplicação Web (sprint 1)
 
