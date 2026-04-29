@@ -90,33 +90,24 @@ Conclui-se que a Atvos, enfrenta riscos climáticos e operacionais, possuindo op
 
 ## Análise do Projeto ATVOS
 
-**1. Problema a ser resolvido**
-Os dados de gestão de parceiros de terras e fornecedores de cana-de-açúcar estão dispersos em planilhas de gestão, sem governança adequada. Isso causa perda do histórico de relacionamento e dificulta a manutenção de uma base padronizada para todos, prejudicando a tomada de decisão ágil e a continuidade das relações de longo prazo.
+2.1.3. Solução (sprints 1 a 5)
+a) Problema a ser resolvido
+Os dados de gestão de parceiros de terras e fornecedores de cana-de-açúcar encontram-se dispersos em planilhas, sem governança adequada. Essa fragmentação compromete a preservação do histórico de relacionamento, dificulta a padronização dos cadastros e prejudica a tomada de decisão ágil e a continuidade das relações de longo prazo.
 
----
+b) Dados disponíveis
+Os dados estão disponíveis no SharePoint da área de Estratégia de Terras da ATVOS, de caráter confidencial. Os arquivos incluem bases cadastrais de fornecedores de cana, registros de contatos de parceiros e proprietários de terra, estruturas de cadastro existentes e informações de acesso ao portal de gestão de parceiros.
 
-**2. Dados disponíveis**
-Disponíveis no SharePoint da área de Estratégia de Terras. Os arquivos compartilhados, de caráter confidencial, incluem: base de fornecedores de cana (20260303), Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Estrutura de Cadastro dos Fornecedores e Portal PMF – Acessos 28 de abril de 2026.
+c) Solução proposta
+Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações e disponibilizará dashboards analíticos. O acesso será controlado por três perfis distintos: administrador, editor e observador.
 
----
+d) Forma de utilização da solução
+A aplicação será utilizada via navegador web pelos times internos da área de Negócios Agrícolas. Cada perfil terá acesso às funcionalidades correspondentes ao seu nível de permissão: cadastro e edição de parceiros, registro de interações, aplicação de filtros por nome, região e tipo de parceiro, visualização de dashboards e exportação de listas.
 
-**3. Solução proposta**
-Desenvolvimento de uma Aplicação Web full stack (front-end em HTML/CSS/JS, back-end em Node.js e banco de dados SQLite) que centraliza cadastros, registra histórico de interações e oferece dashboards estatísticos. O MVP entrega telas de cadastro integradas ao banco de dados, proporcionando visão única e segura das informações dos parceiros e fornecedores.
+e) Benefícios esperados
+Centralização e padronização dos cadastros de parceiros; eliminação de planilhas dispersas e redução de retrabalho operacional; preservação do histórico de relacionamento ao longo das safras independente de mudanças no time; e agilidade na consulta e análise de dados para suporte à tomada de decisão estratégica.
 
----
-
-**4. Forma de utilização da solução**
-A aplicação será utilizada via navegador web pelos times internos da área de Negócios Agrícolas. Os usuários poderão consultar perfis de parceiros, registrar interações, aplicar filtros baseados em pré-requisitos, exportar listas de contatos e visualizar painéis analíticos, substituindo as planilhas manuais dispersas no dia a dia operacional.
-
----
-
-**5. Benefícios esperados**
-Maior organização e centralização das informações cadastrais; redução de retrabalho com eliminação de planilhas dispersas; interface amigável voltada ao usuário interno (UX); visualização centralizada para entendimento da jornada do parceiro; e base tecnológica inicial que viabiliza futuras expansões.
-
----
-
-**6. Critério de sucesso e como será avaliado**
-O sucesso será avaliado pela entrega do MVP funcional com cadastro centralizado e integrado ao banco de dados, pela aprovação dos protótipos de alta fidelidade (Figma) e pela capacidade de substituir as planilhas dispersas pela aplicação web desenvolvida, validada pelos usuários internos da ATVOS.
+f) Critério de sucesso e como será avaliado
+O sucesso será avaliado pela entrega do MVP funcional com os três módulos principais operacionais (cadastro, histórico e controle de acesso), pela validação dos fluxos pelos usuários internos da ATVOS em testes de usabilidade e pela capacidade demonstrada de substituir as planilhas dispersas pela aplicação desenvolvida.
 
 ### 2.1.4. Value Proposition Canvas (sprint 1): 
 *Sem limite de palavras – usar template do curso*
