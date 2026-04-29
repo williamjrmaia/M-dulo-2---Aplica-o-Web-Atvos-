@@ -262,18 +262,27 @@ As User Stories levantadas cobrem os fluxos essenciais para resolver a principal
 
 | ID    | Descrição                                                                                                                 | Prioridade | Status    |
 | ----- | ------------------------------------------------------------------------------------------------------------------------- | ---------- | --------- |
-| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, editor e observador.             | Alta       | Planejado |
-| RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                    | Alta       | Planejado |
-| RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                        | Alta       | Planejado |
-| RF004 | O sistema deve permitir que o editor cadastre novos parceiros agrícolas.                                                  | Alta       | Planejado |
-| RF005 | O sistema deve permitir que o editor edite dados cadastrais de parceiros agrícolas existentes.                            | Alta       | Planejado |
-| RF006 | O sistema deve permitir que o editor registre dados de relacionamento e histórico de interações com parceiros agrícolas.  | Alta       | Planejado |
-| RF007 | O sistema deve permitir que o observador visualize a lista de parceiros agrícolas cadastrados.                            | Alta       | Planejado |
-| RF008 | O sistema deve permitir que o observador consulte o perfil detalhado de um parceiro agrícola.                             | Alta       | Planejado |
-| RF009 | O sistema deve permitir a aplicação de filtros por nome, região, área contratada, potencial agrícola ou tipo de parceiro. | Média      | Planejado |
-| RF010 | O sistema deve exibir dashboards com estatísticas sobre a base de parceiros, segmentações e histórico de interações.      | Média      | Planejado |
-| RF011 | O sistema deve permitir a exportação de listas básicas de contatos e parceiros.                                           | Média      | Planejado |
-| RF012 | O sistema deve registrar a data de criação e última atualização dos cadastros de parceiros.                               | Média      | Planejado |
+| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, editor e observador.                 | Alta       | Planejado |
+| RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                        | Alta       | Planejado |
+| RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                            | Alta       | Planejado |
+| RF004 | O sistema deve permitir que o editor cadastre novos parceiros agrícolas.                                                      | Alta       | Planejado |
+| RF005 | O sistema deve permitir que o editor edite dados cadastrais de parceiros agrícolas existentes.                                | Alta       | Planejado |
+| RF006 | O sistema deve permitir que o editor registre dados de relacionamento e histórico de interações com parceiros agrícolas.      | Alta       | Planejado |
+| RF007 | O sistema deve permitir que o observador visualize a lista de parceiros agrícolas cadastrados.                                | Alta       | Planejado |
+| RF008 | O sistema deve permitir que o observador consulte o perfil detalhado de um parceiro agrícola.                                 | Alta       | Planejado |
+| RF009 | O sistema deve rejeitar ou sinalizar registros duplicados com base nos seguintes identificadores únicos: CPF, CNPJ e e-mail.  | Alta       | Planejado |
+| RF010 | O sistema deve validar o preenchimento de campos obrigatórios antes de salvar qualquer registro.                              | Alta       | Planejado |
+| RF011 | O sistema deve exigir autenticação via e-mail e senha para acesso.                                                            | Alta       | Planejado |
+| RF012 | O sistema deve impedir que registros excluídos logicamente apareçam nas consultas e listagens normais.                        | Alta       | Planejado |
+| RF013 | O sistema deve manter um histórico de versões de cada registro, permitindo a visualização de valores anteriores a cada edição.| Alta       | Planejado |
+| RF014 | O sistema deve permitir que o administrador exclua registros de parceiros e terras de forma lógica.                           | Alta       | Planejado |
+| RF015 | O sistema deve permitir associar múltiplos parceiros a uma mesma terra e múltiplas terras a um mesmo parceiro.                | Alta       | Planejado |
+| RF016 | O sistema deve permitir a aplicação de filtros por nome, região, área contratada, potencial agrícola ou tipo de parceiro.     | Média      | Planejado |
+| RF017 | O sistema deve exibir dashboards com estatísticas sobre a base de parceiros, segmentações e histórico de interações.          | Média      | Planejado |
+| RF018 | O sistema deve permitir a exportação de listas básicas de contatos e parceiros.                                               | Média      | Planejado |
+| RF019 | O sistema deve registrar a data de criação e última atualização de todos os registros do sistema.                             | Média      | Planejado |
+| RF020 | O sistema deve registrar o usuário responsável por cada criação ou atualização de registro.                                   | Média      | Planejado |
+| RF021 | O sistema deve definir o comportamento do sistema após a inativação de um usuário: acesso revogado imediatamente, sessão encerrada e histórico de ações preservado. | Alta      | Planejado |
 
 
 ### 3.1.2. Regras de Negócio (sprint 1, refinar até sprint 5)
@@ -282,19 +291,21 @@ As User Stories levantadas cobrem os fluxos essenciais para resolver a principal
 
 | ID   | Descrição | RF associado |
 |------|-----------|--------------|
-| RN01 | Um usuário deve possuir um unico e-mail associado. | - |
-| RN02 | Somente usuários cadastrados internamente podem acessar o sistema. | - |
-| RN03 | Não há distinção de níveis de acesso - todos usuários podem inserir, atualizar, visualizar e excluir dados. | - |
-| RN04 | A exclusão de dados é lógica - o registro não é apagado, apenas marcado como excluído. | - |
-| RN05 | Registros excluídos não aparecem em consultas normais. | - |
-| RN06 | Registros duplicados devem ser rejeitados ou sinalizados. | - |
-| RN07 | Campos obrigatórios, como CPF e CNPJ, não podem ser nulos. | - |
-| RN08 | Dados criados e alterados devem estar associados as datas de criação ou atualização. | - |
-| RN09 | Dados alterados devem manter suas versões antigas salvas, que podem ser visualizadas. | - |
-| RN10 | Parceiros podem possuir mais de uma terra cadastrada. | - |
-| RN11 | Terras podem possuir mais de um parceiro associado. | - |
-| RN12 | Dados que dizem quanto ao rendimento das terras podem ser visualizados em gráficos. | RF010 |
-| RN13 | A pesquisa dos dados pode ser filtrada. | RF009 |
+| RN01 | Um usuário deve possuir um único e-mail associado.                                                                                                    | RF011 |
+| RN02 | Somente usuários cadastrados internamente podem acessar o sistema.                                                                                    | RF011 |
+| RN03 | Existem três níveis de acesso: Observador, Editor e Administrador.                                                                                    | RF001 |
+| RN04 | Observadores podem apenas visualizar dados de parceiros, terras e histórico de interações. Observadores não tem acesso à gestão de usuários.          | RF007, RF008 |
+| RN05 | Editores podem apenas inserir, atualizar e visualizar dados. Editores não podem excluir registros nem acessar a gestão de usuários.                   | RF004, RF005, RF006 |
+| RN06 | Administradores podem inserir, atualizar, excluir logicamente e visualizar tanto dados quanto cadastros.                                              | RF002, RF003, RF014 |
+| RN07 | A exclusão de dados é lógica - o registro não é apagado, apenas marcado como excluído.                                                                | RF012, RF014 |
+| RN08 | Registros excluídos não aparecem em consultas normais.                                                                                                | RF012 |
+| RN09 | Registros duplicados devem ser rejeitados ou sinalizados com base nos seguintes identificadores únicos: CPF, CNPJ e e-mail.                           | RF009 |
+| RN10 | Campos obrigatórios para parceiros e para terras, como:  nome, CPF ou CNPJ, e-mail, tipo de parceiro, área em hectares, município e estado não podem ser nulos.  | RF010 |
+| RN11 | Toda criação ou alteração de registro deve armazenar a data/hora da operação e o identificador do usuário responsável.                                | RF019, RF020 |
+| RN12 | Dados alterados devem manter suas versões antigas salvas, que podem ser visualizadas.                                                                 | RF013 |
+| RN13 | Parceiros podem possuir mais de uma terra cadastrada.                                                                                                 | RF015 |
+| RN14 | Terras podem possuir mais de um parceiro associado.                                                                                                   | RF015 |
+| RN15 | Ao inativar um usuário, o sistema deve revogar seu acesso imediatamente, encerrar sessões ativas e preservar o histórico de ações realizadas por ele. | RF021 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
