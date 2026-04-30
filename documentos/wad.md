@@ -122,28 +122,22 @@ O sucesso será avaliado pela entrega do MVP funcional com os três módulos pri
 
 ## 2.2. Personas (sprint 1)
 
+Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas três personas (apresentadas nas figuras 2.2.1, 2.2.2 e 2.2.3) com base nas informações coletadas durante o workshop com o parceiro (Atvos) e no mapeamento dos perfis envolvidos na problemática.
+
 <div align="center">
   <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
   <img src="/documentos/assets/persona1_JulianoSoares.png" width="100%" alt="Descrição breve"><br>
-  <sup>Fonte: Material produzido pelos autores. (Imagem de pessoa produzida pelo Gemini)</sup>
-</div>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
+</div><br>
+
+
+<div align="center">
+  <sub>Figura 2.2.2 - Persona 2: Beatriz Souza</sub><br>
+  <img src="/documentos/assets/persona2_BeatrizSouza.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
+</div><br>
 
 ## 2.3. User Stories (sprints 1 a 5)
-
-*Posicione aqui a lista de User Stories levantadas para o projeto. Siga o template de User Stories e utilize a mesma referência USXX no roadmap de seu quadro Kanban. Indique todas as User Stories mapeadas, mesmo aquelas que não forem implementadas ao longo do projeto. Não se esqueça de explicar o INVEST das 5 User Stories prioritárias*
-
-*ATUALIZE ESTA SEÇÃO SEMPRE QUE ALGUMA DEMANDA MUDAR EM SEU PROJETO*
-
-*Template de User Story*
-Identificação | USXX (troque XX por numeração ordenada das User Stories)
---- | ---
-Persona | nome da Persona
-User Story | "como (papel/perfil), posso (ação/meta), para (benefício/razão)"
-Critério de aceite 1 | CR1: descrever cenário + testes de aceite
-Critério de aceite 2 | CR2: descrever cenário + testes de aceite
-Critério de aceite ... | CR...
-Critérios INVEST | *(Por que é Independente? Por que é Negociável? Por que é Valorosa? Por que é Estimável? Por que é Pequena? Por que é Testável?)*
-
 ---
 User Stories são descrições simples de funcionalidades escritas do ponto de vista do usuário, no formato "como [perfil], posso [ação], para [benefício]". Para garantir a qualidade de cada história, foi aplicado o método INVEST, que avalia se a história é Independente, Negociável, Valiosa, Estimável, Pequena e Testável. As User Stories a seguir estão ordenadas por prioridade de desenvolvimento.
 
