@@ -305,21 +305,21 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 | ID   | Descrição | RF associado |
 |------|-----------|--------------|
-| RN01 | Um usuário deve possuir um único e-mail associado.                                                                                                    | RF011 |
-| RN02 | Somente usuários cadastrados internamente podem acessar o sistema.                                                                                    | RF011 |
-| RN03 | Existem três níveis de acesso: Observador, Editor e Administrador.                                                                                    | RF001 |
-| RN04 | Observadores podem apenas visualizar dados de parceiros, terras e histórico de interações. Observadores não tem acesso à gestão de usuários.          | RF007, RF008 |
-| RN05 | Editores podem apenas inserir, atualizar e visualizar dados. Editores não podem excluir registros nem acessar a gestão de usuários.                   | RF004, RF005, RF006 |
-| RN06 | Administradores podem inserir, atualizar, excluir logicamente e visualizar tanto dados quanto cadastros.                                              | RF002, RF003, RF014 |
-| RN07 | A exclusão de dados é lógica - o registro não é apagado, apenas marcado como excluído.                                                                | RF012, RF014 |
-| RN08 | Registros excluídos não aparecem em consultas normais.                                                                                                | RF012 |
-| RN09 | Registros duplicados devem ser rejeitados ou sinalizados com base nos seguintes identificadores únicos: CPF, CNPJ e e-mail.                           | RF009 |
-| RN10 | Campos obrigatórios para parceiros e para terras, como:  nome, CPF ou CNPJ, e-mail, tipo de parceiro, área em hectares, município e estado não podem ser nulos.  | RF010 |
-| RN11 | Toda criação ou alteração de registro deve armazenar a data/hora da operação e o identificador do usuário responsável.                                | RF019, RF020 |
-| RN12 | Dados alterados devem manter suas versões antigas salvas, que podem ser visualizadas.                                                                 | RF013 |
-| RN13 | Parceiros podem possuir mais de uma terra cadastrada.                                                                                                 | RF015 |
-| RN14 | Terras podem possuir mais de um parceiro associado.                                                                                                   | RF015 |
-| RN15 | Ao inativar um usuário, o sistema deve revogar seu acesso imediatamente, encerrar sessões ativas e preservar o histórico de ações realizadas por ele. | RF021 |
+| RN01 | Um usuário deve possuir um único e-mail associado (unicidade garantida no sistema). | RF001, RF002, RF009 |
+| RN02 | Somente usuários cadastrados internamente podem acessar o sistema. | RF011 |
+| RN03 | Existem três níveis de acesso: Observador, Editor e Administrador. | RF001 |
+| RN04 | Observadores podem apenas visualizar dados de parceiros, terras e histórico de interações e não possuem acesso à gestão de usuários. | RF007, RF008 |
+| RN05 | Editores podem inserir, atualizar e visualizar dados, mas não podem excluir registros nem acessar a gestão de usuários. | RF004, RF005, RF006 |
+| RN06 | Administradores podem inserir, atualizar, excluir logicamente e visualizar tanto dados quanto cadastros. | RF002, RF003, RF014 |
+| RN07 | A exclusão de dados é lógica: o registro não é apagado, apenas marcado como excluído. | RF012, RF014 |
+| RN08 | Registros excluídos logicamente não devem aparecer em consultas padrão do sistema. | RF012 |
+| RN09 | O sistema deve rejeitar registros duplicados com base nos identificadores únicos: CPF, CNPJ e e-mail. | RF009 |
+| RN10 | Campos obrigatórios para parceiros e terras (nome, CPF/CNPJ, e-mail, tipo de parceiro, área em hectares, município e estado) não podem ser nulos. | RF010 |
+| RN11 | Toda criação ou alteração de registro deve armazenar data, hora e o identificador do usuário responsável. | RF019, RF020 |
+| RN12 | Alterações de dados devem manter versões anteriores disponíveis para consulta. | RF013 |
+| RN13 | Um parceiro pode possuir múltiplas terras associadas. | RF015 |
+| RN14 | Uma terra pode possuir múltiplos parceiros associados. | RF015 |
+| RN15 | Ao inativar um usuário, o sistema deve revogar seu acesso imediatamente, encerrar sessões ativas e preservar o histórico de ações realizadas. | RF021 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
@@ -327,14 +327,14 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 | Eixo | Requisito | Métrica / Critério | Como será atendido |
 |---|---|---|---|
-| **USAB — Usabilidade** | O sistema deve permitir navegação simples para consulta de parceiros. | ≥ 80% dos usuários acessam o perfil em até 4 cliques. | Será projetada uma navegação direta (lista → detalhe) com foco em simplicidade. |
-| **CONF — Confiabilidade** | O sistema deve garantir persistência correta dos dados cadastrados. | 100% dos dados submetidos são armazenados sem perda. | Será utilizado banco de dados com validações para garantir integridade. |
-| **DES — Desempenho** | O sistema deve responder rapidamente consultas de parceiros. | p95 < 3 segundos para consultas com até 50 registros. | Será validado por testes de consulta conforme evolução do sistema. |
-| **SUP — Suportabilidade** | O sistema deve permitir manutenção e evolução simples. | Alterações simples implementadas em até 1 dia. | Será adotada arquitetura separando frontend e backend. |
-| **SEG — Segurança** | O sistema deve restringir ações conforme perfil de usuário. | 100% das ações protegidas por controle de perfil. | Será implementado controle de permissões por perfil (admin, editor, observador). |
-| **CAP — Capacidade** | O sistema deve suportar uso simultâneo por múltiplos usuários. | Até 20 usuários simultâneos sem falhas. | Será considerado ambiente de execução compatível com múltiplos acessos simultâneos. |
-| **REST — Restrições de Design** | O sistema deve ser acessível como aplicação web. | Compatível com navegadores modernos (Chrome/Edge). | Será desenvolvido como aplicação web baseada em tecnologias padrão. |
-| **ORG — Organizacionais** | O sistema deve respeitar o escopo do projeto definido no TAP. | 100% das funcionalidades dentro do escopo (sem integrações externas). | Será seguido o escopo definido e validado com stakeholders. |
+| **USAB — Usabilidade** | O sistema deve permitir navegação eficiente para consulta de parceiros. | ≥ 80% dos usuários devem acessar o perfil de um parceiro em até 4 cliques durante testes de usabilidade. | Navegação direta (listagem → detalhe), validada em testes de usabilidade. |
+| **CONF — Confiabilidade** | O sistema deve garantir integridade e consistência dos dados cadastrados. | 0% de registros inválidos persistidos (campos obrigatórios nulos ou duplicados em CPF/CNPJ/e-mail). | Uso de constraints (NOT NULL, UNIQUE) e validações no backend. |
+| **DES — Desempenho** | O sistema deve apresentar tempo de resposta adequado para consultas de parceiros. | p95 < 3 segundos para consultas com até 100 registros. | Consultas otimizadas e validação em testes de desempenho. |
+| **SUP — Suportabilidade** | O sistema deve ser estruturado para facilitar manutenção e evolução. | 100% das funcionalidades implementadas com separação em camadas (Controller, Service, Repository). | Arquitetura em camadas e organização modular. |
+| **SEG — Segurança** | O sistema deve garantir controle de acesso baseado em autenticação e autorização. | 100% das operações devem exigir autenticação e validar permissões por perfil. | Implementação de autenticação e controle de autorização no backend. |
+| **CAP — Capacidade** | O sistema deve suportar uso simultâneo por múltiplos usuários internos. | Até 20 usuários simultâneos sem falhas críticas. | Backend preparado para múltiplas requisições concorrentes. |
+| **REST — Restrições de Design** | O sistema deve ser implementado como aplicação web utilizando tecnologias padrão. | 100% das funcionalidades acessíveis via navegadores compatíveis com HTML5, CSS3 e JavaScript. | Uso de tecnologias web padrão e testes em navegadores modernos. |
+| **ORG — Organizacionais** | O sistema deve respeitar o escopo definido para o MVP sem integrações externas. | 0 integrações com sistemas externos (ERP, SharePoint, APIs) no MVP. | Controle de escopo validado com stakeholders. |
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
