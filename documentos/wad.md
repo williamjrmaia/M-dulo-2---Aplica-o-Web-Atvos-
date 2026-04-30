@@ -461,46 +461,39 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.2.2. Diagrama de Casos de Uso (sprint 1)
 
+O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da Atvos, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como o Usuário Interno e o Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de alto nível.
 
-```mermaid
-graph LR
+A modelagem funcional reflete os quatro níveis de maturidade definidos pela Atvos no Termo de Aberta de Projeto (TAPI). O diagrama integra o Nível 1 (Fundacional) no cadastro de parceiros, o Nível 2 (Operacional) no histórico de interações e filtros, o Nível 3 (Estratégico) na gestão visual da jornada e personas, e o Nível 4 (Avançado) no monitoramento de KPIs de desempenho. Esta estrutura garante que o sistema evolua de um repositório de dados para uma ferramenta de acompanhamento de indicadores.
 
-%% Definição dos Atores
-UsuarioInterno["👤 Usuário interno"]
-Administrador["👤 Administrador"]
+<div align="center">
+  <sub>Figura 3.2.2. - Diagrama de casos de uso</sub><br>
+  <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no LucidChart)</sup>
+</div><br>
 
-subgraph Sistema["Sistema de Gestão de Parceiros e Fornecedores - ATVOS"]
-    direction TB
-    UC1(["Cadastrar parceiro"])
-    UC2(["Registrar interação"])
-    UC3(["Consultar perfil"])
-    UC4(["Aplicar filtros"])
-    UC5(["Exportar lista de contatos"])
-    UC6(["Visualizar dashboard"])
-    UC7(["Validar dados cadastrais"])
-    UC8(["Gerar relatório"])
-end
+Registrar interações: Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro. Este card atende ao Nível 2 (Histórico de Relacionamento) do projeto Atvos.
 
-%% Conexões do Usuário Interno
-UsuarioInterno --- UC1
-UsuarioInterno --- UC2
-UsuarioInterno --- UC3
-UsuarioInterno --- UC4
-UsuarioInterno --- UC5
-UsuarioInterno --- UC6
+Cadastrar parceiros: Permite a inserção de novos fornecedores no sistema. É o ponto de entrada da governança, onde são registrados dados cadastrais e área produtiva.
 
-%% Conexões do Administrador
-UC4 --- Administrador
-UC5 --- Administrador
-UC6 --- Administrador
-UC7 --- Administrador
+Visualização de dados: (Nível 4) Funcionalidade que permite acompanhar os indicadores de desempenho (KPIs) e as métricas da base de parceiros sem a necessidade de painéis gráficos complexos.
 
-%% Relacionamentos Internos com as setas tracejadas e aspas nos nomes
-UC1 -. "<< include >>" .-> UC7
-UC2 -. "<< include >>" .-> UC3
-UC6 -. "<< extend >>" .-> UC8
+Consultar perfis: Funcionalidade de busca e visualização detalhada de um parceiro específico, garantindo que o histórico de dados não se perca.
 
-```
+Visualizar status Parceiro/Fornecedor: (Nível 3) Apresenta uma gestão visual da jornada do parceiro, mostrando em que estágio da negociação ou contrato ele se encontra.
+
+Aplicar filtros de busca: Ferramenta que permite segmentar a base de dados rapidamente, facilitando a localização de grupos específicos de parceiros.
+
+Gerenciar acessos: Controle de permissões da plataforma. O Administrador define quem pode acessar o sistema e quais funcionalidades estarão disponíveis para cada perfil.
+
+Validar dados cadastrais: (Include de Cadastrar) Processo de verificação obrigatória para garantir que as informações inseridas no cadastro de parceiros estejam corretas e completas.
+
+Gerar relatórios: (Extend de Visualização de Dados) Funcionalidade opcional que permite exportar os indicadores e dados visualizados para documentos externos (PDF/Excel).
+
+Auditar histórico: Permite ao administrador revisar todas as alterações e interações registradas no sistema, garantindo a integridade e a segurança das informações.
+
+Autorizar cadastros de usuários: Processo de aprovação de novas contas de acesso ao sistema, garantindo que apenas pessoas autorizadas utilizem a plataforma.
+
+A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnica da solução ao aplicar corretamente relações de herança e semânticas de inclusão e extensão, permitindo que o sistema diferencie com rigor os níveis de acesso e responsabilidades entre a operação de campo e a gestão estratégica. Conclui-se que a estrutura proposta atende integralmente aos objetivos da Sprint 1, pois não apenas organiza o fluxo de dados mestres e parâmetros globais sob a custódia do Administrador, mas também fornece ao Usuário Interno as ferramentas necessárias para a manutenção da integridade informacional, estabelecendo uma base sólida e auditável que servirá de alicerce para o desenvolvimento das interfaces e do banco de dados nas etapas subsequentes do projeto.
 
 ### 3.2.3. Diagrama de Classes do Domínio (sprint 2)
 
