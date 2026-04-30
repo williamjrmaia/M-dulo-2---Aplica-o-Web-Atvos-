@@ -110,9 +110,16 @@ f) Critério de sucesso e como será avaliado
 O sucesso será avaliado pela entrega do MVP funcional com os três módulos principais operacionais (cadastro, histórico e controle de acesso), pela validação dos fluxos pelos usuários internos da ATVOS em testes de usabilidade e pela capacidade demonstrada de substituir as planilhas dispersas pela aplicação desenvolvida.
 
 ### 2.1.4. Value Proposition Canvas (sprint 1): 
-*Sem limite de palavras – usar template do curso*
+Para estruturar a proposta de valor da solução, foi utilizado o Value Proposition Canvas, ferramenta que ajuda a verificar se o que a solução entrega faz sentido diante do que o cliente precisa. A construção do canvas tomou como base o que foi levantado no Workshop com a Atvos, considerando como segmento-cliente os coordenadores de campo e os gerentes regionais. O artefato resultante é apresentado a seguir.
+<br>
+<div align="center">
+  <sub>Figura Value Proposition Canvas</sub><br>
+  <img src="./assets/template_value-proposition-canvas.jpg" width="100%" alt="Value Proposition Canvas"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Imagem do template extraído pelo Canva)</sup>
+</div><br>
+A elaboração do Value Proposition Canvas foi importante para amadurecer a visão de negócio do grupo. Ao colocar lado a lado o perfil do cliente e a solução proposta, foi possível perceber que o problema central da Atvos é mais relacional do que transacional, e que a aplicação responde diretamente às três principais dores levantadas. Também ficou claro que a interseção entre negócio e tecnologia aparece em decisões concretas, como a regra de unidade fiscal e a visão consolidada por usina. Concluiu-se que o canvas funcionou tanto como validação de escopo do projeto quanto como referência para as próximas sprints.
 
-*Elaborar o Value Proposition Canvas com base na proposta de solução definida.*
+
 
 ### 2.1.5. Matriz de Riscos do Projeto (sprint 1)
 
