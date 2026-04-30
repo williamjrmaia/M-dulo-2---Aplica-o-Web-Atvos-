@@ -369,7 +369,46 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.2.2. Diagrama de Casos de Uso (sprint 1)
 
-*Apresente o diagrama de casos de uso com atores (boneco), casos (elipse) e as relações `<<include>>` / `<<extend>>` com semântica correta. Consulte a notação de referência em `in02/suporte/use-case_3.0_v1.0.pdf`.*
+
+```mermaid
+graph LR
+
+%% Definição dos Atores
+UsuarioInterno["👤 Usuário interno"]
+Administrador["👤 Administrador"]
+
+subgraph Sistema["Sistema de Gestão de Parceiros e Fornecedores - ATVOS"]
+    direction TB
+    UC1(["Cadastrar parceiro"])
+    UC2(["Registrar interação"])
+    UC3(["Consultar perfil"])
+    UC4(["Aplicar filtros"])
+    UC5(["Exportar lista de contatos"])
+    UC6(["Visualizar dashboard"])
+    UC7(["Validar dados cadastrais"])
+    UC8(["Gerar relatório"])
+end
+
+%% Conexões do Usuário Interno
+UsuarioInterno --- UC1
+UsuarioInterno --- UC2
+UsuarioInterno --- UC3
+UsuarioInterno --- UC4
+UsuarioInterno --- UC5
+UsuarioInterno --- UC6
+
+%% Conexões do Administrador
+UC4 --- Administrador
+UC5 --- Administrador
+UC6 --- Administrador
+UC7 --- Administrador
+
+%% Relacionamentos Internos com as setas tracejadas e aspas nos nomes
+UC1 -. "<< include >>" .-> UC7
+UC2 -. "<< include >>" .-> UC3
+UC6 -. "<< extend >>" .-> UC8
+
+```
 
 ### 3.2.3. Diagrama de Classes do Domínio (sprint 2)
 
