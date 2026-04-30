@@ -130,12 +130,20 @@ Personas são representações fictícias dos usuários da aplicação, constru�
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
 </div><br>
 
-
 <div align="center">
-  <sub>Figura 2.2.2 - Persona 2: Beatriz Souza</sub><br>
-  <img src="/documentos/assets/persona2_BeatrizSouza.png" width="100%" alt="Descrição breve"><br>
+  <sub>Figura 2.2.2 - Persona 2: Bianca Souza</sub><br>
+  <img src="/documentos/assets/persona2_BiancaSouza.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
 </div><br>
+
+<div align="center">
+  <sub>Figura 2.2.3 - Persona 3: Roberto Carvalho </sub><br>
+  <img src="/documentos/assets/persona3_RobertoCarvalho.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
+</div><br>
+
+Ao analisar as diferentes personas do projeto, que representam os três possíveis usuários da aplicação, é notório que suas dores possuem uma mesma origem: a descentralização de dados dos parceiros e fornecedores. Entretanto, por mais que a fonte das problemáticas seja a mesma, ela impacta de forma diferente as áreas de atuação das personas, seus trabalhos, esforços e necessidades, o que exige que o projeto abarque diferentes funcionalidades que ajudem no dia a dia tanto de coordenadores quanto dos gerentes, parceiros e fornecedores.
+
 
 ## 2.3. User Stories (sprints 1 a 5)
 ---
