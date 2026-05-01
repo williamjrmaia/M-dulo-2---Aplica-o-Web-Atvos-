@@ -486,7 +486,7 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 | ID   | Descrição | RF associado |
 |------|-----------|--------------|
-| RN01 | Um usuário deve possuir um único e-mail associado (unicidade garantida no sistema). | RF001, RF002, RF009 |
+| RN01 | Um usuário deve possuir um único e-mail associado (unicidade garantida no sistema). | RF001, RF002 |
 | RN02 | Somente usuários cadastrados internamente podem acessar o sistema. | RF011 |
 | RN03 | Existem três níveis de acesso: Observador, Editor e Administrador. | RF001 |
 | RN04 | Observadores podem apenas visualizar dados de parceiros, terras e histórico de interações e não possuem acesso à gestão de usuários. | RF007, RF008 |
@@ -538,7 +538,7 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 | RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET |
 | RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | PUT (A exclusão é lógica) |
 | RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` e `/terras/:id/parceiros` | GET, POST |
-| RF016 | US06 | RN04, RN08, RN10 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
+| RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
 | RF017 | US07 | RN04 | `/dashboards/parceiros` e `/dashboards/interacoes` | GET |
 | RF018 | US08 | RN04 | `/parceiros/exportar` | GET |
 | RF019 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
@@ -716,15 +716,19 @@ A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnic
 | Gerente de coordenadores           | RF003 | RN03             | PUT /usuarios/:id/perfil        | Cadastro de Usuário           | ---   | ---  |
 | Gerente de coordenadores           | RF011 | RN01, RN02       | POST /auth/login                | Login                         | ---   | ---  |
 | Gerente de coordenadores           | RF021 | RN15             | PUT /usuarios/:id/inativar      | Listagem de Usuários          | ---   | ---  |
+| Gerente de coordenadores           | RF013 | RN12             | GET /parceiros/:id/historico | Auditoria / Histórico | --- | --- |
 | Analista de Negócios Agrícolas     | RF004 | RN09, RN10       | POST /parceiros                 | Cadastro de Parceiro          | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF010 | RN10             | --- (Transversal)                 | Cadastro / Edição de Parceiro | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF010 | RN10             | POST/PUT /usuarios; POST/PUT /parceiros; POST/PUT /terras | Cadastro / Edição de Parceiro | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF005 | RN10, RN11, RN12 | PUT /parceiros/:id              | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF019 | RN11             | --- (Transversal)                 | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF020 | RN11             | --- (Transversal)                 | Edição de Parceiro            | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF019 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF020 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF006 | RN11             | POST /parceiros/:id/interacoes | Perfil do Parceiro            | ---   | ---  |
 | Coordenador de Estratégia de Terras| RF007 | RN04, RN08       | GET /parceiros                  | Listagem de Parceiros         | ---   | ---  |
 | Coordenador de Estratégia de Terras| RF008 | RN04, RN08       | GET /parceiros/:id              | Perfil do Parceiro            | ---   | ---  |
-| Todos                              | RF012 | RN07, RN08       | --- (Transversal)                 | ---                           | ---   | ---  |
+| Coordenador de Estratégia de Terras | RF016 | RN04, RN08 | GET /parceiros?nome=&regiao=&area=&tipo= | Listagem de Parceiros | --- | --- |
+| Coordenador de Estratégia de Terras | RF017 | RN04 | GET /dashboards/parceiros; GET /dashboards/interacoes | Dashboard | --- | --- |
+| Coordenador de Estratégia de Terras | RF018 | RN04 | GET /parceiros/exportar | Exportação de Lista | --- | --- |
+| Todos                              | RF012 | RN07, RN08       | GET /parceiros; GET /terras       | ---                           | ---   | ---  |
 
 # <a name="c4"></a>4. Desenvolvimento da Aplicação Web
 
