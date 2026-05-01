@@ -304,7 +304,7 @@ Personas são representações fictícias dos usuários da aplicação, constru�
 |---|---|---|---|---|
 | Juliano Soares | Editor / Analista de Negócios Agrícolas | Dados dispersos, dificuldade para registrar informações de forma eficiente e risco de esquecimento ou perda de dados. | Cadastrar, editar e consultar dados padronizados de parceiros e fornecedores. | Usa o sistema para centralizar cadastros, atualizar informações e registrar interações com parceiros. |
 | Bianca Souza | Observadora / Coordenadora de Estratégia de Terras | Dificuldade para encontrar dados específicos, sintetizar informações e acompanhar a atuação dos analistas. | Consultar perfis, aplicar filtros, visualizar histórico e acessar dados consolidados para negociações. | Usa o sistema para análise gerencial, consulta de dados e acompanhamento da base de parceiros. |
-| Marcelo Andrade | Administrador / Gerente de coordenadores | Falta de controle sobre acessos e edições, dificuldade de auditoria e risco de inconsistência dos dados. | Gerenciar permissões, consultar histórico de alterações, auditar ações e visualizar indicadores gerenciais. | Usa o sistema para garantir governança, segurança, rastreabilidade e controle de acesso. |
+| Marcelo Andrade | Administrador do Sistema / Gerente de coordenadores | Falta de controle sobre acessos e edições, dificuldade de auditoria e risco de inconsistência dos dados. | Gerenciar permissões, consultar histórico de alterações, auditar ações e visualizar indicadores gerenciais. | Usa o sistema para garantir governança, segurança, rastreabilidade e controle de acesso. |
 
 Ao analisar as três personas do projeto, observa-se que suas dores possuem uma mesma origem: a descentralização dos dados dos parceiros e fornecedores. No entanto, essa problemática impacta cada perfil de forma distinta. O analista é afetado pelo retrabalho operacional no cadastro e atualização das informações; a coordenadora é impactada pela dificuldade de consulta, análise e acompanhamento dos parceiros; e o administrador enfrenta riscos relacionados ao controle de acesso, auditoria e governança da base. Dessa forma, a solução deve contemplar funcionalidades operacionais, analíticas e administrativas para sustentar a gestão do relacionamento agrícola da ATVOS.
 
@@ -320,6 +320,7 @@ User Stories são descrições simples de funcionalidades escritas do ponto de v
 Identificação | US01
 --- | ---
 Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Prioridade | Alta
 User Story | "Como editor, posso cadastrar fornecedores de cana com suas informações específicas, para que os dados de cada agricultor parceiro estejam centralizados e padronizados no sistema."
 Critério de aceite 1 | CR1: Ao preencher os campos do perfil de fornecedor de cana (CPF/CNPJ, inscrição estadual, área plantada em hectares, TCH médio, ATR médio, histórico de cumprimento de cota, certificações e usina de referência) e confirmar, o fornecedor é salvo e exibido na listagem.
 Critério de aceite 2 | CR2: Ao tentar salvar sem preencher campos obrigatórios, o sistema exibe aviso de validação e não conclui o cadastro.
@@ -330,6 +331,7 @@ Critérios INVEST | Independente: pode ser desenvolvida sem depender do cadastro
 Identificação | US02
 --- | ---
 Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Prioridade | Alta
 User Story | "Como editor, posso cadastrar proprietários de terra com suas informações específicas, para que os dados de cada proprietário parceiro estejam centralizados e padronizados no sistema."
 Critério de aceite 1 | CR1: Ao preencher os campos do perfil de proprietário de terra (CPF/CNPJ, documentação da terra, localização, distância da usina, área total disponível em hectares, topografia, status da documentação fundiária, CAR, situação ambiental e tipo de contrato) e confirmar, o proprietário é salvo e exibido na listagem.
 Critério de aceite 2 | CR2: Ao tentar salvar sem preencher campos obrigatórios, o sistema exibe aviso de validação e não conclui o cadastro.
@@ -340,6 +342,7 @@ Critérios INVEST | Independente: pode ser desenvolvida em paralelo à US01, com
 Identificação | US03
 --- | ---
 Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Prioridade | Alta
 User Story | "Como editor, posso registrar o histórico de interações com parceiros, para que o relacionamento seja documentado e acessível a toda a equipe."
 Critério de aceite 1 | CR1: Ao adicionar uma interação (data, tipo e descrição) ao perfil de um parceiro, ela é salva e exibida no histórico em ordem cronológica.
 Critério de aceite 2 | CR2: O histórico exibe todos os registros de interações com o parceiro com data, tipo e descrição visíveis. Ao cadastrar uma nova interação, ela aparece no topo da lista após a confirmação.
@@ -350,6 +353,7 @@ Critérios INVEST | Independente: pode ser construída separadamente das funcion
 Identificação | US04
 --- | ---
 Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Prioridade | Alta
 User Story | "Como observador, posso visualizar o perfil detalhado de cada parceiro, para que eu possa consultar rapidamente as informações necessárias para a tomada de decisão."
 Critério de aceite 1 | CR1: Ao clicar em um parceiro na listagem, o sistema exibe todos os dados cadastrais e o histórico de interações em uma tela de perfil.
 Critério de aceite 2 | CR2: A tela de perfil carrega em até 3 segundos, conforme o requisito de desempenho definido.
@@ -360,6 +364,7 @@ Critérios INVEST | Independente: a tela de visualização pode ser prototipada 
 Identificação | US05
 --- | ---
 Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Prioridade | Alta
 User Story | "Como editor, posso editar os dados cadastrais de parceiros, para que as informações estejam sempre atualizadas e confiáveis para a equipe."
 Critério de aceite 1 | CR1: Ao alterar os dados de um parceiro e confirmar, as mudanças são salvas e refletidas imediatamente no perfil.
 Critério de aceite 2 | CR2: O sistema registra automaticamente a data e hora da última atualização do cadastro.
@@ -371,6 +376,7 @@ Critérios INVEST | Independente: pode ser desenvolvida em paralelo às User Sto
 Identificação | US06
 --- | ---
 Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Prioridade | Média
 User Story | "Como observador, posso filtrar a lista de parceiros por nome, região, área ou tipo de parceiro, para que eu encontre rapidamente o parceiro que procuro sem precisar percorrer toda a lista."
 Critério de aceite 1 | CR1: Ao aplicar um filtro, a listagem exibe apenas os parceiros que correspondem ao critério selecionado.
 Critério de aceite 2 | CR2: Filtros podem ser combinados e o resultado é atualizado sem necessidade de recarregar a página.
@@ -381,6 +387,7 @@ Critérios INVEST | Independente: pode ser implementada de forma isolada após a
 Identificação | US07
 --- | ---
 Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Prioridade | Média
 User Story | "Como observador, posso visualizar dashboards com estatísticas sobre a base de parceiros, para que eu tenha uma visão gerencial do portfólio agrícola."
 Critério de aceite 1 | CR1: O dashboard exibe o número total de parceiros, a distribuição por tipo e por região.
 Critério de aceite 2 | CR2: Os dados exibidos no dashboard refletem o estado atual do banco de dados no momento em que a tela é carregada ou atualizada manualmente pelo usuário.
@@ -391,6 +398,7 @@ Critérios INVEST | Independente: pode ser desenvolvida após os cadastros bási
 Identificação | US08
 --- | ---
 Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Prioridade | Média
 User Story | "Como observador, posso exportar a lista de contatos dos parceiros, para que eu possa compartilhar informações com pessoas que não têm acesso ao sistema."
 Critério de aceite 1 | CR1: Ao acionar a exportação, o sistema gera um arquivo com nome, contato, tipo e região de cada parceiro.
 Critério de aceite 2 | CR2: O arquivo exportado está em formato CSV ou XLSX e pode ser aberto sem erros.
@@ -401,6 +409,7 @@ Critérios INVEST | Independente: pode ser desenvolvida separadamente das funcio
 Identificação | US09
 --- | ---
 Persona | Marcelo Andrade — Administrador do Sistema / Gerente de coordenadores
+Prioridade | Alta
 User Story | "Como administrador, posso cadastrar usuários com perfis de acesso definidos, para que o sistema seja utilizado de forma segura e com acessos controlados."
 Critério de aceite 1 | CR1: Ao preencher nome, e-mail e perfil (administrador, editor ou observador) e confirmar, o usuário é salvo e exibido na listagem.
 Critério de aceite 2 | CR2: Ao tentar cadastrar um usuário com e-mail já existente, uma mensagem de erro é exibida e o cadastro não é concluído.
@@ -411,6 +420,7 @@ Critérios INVEST | Independente: pode ser desenvolvida antes de qualquer funcio
 Identificação | US10
 --- | ---
 Persona | Marcelo Andrade — Administrador do Sistema / Gerente de coordenadores
+Prioridade | Alta
 User Story | "Como administrador, posso inativar usuários do sistema, para que colaboradores que saíram da equipe não tenham mais acesso às informações da ATVOS."
 Critério de aceite 1 | CR1: Ao inativar um usuário, ele perde o acesso imediatamente e não consegue realizar login.
 Critério de aceite 2 | CR2: O usuário inativado não é excluído do banco de dados; seu registro é mantido com status inativo para fins de controle.
