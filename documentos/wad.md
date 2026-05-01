@@ -3,9 +3,17 @@
 
 # WAD - Web Application Document - Módulo 2 - Inteli
 
-## Nome do Grupo
+## Grupo 67
 
-#### Nomes dos integrantes do grupo
+#### Integrantes
+
+- Antônio de Souza Dantas Neto
+- Gabriel Gomes Pimentel
+- Haila Thauane Falcão Novaes
+- João Paulo Barreto Ferreira Andrade Rodrigues de Paula
+- Mariana Pires de Carvalho Moussa
+- Tiago Brun de Arruda
+- William Junior dos Santos Maia
 
 
 
