@@ -296,7 +296,7 @@ Personas são representações fictícias dos usuários da aplicação, constru�
 
 <div align="center">
   <sub>Figura 2.2.3 - Persona 3: Marcelo Andrade</sub><br>
-  <img src="/documentos/assets/perosona3marcelo.png" width="100%" alt="Persona Marcelo Andrade"><br>
+  <img src="/documentos/assets/persona3marcelo.png" width="100%" alt="Persona Marcelo Andrade"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
