@@ -272,7 +272,7 @@ F. **Fortalecimento do relacionamento com parceiro**
 
 ## 2.2. Personas (sprint 1)
 
-Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas três personas (apresentadas nas figuras 2.2.1, 2.2.2 e 2.2.3) com base nas informações coletadas durante o workshop com o parceiro (Atvos) e no mapeamento dos perfis envolvidos na problemática.
+Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas duas personas (apresentadas nas figuras 2.2.1 e 2.2.2) com base nas informações coletadas durante o workshop com o parceiro (Atvos) e no mapeamento dos perfis envolvidos na problemática.
 
 <div align="center">
   <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
@@ -286,13 +286,8 @@ Personas são representações fictícias dos usuários da aplicação, constru�
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
 </div><br>
 
-<div align="center">
-  <sub>Figura 2.2.3 - Persona 3: Roberto Carvalho </sub><br>
-  <img src="/documentos/assets/persona3_RobertoCarvalho.png" width="100%" alt="Descrição breve"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
-</div><br>
 
-Ao analisar as diferentes personas do projeto, que representam os três possíveis usuários da aplicação, é notório que suas dores possuem uma mesma origem: a descentralização de dados dos parceiros e fornecedores. Entretanto, por mais que a fonte das problemáticas seja a mesma, ela impacta de forma diferente as áreas de atuação das personas, seus trabalhos, esforços e necessidades, o que exige que o projeto abarque diferentes funcionalidades que ajudem no dia a dia tanto de coordenadores quanto dos gerentes, parceiros e fornecedores.
+Ao analisar as diferentes personas do projeto, que representam os dois possíveis usuários da aplicação, é notório que suas dores possuem uma mesma origem: a descentralização de dados dos parceiros e fornecedores. Entretanto, por mais que a fonte das problemáticas seja a mesma, ela impacta de forma diferente as áreas de atuação das personas, seus trabalhos, esforços e necessidades, o que exige que o projeto abarque diferentes funcionalidades que ajudem no dia a dia tanto de analistas quanto dos coodenadores/administradores.
 
 
 ## 2.3. User Stories (sprints 1 a 5)
