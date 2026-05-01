@@ -536,14 +536,14 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 | RF011 | US09, US10 | RN01, RN02 | `/auth/login` | POST |
 | RF012 | US04, US06, US07, US08 | RN07, RN08 | `/parceiros`, `/terras` | GET |
 | RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | DELETE |
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | PUT (A exclusão é lógica) |
 | RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` e `/terras/:id/parceiros` | GET, POST |
 | RF016 | US06 | RN04, RN08, RN10 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
 | RF017 | US07 | RN04 | `/dashboards/parceiros` e `/dashboards/interacoes` | GET |
 | RF018 | US08 | RN04 | `/parceiros/exportar` | GET |
 | RF019 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
 | RF020 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF021 | US10 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT; DELETE |
+| RF021 | US10 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
 
 ### 3.1.5 Critérios de Aceite Técnicos (Sprint 1)
 
@@ -710,9 +710,21 @@ A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnic
 
 *A RTM consolida a rastreabilidade completa do sistema. Um elo quebrado invalida toda a cadeia — mantenha-a atualizada a cada sprint. A partir da sprint 3 não deve haver lacunas nos fluxos centrais.*
 
-| Persona | RF    | RN   | Endpoint    | Tela     | Teste | Evidência        |
-|---------|-------|------|-------------|----------|-------|------------------|
-| ...     | RF001 | RN01 | `/usuarios` | Cadastro | CT02  | print, log, relatório de cobertura |
+| Persona                            | RF    | RN               | Endpoint                          | Tela                          | Teste | Evidência        |
+|------------------------------------|-------|------------------|-----------------------------------|-------------------------------|-------|------------------|
+| Gerente de coordenadores           | RF001 | RN03             | POST /usuarios                  | Cadastro de Usuário           | ---   | ---  |
+| Gerente de coordenadores           | RF003 | RN03             | PUT /usuarios/:id/perfil        | Cadastro de Usuário           | ---   | ---  |
+| Gerente de coordenadores           | RF011 | RN01, RN02       | POST /auth/login                | Login                         | ---   | ---  |
+| Gerente de coordenadores           | RF021 | RN15             | PUT /usuarios/:id/inativar      | Listagem de Usuários          | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF004 | RN09, RN10       | POST /parceiros                 | Cadastro de Parceiro          | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF010 | RN10             | --- (Transversal)                 | Cadastro / Edição de Parceiro | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF005 | RN10, RN11, RN12 | PUT /parceiros/:id              | Edição de Parceiro            | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF019 | RN11             | --- (Transversal)                 | Edição de Parceiro            | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF020 | RN11             | --- (Transversal)                 | Edição de Parceiro            | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF006 | RN11             | POST /parceiros/:id/interacoes | Perfil do Parceiro            | ---   | ---  |
+| Coordenador de Estratégia de Terras| RF007 | RN04, RN08       | GET /parceiros                  | Listagem de Parceiros         | ---   | ---  |
+| Coordenador de Estratégia de Terras| RF008 | RN04, RN08       | GET /parceiros/:id              | Perfil do Parceiro            | ---   | ---  |
+| Todos                              | RF012 | RN07, RN08       | --- (Transversal)                 | ---                           | ---   | ---  |
 
 # <a name="c4"></a>4. Desenvolvimento da Aplicação Web
 
