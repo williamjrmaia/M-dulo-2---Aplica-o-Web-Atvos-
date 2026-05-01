@@ -116,10 +116,6 @@ O sucesso será avaliado pela entrega do MVP funcional com os três módulos pri
 
 ### 2.1.5. Matriz de Riscos do Projeto (sprint 1)
 
-*Sem limite de palavras – usar template do curso*
-
-*Registre na matriz os riscos identificados no projeto.*
-
 A matriz de riscos é uma ferramenta fundamental de gestão de projetos, utilizada para identificar, classificar e planejar respostas a eventos que possam impactar negativamente (ameaças) ou positivamente (oportunidades) o desenvolvimento da aplicação Web. Ela permite visualizar, de forma estruturada, os principais riscos do projeto, avaliando sua probabilidade de ocorrência e o impacto potencial sobre os resultados. A análise e o acompanhamento contínuo desses riscos são essenciais para garantir a entrega do MVP no prazo, com qualidade e alinhamento aos objetivos do grupo.
 
 #### 2.1.5.1 Classificação de Impacto, Probabilidade e Matriz de Risco
@@ -146,6 +142,7 @@ A matriz de riscos é uma ferramenta fundamental de gestão de projetos, utiliza
 
 A. **Informações não atualizadas**
    Há o risco das informações sobre os clientes e os produtos não serem atualizadas à todo o momento. Caso isso ocorra, o projeto falhara em realizar um de seus principais objetivos.
+
    **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
    **Impacto:** Alto
@@ -155,17 +152,21 @@ A. **Informações não atualizadas**
    **Plano de Resposta ao Risco:** Validar o site com testes durante o desenvolvimento para garantir a constante atualização. 
 
    B. **Atraso na entrega do MVP**
+
    Atrasos nas funcionalidades da aplicação WEB podem comprometer na entrega ao parceiro.  
+
    **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
    **Impacto:** Alto
 
-   **Probabilidade:** Média
+   **Probabilidade:** Baixa
 
    **Plano de Resposta ao Risco:** Priorizar uma divisão equilibrada de tarefas entre todos, com o objetivo de não pesar para ninguém e assim ser possível todos os integrantes do grupo finalizarem suas responsabilidades antes do prazo.
 
    C. **Exposição de dados confidenciais**
+
    As informações dos parceiros e fornecedores da ATVOS não devem ser expostas, visto que é conteúdo estratégico e restrito da empresa. Caso isso ocorra, causaria dano grave ao negócio.
+
    **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
    **Impacto:** Muito Alto
@@ -175,7 +176,9 @@ A. **Informações não atualizadas**
    **Plano de Resposta ao Risco:** Não públicar o sistema em URL pública sem controle de acesso, além de também tratar os arquivos de dados de forma confidencial durante todo o desenvolvimento da aplicação WEB.
 
    D. **Ux inadequada**
+
    Interfaces pouco intuitivas podem inviabilizar o uso pela equipe da ATVOS, que precisa de consulta rápida ao perfil de parceiros.
+
    **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
    **Impacto:** Médio
@@ -187,7 +190,9 @@ A. **Informações não atualizadas**
 #### 2.1.5.3 Lista de Riscos(Oportunidades)
 
 E. **Eliminação de planilhas**
+
    A centralização dos dados de parceiros facilita muito para a ATVOS, diminuindo o tempo de trabalho deles, e eliminando a perda de histórico de informações dos parceiros e produtores.
+
    **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
    **Impacto:** Alto
@@ -197,7 +202,9 @@ E. **Eliminação de planilhas**
    **Plano de Resposta ao Risco:** Demonstrar a qualidade do projeto durante a apresentação do MVP e comparar o tempo economizado entre o uso de planilhas e o uso da aplicação WEB.
 
 F. **Fortalecimento do relacionamento com parceiro**
+
    Com o histórico de interações centralizado e acessível para a ATVOS, ela pode personallizar o relacionamento com fornecedores e pareceiros, fortalecendo a fidelidade a longo prazo
+
    **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
    **Impacto:** Alto
@@ -205,6 +212,10 @@ F. **Fortalecimento do relacionamento com parceiro**
    **Probabilidade:** Alta
 
    **Plano de Resposta ao Risco:** Priorizar a funcionalidade de registro de informações e consulta do histórico de interações com os parceiros e fornecedores no MVP.
+
+   ---
+
+   A matriz de riscos foi utilizada de forma que permite a equipe antecipar ameaças, planejar respostas e aproveitar oportunidades. O acompanhamento dos riscos pode contribuir para a organização do grupo, a entrega do MVP no prazo e a elevação da qualidade do produto. Além disso, a análise dos riscos, aliada à comunicação eficiente e à definição clara de responsabilidades, é fundamental para o sucesso da aplicação web.
 
    
 
