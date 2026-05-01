@@ -170,6 +170,95 @@ A construção do Value Proposition Canvas deixou claro que o problema central d
 
 *Registre na matriz os riscos identificados no projeto.*
 
+A matriz de riscos é uma ferramenta fundamental de gestão de projetos, utilizada para identificar, classificar e planejar respostas a eventos que possam impactar negativamente (ameaças) ou positivamente (oportunidades) o desenvolvimento da aplicação Web. Ela permite visualizar, de forma estruturada, os principais riscos do projeto, avaliando sua probabilidade de ocorrência e o impacto potencial sobre os resultados. A análise e o acompanhamento contínuo desses riscos são essenciais para garantir a entrega do MVP no prazo, com qualidade e alinhamento aos objetivos do grupo.
+
+#### 2.1.5.1 Classificação de Impacto, Probabilidade e Matriz de Risco
+
+<div align="center">
+  <sub>Figura 2.1.5.1 - Classificação de Impacto</sub><br>
+  <img src="/documentos/assets/matriz-de-risco/classificacao.De.Impacto.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 2.1.5.2- Classificação de Probabilidade</sub><br>
+  <img src="/documentos/assets/matriz-de-risco/classificacao.De.Probabilidade.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 2.1.5.3- Matriz de Risco</sub><br>
+  <img src="/documentos/assets/matriz-de-risco/matriz.De.Risco.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+#### 2.1.5.2 Lista de Riscos(Ameaças)
+
+A. **Informações não atualizadas**
+   Há o risco das informações sobre os clientes e os produtos não serem atualizadas à todo o momento. Caso isso ocorra, o projeto falhara em realizar um de seus principais objetivos.
+   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+
+   **Impacto:** Alto
+
+   **Probabilidade:** Média
+
+   **Plano de Resposta ao Risco:** Validar o site com testes durante o desenvolvimento para garantir a constante atualização. 
+
+   B. **Atraso na entrega do MVP**
+   Atrasos nas funcionalidades da aplicação WEB podem comprometer na entrega ao parceiro.  
+   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+
+   **Impacto:** Alto
+
+   **Probabilidade:** Média
+
+   **Plano de Resposta ao Risco:** Priorizar uma divisão equilibrada de tarefas entre todos, com o objetivo de não pesar para ninguém e assim ser possível todos os integrantes do grupo finalizarem suas responsabilidades antes do prazo.
+
+   C. **Exposição de dados confidenciais**
+   As informações dos parceiros e fornecedores da ATVOS não devem ser expostas, visto que é conteúdo estratégico e restrito da empresa. Caso isso ocorra, causaria dano grave ao negócio.
+   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+
+   **Impacto:** Muito Alto
+
+   **Probabilidade:** Baixa
+
+   **Plano de Resposta ao Risco:** Não públicar o sistema em URL pública sem controle de acesso, além de também tratar os arquivos de dados de forma confidencial durante todo o desenvolvimento da aplicação WEB.
+
+   D. **Ux inadequada**
+   Interfaces pouco intuitivas podem inviabilizar o uso pela equipe da ATVOS, que precisa de consulta rápida ao perfil de parceiros.
+   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+
+   **Impacto:** Médio
+
+   **Probabilidade:** Média
+
+   **Plano de Resposta ao Risco:** Realizar casos de testes com pelo menos 5 pessoas e ver se elas conseguem utilizar a aplicação WEB, anotando quaisquer dificuldade que for encontrada. Além disso, será possível conferir o design do site com a professora de UX para receber seus feedbacks. 
+
+#### 2.1.5.3 Lista de Riscos(Oportunidades)
+
+E. **Eliminação de planilhas**
+   A centralização dos dados de parceiros facilita muito para a ATVOS, diminuindo o tempo de trabalho deles, e eliminando a perda de histórico de informações dos parceiros e produtores.
+   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+
+   **Impacto:** Alto
+
+   **Probabilidade:** Muito Alta
+
+   **Plano de Resposta ao Risco:** Demonstrar a qualidade do projeto durante a apresentação do MVP e comparar o tempo economizado entre o uso de planilhas e o uso da aplicação WEB.
+
+F. **Fortalecimento do relacionamento com parceiro**
+   Com o histórico de interações centralizado e acessível para a ATVOS, ela pode personallizar o relacionamento com fornecedores e pareceiros, fortalecendo a fidelidade a longo prazo
+   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+
+   **Impacto:** Alto
+
+   **Probabilidade:** Alta
+
+   **Plano de Resposta ao Risco:** Priorizar a funcionalidade de registro de informações e consulta do histórico de interações com os parceiros e fornecedores no MVP.
+
+   
+
+
 ## 2.2. Personas (sprint 1)
 
 Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas três personas (apresentadas nas figuras 2.2.1, 2.2.2 e 2.2.3) com base nas informações coletadas durante o workshop com o parceiro (Atvos) e no mapeamento dos perfis envolvidos na problemática.
@@ -180,12 +269,20 @@ Personas são representações fictícias dos usuários da aplicação, constru�
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
 </div><br>
 
-
 <div align="center">
-  <sub>Figura 2.2.2 - Persona 2: Beatriz Souza</sub><br>
-  <img src="/documentos/assets/persona2_BeatrizSouza.png" width="100%" alt="Descrição breve"><br>
+  <sub>Figura 2.2.2 - Persona 2: Bianca Souza</sub><br>
+  <img src="/documentos/assets/persona2_BiancaSouza.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
 </div><br>
+
+<div align="center">
+  <sub>Figura 2.2.3 - Persona 3: Roberto Carvalho </sub><br>
+  <img src="/documentos/assets/persona3_RobertoCarvalho.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
+</div><br>
+
+Ao analisar as diferentes personas do projeto, que representam os três possíveis usuários da aplicação, é notório que suas dores possuem uma mesma origem: a descentralização de dados dos parceiros e fornecedores. Entretanto, por mais que a fonte das problemáticas seja a mesma, ela impacta de forma diferente as áreas de atuação das personas, seus trabalhos, esforços e necessidades, o que exige que o projeto abarque diferentes funcionalidades que ajudem no dia a dia tanto de coordenadores quanto dos gerentes, parceiros e fornecedores.
+
 
 ## 2.3. User Stories (sprints 1 a 5)
 ---
@@ -323,8 +420,8 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.1.1. Requisitos Funcionais (sprint 1, refinar até sprint 5)
 
-| ID    | Descrição                                                                                                                 | Prioridade | Status    |
-| ----- | ------------------------------------------------------------------------------------------------------------------------- | ---------- | --------- |
+| ID    | Descrição                                                                                                                     | Prioridade | Status    |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------| ---------- | --------- |
 | RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, editor e observador.                 | Alta       | Planejado |
 | RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                        | Alta       | Planejado |
 | RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                            | Alta       | Planejado |
@@ -393,9 +490,29 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 *Matriz de cobertura mostrando quais RN e endpoints implementam cada RF.*
 
-| RF    | RN associadas | Endpoint    | Método |
-|-------|---------------|-------------|--------|
-| RF001 | RN01, RN02    | `/usuarios` | POST   |
+| RF    | RN associadas       | Endpoint                                           | Método             |
+|-------|---------------------|----------------------------------------------------|--------------------|
+| RF001 | RN01, RN03          | `/usuarios`                                        | POST               |
+| RF002 | RN01, RN06          | `/usuarios/:id`                                    | GET, PUT           |
+| RF003 | RN03                | `/usuarios/:id/perfil`                             | PUT                |
+| RF004 | RN09, RN10          | `/parceiros`                                       | POST               |
+| RF005 | RN10, RN11, RN12    | `/parceiros/:id`                                   | PUT                |
+| RF006 | RN11                | `/parceiros/:id/interacoes`                        | POST               |
+| RF007 | RN04, RN08          | `/parceiros`                                       | GET                |
+| RF008 | RN04, RN08          | `/parceiros/:id`                                   | GET                |
+| RF009 | RN09                | ---                                                | ---                |
+| RF010 | RN10                | ---                                                | ---                |
+| RF011 | RN01, RN02          | `/auth/login`                                      | POST               |
+| RF012 | RN07, RN08          | ---                                                | ---                |
+| RF013 | RN12                | `/parceiros/:id/historico`                         | GET                |
+| RF014 | RN06, RN07          | `/parceiros/:id` e `/terras/:id`                   | DELETE             |
+| RF015 | RN13, RN14          | `/parceiros/:id/terras` e `/terras/:id/parceiros`  | GET, POST          |
+| RF016 | RN04, RN08, RN10    | `/parceiros?filtros=...`                           | GET                |
+| RF017 | RN04                | `/dashboards/parceiros` e `/dashboards/interacoes` | GET                |
+| RF018 | RN04                | `/parceiros/exportar`                              | GET                |
+| RF019 | RN11                | ---                                                | ---                |
+| RF020 | RN11                | ---                                                | ---                |
+| RF021 | RN15                | `/usuarios/:id/inativar` e `/auth/sessoes/:id`     | PUT, DELETE        |
 
 ### 3.1.5 Critérios de Aceite Técnicos (Sprint 1)
 | CT       | Critério Técnico                                                                                             | RF associados              | RN associados    | RNF associados |
@@ -422,46 +539,39 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.2.2. Diagrama de Casos de Uso (sprint 1)
 
+O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da Atvos, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como o Usuário Interno e o Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de alto nível.
 
-```mermaid
-graph LR
+A modelagem funcional reflete os quatro níveis de maturidade definidos pela Atvos no Termo de Aberta de Projeto (TAPI). O diagrama integra o Nível 1 (Fundacional) no cadastro de parceiros, o Nível 2 (Operacional) no histórico de interações e filtros, o Nível 3 (Estratégico) na gestão visual da jornada e personas, e o Nível 4 (Avançado) no monitoramento de KPIs de desempenho. Esta estrutura garante que o sistema evolua de um repositório de dados para uma ferramenta de acompanhamento de indicadores.
 
-%% Definição dos Atores
-UsuarioInterno["👤 Usuário interno"]
-Administrador["👤 Administrador"]
+<div align="center">
+  <sub>Figura 3.2.2. - Diagrama de casos de uso</sub><br>
+  <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no LucidChart)</sup>
+</div><br>
 
-subgraph Sistema["Sistema de Gestão de Parceiros e Fornecedores - ATVOS"]
-    direction TB
-    UC1(["Cadastrar parceiro"])
-    UC2(["Registrar interação"])
-    UC3(["Consultar perfil"])
-    UC4(["Aplicar filtros"])
-    UC5(["Exportar lista de contatos"])
-    UC6(["Visualizar dashboard"])
-    UC7(["Validar dados cadastrais"])
-    UC8(["Gerar relatório"])
-end
+Registrar interações: Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro. Este card atende ao Nível 2 (Histórico de Relacionamento) do projeto Atvos.
 
-%% Conexões do Usuário Interno
-UsuarioInterno --- UC1
-UsuarioInterno --- UC2
-UsuarioInterno --- UC3
-UsuarioInterno --- UC4
-UsuarioInterno --- UC5
-UsuarioInterno --- UC6
+Cadastrar parceiros: Permite a inserção de novos fornecedores no sistema. É o ponto de entrada da governança, onde são registrados dados cadastrais e área produtiva.
 
-%% Conexões do Administrador
-UC4 --- Administrador
-UC5 --- Administrador
-UC6 --- Administrador
-UC7 --- Administrador
+Visualização de dados: (Nível 4) Funcionalidade que permite acompanhar os indicadores de desempenho (KPIs) e as métricas da base de parceiros sem a necessidade de painéis gráficos complexos.
 
-%% Relacionamentos Internos com as setas tracejadas e aspas nos nomes
-UC1 -. "<< include >>" .-> UC7
-UC2 -. "<< include >>" .-> UC3
-UC6 -. "<< extend >>" .-> UC8
+Consultar perfis: Funcionalidade de busca e visualização detalhada de um parceiro específico, garantindo que o histórico de dados não se perca.
 
-```
+Visualizar status Parceiro/Fornecedor: (Nível 3) Apresenta uma gestão visual da jornada do parceiro, mostrando em que estágio da negociação ou contrato ele se encontra.
+
+Aplicar filtros de busca: Ferramenta que permite segmentar a base de dados rapidamente, facilitando a localização de grupos específicos de parceiros.
+
+Gerenciar acessos: Controle de permissões da plataforma. O Administrador define quem pode acessar o sistema e quais funcionalidades estarão disponíveis para cada perfil.
+
+Validar dados cadastrais: (Include de Cadastrar) Processo de verificação obrigatória para garantir que as informações inseridas no cadastro de parceiros estejam corretas e completas.
+
+Gerar relatórios: (Extend de Visualização de Dados) Funcionalidade opcional que permite exportar os indicadores e dados visualizados para documentos externos (PDF/Excel).
+
+Auditar histórico: Permite ao administrador revisar todas as alterações e interações registradas no sistema, garantindo a integridade e a segurança das informações.
+
+Autorizar cadastros de usuários: Processo de aprovação de novas contas de acesso ao sistema, garantindo que apenas pessoas autorizadas utilizem a plataforma.
+
+A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnica da solução ao aplicar corretamente relações de herança e semânticas de inclusão e extensão, permitindo que o sistema diferencie com rigor os níveis de acesso e responsabilidades entre a operação de campo e a gestão estratégica. Conclui-se que a estrutura proposta atende integralmente aos objetivos da Sprint 1, pois não apenas organiza o fluxo de dados mestres e parâmetros globais sob a custódia do Administrador, mas também fornece ao Usuário Interno as ferramentas necessárias para a manutenção da integridade informacional, estabelecendo uma base sólida e auditável que servirá de alicerce para o desenvolvimento das interfaces e do banco de dados nas etapas subsequentes do projeto.
 
 ### 3.2.3. Diagrama de Classes do Domínio (sprint 2)
 
@@ -717,3 +827,7 @@ Grupo 6. (2026). Value Proposition Canvas ATVOS. Canva. https://canva.link/towo8
 # <a name="c9"></a>Anexos
 
 *Inclua aqui quaisquer complementos para seu projeto, como diagramas, imagens, tabelas etc. Organize em sub-tópicos utilizando headings menores (use ## ou ### para isso)*
+
+## Classificação de Impacto, Probabilidade e Matriz de Risco
+
+https://canva.link/1vkfsz6nre0h1iq 
