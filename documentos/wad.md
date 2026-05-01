@@ -3,8 +3,6 @@
 
 # WAD - Web Application Document - Módulo 2 - Inteli
 
-**_Os trechos em itálico servem apenas como guia para o preenchimento da seção. Por esse motivo, não devem fazer parte da documentação final_**
-
 ## Nome do Grupo
 
 #### Nomes dos integrantes do grupo
@@ -79,34 +77,37 @@ FORÇAS                                                                         
 
 | OPORTUNIDADES                                                                                                                                                                                                                 | AMEAÇAS                                                                                                                                                                                                                   |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Descarbonização da aviação com SAF de cana com alta rentabilidade. RenovaBio impulsiona Atvos com metas de CBIOs para distribuidoras de combustíveis.|Mudanças climáticas ameaçam safras de cana com secas e chuvas intensas.  |
+| Descarbonização da aviação com SAF de cana com alta rentabilidade. RenovaBio impulsiona ATVOS com metas de CBIOs para distribuidoras de combustíveis.|Mudanças climáticas ameaçam safras de cana com secas e chuvas intensas.  |
 
-Conclui-se que a Atvos, enfrenta riscos climáticos e operacionais, possuindo oportunidades estratégicas em SAF e CBIOs impulsionando sua rentabilidade. 
+Conclui-se que a ATVOS, enfrenta riscos climáticos e operacionais, possuindo oportunidades estratégicas em SAF e CBIOs impulsionando sua rentabilidade.
 
 
 ---
 
 ### 2.1.3. Solução (sprints 1 a 5)
 
-## Análise do Projeto ATVOS
+#### a) Problema a ser resolvido
 
-2.1.3. Solução (sprints 1 a 5)
-a) Problema a ser resolvido
 Os dados de gestão de parceiros de terras e fornecedores de cana-de-açúcar encontram-se dispersos em planilhas, sem governança adequada. Essa fragmentação compromete a preservação do histórico de relacionamento, dificulta a padronização dos cadastros e prejudica a tomada de decisão ágil e a continuidade das relações de longo prazo.
 
-b) Dados disponíveis
+#### b) Dados disponíveis
+
 Os dados estão disponíveis no SharePoint da área de Estratégia de Terras da ATVOS, de caráter confidencial. Os arquivos incluem bases cadastrais de fornecedores de cana, registros de contatos de parceiros e proprietários de terra, estruturas de cadastro existentes e informações de acesso ao portal de gestão de parceiros.
 
-c) Solução proposta
+#### c) Solução proposta
+
 Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações e disponibilizará dashboards analíticos. O acesso será controlado por três perfis distintos: administrador, editor e observador.
-  
-d) Forma de utilização da solução
+
+#### d) Forma de utilização da solução
+
 A aplicação será utilizada via navegador web pelos times internos da área de Negócios Agrícolas. Cada perfil terá acesso às funcionalidades correspondentes ao seu nível de permissão: cadastro e edição de parceiros, registro de interações, aplicação de filtros por nome, região e tipo de parceiro, visualização de dashboards e exportação de listas.
 
-e) Benefícios esperados
+#### e) Benefícios esperados
+
 Centralização e padronização dos cadastros de parceiros; eliminação de planilhas dispersas e redução de retrabalho operacional; preservação do histórico de relacionamento ao longo das safras independente de mudanças no time; e agilidade na consulta e análise de dados para suporte à tomada de decisão estratégica.
 
-f) Critério de sucesso e como será avaliado
+#### f) Critério de sucesso e como será avaliado
+
 O sucesso será avaliado pela entrega do MVP funcional com os três módulos principais operacionais (cadastro, histórico e controle de acesso), pela validação dos fluxos pelos usuários internos da ATVOS em testes de usabilidade e pela capacidade demonstrada de substituir as planilhas dispersas pela aplicação desenvolvida.
 
 ### 2.1.4. Value Proposition Canvas (sprint 1):
@@ -115,7 +116,7 @@ O Value Proposition Canvas é uma ferramenta de design estratégico que coloca l
 
 <br>
 <div align="center">
-  <sub>Figura Value Proposition Canvas</sub><br>
+  <sub>Figura 2.1.4 - Value Proposition Canvas</sub><br>
   <img src="./assets/proposta-de-valor-atvos.png" width="100%" alt="Value Proposition Canvas"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div><br>
@@ -177,102 +178,101 @@ A matriz de riscos é uma ferramenta fundamental de gestão de projetos, utiliza
 </div>
 
 <div align="center">
-  <sub>Figura 2.1.5.2- Classificação de Probabilidade</sub><br>
+  <sub>Figura 2.1.5.2 - Classificação de Probabilidade</sub><br>
   <img src="/documentos/assets/matriz-de-risco/classificacao.De.Probabilidade.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
-  <sub>Figura 2.1.5.3- Matriz de Risco</sub><br>
+  <sub>Figura 2.1.5.3 - Matriz de Risco</sub><br>
   <img src="/documentos/assets/matriz-de-risco/matriz.De.Risco.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
-#### 2.1.5.2 Lista de Riscos(Ameaças)
+#### 2.1.5.2 Lista de Riscos (Ameaças)
 
-A. **Informações não atualizadas**
-   Há o risco das informações sobre os clientes e os produtos não serem atualizadas à todo o momento. Caso isso ocorra, o projeto falhara em realizar um de seus principais objetivos.
+##### A. Informações não atualizadas
 
-   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+Há o risco das informações sobre os clientes e os produtos não serem atualizadas a todo momento. Caso isso ocorra, o projeto falhará em realizar um de seus principais objetivos.
 
-   **Impacto:** Alto
+**Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
-   **Probabilidade:** Média
+**Impacto:** Alto
 
-   **Plano de Resposta ao Risco:** Validar o site com testes durante o desenvolvimento para garantir a constante atualização. 
+**Probabilidade:** Média
 
-   B. **Atraso na entrega do MVP**
+**Plano de Resposta ao Risco:** Validar o site com testes durante o desenvolvimento para garantir a constante atualização.
 
-   Atrasos nas funcionalidades da aplicação WEB podem comprometer na entrega ao parceiro.  
+##### B. Atraso na entrega do MVP
 
-   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+Atrasos nas funcionalidades da aplicação WEB podem comprometer na entrega ao parceiro.
 
-   **Impacto:** Alto
+**Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
-   **Probabilidade:** Baixa
+**Impacto:** Alto
 
-   **Plano de Resposta ao Risco:** Priorizar uma divisão equilibrada de tarefas entre todos, com o objetivo de não pesar para ninguém e assim ser possível todos os integrantes do grupo finalizarem suas responsabilidades antes do prazo.
+**Probabilidade:** Baixa
 
-   C. **Exposição de dados confidenciais**
+**Plano de Resposta ao Risco:** Priorizar uma divisão equilibrada de tarefas entre todos, com o objetivo de não pesar para ninguém e assim ser possível todos os integrantes do grupo finalizarem suas responsabilidades antes do prazo.
 
-   As informações dos parceiros e fornecedores da ATVOS não devem ser expostas, visto que é conteúdo estratégico e restrito da empresa. Caso isso ocorra, causaria dano grave ao negócio.
+##### C. Exposição de dados confidenciais
 
-   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+As informações dos parceiros e fornecedores da ATVOS não devem ser expostas, visto que é conteúdo estratégico e restrito da empresa. Caso isso ocorra, causaria dano grave ao negócio.
 
-   **Impacto:** Muito Alto
+**Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
-   **Probabilidade:** Baixa
+**Impacto:** Muito Alto
 
-   **Plano de Resposta ao Risco:** Não públicar o sistema em URL pública sem controle de acesso, além de também tratar os arquivos de dados de forma confidencial durante todo o desenvolvimento da aplicação WEB.
+**Probabilidade:** Baixa
 
-   D. **Ux inadequada**
+**Plano de Resposta ao Risco:** Não publicar o sistema em URL pública sem controle de acesso, além de também tratar os arquivos de dados de forma confidencial durante todo o desenvolvimento da aplicação WEB.
 
-   Interfaces pouco intuitivas podem inviabilizar o uso pela equipe da ATVOS, que precisa de consulta rápida ao perfil de parceiros.
+##### D. UX inadequada
 
-   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+Interfaces pouco intuitivas podem inviabilizar o uso pela equipe da ATVOS, que precisa de consulta rápida ao perfil de parceiros.
 
-   **Impacto:** Médio
+**Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
-   **Probabilidade:** Média
+**Impacto:** Médio
 
-   **Plano de Resposta ao Risco:** Realizar casos de testes com pelo menos 5 pessoas e ver se elas conseguem utilizar a aplicação WEB, anotando quaisquer dificuldade que for encontrada. Além disso, será possível conferir o design do site com a professora de UX para receber seus feedbacks. 
+**Probabilidade:** Média
 
-#### 2.1.5.3 Lista de Riscos(Oportunidades)
+**Plano de Resposta ao Risco:** Realizar casos de testes com pelo menos 5 pessoas e ver se elas conseguem utilizar a aplicação WEB, anotando quaisquer dificuldades que forem encontradas. Além disso, será possível conferir o design do site com a professora de UX para receber seus feedbacks.
 
-E. **Eliminação de planilhas**
+#### 2.1.5.3 Lista de Riscos (Oportunidades)
 
-   A centralização dos dados de parceiros facilita muito para a ATVOS, diminuindo o tempo de trabalho deles, e eliminando a perda de histórico de informações dos parceiros e produtores.
+##### E. Eliminação de planilhas
 
-   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+A centralização dos dados de parceiros facilita muito para a ATVOS, diminuindo o tempo de trabalho deles, e eliminando a perda de histórico de informações dos parceiros e produtores.
 
-   **Impacto:** Alto
+**Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
-   **Probabilidade:** Muito Alta
+**Impacto:** Alto
 
-   **Plano de Resposta ao Risco:** Demonstrar a qualidade do projeto durante a apresentação do MVP e comparar o tempo economizado entre o uso de planilhas e o uso da aplicação WEB.
+**Probabilidade:** Muito Alta
 
-F. **Fortalecimento do relacionamento com parceiro**
+**Plano de Resposta ao Risco:** Demonstrar a qualidade do projeto durante a apresentação do MVP e comparar o tempo economizado entre o uso de planilhas e o uso da aplicação WEB.
 
-   Com o histórico de interações centralizado e acessível para a ATVOS, ela pode personallizar o relacionamento com fornecedores e pareceiros, fortalecendo a fidelidade a longo prazo
+##### F. Fortalecimento do relacionamento com parceiro
 
-   **Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
+Com o histórico de interações centralizado e acessível para a ATVOS, ela pode personalizar o relacionamento com fornecedores e parceiros, fortalecendo a fidelidade a longo prazo
 
-   **Impacto:** Alto
+**Responsáveis:** Antônio, Gabriel, Haila, João, Mariana, Tiago, William
 
-   **Probabilidade:** Alta
+**Impacto:** Alto
 
-   **Plano de Resposta ao Risco:** Priorizar a funcionalidade de registro de informações e consulta do histórico de interações com os parceiros e fornecedores no MVP.
+**Probabilidade:** Alta
 
-   ---
+**Plano de Resposta ao Risco:** Priorizar a funcionalidade de registro de informações e consulta do histórico de interações com os parceiros e fornecedores no MVP.
 
-   A matriz de riscos foi utilizada de forma que permite a equipe antecipar ameaças, planejar respostas e aproveitar oportunidades. O acompanhamento dos riscos pode contribuir para a organização do grupo, a entrega do MVP no prazo e a elevação da qualidade do produto. Além disso, a análise dos riscos, aliada à comunicação eficiente e à definição clara de responsabilidades, é fundamental para o sucesso da aplicação web.
+---
 
-   
+A matriz de riscos foi utilizada de forma que permite a equipe antecipar ameaças, planejar respostas e aproveitar oportunidades. O acompanhamento dos riscos pode contribuir para a organização do grupo, a entrega do MVP no prazo e a elevação da qualidade do produto. Além disso, a análise dos riscos, aliada à comunicação eficiente e à definição clara de responsabilidades, é fundamental para o sucesso da aplicação web.
 
 
 ## 2.2. Personas (sprint 1)
 
-Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas duas personas (apresentadas nas figuras 2.2.1 e 2.2.2) com base nas informações coletadas durante o workshop com o parceiro (Atvos) e no mapeamento dos perfis envolvidos na problemática.
+Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas duas personas (apresentadas nas figuras 2.2.1 e 2.2.2) com base nas informações coletadas durante o workshop com o parceiro (ATVOS) e no mapeamento dos perfis envolvidos na problemática.
 
 <div align="center">
   <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
@@ -291,7 +291,9 @@ Ao analisar as diferentes personas do projeto, que representam os dois possívei
 
 
 ## 2.3. User Stories (sprints 1 a 5)
+
 ---
+
 User Stories são descrições simples de funcionalidades escritas do ponto de vista do usuário, no formato "como [perfil], posso [ação], para [benefício]". Para garantir a qualidade de cada história, foi aplicado o método INVEST, que avalia se a história é Independente, Negociável, Valiosa, Estimável, Pequena e Testável. As User Stories a seguir estão ordenadas por prioridade de desenvolvimento.
 
 ---
@@ -398,13 +400,13 @@ Critérios INVEST | Independente: pode ser desenvolvida logo após o cadastro de
 ---
 
 As User Stories levantadas cobrem os fluxos essenciais para resolver a principal dor identificada pela ATVOS: a dispersão dos dados de fornecedores de cana e proprietários de terra em planilhas desconectadas. A priorização reflete esse objetivo, garantindo que o sistema entregue valor desde as primeiras sprints. As funcionalidades de suporte, como filtros, dashboards e exportação, serão implementadas conforme o avanço do projeto.
+
 # <a name="c3"></a>3. Projeto da Aplicação Web (sprints 1 a 5)
 
 ## 3.1. Requisitos do Sistema (sprints 1 a 5)
 
-*Esta seção formaliza o que o sistema deve fazer, sob quais regras e com quais qualidades. Atualize a cada sprint conforme os requisitos evoluem.*
+### 3.1.0.1 Minimundo do sistema (sprints 1 a 5)
 
-## 3.1.0.1 Minimundo do sistema (sprints 1 a 5)
 O sistema proposto é uma aplicação web interna para apoio à gestão de parceiros agrícolas da ATVOS, com foco em fornecedores de cana-de-açúcar e proprietários de terra. Atualmente, essas informações estão dispersas em planilhas, o que dificulta a padronização dos cadastros, a preservação do histórico de relacionamento e a consulta rápida de dados relevantes para a tomada de decisão.
 
 A aplicação centraliza os cadastros de parceiros agrícolas, permite o registro de interações, disponibiliza consultas filtradas e oferece visualizações gerenciais por meio de dashboards. O sistema será utilizado por equipes internas ligadas à gestão agrícola, estratégia de terras e administração da base de usuários.
@@ -453,8 +455,6 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.1.2. Regras de Negócio (sprint 1, refinar até sprint 5)
 
-*Numere e redija as RN de forma implementável e testável. Toda RN deve ter pelo menos um teste automatizado associado a partir da sprint 3.*
-
 | ID   | Descrição | RF associado |
 |------|-----------|--------------|
 | RN01 | Um usuário deve possuir um único e-mail associado (unicidade garantida no sistema). | RF001, RF002, RF009 |
@@ -475,8 +475,6 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
-*Preencha os 8 eixos. Cada eixo deve ter ao menos um RNF verificável (com métrica, limite ou critério concreto) ou justificativa explícita de ausência. Evolua do conceitual (sprint 1) ao técnico mensurável (sprint 5).*
-
 #### Justificativa, derivação e mensuração dos RNFs
 
 Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funcionais foram definidos como metas verificáveis para orientar as próximas etapas de projeto, implementação e testes. Cada RNF foi derivado do minimundo do sistema, das necessidades identificadas no contexto da ATVOS e dos fluxos prioritários definidos nos Requisitos Funcionais e nas Regras de Negócio.
@@ -493,8 +491,6 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 | **ORG — Organizacionais** | O escopo do MVP deve respeitar as restrições definidas no TAP, no workshop do parceiro e no recorte da Sprint 1. Como a solução não deve substituir sistemas corporativos da ATVOS nem integrar automaticamente fontes externas neste momento, o requisito organizacional evita expansão indevida de escopo. | A mensuração será feita pela verificação de que o MVP possui 0 integrações externas com ERP, SharePoint ou APIs corporativas e permanece restrito aos módulos planejados. | Relaciona-se aos RF001 a RF021 como restrição transversal de escopo, especialmente aos módulos de usuários, parceiros, histórico, filtros, dashboards e exportação. | O RNF será aceito se o MVP permanecer dentro do escopo definido, sem implementar integrações externas não previstas para a Sprint 1. |
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
-
-*Matriz de cobertura mostrando quais RN e endpoints implementam cada RF.*
 
 | RF    | RN associadas       | Endpoint                                           | Método             |
 |-------|---------------------|----------------------------------------------------|--------------------|
@@ -521,6 +517,7 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 | RF021 | RN15                | `/usuarios/:id/inativar` e `/auth/sessoes/:id`     | PUT, DELETE        |
 
 ### 3.1.5 Critérios de Aceite Técnicos (Sprint 1)
+
 | CT       | Critério Técnico                                                                                             | RF associados              | RN associados    | RNF associados |
 | -------- | ------------------------------------------------------------------------------------------------------------ | -------------------------- | ---------------- | -------------- |
 | **CT01** | O sistema deve impedir o cadastro de usuários com e-mail já existente, retornando erro de duplicidade.       | RF001, RF002               | RN01, RN09       | CONF, SEG      |
@@ -543,17 +540,15 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 *Posicione aqui o diagrama de arquitetura da solução, indicando as camadas principais (Controller, Service, Repository, Model) e suas responsabilidades. Atualize sempre que necessário.*
 
-### 3.2.2. Diagrama de Casos de Uso (sprint 1)
-
 ### 3.2.2. Diagrama de Casos de Uso (Sprint 1)
 
-O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da Atvos, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como o Usuário Interno e o Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de alto nível.
+O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da ATVOS, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como o Usuário Interno e o Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de alto nível.
 
-A modelagem funcional reflete os quatro níveis de maturidade definidos pela Atvos no Termo de Aberta de Projeto (TAPI). O diagrama integra o Nível 1 (Fundacional) no cadastro de parceiros, o Nível 2 (Operacional) no histórico de interações e filtros, o Nível 3 (Estratégico) na gestão visual da jornada e personas, e o Nível 4 (Avançado) no monitoramento de KPIs de desempenho. Esta estrutura garante que o sistema evolua de um repositório de dados para uma ferramenta de acompanhamento de indicadores.
+A modelagem funcional reflete os quatro níveis de maturidade definidos pela ATVOS no Termo de Abertura de Projeto (TAPI). O diagrama integra o Nível 1 (Fundacional) no cadastro de parceiros, o Nível 2 (Operacional) no histórico de interações e filtros, o Nível 3 (Estratégico) na gestão visual da jornada e personas, e o Nível 4 (Avançado) no monitoramento de KPIs de desempenho. Esta estrutura garante que o sistema evolua de um repositório de dados para uma ferramenta de acompanhamento de indicadores.
 
 <div align="center">
-  <sub>Figura 3.2.2. - Diagrama de casos de uso</sub><br>
-  <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso Atvos"><br>
+  <sub>Figura 3.2.2 - Diagrama de casos de uso</sub><br>
+  <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso ATVOS"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no LucidChart)</sup>
 </div>
 
@@ -791,8 +786,6 @@ Descreva os principais segmentos de mercado a serem atendidos pela aplicação. 
 
 # <a name="c8"></a>8. Referências (sprints 1 a 5)
 
-_Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
-
 Agência Brasil. (2022, janeiro 4). Sancionada lei que autoriza postos a comprarem etanol de produtores. https://agenciabrasil.ebc.com.br/politica/noticia/2022-01/sancionada-lei-que-autoriza-postos-comprarem-etanol-de-produtores
 
 Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2024, fevereiro 1). Vendas de gasolina, diesel e etanol cresceram em 2023. https://www.poder360.com.br/energia/vendas-de-gasolina-diesel-e-etanol-cresceram-em-2023-diz-anp/
@@ -801,9 +794,9 @@ Agroadvance. (2025). Preço do ATR no CONSECANA-SP. https://agroadvance.com.br/b
 
 Agroadvance. (2025). 15 maiores grupos do setor sucroalcooleiro no Brasil em 2024/25. https://agroadvance.com.br/blog-maiores-grupos-do-setor-sucroalcooleiro/
 
-AgFeed. (2023). Fora da RJ, Atvos refaz planos e mira biometano, etanol de milho e de aviação. https://agfeed.com.br/negocios/fora-da-rj-atvos-refaz-planos-e-mira-biometano-etanol-de-milho-e-de-aviacao/
+AgFeed. (2023). Fora da RJ, ATVOS refaz planos e mira biometano, etanol de milho e de aviação. https://agfeed.com.br/negocios/fora-da-rj-atvos-refaz-planos-e-mira-biometano-etanol-de-milho-e-de-aviacao/
 
-ATVOS. (2023). Reuters: Atvos aposta em etanol, não em açúcar, em novo investimento em cana no Brasil. https://atvos.com/reuters-atvos-aposta-em-etanol-nao-em-acucar-em-novo-investimento-em-cana-no-brasil/
+ATVOS. (2023). Reuters: ATVOS aposta em etanol, não em açúcar, em novo investimento em cana no Brasil. https://atvos.com/reuters-atvos-aposta-em-etanol-nao-em-acucar-em-novo-investimento-em-cana-no-brasil/
 
 ATVOS. (2025, janeiro). Relatório anual da safra 2023/2024. https://www.udop.com.br/noticia/2025/01/14/atvos-divulga-relatorio-anual-da-safra-2023-2024.html
 
@@ -825,7 +818,7 @@ Porter, M. E. (1979). How competitive forces shape strategy. Harvard Business Re
 
 Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review, 86(1), 78–93.
 
-UDOP. (2025, 26 de março). Atvos obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. União Nacional da Bioenergia. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
+UDOP. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. União Nacional da Bioenergia. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
 
 INTELI — INSTITUTO DE TECNOLOGIA E LIDERANÇA. Projeto Parceiro ATVOS: 1AMD2 — Aplicação Web. São Paulo, 2026.
 
@@ -834,8 +827,6 @@ Grupo 6. (2026). Value Proposition Canvas ATVOS. Canva. https://canva.link/towo8
 
 # <a name="c9"></a>Anexos
 
-*Inclua aqui quaisquer complementos para seu projeto, como diagramas, imagens, tabelas etc. Organize em sub-tópicos utilizando headings menores (use ## ou ### para isso)*
-
 ## Classificação de Impacto, Probabilidade e Matriz de Risco
 
-https://canva.link/1vkfsz6nre0h1iq 
+https://canva.link/1vkfsz6nre0h1iq
