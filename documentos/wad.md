@@ -74,7 +74,7 @@ Em resumo, a ATVOS opera em um ambiente de pressões competitivas estruturais re
 
 A análise SWOT é uma ferramenta que avalia as forças, fraquezas, oportunidades e ameaças.
 
-FORÇAS                                                                                                          | FRAQUEZAS                                                                                                          |
+| FORÇAS | FRAQUEZAS |
 | :------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
 | É a segunda maior empresa de etanol do Brasil, possuindo também uma linha de produtos diversificada.           | Gestão de clientes e parceiros ainda manual, assim não atingindo o resultado que poderiam alcançar. |
 
@@ -87,7 +87,7 @@ FORÇAS                                                                         
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Descarbonização da aviação com SAF de cana com alta rentabilidade. RenovaBio impulsiona ATVOS com metas de CBIOs para distribuidoras de combustíveis.|Mudanças climáticas ameaçam safras de cana com secas e chuvas intensas.  |
 
-Conclui-se que a ATVOS, enfrenta riscos climáticos e operacionais, possuindo oportunidades estratégicas em SAF e CBIOs impulsionando sua rentabilidade.
+Conclui-se que a Atvos enfrenta riscos climáticos e operacionais, possuindo oportunidades estratégicas em SAF e CBIOs impulsionando sua rentabilidade.
 
 
 ---
