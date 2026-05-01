@@ -362,8 +362,8 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.1.1. Requisitos Funcionais (sprint 1, refinar até sprint 5)
 
-| ID    | Descrição                                                                                                                 | Prioridade | Status    |
-| ----- | ------------------------------------------------------------------------------------------------------------------------- | ---------- | --------- |
+| ID    | Descrição                                                                                                                     | Prioridade | Status    |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------| ---------- | --------- |
 | RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, editor e observador.                 | Alta       | Planejado |
 | RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                        | Alta       | Planejado |
 | RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                            | Alta       | Planejado |
@@ -432,9 +432,29 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 *Matriz de cobertura mostrando quais RN e endpoints implementam cada RF.*
 
-| RF    | RN associadas | Endpoint    | Método |
-|-------|---------------|-------------|--------|
-| RF001 | RN01, RN02    | `/usuarios` | POST   |
+| RF    | RN associadas       | Endpoint                                           | Método             |
+|-------|---------------------|----------------------------------------------------|--------------------|
+| RF001 | RN01, RN03          | `/usuarios`                                        | POST               |
+| RF002 | RN01, RN06          | `/usuarios/:id`                                    | GET, PUT           |
+| RF003 | RN03                | `/usuarios/:id/perfil`                             | PUT                |
+| RF004 | RN09, RN10          | `/parceiros`                                       | POST               |
+| RF005 | RN10, RN11, RN12    | `/parceiros/:id`                                   | PUT                |
+| RF006 | RN11                | `/parceiros/:id/interacoes`                        | POST               |
+| RF007 | RN04, RN08          | `/parceiros`                                       | GET                |
+| RF008 | RN04, RN08          | `/parceiros/:id`                                   | GET                |
+| RF009 | RN09                | ---                                                | ---                |
+| RF010 | RN10                | ---                                                | ---                |
+| RF011 | RN01, RN02          | `/auth/login`                                      | POST               |
+| RF012 | RN07, RN08          | ---                                                | ---                |
+| RF013 | RN12                | `/parceiros/:id/historico`                         | GET                |
+| RF014 | RN06, RN07          | `/parceiros/:id` e `/terras/:id`                   | DELETE             |
+| RF015 | RN13, RN14          | `/parceiros/:id/terras` e `/terras/:id/parceiros`  | GET, POST          |
+| RF016 | RN04, RN08, RN10    | `/parceiros?filtros=...`                           | GET                |
+| RF017 | RN04                | `/dashboards/parceiros` e `/dashboards/interacoes` | GET                |
+| RF018 | RN04                | `/parceiros/exportar`                              | GET                |
+| RF019 | RN11                | ---                                                | ---                |
+| RF020 | RN11                | ---                                                | ---                |
+| RF021 | RN15                | `/usuarios/:id/inativar` e `/auth/sessoes/:id`     | PUT, DELETE        |
 
 ### 3.1.5 Critérios de Aceite Técnicos (Sprint 1)
 | CT       | Critério Técnico                                                                                             | RF associados              | RN associados    | RNF associados |
