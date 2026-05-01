@@ -521,29 +521,29 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
-| RF    | RN associadas       | Endpoint                                           | Método             |
-|-------|---------------------|----------------------------------------------------|--------------------|
-| RF001 | RN01, RN03          | `/usuarios`                                        | POST               |
-| RF002 | RN01, RN06          | `/usuarios/:id`                                    | GET, PUT           |
-| RF003 | RN03                | `/usuarios/:id/perfil`                             | PUT                |
-| RF004 | RN09, RN10          | `/parceiros`                                       | POST               |
-| RF005 | RN10, RN11, RN12    | `/parceiros/:id`                                   | PUT                |
-| RF006 | RN11                | `/parceiros/:id/interacoes`                        | POST               |
-| RF007 | RN04, RN08          | `/parceiros`                                       | GET                |
-| RF008 | RN04, RN08          | `/parceiros/:id`                                   | GET                |
-| RF009 | RN09                | ---                                                | ---                |
-| RF010 | RN10                | ---                                                | ---                |
-| RF011 | RN01, RN02          | `/auth/login`                                      | POST               |
-| RF012 | RN07, RN08          | ---                                                | ---                |
-| RF013 | RN12                | `/parceiros/:id/historico`                         | GET                |
-| RF014 | RN06, RN07          | `/parceiros/:id` e `/terras/:id`                   | DELETE             |
-| RF015 | RN13, RN14          | `/parceiros/:id/terras` e `/terras/:id/parceiros`  | GET, POST          |
-| RF016 | RN04, RN08, RN10    | `/parceiros?filtros=...`                           | GET                |
-| RF017 | RN04                | `/dashboards/parceiros` e `/dashboards/interacoes` | GET                |
-| RF018 | RN04                | `/parceiros/exportar`                              | GET                |
-| RF019 | RN11                | ---                                                | ---                |
-| RF020 | RN11                | ---                                                | ---                |
-| RF021 | RN15                | `/usuarios/:id/inativar` e `/auth/sessoes/:id`     | PUT, DELETE        |
+| RF    | US relacionada | RN associadas    | Endpoint                                             | Método      |
+|-------|----------------|------------------|------------------------------------------------------|-------------|
+| RF001 | US09 | RN01, RN03 | `/usuarios` | POST |
+| RF002 | US09, US10 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
+| RF003 | US09 | RN03 | `/usuarios/:id/perfil` | PUT |
+| RF004 | US01, US02 | RN09, RN10 | `/parceiros` | POST |
+| RF005 | US05 | RN10, RN11, RN12 | `/parceiros/:id` | PUT |
+| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET |
+| RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
+| RF009 | US01, US02, US09 | RN09 | `/usuarios`, `/parceiros` | POST, PUT |
+| RF010 | US01, US02, US09 | RN10 | `/usuarios`, `/parceiros`, `/terras` | POST, PUT |
+| RF011 | US09, US10 | RN01, RN02 | `/auth/login` | POST |
+| RF012 | US04, US06, US07, US08 | RN07, RN08 | `/parceiros`, `/terras` | GET |
+| RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET |
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | DELETE |
+| RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` e `/terras/:id/parceiros` | GET, POST |
+| RF016 | US06 | RN04, RN08, RN10 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
+| RF017 | US07 | RN04 | `/dashboards/parceiros` e `/dashboards/interacoes` | GET |
+| RF018 | US08 | RN04 | `/parceiros/exportar` | GET |
+| RF019 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
+| RF020 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
+| RF021 | US10 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT; DELETE |
 
 ### 3.1.5 Critérios de Aceite Técnicos (Sprint 1)
 
@@ -571,7 +571,7 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.2.2. Diagrama de Casos de Uso (Sprint 1)
 
-O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da ATVOS, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como o Usuário Interno e o Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de alto nível.
+O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da ATVOS, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como Editor, Observador e Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de consulta, gestão e controle de acessos.
 
 A modelagem funcional reflete os quatro níveis de maturidade definidos pela ATVOS no Termo de Abertura de Projeto (TAPI). O diagrama integra o Nível 1 (Fundacional) no cadastro de parceiros, o Nível 2 (Operacional) no histórico de interações e filtros, o Nível 3 (Estratégico) na gestão visual da jornada e personas, e o Nível 4 (Avançado) no monitoramento de KPIs de desempenho. Esta estrutura garante que o sistema evolua de um repositório de dados para uma ferramenta de acompanhamento de indicadores.
 
@@ -581,29 +581,32 @@ A modelagem funcional reflete os quatro níveis de maturidade definidos pela ATV
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no LucidChart)</sup>
 </div>
 
+> Observação: O diagrama apresenta uma visão inicial dos casos de uso e será refinado nas próximas sprints. A especificação textual a seguir detalha os atores, relações de include/extend, RFs e User Stories associadas de forma mais precisa.
+
 ---
 
 #### Especificação dos Casos de Uso
 
 Abaixo, detalham-se os casos de uso mapeados, descrevendo as responsabilidades de cada funcionalidade e seus respectivos fluxos de controle.
 
-| Caso de Uso | Descrição | Atores | Pré-requisitos | Pós-requisitos |
-| :--- | :--- | :--- | :--- | :--- |
-| **Registrar interações** | Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro (Nível 2). | Usuário Interno, Administrador | Parceiro cadastrado no sistema. | Histórico de relacionamento atualizado. |
-| **Cadastrar parceiros** | Inserção de novos fornecedores, dados cadastrais e área produtiva (Nível 1). | Usuário Interno, Administrador | Usuário autenticado. | Novo registro criado com `<<include>>` de validação. |
-| **Visualização de dados** | Consulta de indicadores (KPIs) e métricas da base de parceiros (Nível 4). | Usuário Interno, Administrador | Existência de dados no banco. | Exibição de métricas com `<<extend>>` para relatórios. |
-| **Consultar perfis** | Busca e visualização detalhada de um parceiro específico e seu histórico. | Usuário Interno, Administrador | Registro existente no sistema. | Visualização dos dados do parceiro. |
-| **Visualizar status Parceiro/Fornecedor** | Gestão visual da jornada do parceiro e estágio atual da negociação (Nível 3). | Usuário Interno, Administrador | Registro de parceiro ativo. | Exibição do pipeline de status. |
-| **Aplicar filtros de busca** | Segmentação da base de dados por região, persona ou status. | Usuário Interno, Administrador | Acesso à lista de parceiros. | Lista de registros filtrada na tela. |
-| **Gerenciar acessos** | Definição de permissões e níveis de acesso (Admin vs User). | Administrador | Privilégios de Administrador. | Permissões de usuários atualizadas. |
-| **Validar dados cadastrais** | (`<<include>>`) Verificação obrigatória de consistência dos dados inseridos. | Administrador, Sistema | Acionamento do cadastro. | Dados validados ou erro retornado. |
-| **Gerar relatórios** | (`<<extend>>`) Exportação dos indicadores para documentos externos (PDF/Excel). | Usuário Interno, Administrador | Visualização de dados ativa. | Arquivo gerado para download. |
-| **Auditar histórico** | Revisão de alterações e logs de sistema para segurança da informação. | Administrador | Privilégios de Administrador. | Relatório de auditoria gerado. |
-| **Autorizar cadastros de usuários** | Aprovação de novas contas que solicitam acesso ao sistema. | Administrador | Solicitação de cadastro pendente. | Usuário habilitado para login. |
+| Caso de Uso | Descrição | Ator principal | Atores secundários | Pré-requisitos | Pós-requisitos | Include | Extend | RF relacionados | US relacionadas |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Registrar interações** | Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro (Nível 2). | Editor | Sistema Web; Banco de Dados | Parceiro cadastrado no sistema. | Histórico de relacionamento atualizado. | Não se aplica | Não se aplica | RF006, RF019, RF020 | US03 |
+| **Cadastrar parceiros** | Inserção de novos fornecedores, proprietários de terra, dados cadastrais e área produtiva (Nível 1). | Editor | Sistema Web; Banco de Dados | Usuário autenticado com perfil de editor. | Novo registro de parceiro criado. | Validar dados cadastrais | Não se aplica | RF004, RF009, RF010, RF019, RF020 | US01, US02 |
+| **Editar parceiro** | Atualização de dados cadastrais de parceiros agrícolas existentes, mantendo rastreabilidade das alterações. | Editor | Sistema Web; Banco de Dados | Parceiro cadastrado no sistema e usuário autenticado com perfil de editor. | Dados atualizados e histórico de alteração preservado. | Validar dados cadastrais; Registrar atualização | Não se aplica | RF005, RF010, RF013, RF019, RF020 | US05 |
+| **Consultar perfis** | Busca e visualização detalhada de um parceiro específico e seu histórico. | Observador | Sistema Web; Banco de Dados | Registro existente e ativo no sistema. | Visualização dos dados do parceiro. | Não se aplica | Não se aplica | RF008, RF012 | US04 |
+| **Aplicar filtros de busca** | Segmentação da base de dados por nome, região, área ou tipo de parceiro. | Observador | Sistema Web; Banco de Dados | Acesso à lista de parceiros. | Lista de registros filtrada na tela. | Não se aplica | Não se aplica | RF007, RF016 | US06 |
+| **Visualizar dashboard** | Consulta de indicadores, estatísticas e métricas da base de parceiros (Nível 4). | Observador | Sistema Web; Banco de Dados | Existência de dados ativos no banco. | Exibição de métricas atualizadas. | Não se aplica | Não se aplica | RF017 | US07 |
+| **Exportar lista de contatos** | Exportação da lista de contatos e parceiros para compartilhamento controlado fora do sistema. | Observador | Sistema Web; Banco de Dados | Lista de parceiros disponível para consulta. | Arquivo gerado para download com base na lista atual, filtrada ou completa. | Não se aplica | Aplicar filtros de busca | RF018 | US08 |
+| **Gerenciar acessos** | Definição, consulta e manutenção de permissões e níveis de acesso. | Administrador | Sistema Web; Banco de Dados | Privilégios de Administrador. | Permissões de usuários atualizadas. | Cadastrar usuário; Inativar usuário | Não se aplica | RF001, RF002, RF003, RF021 | US09, US10 |
+| **Cadastrar usuário** | Cadastro de usuários internos com perfil de acesso definido. | Administrador | Sistema Web; Banco de Dados | Privilégios de Administrador. | Usuário habilitado para login conforme perfil atribuído. | Validar dados cadastrais | Não se aplica | RF001, RF002, RF003, RF009, RF010, RF019, RF020 | US09 |
+| **Inativar usuário** | Revogação de acesso de usuários inativos, com encerramento de sessão e preservação de histórico. | Administrador | Sistema Web; Banco de Dados | Usuário existente e privilégios de Administrador. | Usuário inativado e impedido de acessar o sistema. | Não se aplica | Não se aplica | RF002, RF021 | US10 |
+| **Validar dados cadastrais** | Verificação obrigatória de consistência, unicidade e preenchimento dos dados inseridos. | Sistema | Banco de Dados | Acionamento de cadastro ou edição. | Dados validados ou erro retornado. | Não se aplica | Não se aplica | RF009, RF010 | US01, US02, US09 |
+| **Auditar histórico** | Funcionalidade administrativa derivada dos requisitos de rastreabilidade e auditoria, permitindo revisar alterações, datas, responsáveis e logs do sistema. | Administrador | Sistema Web; Banco de Dados | Privilégios de Administrador. | Histórico de auditoria consultado. | Não se aplica | Não se aplica | RF013, RF019, RF020 | US05, US10 |
 
 ---
 
-A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnica da solução ao aplicar corretamente relações de herança e semânticas de inclusão e extensão, permitindo que o sistema diferencie com rigor os níveis de acesso e responsabilidades entre a operação de campo e a gestão estratégica. Conclui-se que a estrutura proposta atende integralmente aos objetivos da Sprint 1, pois não apenas organiza o fluxo de dados mestres e parâmetros globais sob a custódia do Administrador, mas também fornece ao Usuário Interno as ferramentas necessárias para a manutenção da integridade informacional, estabelecendo uma base sólida e auditável que servirá de alicerce para o desenvolvimento das interfaces e do banco de dados nas etapas subsequentes do projeto.
+A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnica da solução ao aplicar corretamente relações entre atores, casos de uso e semânticas de inclusão e extensão, permitindo que o sistema diferencie com rigor os níveis de acesso e responsabilidades entre a operação de campo, a consulta gerencial e a administração da plataforma. Conclui-se que a estrutura proposta atende aos objetivos iniciais da Sprint 1 e deverá ser refinada nas próximas sprints conforme a evolução dos requisitos, endpoints e testes, pois organiza o fluxo de dados mestres e parâmetros globais sob a custódia do Administrador e fornece ao Editor e ao Observador as ferramentas necessárias para a manutenção da integridade informacional, estabelecendo uma base sólida e auditável que servirá de alicerce para o desenvolvimento das interfaces e do banco de dados nas etapas subsequentes do projeto.
 
 ### 3.2.3. Diagrama de Classes do Domínio (sprint 2)
 
