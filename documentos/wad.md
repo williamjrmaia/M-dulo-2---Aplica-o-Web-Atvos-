@@ -550,37 +550,39 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.2.2. Diagrama de Casos de Uso (sprint 1)
 
+### 3.2.2. Diagrama de Casos de Uso (Sprint 1)
+
 O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da Atvos, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como o Usuário Interno e o Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de alto nível.
 
 A modelagem funcional reflete os quatro níveis de maturidade definidos pela Atvos no Termo de Aberta de Projeto (TAPI). O diagrama integra o Nível 1 (Fundacional) no cadastro de parceiros, o Nível 2 (Operacional) no histórico de interações e filtros, o Nível 3 (Estratégico) na gestão visual da jornada e personas, e o Nível 4 (Avançado) no monitoramento de KPIs de desempenho. Esta estrutura garante que o sistema evolua de um repositório de dados para uma ferramenta de acompanhamento de indicadores.
 
 <div align="center">
   <sub>Figura 3.2.2. - Diagrama de casos de uso</sub><br>
-  <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Descrição breve"><br>
+  <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso Atvos"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no LucidChart)</sup>
-</div><br>
+</div>
 
-Registrar interações: Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro. Este card atende ao Nível 2 (Histórico de Relacionamento) do projeto Atvos.
+---
 
-Cadastrar parceiros: Permite a inserção de novos fornecedores no sistema. É o ponto de entrada da governança, onde são registrados dados cadastrais e área produtiva.
+#### Especificação dos Casos de Uso
 
-Visualização de dados: (Nível 4) Funcionalidade que permite acompanhar os indicadores de desempenho (KPIs) e as métricas da base de parceiros sem a necessidade de painéis gráficos complexos.
+Abaixo, detalham-se os casos de uso mapeados, descrevendo as responsabilidades de cada funcionalidade e seus respectivos fluxos de controle.
 
-Consultar perfis: Funcionalidade de busca e visualização detalhada de um parceiro específico, garantindo que o histórico de dados não se perca.
+| Caso de Uso | Descrição | Atores | Pré-requisitos | Pós-requisitos |
+| :--- | :--- | :--- | :--- | :--- |
+| **Registrar interações** | Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro (Nível 2). | Usuário Interno, Administrador | Parceiro cadastrado no sistema. | Histórico de relacionamento atualizado. |
+| **Cadastrar parceiros** | Inserção de novos fornecedores, dados cadastrais e área produtiva (Nível 1). | Usuário Interno, Administrador | Usuário autenticado. | Novo registro criado com `<<include>>` de validação. |
+| **Visualização de dados** | Consulta de indicadores (KPIs) e métricas da base de parceiros (Nível 4). | Usuário Interno, Administrador | Existência de dados no banco. | Exibição de métricas com `<<extend>>` para relatórios. |
+| **Consultar perfis** | Busca e visualização detalhada de um parceiro específico e seu histórico. | Usuário Interno, Administrador | Registro existente no sistema. | Visualização dos dados do parceiro. |
+| **Visualizar status Parceiro/Fornecedor** | Gestão visual da jornada do parceiro e estágio atual da negociação (Nível 3). | Usuário Interno, Administrador | Registro de parceiro ativo. | Exibição do pipeline de status. |
+| **Aplicar filtros de busca** | Segmentação da base de dados por região, persona ou status. | Usuário Interno, Administrador | Acesso à lista de parceiros. | Lista de registros filtrada na tela. |
+| **Gerenciar acessos** | Definição de permissões e níveis de acesso (Admin vs User). | Administrador | Privilégios de Administrador. | Permissões de usuários atualizadas. |
+| **Validar dados cadastrais** | (`<<include>>`) Verificação obrigatória de consistência dos dados inseridos. | Administrador, Sistema | Acionamento do cadastro. | Dados validados ou erro retornado. |
+| **Gerar relatórios** | (`<<extend>>`) Exportação dos indicadores para documentos externos (PDF/Excel). | Usuário Interno, Administrador | Visualização de dados ativa. | Arquivo gerado para download. |
+| **Auditar histórico** | Revisão de alterações e logs de sistema para segurança da informação. | Administrador | Privilégios de Administrador. | Relatório de auditoria gerado. |
+| **Autorizar cadastros de usuários** | Aprovação de novas contas que solicitam acesso ao sistema. | Administrador | Solicitação de cadastro pendente. | Usuário habilitado para login. |
 
-Visualizar status Parceiro/Fornecedor: (Nível 3) Apresenta uma gestão visual da jornada do parceiro, mostrando em que estágio da negociação ou contrato ele se encontra.
-
-Aplicar filtros de busca: Ferramenta que permite segmentar a base de dados rapidamente, facilitando a localização de grupos específicos de parceiros.
-
-Gerenciar acessos: Controle de permissões da plataforma. O Administrador define quem pode acessar o sistema e quais funcionalidades estarão disponíveis para cada perfil.
-
-Validar dados cadastrais: (Include de Cadastrar) Processo de verificação obrigatória para garantir que as informações inseridas no cadastro de parceiros estejam corretas e completas.
-
-Gerar relatórios: (Extend de Visualização de Dados) Funcionalidade opcional que permite exportar os indicadores e dados visualizados para documentos externos (PDF/Excel).
-
-Auditar histórico: Permite ao administrador revisar todas as alterações e interações registradas no sistema, garantindo a integridade e a segurança das informações.
-
-Autorizar cadastros de usuários: Processo de aprovação de novas contas de acesso ao sistema, garantindo que apenas pessoas autorizadas utilizem a plataforma.
+---
 
 A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnica da solução ao aplicar corretamente relações de herança e semânticas de inclusão e extensão, permitindo que o sistema diferencie com rigor os níveis de acesso e responsabilidades entre a operação de campo e a gestão estratégica. Conclui-se que a estrutura proposta atende integralmente aos objetivos da Sprint 1, pois não apenas organiza o fluxo de dados mestres e parâmetros globais sob a custódia do Administrador, mas também fornece ao Usuário Interno as ferramentas necessárias para a manutenção da integridade informacional, estabelecendo uma base sólida e auditável que servirá de alicerce para o desenvolvimento das interfaces e do banco de dados nas etapas subsequentes do projeto.
 
