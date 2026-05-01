@@ -272,7 +272,7 @@ A matriz de riscos foi utilizada de forma que permite a equipe antecipar ameaça
 
 ## 2.2. Personas (sprint 1)
 
-Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas duas personas (apresentadas nas figuras 2.2.1 e 2.2.2) com base nas informações coletadas durante o workshop com o parceiro (ATVOS) e no mapeamento dos perfis envolvidos na problemática.
+Personas são representações fictícias dos usuários da aplicação, construídas com base nas informações coletadas durante entrevistas e workshops com os clientes. Elas são um recurso fundamental para que as equipes de desenvolvimento, design e marketing se sensibilizem com o usuário, entendam suas dores e expectativas e moldem uma solução voltada para quem realmente vai usá-la. No presente projeto, foram construídas três personas (apresentadas nas figuras 2.2.1, 2.2.2 e 2.2.3) com base nas informações coletadas durante o workshop com o parceiro (ATVOS) e no mapeamento dos perfis envolvidos na problemática: o analista responsável pelo cadastro e atualização de dados; a coordenadora/observadora responsável por consulta e análise gerencial; e o gerente/administrador responsável pela governança de acessos e supervisão da base.
 
 <div align="center">
   <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
@@ -286,8 +286,13 @@ Personas são representações fictícias dos usuários da aplicação, constru�
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida pelo Gemini)</sup>
 </div><br>
 
+<div align="center">
+  <sub>Figura 2.2.3 - Persona 3: Marcelo Andrade</sub><br>
+  <img src="/documentos/assets/perosona3marcelo.png" width="100%" alt="Persona Marcelo Andrade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
+</div><br>
 
-Ao analisar as diferentes personas do projeto, que representam os dois possíveis usuários da aplicação, é notório que suas dores possuem uma mesma origem: a descentralização de dados dos parceiros e fornecedores. Entretanto, por mais que a fonte das problemáticas seja a mesma, ela impacta de forma diferente as áreas de atuação das personas, seus trabalhos, esforços e necessidades, o que exige que o projeto abarque diferentes funcionalidades que ajudem no dia a dia tanto de analistas quanto dos coodenadores/administradores.
+Ao analisar as três personas do projeto, é notório que suas dores possuem uma mesma origem: a descentralização de dados dos parceiros e fornecedores. Entretanto, por mais que a fonte das problemáticas seja a mesma, ela impacta de forma diferente as áreas de atuação das personas, seus trabalhos, esforços e necessidades. O analista/editor sofre com o retrabalho e a atualização manual dos dados; a coordenadora/observadora enfrenta dificuldades de consulta, análise e acompanhamento de parceiros; e o administrador/gerente sofre com a falta de controle de acessos, auditoria e governança das informações, o que exige que o projeto abarque diferentes funcionalidades para apoiar esses perfis no uso da aplicação.
 
 
 ## 2.3. User Stories (sprints 1 a 5)
@@ -381,7 +386,7 @@ Critérios INVEST | Independente: pode ser desenvolvida separadamente das funcio
 
 Identificação | US09
 --- | ---
-Persona | Administrador do Sistema (Gerente de coordenadores, de parceiros e fornecedores)
+Persona | Marcelo Andrade — Administrador do Sistema / Gerente de Negócios Agrícolas
 User Story | "Como administrador, posso cadastrar usuários com perfis de acesso definidos, para que o sistema seja utilizado de forma segura e com acessos controlados."
 Critério de aceite 1 | CR1: Ao preencher nome, e-mail e perfil (administrador, editor ou observador) e confirmar, o usuário é salvo e exibido na listagem.
 Critério de aceite 2 | CR2: Ao tentar cadastrar um usuário com e-mail já existente, uma mensagem de erro é exibida e o cadastro não é concluído.
@@ -391,7 +396,7 @@ Critérios INVEST | Independente: pode ser desenvolvida antes de qualquer funcio
 
 Identificação | US10
 --- | ---
-Persona | Administrador do Sistema (Gerente de coordenadores, de parceiros e fornecedores)
+Persona | Marcelo Andrade — Administrador do Sistema / Gerente de Negócios Agrícolas
 User Story | "Como administrador, posso inativar usuários do sistema, para que colaboradores que saíram da equipe não tenham mais acesso às informações da ATVOS."
 Critério de aceite 1 | CR1: Ao inativar um usuário, ele perde o acesso imediatamente e não consegue realizar login.
 Critério de aceite 2 | CR2: O usuário inativado não é excluído do banco de dados; seu registro é mantido com status inativo para fins de controle.
