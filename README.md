@@ -29,7 +29,8 @@
 
 ## 📝 Descrição
 
-O projeto visa centralizar a gestão de relacionamento com fornecedores de cana e parceiros que arrendam suas terras para a ATVOS, impactados pela ausência de governança de dados que faz com que o histórico de cada parceiro dependa exclusivamente da memória dos coordenadores responsáveis. Com informações dispersas em planilhas, e-mails e anotações individuais, cada mudança de time representa perda total de contexto sobre relações construídas ao longo de safras.
+O projeto é a solução web CRM desenvolvida para a ATVOS, empresa do setor sucroenergético, com o objetivo de centralizar e estruturar a gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. As informações antes dispersas em planilhas, e-mails e anotações individuais passam a ser gerenciadas em um único ambiente digital, garantindo rastreabilidade, padronização dos cadastros e preservação do histórico de interações ao longo das safras independente de mudanças no time. A aplicação conta com três níveis de acesso (administrador, editor e observador), registro de histórico de alterações, filtros por nome, região e tipo de parceiro e indicadores chaves de desempenho, substituindo o modelo fragmentado por um fluxo estruturado de informações que apoia a tomada de decisão estratégica da área de Negócios Agrícolas.
+
 ## 📝 Link de demonstração
 
 _Coloque aqui o link para o vídeo de demonstração do projeto_
