@@ -29,8 +29,7 @@
 
 ## 📝 Descrição
 
-_Descreva seu projeto (até 600 palavras)_
-
+O projeto visa centralizar a gestão de relacionamento com fornecedores de cana e parceiros que arrendam suas terras para a ATVOS, impactados pela ausência de governança de dados que faz com que o histórico de cada parceiro dependa exclusivamente da memória dos coordenadores responsáveis. Com informações dispersas em planilhas, e-mails e anotações individuais, cada mudança de time representa perda total de contexto sobre relações construídas ao longo de safras.
 ## 📝 Link de demonstração
 
 _Coloque aqui o link para o vídeo de demonstração do projeto_
