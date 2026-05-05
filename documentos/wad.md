@@ -493,19 +493,22 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 |------|-----------|--------------|
 | RN01 | Um usuário deve possuir um único e-mail associado (unicidade garantida no sistema). | RF001, RF002 |
 | RN02 | Somente usuários cadastrados internamente podem acessar o sistema. | RF011 |
-| RN03 | Existem três níveis de acesso: Observador, Editor e Administrador. | RF001 |
-| RN04 | Observadores podem apenas visualizar dados de parceiros, terras e histórico de interações e não possuem acesso à gestão de usuários. | RF007, RF008 |
-| RN05 | Editores podem inserir, atualizar e visualizar dados, mas não podem excluir registros nem acessar a gestão de usuários. | RF004, RF005, RF006 |
-| RN06 | Administradores podem inserir, atualizar, excluir logicamente e visualizar tanto dados quanto cadastros. | RF002, RF003, RF014 |
+| RN03 | Existem três níveis de acesso: Analistas, Coordenadores e Gerentes. | RF001 |
+| RN04 | Analistas podem visualizar registros com status ativo, podem criar e alterar registros com status rascunho e podem enviar esses registros com status rascunho para uma validação. | RF007, RF008 |
+| RN05 | Coordenadores podem visualizar registros com status ativo e status pendente(registros enviados por analistas), podem alterar os registros com status pendente e transformar seus status em ativo. | RF004, RF005, RF006 |
+| RN06 | Gerentes podem inserir, atualizar, excluir logicamente e visualizar registros em qualquer status, e também são responsáveis pelos cadastros de usuários. | RF002, RF003, RF014 |
 | RN07 | A exclusão de dados é lógica: o registro não é apagado, apenas marcado como excluído. | RF012, RF014 |
 | RN08 | Registros excluídos logicamente não devem aparecer em consultas padrão do sistema. | RF012 |
 | RN09 | O sistema deve rejeitar registros duplicados com base nos identificadores únicos: CPF, CNPJ e e-mail. | RF009 |
-| RN10 | Campos obrigatórios para parceiros e terras (nome, CPF/CNPJ, e-mail, tipo de parceiro, área em hectares, município e estado) não podem ser nulos. | RF010 |
+| RN10 | Campos obrigatórios para parceiros e terras (nome, CPF/CNPJ, e-mail, tipo de parceiro, área em hectares, município e estado) não podem ser nulos em registros com status ativo (Registros com status rascunho podem ser salvos com campos incompletos). | RF010 |
 | RN11 | Toda criação ou alteração de registro deve armazenar data, hora e o identificador do usuário responsável. | RF019, RF020 |
 | RN12 | Alterações de dados devem manter versões anteriores disponíveis para consulta. | RF013 |
 | RN13 | Um parceiro pode possuir múltiplas terras associadas. | RF015 |
 | RN14 | Uma terra pode possuir múltiplos parceiros associados. | RF015 |
 | RN15 | Ao inativar um usuário, o sistema deve revogar seu acesso imediatamente, encerrar sessões ativas e preservar o histórico de ações realizadas. | RF021 |
+| RN16 | Um registro do tipo rascunho/devolvido só transita para status pendente após ser concluído por um analista. | RF022 |
+| RN17 | Um registro do tipo pendente só transita para status ativo/devolvido após ser revisado por um coordenador. | RF023, RF024 |
+| RN18 | Registros com status ativo que não sofreram alterações por um período configurado geram notificações para os usuários do sistema (analistas, coordenadores e gerentes). | RF026 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
