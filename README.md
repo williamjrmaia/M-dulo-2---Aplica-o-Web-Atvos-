@@ -29,7 +29,7 @@
 
 ## 📝 Descrição
 
-_Descreva seu projeto (até 600 palavras)_
+O projeto é a solução web CRM desenvolvida para a ATVOS, empresa do setor sucroenergético, com o objetivo de centralizar e estruturar a gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. As informações antes dispersas em planilhas, e-mails e anotações individuais passam a ser gerenciadas em um único ambiente digital, garantindo rastreabilidade, padronização dos cadastros e preservação do histórico de interações ao longo das safras independente de mudanças no time. A aplicação conta com três níveis de acesso (administrador, editor e observador), registro de histórico de alterações, filtros por nome, região e tipo de parceiro e indicadores chaves de desempenho, substituindo o modelo fragmentado por um fluxo estruturado de informações que apoia a tomada de decisão estratégica da área de Negócios Agrícolas.
 
 ## 📝 Link de demonstração
 
