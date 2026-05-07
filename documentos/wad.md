@@ -640,6 +640,27 @@ A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnic
 
 *Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização)*
 
+Wireframe é uma representação visual simplificada da interface de uma aplicação web, utilizada para planejar a navegação, a disposição dos elementos e a experiência do usuário antes do desenvolvimento. Nesta seção, são apresentadas as telas planejadas para a aplicação CRM da ATVOS, com a descrição das principais funcionalidades disponíveis para cada perfil de acesso: administrador, coordenador e analista. Também é abordado o fluxo de navegação entre as telas e de que forma o design contribui para tornar o uso da plataforma mais claro, eficiente e alinhado às necessidades dos times internos de Negócios Agrícolas.
+
+(imagens)
+(link de acesso)
+
+No contexto deste sistema, a interface foi concebida para atender a três perfis de usuário com necessidades e permissões distintas, garantindo que cada colaborador interaja apenas com as funcionalidades correspondentes ao seu nível de acesso.
+
+O fluxo se inicia com a tela de autenticação, onde o usuário realiza login com id e senha cadastrados pelo administrador. Não há autocadastro: o acesso à plataforma é concedido exclusivamente por um administrador, o que garante o controle de quem pode operar o sistema desde o primeiro acesso.
+
+No contexto deste sistema, a interface foi concebida para atender a três perfis de usuário com necessidades e permissões distintas, garantindo que cada colaborador interaja apenas com as funcionalidades correspondentes ao seu nível de acesso.
+
+O fluxo se inicia com a tela de autenticação, onde o usuário realiza login com e-mail e senha cadastrados pelo administrador. Não há autocadastro: o acesso à plataforma é concedido exclusivamente por um administrador, o que garante o controle de quem pode operar o sistema desde o primeiro acesso.
+
+A interface do perfil Administrador é direta e funcional, voltada à governança da plataforma. A tela principal concentra o gerenciamento de usuários internos, onde é possível cadastrar novos colaboradores, atribuir perfis de acesso (administrador, coordenador e analista) e inativar contas quando necessário. O histórico de ações dos usuários é preservado mesmo após a inativação, garantindo rastreabilidade e atendendo às regras de negócio definidas no projeto. Há também acesso ao histórico de auditoria do sistema, onde é possível consultar alterações realizadas por data, usuário responsável e registro modificado.
+
+A interface do perfil Coordenador, utilizada pelos analistas de Negócios Agrícolas, é estruturada em torno do cadastro e da atualização de parceiros. O fluxo de cadastro contempla dois tipos de parceiro: fornecedores de cana-de-açúcar e proprietários de terra, cada um com campos específicos validados pelo sistema. A partir da listagem de parceiros cadastrados, o editor pode acessar o perfil de cada um, editar suas informações e registrar novas interações com data, tipo e descrição, construindo progressivamente o histórico de relacionamento que hoje se perde nas planilhas e anotações individuais. Cada alteração realizada é registrada automaticamente com data, hora e identificação do usuário responsável, garantindo a rastreabilidade definida nos requisitos do sistema.
+
+A interface do perfil Analista, utilizada pelos analistas de campo que interagem diretamente com parceiros e fornecedores, combina capacidade de submissão de novos cadastros com acesso de visualização à base consolidada. O analista pode iniciar o cadastro de novos parceiros agrícolas, sejam fornecedores de cana-de-açúcar ou proprietários de terra, preenchendo o formulário com as informações disponíveis e submetendo o registro para análise; esse cadastro, no entanto, não é efetivado automaticamente na base, entrando em estado pendente de aprovação pelo coordenador responsável. Para consulta, a tela de listagem de parceiros já aprovados permite aplicar filtros combinados por nome, região, tipo de parceiro e área, reduzindo o tempo de busca sem necessidade de recarregar a página. Ao clicar em um parceiro, o analista acessa seu perfil detalhado com todas as informações cadastrais e o histórico de interações registradas. A tela de dashboard apresenta indicadores gerenciais sobre a base de parceiros, com distribuição por tipo e por região, fornecendo uma visão consolidada do portfólio agrícola sem necessidade de exportações manuais. Por fim, a funcionalidade de exportação permite gerar um arquivo com a lista de contatos dos parceiros para compartilhamento externo ao sistema.
+
+Para garantir coerência visual e alinhamento entre todas as telas, foram utilizadas grids no Figma durante a construção dos wireframes, assegurando consistência no espaçamento, na hierarquia dos elementos e na organização do layout em todas as interfaces projetadas.
+
 ## 3.4. Guia de estilos (sprint 3)
 
 *Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução*
