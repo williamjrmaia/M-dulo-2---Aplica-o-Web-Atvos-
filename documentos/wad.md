@@ -586,7 +586,7 @@ A modelagem funcional reflete os quatro níveis de maturidade definidos pela ATV
 <div align="center">
   <sub>Figura 3.2.2 - Diagrama de casos de uso</sub><br>
   <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso ATVOS"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no LucidChart)</sup>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no https://plantuml.com/)</sup>
 </div>
 
 > Observação: O diagrama apresenta uma visão inicial dos casos de uso e será refinado nas próximas sprints. A especificação textual a seguir detalha os atores, relações de include/extend, RFs e User Stories associadas de forma mais precisa.
@@ -652,9 +652,106 @@ Identificação | UC03 - Consultar Registros Ativos do Parceiro
 
 A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnica da solução ao aplicar corretamente relações entre atores, casos de uso e semânticas de inclusão e extensão, permitindo que o sistema diferencie com rigor os níveis de acesso e responsabilidades entre a operação de campo, a consulta gerencial e a administração da plataforma. Conclui-se que a estrutura proposta atende aos objetivos iniciais da Sprint 1 e deverá ser refinada nas próximas sprints conforme a evolução dos requisitos, endpoints e testes, pois organiza o fluxo de dados mestres e parâmetros globais sob a custódia do Administrador e fornece ao Editor e ao Observador as ferramentas necessárias para a manutenção da integridade informacional, estabelecendo uma base sólida e auditável que servirá de alicerce para o desenvolvimento das interfaces e do banco de dados nas etapas subsequentes do projeto.
 
-### 3.2.3. Diagrama de Classes do Domínio (sprint 2)
+### 3.2.3. Diagrama de Classes do Domínio 
 
-*Diagrama UML de classes com entidades, atributos, relacionamentos e responsabilidades. Diferencie **associação**, **agregação** (losango vazio), **composição** (losango cheio) e **herança** (triângulo vazio). Multiplicidade explícita em toda associação.*
+### Imagem do diagrama
+
+![Diagrama de Classes do Domínio](assets/diagramadeclassesdodominio.png)
+
+### Explicação textual detalhada do diagrama
+
+O diagrama de classes do domínio representa a estrutura conceitual das principais entidades envolvidas na aplicação. Ele descreve quais informações são armazenadas, como essas informações se relacionam e quais responsabilidades cada classe possui dentro do sistema. A modelagem foi construída com foco no domínio da gestão de parceiros externos, vínculos comerciais, terras, usuários internos, unidades operacionais e auditoria de alterações.
+
+A classe central do modelo é `Parceiro`. Ela representa uma identidade externa, que pode ser pessoa física ou pessoa jurídica, com a qual a ATVOS mantém relacionamento comercial. Por isso, essa classe concentra dados gerais como nome, tipo de pessoa, CPF ou CNPJ, e-mail, telefone, data de nascimento e nome do acompanhante. O atributo `historicoInteracoes` foi mantido como texto porque aparece como informação diretamente associada ao cadastro do parceiro nas referências do domínio. Assim, ele representa um histórico resumido ou observações de interações vinculadas ao parceiro.
+
+A classe `Parceiro` não foi especializada diretamente em fornecedor de cana ou arrendador de terra. Em vez disso, foi criada a classe `VinculoComercial`, que representa o papel comercial exercido por um parceiro. Essa decisão é importante porque um mesmo parceiro pode exercer mais de um papel simultaneamente. Por exemplo, uma mesma pessoa ou empresa pode atuar como fornecedora de cana e também como arrendadora de terra. Dessa forma, o parceiro permanece como identidade única, enquanto seus papéis comerciais são representados por vínculos.
+
+A classe `VinculoComercial` armazena informações sobre o tipo de vínculo, status, data de início, data de fim e observações. O atributo `tipoVinculo` indica se o vínculo é de fornecedor de cana ou de arrendador de terra. O atributo `status` indica a situação do vínculo, como ativo, inativo ou encerrado. Essa classe foi relacionada a `Parceiro` por composição, pois um vínculo comercial só faz sentido quando está associado a um parceiro existente.
+
+Os dados específicos de cada tipo de vínculo foram separados em classes próprias. A classe `DadosFornecedor` representa informações adicionais quando o vínculo comercial é do tipo fornecedor de cana, como embaixador, guardião e modalidade de contrato. Já a classe `DadosArrendador` representa informações específicas do vínculo de arrendamento, como observações próprias desse tipo de relação. Essas duas classes foram ligadas a `VinculoComercial` por composição, pois seus dados dependem diretamente da existência do vínculo comercial correspondente.
+
+A classe `Terra` representa uma propriedade ou área rural relacionada ao contexto de arrendamento. Ela possui atributos como nome, área contratada, oportunidade em hectares, área potencial e cenário atual. No modelo, `Terra` foi vinculada a `VinculoComercial`, e não diretamente a `Parceiro`, porque sua existência no sistema está relacionada ao vínculo comercial de arrendamento. Além disso, `Terra` também se relaciona com `Unidade`, pois cada terra está associada a uma unidade operacional da ATVOS.
+
+A classe `Unidade` representa uma unidade industrial ou operacional da ATVOS. Ela possui atributos como código, nome e status de atividade. Essa classe é usada para indicar onde a operação acontece, em quais unidades um parceiro atua e em quais unidades um usuário interno trabalha. Por isso, ela aparece relacionada a `Terra`, `ParceiroUnidade` e `UsuarioUnidade`.
+
+A classe `Usuario` representa o colaborador interno da ATVOS que acessa e opera o sistema. Ela possui dados como nome, e-mail, senha criptografada, status ativo e referência ao perfil de acesso. O usuário é responsável por executar ações no sistema, como consultar registros, atualizar dados e gerar registros de alteração. No modelo, ele se relaciona com `PerfilAcesso`, `RegistroAlteracao`, `ParceiroCoordenador` e `UsuarioUnidade`.
+
+A classe `PerfilAcesso` representa o conjunto de permissões atribuído a um usuário. Ela não representa necessariamente um cargo formal da empresa, mas sim o papel de acesso dentro da aplicação. Por isso, perfis como administrador, analista e coordenador devem ser entendidos como níveis de permissão no sistema. O atributo `requerAprovacao` indica se ações realizadas por usuários desse perfil exigem algum tipo de validação ou aprovação, conforme a regra definida para a operação.
+
+A classe `RegistroAlteracao` representa a trilha de auditoria do sistema. Ela registra qual usuário realizou determinada alteração, qual entidade foi afetada, qual registro foi modificado, qual tipo de operação ocorreu, quais eram os dados anteriores, quais são os novos dados e quando a alteração aconteceu. Essa classe é importante para rastreabilidade, pois permite acompanhar modificações feitas nos cadastros e identificar responsáveis pelas mudanças.
+
+Também foram criadas classes associativas para representar relações muitos-para-muitos com atributos próprios. A classe `ParceiroCoordenador` registra o histórico de coordenação entre parceiros e usuários internos. Ela possui datas de início e fim, além de observações, permitindo acompanhar mudanças de coordenação ao longo do tempo. A classe `ParceiroUnidade` representa a associação entre parceiros e unidades, indicando em quais unidades um parceiro opera. A classe `UsuarioUnidade` representa a associação entre usuários e unidades, indicando em quais unidades cada colaborador atua.
+
+Por fim, o diagrama usa enumerações para representar campos com valores limitados e pré-definidos. A enumeração `TipoPessoa` define se o parceiro é pessoa física ou jurídica. A enumeração `TipoVinculo` define os tipos possíveis de vínculo comercial. A enumeração `StatusVinculo` define os estados possíveis de um vínculo. A enumeração `TipoOperacao` define quais tipos de alteração podem ser registrados na auditoria.
+
+### Tabela de classes do domínio
+
+| Classe | Tipo | Papel no domínio |
+|---|---|---|
+| `Parceiro` | Classe principal | Representa a identidade externa, pessoa física ou jurídica, com a qual a ATVOS mantém relacionamento comercial. |
+| `VinculoComercial` | Classe principal | Representa o papel comercial exercido por um parceiro, como fornecedor de cana ou arrendador de terra. |
+| `DadosFornecedor` | Classe de detalhamento | Armazena informações específicas quando o vínculo comercial é do tipo fornecedor de cana. |
+| `DadosArrendador` | Classe de detalhamento | Armazena informações específicas quando o vínculo comercial é do tipo arrendador de terra. |
+| `Terra` | Classe principal | Representa propriedades ou áreas rurais associadas ao vínculo comercial de arrendamento e à unidade operacional. |
+| `Usuario` | Classe principal | Representa o colaborador interno que acessa e utiliza o sistema. |
+| `PerfilAcesso` | Classe de apoio | Define o nível de permissão do usuário dentro da aplicação. |
+| `Unidade` | Classe principal | Representa uma unidade operacional ou industrial da ATVOS. |
+| `RegistroAlteracao` | Classe de auditoria | Registra alterações feitas no sistema para garantir rastreabilidade. |
+| `ParceiroCoordenador` | Classe associativa | Representa o histórico de coordenação entre parceiro e usuário. |
+| `ParceiroUnidade` | Classe associativa | Representa a associação entre parceiro e unidade operacional. |
+| `UsuarioUnidade` | Classe associativa | Representa a associação entre usuário interno e unidade operacional. |
+| `TipoPessoa` | Enumeração | Define se o parceiro é pessoa física ou pessoa jurídica. |
+| `TipoVinculo` | Enumeração | Define os tipos possíveis de vínculo comercial. |
+| `StatusVinculo` | Enumeração | Define os estados possíveis de um vínculo comercial. |
+| `TipoOperacao` | Enumeração | Define os tipos de operação registrados na auditoria. |
+
+### Tabela de relacionamentos principais
+
+| Relacionamento | Tipo UML | Multiplicidade | Interpretação |
+|---|---|---|---|
+| `Parceiro` — `VinculoComercial` | Composição | `1` para `0..*` | Um parceiro pode possuir nenhum, um ou vários vínculos comerciais. Cada vínculo comercial pertence a exatamente um parceiro. |
+| `VinculoComercial` — `DadosFornecedor` | Composição | `1` para `0..1` | Um vínculo comercial pode ter dados de fornecedor quando seu tipo for fornecedor de cana. Cada conjunto de dados de fornecedor pertence a um único vínculo. |
+| `VinculoComercial` — `DadosArrendador` | Composição | `1` para `0..1` | Um vínculo comercial pode ter dados de arrendador quando seu tipo for arrendador de terra. Cada conjunto de dados de arrendador pertence a um único vínculo. |
+| `VinculoComercial` — `Terra` | Agregação | `1` para `0..*` | Um vínculo comercial de arrendamento pode agregar várias terras. A terra possui identidade própria, mas está vinculada ao contexto comercial do arrendamento. |
+| `Unidade` — `Terra` | Associação | `1` para `0..*` | Uma unidade pode possuir várias terras associadas. Cada terra está associada a uma unidade operacional. |
+| `PerfilAcesso` — `Usuario` | Associação | `1` para `0..*` | Um perfil de acesso pode estar associado a vários usuários. Cada usuário possui exatamente um perfil de acesso. |
+| `Usuario` — `RegistroAlteracao` | Associação | `1` para `0..*` | Um usuário pode realizar vários registros de alteração. Cada registro de alteração é realizado por um único usuário. |
+| `Parceiro` — `ParceiroCoordenador` | Associação | `1` para `0..*` | Um parceiro pode ter vários registros históricos de coordenação. Cada registro de coordenação está associado a um parceiro. |
+| `Usuario` — `ParceiroCoordenador` | Associação | `1` para `0..*` | Um usuário pode coordenar vários parceiros ao longo do tempo. Cada registro de coordenação está associado a um usuário. |
+| `Parceiro` — `ParceiroUnidade` | Associação | `1` para `0..*` | Um parceiro pode estar associado a várias unidades. Cada associação pertence a um parceiro. |
+| `Unidade` — `ParceiroUnidade` | Associação | `1` para `0..*` | Uma unidade pode receber vários parceiros. Cada associação pertence a uma unidade. |
+| `Usuario` — `UsuarioUnidade` | Associação | `1` para `0..*` | Um usuário pode atuar em várias unidades. Cada associação pertence a um usuário. |
+| `Unidade` — `UsuarioUnidade` | Associação | `1` para `0..*` | Uma unidade pode possuir vários usuários atuantes. Cada associação pertence a uma unidade. |
+| `Parceiro` — `TipoPessoa` | Dependência | — | A classe `Parceiro` usa a enumeração `TipoPessoa` para indicar se a identidade externa é pessoa física ou jurídica. |
+| `VinculoComercial` — `TipoVinculo` | Dependência | — | A classe `VinculoComercial` usa `TipoVinculo` para indicar o papel comercial exercido. |
+| `VinculoComercial` — `StatusVinculo` | Dependência | — | A classe `VinculoComercial` usa `StatusVinculo` para indicar a situação atual do vínculo. |
+| `RegistroAlteracao` — `TipoOperacao` | Dependência | — | A classe `RegistroAlteracao` usa `TipoOperacao` para indicar se a alteração foi criação, atualização ou exclusão. |
+
+### Explicação dos tipos de relacionamento UML utilizados
+
+No diagrama, foram utilizados diferentes tipos de relacionamento UML para representar corretamente as dependências entre as classes: associação simples, agregação, composição, dependência e classes associativas.
+
+A associação simples foi usada quando duas classes se relacionam, mas uma não depende da outra para existir. Um exemplo é a relação entre `PerfilAcesso` e `Usuario`. Um usuário possui um perfil de acesso, mas o perfil não depende da existência de um usuário específico. O mesmo ocorre entre `Usuario` e `RegistroAlteracao`: o usuário realiza registros de alteração, mas a classe `Usuario` continua existindo independentemente de um registro específico.
+
+A composição, representada pelo losango cheio, foi usada quando uma classe depende fortemente da outra para existir no contexto do sistema. A relação entre `Parceiro` e `VinculoComercial` foi modelada como composição, pois um vínculo comercial só faz sentido se estiver associado a um parceiro. A mesma lógica foi aplicada entre `VinculoComercial` e as classes `DadosFornecedor` e `DadosArrendador`, pois esses dados específicos só existem como detalhamento de um vínculo comercial.
+
+A agregação, representada pelo losango vazio, foi usada entre `VinculoComercial` e `Terra`. Essa relação indica que o vínculo comercial de arrendamento agrega terras, mas a terra possui identidade própria, atributos próprios e também se relaciona com outra classe, como `Unidade`. Por isso, `Terra` não foi tratada como parte totalmente dependente de `VinculoComercial`, mas como uma entidade agregada ao contexto do vínculo.
+
+As classes associativas foram utilizadas para representar relações muitos-para-muitos que possuem atributos próprios. Por exemplo, um parceiro pode estar associado a vários usuários coordenadores ao longo do tempo, e um usuário pode coordenar vários parceiros. Como essa relação possui informações como data de início, data de fim e observações, ela foi representada pela classe `ParceiroCoordenador`. O mesmo raciocínio foi aplicado às classes `ParceiroUnidade` e `UsuarioUnidade`, que armazenam a data da associação entre as entidades relacionadas.
+
+As dependências com enumerações foram usadas para indicar que algumas classes possuem atributos com valores pré-definidos. A classe `Parceiro` depende de `TipoPessoa`, a classe `VinculoComercial` depende de `TipoVinculo` e `StatusVinculo`, e a classe `RegistroAlteracao` depende de `TipoOperacao`. Essas enumerações evitam valores livres inconsistentes e tornam as regras do domínio mais controladas.
+
+As multiplicidades indicam quantas instâncias de uma classe podem se relacionar com instâncias de outra. Por exemplo, a relação `Parceiro 1` para `VinculoComercial 0..*` indica que um parceiro pode ter nenhum, um ou vários vínculos comerciais, enquanto cada vínculo pertence a exatamente um parceiro. Já a relação `VinculoComercial 1` para `DadosFornecedor 0..1` indica que um vínculo pode ter, no máximo, um conjunto de dados de fornecedor, porque esse detalhamento só se aplica quando o vínculo é do tipo fornecedor de cana.
+
+### Decisão sobre herança
+
+A herança foi analisada durante a construção do modelo, especialmente para representar os papéis de fornecedor de cana e arrendador de terra. Uma possibilidade seria criar classes como `FornecedorCana` e `ArrendadorTerra` como subclasses de `Parceiro`. No entanto, essa solução foi descartada por não representar corretamente o domínio do sistema.
+
+O motivo é que fornecedor e arrendador não são tipos fixos e exclusivos de parceiro, mas sim papéis comerciais que um mesmo parceiro pode exercer. Um parceiro pode, ao mesmo tempo, fornecer cana e possuir terras vinculadas à operação. Se fosse usada herança direta, o modelo tenderia a limitar o parceiro a uma única especialização, o que reduziria a flexibilidade do sistema e criaria uma hierarquia artificial.
+
+Por isso, a classe `VinculoComercial` foi adotada como alternativa à herança. Ela permite representar múltiplos papéis comerciais para a mesma identidade externa. Dessa forma, a classe `Parceiro` representa o cadastro único da pessoa física ou jurídica, enquanto `VinculoComercial` representa os papéis comerciais exercidos por esse parceiro.
+
+Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo final por uma decisão de aderência ao domínio. A modelagem por composição entre `Parceiro` e `VinculoComercial` foi considerada mais adequada, pois atende à necessidade de múltiplos vínculos comerciais simultâneos.
 
 ### 3.2.4. Diagrama de Sequência UML (sprint 3)
 
