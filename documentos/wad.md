@@ -715,6 +715,17 @@ Esta seção tem como objetivo oferecer uma visão abstrata e compreensível por
 A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **minimundo** descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os **dados reais** disponibilizados pela Atvos, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi **modelar o que tem evidência de uso**: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
 
 
+### Notação e visão geral
+
+A notação adotada é **Crow's Foot**, aplicada de forma consistente em toda a seção (e mantida coerente nas seções 3.6.2 e 3.2.3). Foram identificadas **13 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
+
+- **Núcleo do parceiro externo**: Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a Atvos se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+
+- **Núcleo de operação interna**: Usuario, Cargo e Unidade. Representa os colaboradores internos da Atvos, sua estrutura organizacional e as unidades industriais onde a operação acontece.
+
+- **Auditoria e associações**: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade e UsuarioUnidade. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros dois grupos. RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável, tornando todos os elos de rastreabilidade visíveis no próprio diagrama conceitual.
+
+
 ### 3.6.2. Diagrama Entidade-Relacionamento (DER) (sprint 2)
 
 *Posicione aqui o DER com cardinalidades explícitas em ambos os lados de cada relação e identificação de PK/FK. O DER deve ser coerente com o diagrama de classes (3.2.3).*
