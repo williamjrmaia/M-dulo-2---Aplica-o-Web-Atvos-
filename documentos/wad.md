@@ -620,6 +620,16 @@ Identificação | UC02 - Editar Parceiro/Fornecedor
 **US RELACIONADAS** | US05
 **RN RELACIONADAS** | RN11, RN12, RN16, RN18
 
+Identificação | UC03 - Consultar Registros Ativos do Parceiro
+--- | ---
+**ATOR PRINCIPAL** | Analista de Negócios Agrícolas ou Coordenador de Estratégia de Terras ou Gerente de Coordenadores
+**ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
+**PRÉ-CONDIÇÕES** | Usuário autenticado; parceiro com status ativo existente no sistema. 
+**FLUXO PRINCIPAL** | 1. O usuário acessa a listagem de parceiros. <br> 2. O usuário seleciona um parceiro. <br> 3. O sistema recupera e exibe todos os dados cadastrais e o histórico de interações do parceiro. <br> 4. A tela carrega em até 3 segundos.
+**FLUXOS ALTERNATIVOS** | **FA01 — Parceiro não encontrado:** <br> 1. O registro buscado não existe. <br> 2. O sistema exibe mensagem informando que o parceiro não foi encontrado.<br> 3. O fluxo é encerrado. <br> **FA02 — Tempo de carregamento excedido:** <br> 1. A tela não carrega dentro do limite de 3 segundos. <br> 2. O sistema exibe mensagem de erro de tempo limite. <br> 3. O usuário pode tentar novamente.
+**PÓS-CONDIÇÕES** | Dados do parceiro exibidos ao usuário.
+**US RELACIONADAS** | US04, US06
+**RN RELACIONADAS** | RN04, RN05
 
 
 
