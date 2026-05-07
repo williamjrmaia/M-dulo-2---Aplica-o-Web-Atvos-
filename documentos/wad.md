@@ -739,6 +739,121 @@ Três decisões de modelagem merecem destaque por serem fundamentais para a robu
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
 
+### Diagrama ER Conceitual
+
+```mermaid
+erDiagram
+
+    PARCEIRO {
+        string nome "nome civil (PF) ou razao social (PJ)"
+        string tipo_pessoa "PF ou PJ"
+        string cpf_cnpj "CPF se PF, CNPJ se PJ"
+        string email
+        string telefone
+        date data_nascimento "aplica-se apenas a PF; NULL para PJ"
+        string nome_acompanhante
+        text historico_interacoes "registro textual de visitas, ligacoes, WhatsApp, reunioes"
+    }
+
+    VINCULOCOMERCIAL {
+        string tipo_vinculo "Fornecedor ou Arrendador"
+        string status "Parceiro ou Prospeccao"
+        date data_inicio
+        date data_fim
+        string observacoes
+    }
+
+    DADOSFORNECEDOR {
+        string modalidade_contrato
+    }
+
+    DADOSARRENDADOR {
+        string observacoes "preparada para atributos especificos do arrendador"
+    }
+
+    TERRA {
+        string nome
+        decimal area_contratada_ha
+        decimal oportunidade_ha
+        decimal area_potencial_ha
+        string cenario_atual
+    }
+
+    PARCEIROTERRA {
+        string tipo_vinculo "Proprietario, Herdeiro, Meeiro ou outro"
+        datetime data_associacao
+    }
+
+    USUARIO {
+        string nome
+        string email
+        string senha_hash
+        string perfil_acesso "Admin, Editor ou Observador"
+        boolean ativo
+    }
+
+    CARGO {
+        string nome "Analista, Coordenador, Gerente, Especialista de Campo"
+        boolean requer_aprovacao
+        string descricao
+    }
+
+    UNIDADE {
+        string codigo "UMV, UAE, UCP, UAT"
+        string nome
+        boolean ativo
+    }
+
+    REGISTROALTERACAO {
+        string tipo_operacao "CREATE, UPDATE ou DELETE"
+        string dados_anteriores "snapshot JSON pre-alteracao"
+        string dados_novos "snapshot JSON pos-alteracao"
+        string status "Pendente (Analista aguarda aprovacao), Aprovado ou Rejeitado; Admin e Editor recebem Aprovado imediatamente"
+        string justificativa_solicitante
+        string justificativa_aprovador
+        datetime data_solicitacao
+        datetime data_resolucao
+    }
+
+    PARCEIROCOORDENADOR {
+        date data_inicio
+        date data_fim
+        string observacoes
+    }
+
+    PARCEIROUNIDADE {
+        datetime data_associacao
+    }
+
+    USUARIOUNIDADE {
+        datetime data_associacao
+    }
+
+    PARCEIRO ||--o{ VINCULOCOMERCIAL : "exerce"
+    VINCULOCOMERCIAL ||--o| DADOSFORNECEDOR : "especializa como Fornecedor"
+    VINCULOCOMERCIAL ||--o| DADOSARRENDADOR : "especializa como Arrendador"
+    PARCEIRO ||--o{ PARCEIROTERRA : "vincula-se a"
+    TERRA ||--o{ PARCEIROTERRA : "vincula-se a"
+    UNIDADE ||--o{ TERRA : "processa cana de"
+    CARGO ||--o{ USUARIO : "classifica"
+    USUARIO o|--o{ DADOSFORNECEDOR : "embaixador de"
+    USUARIO o|--o{ DADOSFORNECEDOR : "guardiao de"
+    USUARIO ||--o{ REGISTROALTERACAO : "solicita"
+    USUARIO o|--o{ REGISTROALTERACAO : "aprova"
+    REGISTROALTERACAO }o--o| PARCEIRO : "audita"
+    REGISTROALTERACAO }o--o| VINCULOCOMERCIAL : "audita"
+    REGISTROALTERACAO }o--o| DADOSFORNECEDOR : "audita"
+    REGISTROALTERACAO }o--o| DADOSARRENDADOR : "audita"
+    REGISTROALTERACAO }o--o| TERRA : "audita"
+    PARCEIRO ||--o{ PARCEIROCOORDENADOR : "coordenado em"
+    USUARIO ||--o{ PARCEIROCOORDENADOR : "coordena"
+    PARCEIRO ||--o{ PARCEIROUNIDADE : "opera em"
+    UNIDADE ||--o{ PARCEIROUNIDADE : "recebe de"
+    USUARIO ||--o{ USUARIOUNIDADE : "atua em"
+    UNIDADE ||--o{ USUARIOUNIDADE : "conta com"
+```
+
+
 
 ### 3.6.2. Diagrama Entidade-Relacionamento (DER) (sprint 2)
 
