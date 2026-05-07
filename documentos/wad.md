@@ -609,6 +609,18 @@ Identificação | UC01 - Enviar Parceiro/Fornecedor para validação.
 **US RELACIONADAS** | US01, US02
 **RN RELACIONADAS** | RN04, RN16
 
+Identificação | UC02 - Editar Parceiro/Fornecedor
+--- | ---
+**ATOR PRINCIPAL** | Analista de Negócios Agrícolas
+**ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
+**PRÉ-CONDIÇÕES** | Usuário autenticado com perfil de analista; parceiro cadastrado com status rascunho, devolvido ou ativo. 
+**FLUXO PRINCIPAL** | 1. O analista acessa o perfil do parceiro. <br> 2. O analista seleciona a opção de editar. <br> 3. O sistema exibe o formulário com os dados atuais preenchidos. <br> 4. O analista altera os campos desejados e confirma. <br> 5. O sistema valida os dados, persiste as alterações e registra data, hora e usuário responsável. <br> 6. O sistema preserva a versão anterior no histórico. <br> 7. O sistema exibe o perfil atualizado para o analista como rascunho.
+**FLUXOS ALTERNATIVOS** | **FA01 — Analista envia para validação após edição:** <br> 1. Após confirmar a edição, o analista decide enviar para validação. <br> 2. O sistema executa UC01 <br> **FA02 — Registro com status incompatível:** <br> 1. O analista tenta editar um registro com status excluído. <br> 2. O sistema bloqueia a edição e exibe mensagem informando que o registro não pode ser editado neste status.<br> 3. O fluxo é encerrado.
+**PÓS-CONDIÇÕES** | Dados do parceiro atualizados para o analista.
+**US RELACIONADAS** | US05
+**RN RELACIONADAS** | RN11, RN12, RN16, RN18
+
+
 
 
 | Caso de Uso | Descrição | Ator principal | Atores secundários | Pré-requisitos | Pós-requisitos | Include | Extend | RF relacionados | US relacionadas |
