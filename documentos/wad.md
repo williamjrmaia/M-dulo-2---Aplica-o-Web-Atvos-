@@ -597,6 +597,20 @@ A modelagem funcional reflete os quatro níveis de maturidade definidos pela ATV
 
 Abaixo, detalham-se os casos de uso mapeados, descrevendo as responsabilidades de cada funcionalidade e seus respectivos fluxos de controle.
 
+
+Identificação | UC01 - Enviar Parceiro/Fornecedor para validação.
+--- | ---
+**ATOR PRINCIPAL** |  Analista de Negócios Agrícolas
+**ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
+**PRÉ-CONDIÇÕES** |  Usuário autenticado com perfil de analista.
+**FLUXO PRINCIPAL** | 1. O analista acessa a tela de cadastro de parceiro.<br> 2. O sistema exibe o formulário de cadastro.<br> 3. O analista preenche os campos disponíveis. <br> 4. O analista salva o registro como rascunho. <br> 5. O sistema persiste o registro com status rascunho, sem exigir campos obrigatórios. <br> 6. O analista conclui o preenchimento. <br> 7. O sistema envia o registro com status pendente para os coordenadores.
+**FLUXOS ALTERNATIVOS** | **FA01: Analista não envia o registro** <br> 6. Analista deixa a página de preenchimento. <br> 7. Sistema armazena registro rascunho do Analista no seu perfil. 
+**PÓS-CONDIÇÕES** | Novo registro de parceiro criado com status rascunho.
+**US RELACIONADAS** | US01, US02
+**RN RELACIONADAS** | RN04, RN16
+
+
+
 | Caso de Uso | Descrição | Ator principal | Atores secundários | Pré-requisitos | Pós-requisitos | Include | Extend | RF relacionados | US relacionadas |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Registrar interações** | Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro (Nível 2). | Editor | Sistema Web; Banco de Dados | Parceiro cadastrado no sistema. | Histórico de relacionamento atualizado. | Não se aplica | Não se aplica | RF006, RF019, RF020 | US03 |
