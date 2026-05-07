@@ -880,6 +880,25 @@ erDiagram
 | 13 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
 
 
+### Boas práticas aplicadas no modelo
+
+- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da Atvos, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos.
+
+- **Separação clara entre identidade, papel e atributo específico.** A divisão Parceiro / VinculoComercial / (DadosFornecedor ou DadosArrendador) elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis, garante consistência de contato (alterar telefone do parceiro afeta todos os papéis) e permite especialização limpa quando atributos específicos forem necessários.
+
+- **Distinção entre cargo organizacional e perfil de acesso.** A entidade Cargo modela a função do colaborador na estrutura da Atvos (Analista, Coordenador, Gerente, Especialista de Campo) e carrega regra de negócio (`requer_aprovacao`). Já o atributo `perfil_acesso` em Usuario representa a permissão técnica no sistema (Admin, Editor, Observador). Os dois conceitos coexistem porque são dimensões independentes: um Coordenador pode ser Editor, um Gerente pode ser Admin.
+
+- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No modelo conceitual, RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra), com a constraint de que exatamente um desses vínculos é não-nulo por registro. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `Pendente` e aguardam aprovação de Coordenador ou Gerente; registros originados de Admin ou Editor recebem `Aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
+
+- **Histórico modelado apenas onde tem valor de negócio.** Optou-se por manter histórico (`data_inicio`/`data_fim`) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra) guardam apenas o estado atual ou o momento de associação, evitando complexidade desnecessária.
+
+- **Soft delete como padrão.** As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade) possuem o campo `ativo`, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US10) e à boa prática de preservação de dados auditáveis.
+
+- **Internacionalização de regra de negócio via dado.** O comportamento de aprovação obrigatória não está hard-coded no nome do cargo, mas sim no atributo `requer_aprovacao` da entidade Cargo. Isso permite que a Atvos altere a política de aprovação no futuro (incluindo novos cargos ou alterando os existentes) sem necessidade de redeploy do código.
+
+- **Documentação de pendências.** Decisões que dependem de validação com a Atvos (Top 15, Portal PMF, definições de áreas, atributos específicos de Arrendador, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
+
+
 
 ### 3.6.2. Diagrama Entidade-Relacionamento (DER) (sprint 2)
 
