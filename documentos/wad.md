@@ -658,7 +658,11 @@ A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnic
 
 ### 3.2.4. Diagrama de Sequência UML (sprint 3)
 
-*Ao menos um fluxo prioritário, mostrando a interação entre as camadas Controller → Service → Repository → Banco. Linhas de vida verticais, ativação correta, mensagens síncronas e assíncronas diferenciadas, retornos tracejados.*
+<div align="center">
+  <sub>Figura 3.2.4.1 - Primeiro fluxo: Cadastro de usuários</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/primeiro_fluxo_cadastro_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
 
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
