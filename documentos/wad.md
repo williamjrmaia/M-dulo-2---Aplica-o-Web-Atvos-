@@ -663,6 +663,16 @@ Identificação | UC06 - Editar Usuário
 **US RELACIONADAS** | US11
 **RN RELACIONADAS** | RN01, RN11
 
+Identificação | UC07 - Inativar Usuário
+--- | ---
+**ATOR PRINCIPAL** | Gerente de Coordenadores
+**ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
+**PRÉ-CONDIÇÕES** | Usuário autenticado com perfil de administrador; usuário alvo existente e ativo no sistema.
+**FLUXO PRINCIPAL** | 1. O administrador acessa o perfil do usuário na listagem. <br> 2. O administrador seleciona a opção de inativar. <br> 3. O sistema exibe confirmação da ação. <br> 4. O administrador confirma. <br> 5. O sistema altera o status do usuário para inativo.<br> 6. O sistema encerra imediatamente as sessões ativas do usuário. <br> 7. O sistema preserva o histórico de ações do usuário inativado.
+**FLUXOS ALTERNATIVOS** | **FA01 — Administrador cancela a ação:** <br> 1. O administrador seleciona cancelar na tela de confirmação. <br> 2. O sistema não realiza nenhuma alteração. <br> 3. O fluxo é encerrado.
+**PÓS-CONDIÇÕES** | Usuário inativado, sem acesso ao sistema, com histórico preservado.
+**US RELACIONADAS** | US10
+**RN RELACIONADAS** | RN06, RN07, RN15
 
 
 
