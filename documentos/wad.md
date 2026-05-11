@@ -652,6 +652,18 @@ Identificação | UC05 - Cadastrar usuário
 **US RELACIONADAS** | US09
 **RN RELACIONADAS** | RN01, RN03, RN06, RN11
 
+Identificação | UC06 - Editar Usuário
+--- | ---
+**ATOR PRINCIPAL** | Gerente de Coordenadores
+**ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados; 
+**PRÉ-CONDIÇÕES** | Usuário autenticado com perfil de administrador; usuário alvo existente e ativo no sistema.
+**FLUXO PRINCIPAL** | 1. O administrador acessa o perfil do usuário na listagem. <br> 2. O administrador seleciona a opção de editar.<br> 3. O sistema exibe o formulário com os dados atuais preenchidos.<br> 4. O administrador altera os campos desejados e confirma.<br> 5. O sistema valida unicidade do e-mail caso tenha sido alterado.<br> 6. O sistema persiste as alterações e registra data, hora e responsável.
+**FLUXOS ALTERNATIVOS** | **FA01 — E-mail já cadastrado por outro usuário:** <br> 1. O administrador altera o e-mail para um já existente no sistema. <br> 2. O sistema exibe mensagem de erro informando duplicidade. <br> 3. O sistema não persiste a alteração. <br> 4. O fluxo retorna ao passo 4 do fluxo principal.
+**PÓS-CONDIÇÕES** | Dados do usuário atualizados no sistema.
+**US RELACIONADAS** | US11
+**RN RELACIONADAS** | RN01, RN11
+
+
 
 
 | Caso de Uso | Descrição | Ator principal | Atores secundários | Pré-requisitos | Pós-requisitos | Include | Extend | RF relacionados | US relacionadas |
