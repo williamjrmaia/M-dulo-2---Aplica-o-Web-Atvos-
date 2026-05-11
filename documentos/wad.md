@@ -685,6 +685,16 @@ Identificação | UC08 - Receber Notificação de Inatividade
 **US RELACIONADAS** | ---
 **RN RELACIONADAS** | RN18
 
+Identificação | UC09 - Realizar Login
+--- | ---
+**ATOR PRINCIPAL** | Qualquer usuário cadastrado no sistema
+**ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
+**PRÉ-CONDIÇÕES** | Usuário cadastrado e ativo no sistema.
+**FLUXO PRINCIPAL** | 1. O usuário acessa a tela de login.<br> 2. O usuário preenche e-mail e senha.<br> 3. O usuário confirma.<br> 4. O sistema valida as credenciais no banco de dados.<br> 5. O sistema identifica o perfil de acesso do usuário.<br> 6. O sistema inicia a sessão e redireciona o usuário para a tela inicial correspondente ao seu perfil.
+**FLUXOS ALTERNATIVOS** | **FA01 — Credenciais inválidas:** <br> 1. O sistema não encontra correspondência entre e-mail e senha.<br> 2. O sistema exibe mensagem de erro genérica sem especificar qual campo está incorreto.<br> 3. O fluxo retorna ao passo 2 do fluxo principal.<br> **FA02 — Usuário inativo:** <br> 1. O sistema identifica que o usuário está com status inativo.<br> 2. O sistema exibe mensagem informando que o acesso foi revogado.<br> 3. O fluxo é encerrado.<br> **FA03 — Campo não preenchido:** <br> 1. O usuário tenta confirmar sem preencher e-mail ou senha.<br> 2. O sistema exibe mensagem indicando o campo ausente.<br> 3. O fluxo retorna ao passo 2 do fluxo principal.
+**PÓS-CONDIÇÕES** | Sessão iniciada; usuário redirecionado para a tela inicial do seu perfil.
+**US RELACIONADAS** | ---
+**RN RELACIONADAS** | RN01, RN02, RN15
 
 
 | Caso de Uso | Descrição | Ator principal | Atores secundários | Pré-requisitos | Pós-requisitos | Include | Extend | RF relacionados | US relacionadas |
