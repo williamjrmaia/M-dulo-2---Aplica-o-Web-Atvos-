@@ -283,19 +283,19 @@ Personas são representações fictícias dos usuários da aplicação, constru�
 
 <div align="center">
   <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
-  <img src="/documentos/assets/persona1_JulianoSoares.png" width="100%" alt="Persona Juliano Soares"><br>
+  <img src="assets/persona_1_juliano_soares.png" width="100%" alt="Persona Juliano Soares"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
 <div align="center">
   <sub>Figura 2.2.2 - Persona 2: Bianca Souza</sub><br>
-  <img src="/documentos/assets/persona2_BiancaSouza.png" width="100%" alt="Persona Bianca Souza"><br>
+  <img src="assets/persona_2_bianca_souza.png" width="100%" alt="Persona Bianca Souza"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
 <div align="center">
   <sub>Figura 2.2.3 - Persona 3: Marcelo Andrade</sub><br>
-  <img src="/documentos/assets/persona3marcelo.png" width="100%" alt="Persona Marcelo Andrade"><br>
+  <img src="assets/persona_3_marcelo_andrade.png" width="100%" alt="Persona Marcelo Andrade"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
