@@ -734,12 +734,13 @@ Três decisões de modelagem merecem destaque por serem fundamentais para a robu
 
 2. **Especialização para vínculos com atributos próprios.** As entidades DadosFornecedor e DadosArrendador são especializações de VinculoComercial: existem apenas quando o vínculo é do tipo correspondente. DadosFornecedor concentra atributos específicos de fornecimento de cana (modalidade contratual, embaixador, guardião). DadosArrendador, neste momento, está modelada como entidade preparada para receber atributos próprios conforme retorno da Atvos. A separação foi mantida por solicitação do cliente, prevendo divergência de atributos em iterações futuras.
 
-3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Crow's Foot adotada. A decisão de como implementar a restrição de exclusividade (polimorfismo técnico, tabelas separadas ou outra estratégia) pertence ao modelo físico (3.6.3).
+3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). A implementação física desta restrição, via cinco chaves estrangeiras opcionais individuais para cada entidade auditável, está detalhada na seção 3.6.3.
 
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
 
 ### Diagrama ER Conceitual
+
 
 ```mermaid
 erDiagram
@@ -752,7 +753,7 @@ erDiagram
         string telefone
         date data_nascimento "aplica-se apenas a PF; NULL para PJ"
         string nome_acompanhante
-        text historico_interacoes "registro textual de visitas, ligacoes, WhatsApp, reunioes"
+        text descricao "anotacoes gerais sobre o parceiro"
     }
 
     VINCULOCOMERCIAL {
@@ -805,7 +806,6 @@ erDiagram
     }
 
     REGISTROALTERACAO {
-        string tipo_operacao "CREATE, UPDATE ou DELETE"
         string dados_anteriores "snapshot JSON pre-alteracao"
         string dados_novos "snapshot JSON pos-alteracao"
         string status "Pendente (Analista aguarda aprovacao), Aprovado ou Rejeitado; Admin e Editor recebem Aprovado imediatamente"
@@ -852,6 +852,7 @@ erDiagram
     USUARIO ||--o{ USUARIOUNIDADE : "atua em"
     UNIDADE ||--o{ USUARIOUNIDADE : "conta com"
 ```
+
 
 
 ### Resumo dos relacionamentos
