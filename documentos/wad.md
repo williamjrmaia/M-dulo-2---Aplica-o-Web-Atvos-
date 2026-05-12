@@ -1246,12 +1246,16 @@ Portanto, as consultas apresentadas atendem ao objetivo da seção ao relacionar
 | Gerente de coordenadores           | RF011 | RN01, RN02       | POST /auth/login                | Login                         | ---   | ---  |
 | Gerente de coordenadores           | RF021 | RN15             | PUT /usuarios/:id/inativar      | Listagem de Usuários          | ---   | ---  |
 | Gerente de coordenadores           | RF013 | RN12             | GET /parceiros/:id/historico | Auditoria / Histórico | --- | --- |
+| Gerente de coordenadores           | RF002 | RN01, RN06       | GET /usuarios; PUT /usuarios/:id | Gestão de Usuários            | ---   | ---  |
+| Gerente de coordenadores           | RF014 | RN06, RN07       | PUT /parceiros/:id; PUT /terras/:id | Gestão de Parceiros      | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF004 | RN09, RN10       | POST /parceiros                 | Cadastro de Parceiro          | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF010 | RN10             | POST/PUT /usuarios; POST/PUT /parceiros; POST/PUT /terras | Cadastro / Edição de Parceiro | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF009 | RN09             | POST/PUT /usuarios; POST/PUT /parceiros | Cadastro de Usuário / Parceiro | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF005 | RN10, RN11, RN12 | PUT /parceiros/:id              | Edição de Parceiro            | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF019 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF020 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
 | Analista de Negócios Agrícolas     | RF006 | RN11             | POST /parceiros/:id/interacoes | Perfil do Parceiro            | ---   | ---  |
+| Analista de Negócios Agrícolas     | RF015 | RN13, RN14       | GET/POST /parceiros/:id/terras; GET/POST /terras/:id/parceiros | Cadastro de Parceiro | --- | --- |
 | Coordenador de Estratégia de Terras| RF007 | RN04, RN08       | GET /parceiros                  | Listagem de Parceiros         | ---   | ---  |
 | Coordenador de Estratégia de Terras| RF008 | RN04, RN08       | GET /parceiros/:id              | Perfil do Parceiro            | ---   | ---  |
 | Coordenador de Estratégia de Terras | RF016 | RN04, RN08 | GET /parceiros?nome=&regiao=&area=&tipo= | Listagem de Parceiros | --- | --- |
