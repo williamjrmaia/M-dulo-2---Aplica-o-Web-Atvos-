@@ -855,8 +855,8 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.5- Quinto fluxo: Cadastra parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <sub>Figura 3.2.4.5- Quinto fluxo: Cadastro de parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/quinto_fluxo_cadastro_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 4"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
