@@ -1106,6 +1106,7 @@ flowchart TB
 ```
 
 
+
 ### Resumo dos relacionamentos
 
 | # | Relacionamento | Cardinalidade | Descrição |
