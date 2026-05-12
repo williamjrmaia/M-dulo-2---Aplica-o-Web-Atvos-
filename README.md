@@ -6,7 +6,7 @@
 
 # Nome do projeto
 
-## 6.7
+## Safra Control
 
 ## :🧑‍🎓 Integrantes: 
 - <a href="https://www.linkedin.com/in/haila-falcao/">Haila Thauane Falcão Novaes</a>
