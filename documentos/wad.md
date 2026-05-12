@@ -912,9 +912,9 @@ A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **m
 
 ### Notação e visão geral
 
-A notação adotada é **Crow's Foot**, aplicada de forma consistente em toda a seção (e mantida coerente nas seções 3.6.2 e 3.2.3). Foram identificadas **13 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
+A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas **14 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
 
-- **Núcleo do parceiro externo**: Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a Atvos se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+- **Núcleo do parceiro externo**: Parceiro, Interacao, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a Atvos se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável, substituindo o campo de texto livre que existia anteriormente em Parceiro. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
 
 - **Núcleo de operação interna**: Usuario, Cargo e Unidade. Representa os colaboradores internos da Atvos, sua estrutura organizacional e as unidades industriais onde a operação acontece.
 
@@ -923,13 +923,15 @@ A notação adotada é **Crow's Foot**, aplicada de forma consistente em toda a 
 
 ### Decisões estruturais relevantes
 
-Três decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
+Quatro decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
 
 1. **Separação entre identidade e papel comercial.** Uma mesma pessoa física ou jurídica pode atuar simultaneamente como Fornecedor e Arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, contatos), enquanto VinculoComercial concretiza cada papel exercido. Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
 
 2. **Especialização para vínculos com atributos próprios.** As entidades DadosFornecedor e DadosArrendador são especializações de VinculoComercial: existem apenas quando o vínculo é do tipo correspondente. DadosFornecedor concentra atributos específicos de fornecimento de cana (modalidade contratual, embaixador, guardião). DadosArrendador, neste momento, está modelada como entidade preparada para receber atributos próprios conforme retorno da Atvos. A separação foi mantida por solicitação do cliente, prevendo divergência de atributos em iterações futuras.
 
-3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Crow's Foot adotada. A decisão de como implementar a restrição de exclusividade (polimorfismo técnico, tabelas separadas ou outra estratégia) pertence ao modelo físico (3.6.3).
+3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Chen adotada. A implementação física desta restrição, via cinco chaves estrangeiras opcionais individuais para cada entidade auditável, está detalhada na seção 3.6.3.
+
+4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos mínimos identificados: `tipo` (visita, ligação, WhatsApp, reunião), `data`, `texto` e `nome_responsavel`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo". Os atributos definitivos de Interacao serão validados com a Atvos e poderão incluir campos adicionais como resultado, próximo passo ou duração, dependendo das necessidades operacionais levantadas com o cliente.
 
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
@@ -937,115 +939,143 @@ Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via
 ### Diagrama ER Conceitual
 
 ```mermaid
-erDiagram
+flowchart TB
+    classDef entity fill:#5B7FD4,stroke:#2c4fa8,color:#fff,font-weight:bold
+    classDef rel fill:#F5A0B8,stroke:#c04060
+    classDef attr fill:#f5f5f5,stroke:#999,color:#333
 
-    PARCEIRO {
-        string nome "nome civil (PF) ou razao social (PJ)"
-        string tipo_pessoa "PF ou PJ"
-        string cpf_cnpj "CPF se PF, CNPJ se PJ"
-        string email
-        string telefone
-        date data_nascimento "aplica-se apenas a PF; NULL para PJ"
-        string nome_acompanhante
-        text historico_interacoes "registro textual de visitas, ligacoes, WhatsApp, reunioes"
-    }
+    PARC[PARCEIRO]:::entity
+    INTER[INTERACAO]:::entity
+    VINC[VINCULO COMERCIAL]:::entity
+    DFORN[DADOS FORNECEDOR]:::entity
+    DARR[DADOS ARRENDADOR]:::entity
+    TERR[TERRA]:::entity
+    PT[PARCEIRO TERRA]:::entity
+    USUA[USUARIO]:::entity
+    CARG[CARGO]:::entity
+    UNID[UNIDADE]:::entity
+    RA[REGISTRO ALTERACAO]:::entity
+    PCOORD[PARCEIRO COORDENADOR]:::entity
+    PUNID[PARCEIRO UNIDADE]:::entity
+    UUNID[USUARIO UNIDADE]:::entity
 
-    VINCULOCOMERCIAL {
-        string tipo_vinculo "Fornecedor ou Arrendador"
-        string status "Parceiro ou Prospeccao"
-        date data_inicio
-        date data_fim
-        string observacoes
-    }
+    p1(cpf_cnpj):::attr
+    p2(nome):::attr
+    p3(tipo_pessoa):::attr
+    p4(email):::attr
+    p5(telefone):::attr
+    PARC --- p1
+    PARC --- p2
+    PARC --- p3
+    PARC --- p4
+    PARC --- p5
 
-    DADOSFORNECEDOR {
-        string modalidade_contrato
-    }
+    i1(tipo):::attr
+    i2(data):::attr
+    i3(texto):::attr
+    i4(nome_responsavel):::attr
+    INTER --- i1
+    INTER --- i2
+    INTER --- i3
+    INTER --- i4
 
-    DADOSARRENDADOR {
-        string observacoes "preparada para atributos especificos do arrendador"
-    }
+    v1(tipo_vinculo):::attr
+    v2(status):::attr
+    v3(data_inicio):::attr
+    VINC --- v1
+    VINC --- v2
+    VINC --- v3
 
-    TERRA {
-        string nome
-        decimal area_contratada_ha
-        decimal oportunidade_ha
-        decimal area_potencial_ha
-        string cenario_atual
-    }
+    df1(modalidade_contrato):::attr
+    DFORN --- df1
 
-    PARCEIROTERRA {
-        string tipo_vinculo "Proprietario, Herdeiro, Meeiro ou outro"
-        datetime data_associacao
-    }
+    da1(observacoes):::attr
+    DARR --- da1
 
-    USUARIO {
-        string nome
-        string email
-        string senha_hash
-        string perfil_acesso "Admin, Editor ou Observador"
-        boolean ativo
-    }
+    t1(nome):::attr
+    t2(area_contratada_ha):::attr
+    t3(cenario_atual):::attr
+    TERR --- t1
+    TERR --- t2
+    TERR --- t3
 
-    CARGO {
-        string nome "Analista, Coordenador, Gerente, Especialista de Campo"
-        boolean requer_aprovacao
-        string descricao
-    }
+    pt1(tipo_vinculo):::attr
+    pt2(data_associacao):::attr
+    PT --- pt1
+    PT --- pt2
 
-    UNIDADE {
-        string codigo "UMV, UAE, UCP, UAT"
-        string nome
-        boolean ativo
-    }
+    u1(nome):::attr
+    u2(email):::attr
+    u3(perfil_acesso):::attr
+    u4(ativo):::attr
+    USUA --- u1
+    USUA --- u2
+    USUA --- u3
+    USUA --- u4
 
-    REGISTROALTERACAO {
-        string tipo_operacao "CREATE, UPDATE ou DELETE"
-        string dados_anteriores "snapshot JSON pre-alteracao"
-        string dados_novos "snapshot JSON pos-alteracao"
-        string status "Pendente (Analista aguarda aprovacao), Aprovado ou Rejeitado; Admin e Editor recebem Aprovado imediatamente"
-        string justificativa_solicitante
-        string justificativa_aprovador
-        datetime data_solicitacao
-        datetime data_resolucao
-    }
+    c1(nome):::attr
+    c2(requer_aprovacao):::attr
+    CARG --- c1
+    CARG --- c2
 
-    PARCEIROCOORDENADOR {
-        date data_inicio
-        date data_fim
-        string observacoes
-    }
+    un1(codigo):::attr
+    un2(nome):::attr
+    UNID --- un1
+    UNID --- un2
 
-    PARCEIROUNIDADE {
-        datetime data_associacao
-    }
+    ra1(status):::attr
+    ra2(dados_anteriores):::attr
+    ra3(data_solicitacao):::attr
+    RA --- ra1
+    RA --- ra2
+    RA --- ra3
 
-    USUARIOUNIDADE {
-        datetime data_associacao
-    }
+    pc1(data_inicio):::attr
+    pc2(data_fim):::attr
+    PCOORD --- pc1
+    PCOORD --- pc2
 
-    PARCEIRO ||--o{ VINCULOCOMERCIAL : "exerce"
-    VINCULOCOMERCIAL ||--o| DADOSFORNECEDOR : "especializa como Fornecedor"
-    VINCULOCOMERCIAL ||--o| DADOSARRENDADOR : "especializa como Arrendador"
-    PARCEIRO ||--o{ PARCEIROTERRA : "vincula-se a"
-    TERRA ||--o{ PARCEIROTERRA : "vincula-se a"
-    UNIDADE ||--o{ TERRA : "processa cana de"
-    CARGO ||--o{ USUARIO : "classifica"
-    USUARIO o|--o{ DADOSFORNECEDOR : "embaixador de"
-    USUARIO o|--o{ DADOSFORNECEDOR : "guardiao de"
-    USUARIO ||--o{ REGISTROALTERACAO : "solicita"
-    USUARIO o|--o{ REGISTROALTERACAO : "aprova"
-    REGISTROALTERACAO }o--o| PARCEIRO : "audita"
-    REGISTROALTERACAO }o--o| VINCULOCOMERCIAL : "audita"
-    REGISTROALTERACAO }o--o| DADOSFORNECEDOR : "audita"
-    REGISTROALTERACAO }o--o| DADOSARRENDADOR : "audita"
-    REGISTROALTERACAO }o--o| TERRA : "audita"
-    PARCEIRO ||--o{ PARCEIROCOORDENADOR : "coordenado em"
-    USUARIO ||--o{ PARCEIROCOORDENADOR : "coordena"
-    PARCEIRO ||--o{ PARCEIROUNIDADE : "opera em"
-    UNIDADE ||--o{ PARCEIROUNIDADE : "recebe de"
-    USUARIO ||--o{ USUARIOUNIDADE : "atua em"
-    UNIDADE ||--o{ USUARIOUNIDADE : "conta com"
+    pu1(data_associacao):::attr
+    PUNID --- pu1
+
+    uu1(data_associacao):::attr
+    UUNID --- uu1
+
+    Rtem{tem}:::rel
+    Rexerce{exerce}:::rel
+    Resforn{especializa Fornecedor}:::rel
+    Resarr{especializa Arrendador}:::rel
+    Rvinc{vincula-se a}:::rel
+    Rpert{pertence a}:::rel
+    Rclass{classifica}:::rel
+    Rsol{solicita}:::rel
+    Rapr{aprova}:::rel
+    Raud{audita}:::rel
+    Rcoord{coordena}:::rel
+    Ropun{opera em}:::rel
+    Ratun{atua em}:::rel
+
+    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "1,1" --- Resforn -- "0,1" --- DFORN
+    VINC -- "1,1" --- Resarr -- "0,1" --- DARR
+    PARC -- "1,1" --- Rvinc
+    TERR -- "1,1" --- Rvinc
+    Rvinc --- PT
+    TERR -- "N,1" --- Rpert -- "1,N" --- UNID
+    CARG -- "1,1" --- Rclass -- "0,N" --- USUA
+    USUA -- "1,1" --- Rsol -- "0,N" --- RA
+    USUA -- "0,1" --- Rapr -- "0,N" --- RA
+    RA -- "0,N" --- Raud -- "0,1" --- PARC
+    PARC -- "1,1" --- Rcoord
+    USUA -- "1,1" --- Rcoord
+    Rcoord --- PCOORD
+    PARC -- "1,1" --- Ropun
+    UNID -- "1,1" --- Ropun
+    Ropun --- PUNID
+    USUA -- "1,1" --- Ratun
+    UNID -- "1,1" --- Ratun
+    Ratun --- UUNID
 ```
 
 
@@ -1053,6 +1083,7 @@ erDiagram
 
 | # | Relacionamento | Cardinalidade | Descrição |
 |---|---|---|---|
+| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. Os atributos definitivos de Interacao serão validados com a Atvos. |
 | 1 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente (Fornecedor, Arrendador ou ambos). Todo vínculo pertence a exatamente um Parceiro. |
 | 2 | VinculoComercial / DadosFornecedor | `[1..1] :: [0..1]` | Especialização: vínculos do tipo Fornecedor possuem registro em DadosFornecedor; vínculos do tipo Arrendador não. |
 | 3 | VinculoComercial / DadosArrendador | `[1..1] :: [0..1]` | Especialização irmã da anterior: vínculos do tipo Arrendador possuem registro em DadosArrendador. |
@@ -1077,7 +1108,9 @@ erDiagram
 
 ### Boas práticas aplicadas no modelo
 
-- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da Atvos, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos.
+- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da Atvos, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, texto, nome_responsavel) foram identificados com base no uso atual das planilhas, e os atributos adicionais aguardam validação com a Atvos antes de serem incorporados.
+
+- **Normalização até a Terceira Forma Normal.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. A entidade é referenciada por uma chave estrangeira para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
 
 - **Separação clara entre identidade, papel e atributo específico.** A divisão Parceiro / VinculoComercial / (DadosFornecedor ou DadosArrendador) elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis, garante consistência de contato (alterar telefone do parceiro afeta todos os papéis) e permite especialização limpa quando atributos específicos forem necessários.
 
