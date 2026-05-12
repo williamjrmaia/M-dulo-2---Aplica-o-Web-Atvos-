@@ -71,7 +71,7 @@ Em resumo, a ATVOS opera em um ambiente de pressões competitivas estruturais re
 
 ### 2.1.2. Análise SWOT da Instituição Parceira (sprint 1)
 
-A análise SWOT é uma ferramenta que avalia as forças, fraquezas, oportunidades e ameaças.
+No mercado nacional de etanol, a ATVOS compete com Raízen e Biosev, diferenciando-se pela diversificação produtiva.
 
 | FORÇAS | FRAQUEZAS |
 | :------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
