@@ -707,21 +707,19 @@ Identificação | UC10 - Visualizar Rascunhos Próprios
 **US RELACIONADAS** | 
 **RN RELACIONADAS** | RN04, RN16, RN17
 
+Identificação | UC11 - Primeiro Acesso e Cadastro de Senha
+--- | ---
+**ATOR PRINCIPAL** | Qualquer usuário com email cadastrado no sistema
+**ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
+**PRÉ-CONDIÇÕES** | Usuário cadastrado pelo administrador com status ativo; usuário ainda não realizou o primeiro acesso
+**FLUXO PRINCIPAL** | 1. O usuário acessa a tela de login.<br>2. O usuário clica no botão "Primeiro Cadastro".<br>3. O sistema exibe a tela de verificação de e-mail.<br>4. O usuário preenche seu e-mail e confirma.<br>5. O sistema consulta o banco e verifica se o e-mail está cadastrado e se a senha associada é nula.<br>6. O sistema redireciona o usuário para a tela de cadastro de senha.<br>7. O usuário preenche a nova senha e a confirmação.<br>8. O sistema valida se as senhas coincidem e atendem aos critérios mínimos de segurança.<br>9. O sistema persiste a senha de forma criptografada.<br>10. O sistema exibe mensagem de sucesso e redireciona o usuário para a tela de login.<br>11. O usuário realiza o login normalmente via UC09.
+**FLUXOS ALTERNATIVOS** | **FA01 — E-mail não encontrado no sistema:**<br>1. O sistema não encontra nenhum cadastro associado ao e-mail informado.<b>2. O sistema exibe mensagem informando que o e-mail não está cadastrado.<br>3. O fluxo retorna ao passo 4 do fluxo principal.<br>**FA02 — Usuário já possui senha cadastrada:**<br>1. O sistema identifica que a senha associada ao e-mail não é nula.<br>2. O sistema exibe aviso informando que o usuário já está cadastrado no sistema.<br>3. O sistema sugere que o usuário acesse pela tela de login normalmente.<br>4. O fluxo é encerrado.<br>**FA03 — Senhas não coincidem:**<br>1. O usuário preenche senhas diferentes nos dois campos.<br>2. O sistema exibe mensagem informando que as senhas não coincidem.<br>3. O fluxo retorna ao passo 7 do fluxo principal.<br>**FA04 — Senha não atende aos critérios mínimos:**<br>1. O usuário preenche uma senha que não atende aos critérios definidos.<br>2. O sistema exibe mensagem listando os critérios não atendidos.<br>3. O fluxo retorna ao passo 7 do fluxo principal.
+**PÓS-CONDIÇÕES** | Senha cadastrada e criptografada no banco; usuário apto a realizar login via UC09.
+**US RELACIONADAS** | ---
+**RN RELACIONADAS** | RN01, RN02
 
-| Caso de Uso | Descrição | Ator principal | Atores secundários | Pré-requisitos | Pós-requisitos | Include | Extend | RF relacionados | US relacionadas |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Registrar interações** | Permite anotar visitas, reuniões, chamadas ou qualquer contato feito com o parceiro (Nível 2). | Editor | Sistema Web; Banco de Dados | Parceiro cadastrado no sistema. | Histórico de relacionamento atualizado. | Não se aplica | Não se aplica | RF006, RF019, RF020 | US03 |
-| **Cadastrar parceiros** | Inserção de novos fornecedores, proprietários de terra, dados cadastrais e área produtiva (Nível 1). | Editor | Sistema Web; Banco de Dados | Usuário autenticado com perfil de editor. | Novo registro de parceiro criado. | Validar dados cadastrais | Não se aplica | RF004, RF009, RF010, RF019, RF020 | US01, US02 |
-| **Editar parceiro** | Atualização de dados cadastrais de parceiros agrícolas existentes, mantendo rastreabilidade das alterações. | Editor | Sistema Web; Banco de Dados | Parceiro cadastrado no sistema e usuário autenticado com perfil de editor. | Dados atualizados e histórico de alteração preservado. | Validar dados cadastrais; Registrar atualização | Não se aplica | RF005, RF010, RF013, RF019, RF020 | US05 |
-| **Consultar perfis** | Busca e visualização detalhada de um parceiro específico e seu histórico. | Observador | Sistema Web; Banco de Dados | Registro existente e ativo no sistema. | Visualização dos dados do parceiro. | Não se aplica | Não se aplica | RF008, RF012 | US04 |
-| **Aplicar filtros de busca** | Segmentação da base de dados por nome, região, área ou tipo de parceiro. | Observador | Sistema Web; Banco de Dados | Acesso à lista de parceiros. | Lista de registros filtrada na tela. | Não se aplica | Não se aplica | RF007, RF016 | US06 |
-| **Visualizar dashboard** | Consulta de indicadores, estatísticas e métricas da base de parceiros (Nível 4). | Observador | Sistema Web; Banco de Dados | Existência de dados ativos no banco. | Exibição de métricas atualizadas. | Não se aplica | Não se aplica | RF017 | US07 |
-| **Exportar lista de contatos** | Exportação da lista de contatos e parceiros para compartilhamento controlado fora do sistema. | Observador | Sistema Web; Banco de Dados | Lista de parceiros disponível para consulta. | Arquivo gerado para download com base na lista atual, filtrada ou completa. | Não se aplica | Aplicar filtros de busca | RF018 | US08 |
-| **Gerenciar acessos** | Definição, consulta e manutenção de permissões e níveis de acesso. | Administrador | Sistema Web; Banco de Dados | Privilégios de Administrador. | Permissões de usuários atualizadas. | Cadastrar usuário; Inativar usuário | Não se aplica | RF001, RF002, RF003, RF021 | US09, US10 |
-| **Cadastrar usuário** | Cadastro de usuários internos com perfil de acesso definido. | Administrador | Sistema Web; Banco de Dados | Privilégios de Administrador. | Usuário habilitado para login conforme perfil atribuído. | Validar dados cadastrais | Não se aplica | RF001, RF002, RF003, RF009, RF010, RF019, RF020 | US09 |
-| **Inativar usuário** | Revogação de acesso de usuários inativos, com encerramento de sessão e preservação de histórico. | Administrador | Sistema Web; Banco de Dados | Usuário existente e privilégios de Administrador. | Usuário inativado e impedido de acessar o sistema. | Não se aplica | Não se aplica | RF002, RF021 | US10 |
-| **Validar dados cadastrais** | Verificação obrigatória de consistência, unicidade e preenchimento dos dados inseridos. | Sistema | Banco de Dados | Acionamento de cadastro ou edição. | Dados validados ou erro retornado. | Não se aplica | Não se aplica | RF009, RF010 | US01, US02, US09 |
-| **Auditar histórico** | Funcionalidade administrativa derivada dos requisitos de rastreabilidade e auditoria, permitindo revisar alterações, datas, responsáveis e logs do sistema. | Administrador | Sistema Web; Banco de Dados | Privilégios de Administrador. | Histórico de auditoria consultado. | Não se aplica | Não se aplica | RF013, RF019, RF020 | US05, US10 |
+
+
 
 ---
 
