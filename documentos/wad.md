@@ -938,6 +938,8 @@ Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via
 
 ### Diagrama ER Conceitual
 
+**Grupo 1 — Núcleo do parceiro externo**
+
 ```mermaid
 flowchart TB
     classDef entity fill:#5B7FD4,stroke:#2c4fa8,color:#fff,font-weight:bold
@@ -951,13 +953,7 @@ flowchart TB
     DARR[DADOS ARRENDADOR]:::entity
     TERR[TERRA]:::entity
     PT[PARCEIRO TERRA]:::entity
-    USUA[USUARIO]:::entity
-    CARG[CARGO]:::entity
     UNID[UNIDADE]:::entity
-    RA[REGISTRO ALTERACAO]:::entity
-    PCOORD[PARCEIRO COORDENADOR]:::entity
-    PUNID[PARCEIRO UNIDADE]:::entity
-    UUNID[USUARIO UNIDADE]:::entity
 
     p1(cpf_cnpj):::attr
     p2(nome):::attr
@@ -1004,6 +1000,35 @@ flowchart TB
     PT --- pt1
     PT --- pt2
 
+    Rtem{tem}:::rel
+    Rexerce{exerce}:::rel
+    Resforn{especializa Fornecedor}:::rel
+    Resarr{especializa Arrendador}:::rel
+    Rvinc{vincula-se a}:::rel
+    Rpert{pertence a}:::rel
+
+    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "1,1" --- Resforn -- "0,1" --- DFORN
+    VINC -- "1,1" --- Resarr -- "0,1" --- DARR
+    PARC -- "1,1" --- Rvinc
+    TERR -- "1,1" --- Rvinc
+    Rvinc --- PT
+    TERR -- "N,1" --- Rpert -- "1,N" --- UNID
+```
+
+**Grupo 2 — Núcleo de operação interna**
+
+```mermaid
+flowchart TB
+    classDef entity fill:#5B7FD4,stroke:#2c4fa8,color:#fff,font-weight:bold
+    classDef rel fill:#F5A0B8,stroke:#c04060
+    classDef attr fill:#f5f5f5,stroke:#999,color:#333
+
+    USUA[USUARIO]:::entity
+    CARG[CARGO]:::entity
+    UNID[UNIDADE]:::entity
+
     u1(nome):::attr
     u2(email):::attr
     u3(perfil_acesso):::attr
@@ -1023,6 +1048,26 @@ flowchart TB
     UNID --- un1
     UNID --- un2
 
+    Rclass{classifica}:::rel
+    CARG -- "1,1" --- Rclass -- "0,N" --- USUA
+```
+
+**Grupo 3 — Auditoria e associações**
+
+```mermaid
+flowchart TB
+    classDef entity fill:#5B7FD4,stroke:#2c4fa8,color:#fff,font-weight:bold
+    classDef rel fill:#F5A0B8,stroke:#c04060
+    classDef attr fill:#f5f5f5,stroke:#999,color:#333
+
+    PARC[PARCEIRO]:::entity
+    USUA[USUARIO]:::entity
+    UNID[UNIDADE]:::entity
+    RA[REGISTRO ALTERACAO]:::entity
+    PCOORD[PARCEIRO COORDENADOR]:::entity
+    PUNID[PARCEIRO UNIDADE]:::entity
+    UUNID[USUARIO UNIDADE]:::entity
+
     ra1(status):::attr
     ra2(dados_anteriores):::attr
     ra3(data_solicitacao):::attr
@@ -1041,13 +1086,6 @@ flowchart TB
     uu1(data_associacao):::attr
     UUNID --- uu1
 
-    Rtem{tem}:::rel
-    Rexerce{exerce}:::rel
-    Resforn{especializa Fornecedor}:::rel
-    Resarr{especializa Arrendador}:::rel
-    Rvinc{vincula-se a}:::rel
-    Rpert{pertence a}:::rel
-    Rclass{classifica}:::rel
     Rsol{solicita}:::rel
     Rapr{aprova}:::rel
     Raud{audita}:::rel
@@ -1055,15 +1093,6 @@ flowchart TB
     Ropun{opera em}:::rel
     Ratun{atua em}:::rel
 
-    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
-    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
-    VINC -- "1,1" --- Resforn -- "0,1" --- DFORN
-    VINC -- "1,1" --- Resarr -- "0,1" --- DARR
-    PARC -- "1,1" --- Rvinc
-    TERR -- "1,1" --- Rvinc
-    Rvinc --- PT
-    TERR -- "N,1" --- Rpert -- "1,N" --- UNID
-    CARG -- "1,1" --- Rclass -- "0,N" --- USUA
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
     RA -- "0,N" --- Raud -- "0,1" --- PARC
