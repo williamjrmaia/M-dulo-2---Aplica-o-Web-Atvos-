@@ -3,7 +3,7 @@
 
 # WAD - Web Application Document - Módulo 2 - Inteli
 
-## Grupo 67
+## Grupo Atwatts
 
 #### Integrantes
 
