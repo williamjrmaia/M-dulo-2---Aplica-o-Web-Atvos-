@@ -6,30 +6,30 @@
 
 # Nome do projeto
 
-## Nome do grupo
+## Safra Control
 
-## :student: Integrantes: 
-- <a href="https://www.linkedin.com/">Nome do integrante 1</a>
-- <a href="https://www.linkedin.com/">Nome do integrante 2</a>
-- <a href="https://www.linkedin.com/">Nome do integrante 3</a> 
-- <a href="https://www.linkedin.com/">Nome do integrante 4</a> 
-- <a href="https://www.linkedin.com/">Nome do integrante 5</a>
-- <a href="https://www.linkedin.com/">Nome do integrante 6</a> 
-- <a href="https://www.linkedin.com/">Nome do integrante 7</a>
+## :🧑‍🎓 Integrantes: 
+- <a href="https://www.linkedin.com/in/haila-falcao/">Haila Thauane Falcão Novaes</a>
+- <a href="https://www.linkedin.com/in/tiago-brun-de-arruda-17959a3a9/">Tiago Brun de Arruda</a>
+- <a href="https://www.linkedin.com/in/gabriel-gomes-pimentel/" >Gabriel Gomes Pimentel</a> 
+- <a href="https://www.linkedin.com/in/ant%C3%B4nio-neto-83971b23b/">Antonio de Souza Dantas Neto</a> 
+- <a href="https://www.linkedin.com/in/jo%C3%A3o-paulo-barreto-ferreira-andrade-rodrigues-de-paula-b483203aa/">João Paulo Barreto Ferreira Andrade Rodrigues de Paula</a>
+- <a href="https://www.linkedin.com/in/william-maia-95785b323/">William Junior dos Santos Maia</a> 
+- <a href="Mariana Pires de Carvalho Moussa">Mariana Pires de Carvalho Moussa</a>
 
-## :teacher: Professores:
+## 🧑‍🏫 Professores:
 ### Orientador(a) 
-- <a href="https://www.linkedin.com/">Nome do professor 1</a>
+- <a href="https://www.linkedin.com/in/fabiocassiosouza/">Fábio Cássio de Souza</a>
 ### Instrutores
-- <a href="https://www.linkedin.com/">Nome do professor 2</a>
-- <a href="https://www.linkedin.com/">Nome do professor 3</a> 
-- <a href="https://www.linkedin.com/">Nome do professor 4</a> 
-- <a href="https://www.linkedin.com/">Nome do professor 5</a>
-- <a href="https://www.linkedin.com/">Nome do professor 6</a>
+- <a href="https://www.linkedin.com/in/bruna-mayer/">Bruna Mayer Costa</a>
+- <a href="https://www.linkedin.com/feed/update/urn:li:activity:7440575463783120896/">Afonso Cesar Lelis Brandão</a> 
+- <a href="https://www.linkedin.com/in/marcelo-gon%C3%A7alves-phd/">Marcelo Luiz do Amaral Gonçalves</a> 
+- <a href="https://www.linkedin.com/in/cristinagramani/">Maria Cristina Nogueira Gramani</a>
+- <a href="https://www.linkedin.com/in/marcelodesterro/">Marcelo de Paula do Desterro</a>
 
 ## 📝 Descrição
 
-_Descreva seu projeto (até 600 palavras)_
+O projeto é a solução web CRM desenvolvida para a ATVOS, empresa do setor sucroenergético, com o objetivo de centralizar e estruturar a gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. As informações antes dispersas em planilhas, e-mails e anotações individuais passam a ser gerenciadas em um único ambiente digital, garantindo rastreabilidade, padronização dos cadastros e preservação do histórico de interações ao longo das safras independente de mudanças no time. A aplicação conta com três níveis de acesso (administrador, editor e observador), registro de histórico de alterações, filtros por nome, região e tipo de parceiro e indicadores chaves de desempenho, substituindo o modelo fragmentado por um fluxo estruturado de informações que apoia a tomada de decisão estratégica da área de Negócios Agrícolas.
 
 ## 📝 Link de demonstração
 
