@@ -838,13 +838,19 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 
 <div align="center">
   <sub>Figura 3.2.4.2 - Segundo fluxo: Cadastro de usuários (nivel de acesso)</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/segundo_fluxo_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/segundo_fluxo_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 2"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.3 - Terceiro fluxo: Login de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/terceiro_fluxo_login.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/terceiro_fluxo_login.png" width="100%" alt="Diagrama de Sequencia 3"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.2 - Terceiro fluxo: Inativa usuários</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/quarto_fluxo_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
