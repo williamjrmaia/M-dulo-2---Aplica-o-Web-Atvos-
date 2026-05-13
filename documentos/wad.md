@@ -920,6 +920,12 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+<div align="center">
+  <sub>Figura 3.2.4.16 - Fluxo 16:Exporta dados</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 16"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
