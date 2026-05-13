@@ -933,7 +933,7 @@ Quatro decisões de modelagem merecem destaque por serem fundamentais para a rob
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
 
-### Modelos ER Conceituais
+### Modelos Entidade Relacionamento (MER)
 
 **Grupo 1 — Núcleo do parceiro externo**
 
