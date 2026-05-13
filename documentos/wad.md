@@ -944,9 +944,9 @@ Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via
 
 ```mermaid
 flowchart TB
-    classDef entity fill:#5B7FD4,stroke:#2c4fa8,color:#fff,font-weight:bold
-    classDef rel fill:#F5A0B8,stroke:#c04060
-    classDef attr fill:#f5f5f5,stroke:#999,color:#333
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+    classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
 
     PARC[PARCEIRO]:::entity
     INTER[INTERACAO]:::entity
@@ -1016,16 +1016,18 @@ flowchart TB
     PARC -- "1,1" --- Rvinc
     TERR -- "1,1" --- Rvinc
     Rvinc --- PT
-    TERR -- "N,1" --- Rpert -- "1,N" --- UNID
+    TERR -- "1,1" --- Rpert -- "0,N" --- UNID
 ```
 
 **Grupo 2 — Núcleo de operação interna**
 
+> UNIDADE é exibida aqui para apresentação de seus atributos; seus relacionamentos estão no Grupo 1 (Terra → Unidade) e no Grupo 3 (ParceiroUnidade, UsuarioUnidade).
+
 ```mermaid
 flowchart TB
-    classDef entity fill:#5B7FD4,stroke:#2c4fa8,color:#fff,font-weight:bold
-    classDef rel fill:#F5A0B8,stroke:#c04060
-    classDef attr fill:#f5f5f5,stroke:#999,color:#333
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+    classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
 
     USUA[USUARIO]:::entity
     CARG[CARGO]:::entity
@@ -1058,9 +1060,9 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    classDef entity fill:#5B7FD4,stroke:#2c4fa8,color:#fff,font-weight:bold
-    classDef rel fill:#F5A0B8,stroke:#c04060
-    classDef attr fill:#f5f5f5,stroke:#999,color:#333
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+    classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
 
     PARC[PARCEIRO]:::entity
     USUA[USUARIO]:::entity
@@ -1111,6 +1113,8 @@ flowchart TB
 
 
 
+> **Nota sobre relacionamentos entre grupos:** Os relacionamentos 7a e 7b (Usuario como embaixador e guardião de DadosFornecedor) vinculam entidades do Grupo 2 (Usuario) ao Grupo 1 (DadosFornecedor). Por atravessarem dois grupos distintos, não são representados graficamente nos diagramas acima — estão detalhados na tabela a seguir e implementados como duas chaves estrangeiras opcionais na entidade DadosFornecedor (seção 3.6.3).
+
 ### Resumo dos relacionamentos
 
 | # | Relacionamento | Cardinalidade | Descrição |
@@ -1121,7 +1125,7 @@ flowchart TB
 | 3 | VinculoComercial / DadosArrendador | `[1..1] :: [0..1]` | Especialização irmã da anterior: vínculos do tipo Arrendador possuem registro em DadosArrendador. |
 | 4a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
 | 4b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
-| 5 | Terra / Unidade | `[N..1]` | Toda terra processa cana em uma unidade industrial específica; uma unidade recebe de várias terras. |
+| 5 | Terra / Unidade | `[1..1] :: [0..N]` | Toda terra processa cana em uma unidade industrial específica (cada Terra pertence a exatamente 1 Unidade); uma unidade recebe de várias terras (cada Unidade pode ter 0 a N Terras vinculadas). |
 | 6 | Cargo / Usuario | `[1..1] :: [0..N]` | Cada usuário ocupa um cargo organizacional; cada cargo pode ter vários usuários. |
 | 7a | Usuario / DadosFornecedor (embaixador) | `[0..1] :: [0..N]` | Cada DadosFornecedor pode ter um embaixador atribuído; um usuário pode ser embaixador de vários fornecedores. Os dois relacionamentos Usuario para DadosFornecedor materializam-se como duas FKs distintas na entidade. |
 | 7b | Usuario / DadosFornecedor (guardião) | `[0..1] :: [0..N]` | Mesma estrutura para o guardião (suplente do embaixador). |
