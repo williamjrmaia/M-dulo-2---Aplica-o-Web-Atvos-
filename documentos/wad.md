@@ -891,8 +891,14 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.11 - Fluxo 11: Registro de dados</sub><br>
+  <sub>Figura 3.2.4.11 - Fluxo 11: Registro de interaçõesm</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/fluxo_11_registra_interacoes.png" width="100%" alt="Diagrama de Sequencia 11"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.12 - Fluxo 12: Visualização dos dados dos parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_12_visualiza_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 12"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
