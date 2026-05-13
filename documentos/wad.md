@@ -856,25 +856,31 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 
 <div align="center">
   <sub>Figura 3.2.4.5- Quinto fluxo: Cadastro de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/quinto_fluxo_cadastro_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/quinto_fluxo_cadastro_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.6 - Sexto fluxo: Consulta histórico de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/sexto_fluxo_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/sexto_fluxo_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 6"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.7 - Sétimo fluxo: Edição dos dados do usuário</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/setimo_fluxo_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/setimo_fluxo_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 7"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.8 - Oitavo fluxo: Edição dos dados dos parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/oitavo_fluxo_atualiza_dados_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/oitavo_fluxo_atualiza_dados_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 8"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.9 - Nono fluxo: Cadastro de dados das terras</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/nono_fluxo_cadastro_de_terras.png" width="100%" alt="Diagrama de Sequencia 9"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
