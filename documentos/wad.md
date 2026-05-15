@@ -32,7 +32,7 @@
 
 [7. Conclusões e trabalhos futuros](#c7)
 
-[8. Referências](c#8)
+[8. Referências](#c8)
 
 [Anexos](#c9)
 
@@ -701,7 +701,7 @@ Identificação | UC11 - Primeiro Acesso e Cadastro de Senha
 **ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
 **PRÉ-CONDIÇÕES** | Usuário cadastrado pelo administrador com status ativo; usuário ainda não realizou o primeiro acesso
 **FLUXO PRINCIPAL** | 1. O usuário acessa a tela de login.<br>2. O usuário clica no botão "Primeiro Cadastro".<br>3. O sistema exibe a tela de verificação de e-mail.<br>4. O usuário preenche seu e-mail e confirma.<br>5. O sistema consulta o banco e verifica se o e-mail está cadastrado e se a senha associada é nula.<br>6. O sistema redireciona o usuário para a tela de cadastro de senha.<br>7. O usuário preenche a nova senha e a confirmação.<br>8. O sistema valida se as senhas coincidem e atendem aos critérios mínimos de segurança.<br>9. O sistema persiste a senha de forma criptografada.<br>10. O sistema exibe mensagem de sucesso e redireciona o usuário para a tela de login.<br>11. O usuário realiza o login normalmente via UC09.
-**FLUXOS ALTERNATIVOS** | **FA01 — E-mail não encontrado no sistema:**<br>1. O sistema não encontra nenhum cadastro associado ao e-mail informado.<b>2. O sistema exibe mensagem informando que o e-mail não está cadastrado.<br>3. O fluxo retorna ao passo 4 do fluxo principal.<br>**FA02 — Usuário já possui senha cadastrada:**<br>1. O sistema identifica que a senha associada ao e-mail não é nula.<br>2. O sistema exibe aviso informando que o usuário já está cadastrado no sistema.<br>3. O sistema sugere que o usuário acesse pela tela de login normalmente.<br>4. O fluxo é encerrado.<br>**FA03 — Senhas não coincidem:**<br>1. O usuário preenche senhas diferentes nos dois campos.<br>2. O sistema exibe mensagem informando que as senhas não coincidem.<br>3. O fluxo retorna ao passo 7 do fluxo principal.<br>**FA04 — Senha não atende aos critérios mínimos:**<br>1. O usuário preenche uma senha que não atende aos critérios definidos.<br>2. O sistema exibe mensagem listando os critérios não atendidos.<br>3. O fluxo retorna ao passo 7 do fluxo principal.
+**FLUXOS ALTERNATIVOS** | **FA01 — E-mail não encontrado no sistema:**<br>1. O sistema não encontra nenhum cadastro associado ao e-mail informado.<br>2. O sistema exibe mensagem informando que o e-mail não está cadastrado.<br>3. O fluxo retorna ao passo 4 do fluxo principal.<br>**FA02 — Usuário já possui senha cadastrada:**<br>1. O sistema identifica que a senha associada ao e-mail não é nula.<br>2. O sistema exibe aviso informando que o usuário já está cadastrado no sistema.<br>3. O sistema sugere que o usuário acesse pela tela de login normalmente.<br>4. O fluxo é encerrado.<br>**FA03 — Senhas não coincidem:**<br>1. O usuário preenche senhas diferentes nos dois campos.<br>2. O sistema exibe mensagem informando que as senhas não coincidem.<br>3. O fluxo retorna ao passo 7 do fluxo principal.<br>**FA04 — Senha não atende aos critérios mínimos:**<br>1. O usuário preenche uma senha que não atende aos critérios definidos.<br>2. O sistema exibe mensagem listando os critérios não atendidos.<br>3. O fluxo retorna ao passo 7 do fluxo principal.
 **PÓS-CONDIÇÕES** | Senha cadastrada e criptografada no banco; usuário apto a realizar login via UC09.
 **US RELACIONADAS** | ---
 **RN RELACIONADAS** | RN01, RN02
@@ -827,7 +827,7 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.2 - Segundo fluxo: Cadastro de usuários (nivel de acesso)</sub><br>
+  <sub>Figura 3.2.4.2 - Segundo fluxo: Cadastro de usuários (nível de acesso)</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/segundo_fluxo_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 2"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
@@ -839,13 +839,13 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.4 - Quarto fluxo: Inativa usuários</sub><br>
+  <sub>Figura 3.2.4.4 - Quarto fluxo: Inativação de usuários</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/quarto_fluxo_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.5- Quinto fluxo: Cadastro de parceiros</sub><br>
+  <sub>Figura 3.2.4.5 - Quinto fluxo: Cadastro de parceiros</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/quinto_fluxo_cadastro_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
@@ -875,13 +875,13 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.10 - Decimo fluxo: Edição de dados das terras</sub><br>
+  <sub>Figura 3.2.4.10 - Décimo fluxo: Edição de dados das terras</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/decimo_fluxo_edicao_de_terras.png" width="100%" alt="Diagrama de Sequencia 10"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.11 - Fluxo 11: Registro de interaçõesm</sub><br>
+  <sub>Figura 3.2.4.11 - Fluxo 11: Registro de interações</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/fluxo_11_registra_interacoes.png" width="100%" alt="Diagrama de Sequencia 11"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
@@ -893,7 +893,7 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.13 - Fluxo 13: Visualização dos parceiro por filtros</sub><br>
+  <sub>Figura 3.2.4.13 - Fluxo 13: Visualização dos parceiros por filtros</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/fluxo_13_visualisar_parceiros_por_filtro.png" width="100%" alt="Diagrama de Sequencia 13"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
@@ -911,7 +911,7 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.16 - Fluxo 16:Exporta dados</sub><br>
+  <sub>Figura 3.2.4.16 - Fluxo 16: Exportação de dados</sub><br>
   <img src="/documentos/assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 16"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
@@ -1263,13 +1263,11 @@ Por fim, o princípio de **modelagem dirigida por evidência**, com cada atribut
 
 *Posicione aqui os diagramas de modelos relacionais do banco de dados, apresentando todos os esquemas de tabelas e suas relações. Inclua as migrations DDL numeradas e reproduzíveis (`CREATE TABLE`, `CREATE INDEX`, constraints `NOT NULL`, `UNIQUE`, `FOREIGN KEY`, `CHECK`). Utilize texto para complementar suas explicações quando necessário.*
 
-### 3.6.4. Consultas SQL e lógica proposicional (sprint 2)
-
 ## 3.6.4. Consultas SQL e lógica proposicional
 
 Esta seção apresenta consultas SQL compostas realizadas pelo back-end da aplicação web, acompanhadas de sua respectiva tradução para lógica proposicional. As consultas foram elaboradas a partir das entidades modeladas no Diagrama de Classes do Domínio, especialmente `Parceiro`, `VinculoComercial`, `Terra`, `Unidade`, `Usuario`, `PerfilAcesso` e `RegistroAlteracao`.
 
- Cada consulta possui uma cláusula `WHERE` composta, com condições combinadas por operadores lógicos como `AND` e `OR`.
+Cada consulta possui uma cláusula `WHERE` composta, com condições combinadas por operadores lógicos como `AND` e `OR`.
 
 Para formalizar essas regras, cada condição booleana foi transformada em uma proposição lógica, como $A$, $B$, $C$ ou $D$. Em seguida, a estrutura da cláusula `WHERE` foi convertida para uma expressão lógica proposicional equivalente, utilizando os conectivos $\land$ para conjunção e $\lor$ para disjunção. Por fim, cada expressão foi validada por meio de tabela verdade.
 
