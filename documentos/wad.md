@@ -124,7 +124,7 @@ O Value Proposition Canvas foi construído a partir das informações levantadas
 <br>
 <div align="center">
   <sub>Figura 2.1.4 - Value Proposition Canvas</sub><br>
-  <img src="./assets/proposta-de-valor-atvos.png" width="100%" alt="Value Proposition Canvas"><br>
+  <img src="./assets/proposta_de_valor_atvos.png" width="100%" alt="Value Proposition Canvas"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div><br>
 
@@ -184,19 +184,19 @@ Os critérios de classificação de impacto seguem uma escala de cinco níveis: 
 
 <div align="center">
   <sub>Figura 2.1.5.1 - Classificação de Impacto</sub><br>
-  <img src="/documentos/assets/matriz-de-risco/classificacao.De.Impacto.png" width="100%" alt="Descrição breve"><br>
+  <img src="/documentos/assets/matriz_de_risco/classificacao_de_impacto.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 2.1.5.2 - Classificação de Probabilidade</sub><br>
-  <img src="/documentos/assets/matriz-de-risco/classificacao.De.Probabilidade.png" width="100%" alt="Descrição breve"><br>
+  <img src="/documentos/assets/matriz_de_risco/classificacao_de_probabilidade.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 2.1.5.3 - Matriz de Risco</sub><br>
-  <img src="/documentos/assets/matriz-de-risco/matriz.De.Risco.png" width="100%" alt="Descrição breve"><br>
+  <img src="/documentos/assets/matriz_de_risco/matriz_de_risco.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -284,19 +284,19 @@ Personas são representações fictícias dos usuários da aplicação, constru�
 
 <div align="center">
   <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
-  <img src="assets/persona_1_juliano_soares.png" width="100%" alt="Persona Juliano Soares"><br>
+  <img src="/documentos/assets/personas/persona_1_juliano_soares.png" width="100%" alt="Persona Juliano Soares"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
 <div align="center">
   <sub>Figura 2.2.2 - Persona 2: Bianca Souza</sub><br>
-  <img src="assets/persona_2_bianca_souza.png" width="100%" alt="Persona Bianca Souza"><br>
+  <img src="/documentos/assets/personas/persona_2_bianc_souza.png" width="100%" alt="Persona Bianca Souza"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
 <div align="center">
   <sub>Figura 2.2.3 - Persona 3: Marcelo Andrade</sub><br>
-  <img src="assets/persona_3_marcelo_andrade.png" width="100%" alt="Persona Marcelo Andrade"><br>
+  <img src="/documentos/assets/personas/persona_3_marcelo_andrade.png" width="100%" alt="Persona Marcelo Andrade"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
@@ -582,7 +582,7 @@ A modelagem funcional reflete os quatro níveis de maturidade definidos pela ATV
 
 <div align="center">
   <sub>Figura 3.2.2 - Diagrama de casos de uso</sub><br>
-  <img src="assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso ATVOS"><br>
+  <img src="/documentos/assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso ATVOS"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no https://plantuml.com/)</sup>
 </div>
 
@@ -837,8 +837,92 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 </div>
 
 <div align="center">
-  <sub>Figura 3.2.4.2- Primeiro fluxo: Cadastro de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/segundo_fluxo_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <sub>Figura 3.2.4.2 - Segundo fluxo: Cadastro de usuários (nivel de acesso)</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/segundo_fluxo_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 2"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.3 - Terceiro fluxo: Login de usuários</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/terceiro_fluxo_login.png" width="100%" alt="Diagrama de Sequencia 3"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.4 - Quarto fluxo: Inativa usuários</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/quarto_fluxo_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.5- Quinto fluxo: Cadastro de parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/quinto_fluxo_cadastro_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.6 - Sexto fluxo: Consulta histórico de parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/sexto_fluxo_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 6"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.7 - Sétimo fluxo: Edição dos dados do usuário</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/setimo_fluxo_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 7"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.8 - Oitavo fluxo: Edição dos dados dos parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/oitavo_fluxo_atualiza_dados_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 8"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.9 - Nono fluxo: Cadastro de dados das terras</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/nono_fluxo_cadastro_de_terras.png" width="100%" alt="Diagrama de Sequencia 9"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.10 - Decimo fluxo: Edição de dados das terras</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/decimo_fluxo_edicao_de_terras.png" width="100%" alt="Diagrama de Sequencia 10"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.11 - Fluxo 11: Registro de interaçõesm</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_11_registra_interacoes.png" width="100%" alt="Diagrama de Sequencia 11"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.12 - Fluxo 12: Visualização dos dados dos parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_12_visualiza_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 12"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.13 - Fluxo 13: Visualização dos parceiro por filtros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_13_visualisar_parceiros_por_filtro.png" width="100%" alt="Diagrama de Sequencia 13"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.14 - Fluxo 14: Visualização do painel de dados dos parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_14_dashboard_parceiros.png" width="100%" alt="Diagrama de Sequencia 14"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.15 - Fluxo 15: Visualização do painel de dados das interações com os parceiros</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_15_visualizacao_dashboard_de_interacoes.png" width="100%" alt="Diagrama de Sequencia 15"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.2.4.16 - Fluxo 16:Exporta dados</sub><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 16"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -899,7 +983,6 @@ Para garantir coerência visual e alinhamento entre todas as telas, foram utiliz
 ## 3.6. Modelagem do banco de dados (sprints 2 e 4)
 
 ### 3.6.1. Modelo Entidade-Relacionamento (ER) (sprint 2)
-*Apresente o modelo ER conceitual com entidades, atributos e relacionamentos. Use notação consistente (Chen ou Crow's Foot — não misture).*
 
 ### Introdução
 
@@ -936,7 +1019,7 @@ Quatro decisões de modelagem merecem destaque por serem fundamentais para a rob
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
 
-### Diagrama ER Conceitual
+### Modelos Entidade Relacionamento (MER)
 
 **Grupo 1 — Núcleo do parceiro externo**
 
@@ -1179,6 +1262,12 @@ Por fim, o princípio de **modelagem dirigida por evidência**, com cada atribut
 ### 3.6.2. Diagrama Entidade-Relacionamento (DER) (sprint 2)
 
 *Posicione aqui o DER com cardinalidades explícitas em ambos os lados de cada relação e identificação de PK/FK. O DER deve ser coerente com o diagrama de classes (3.2.3).*
+
+<div align="center">
+  <sub>Figura 3.6.2.1 - Diagrama Entidade-Relacionamento (DER)</sub><br>
+  <img src="/documentos/assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
 
 ### 3.6.3. Modelo Relacional e Modelo Físico (sprints 2 e 4)
 
