@@ -117,7 +117,7 @@ Centralização e padronização dos cadastros de parceiros; eliminação de pla
 
 O sucesso será avaliado pela entrega do MVP funcional com os três módulos operacionais (cadastro, histórico e controle de acesso); pela redução mensurável do tempo de consulta a dados de parceiros frente ao modelo de planilhas; e pela validação com usuários internos da ATVOS em testes de usabilidade, com taxa de conclusão de tarefas acima de 80%.
 
-### 2.1.4. Value Proposition Canvas (sprint 1):
+### 2.1.4. Value Proposition Canvas (sprint 1)
 
 O Value Proposition Canvas foi construído a partir das informações levantadas no Kick Off com a ATVOS, tendo como segmento-cliente os coordenadores de campo e gerentes regionais da área de Negócios Agrícolas responsáveis pela gestão de parceiros de terras e fornecedores de cana.
 
@@ -263,6 +263,7 @@ A centralização dos dados de parceiros facilita muito para a ATVOS, diminuindo
 **Probabilidade:** Muito Alta
 
 **Plano de Resposta ao Risco:** Demonstrar a qualidade do projeto durante a apresentação do MVP, comparando o tempo médio de consulta entre o modelo de planilhas e a aplicação, e documentando a redução de etapas operacionais para tarefas-chave como cadastro e consulta de histórico.
+
 ##### F. Fortalecimento do relacionamento com parceiro
 
 Com o histórico de interações centralizado e acessível para a ATVOS, ela pode personalizar o relacionamento com fornecedores e parceiros, fortalecendo a fidelidade a longo prazo.
@@ -276,6 +277,7 @@ Com o histórico de interações centralizado e acessível para a ATVOS, ela pod
 **Plano de Resposta ao Risco:** Priorizar a funcionalidade de registro e consulta do histórico de interações nas primeiras sprints do MVP, garantindo que o módulo esteja funcional e validado com usuários reais antes das funcionalidades secundárias.
 
 ---
+
 A matriz de riscos permite à equipe antecipar ameaças, planejar respostas e aproveitar oportunidades. O acompanhamento dos riscos contribui para a organização do grupo, a entrega do MVP no prazo e a elevação da qualidade do produto. Aliada à comunicação eficiente e à definição clara de responsabilidades, é fundamental para o sucesso da aplicação web.
 
 ## 2.2. Personas (sprint 1)
@@ -540,7 +542,7 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 | RF019 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
 | RF020 | US10 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
 
-### 3.1.5 Critérios de Aceite Técnicos (Sprint 1)
+### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
 | CT       | Critério Técnico                                                                                             | RF associados              | RN associados    | RNF associados |
 | -------- | ------------------------------------------------------------------------------------------------------------ | -------------------------- | ---------------- | -------------- |
@@ -952,21 +954,21 @@ Para garantir coerência visual e alinhamento entre todas as telas, foram utiliz
 
 *Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução*
 
-### 3.4.1 Cores
+### 3.4.1. Cores
 
 *Apresente aqui a paleta de cores, com seus códigos de aplicação e suas respectivas funções*
 
-### 3.4.2 Tipografia
+### 3.4.2. Tipografia
 
 *Apresente aqui a tipografia da solução, com famílias de fontes e suas respectivas funções*
 
-### 3.4.3 Iconografia e imagens 
+### 3.4.3. Iconografia e imagens
 
 *(esta subseção é opcional, caso não existam ícones e imagens, apague esta subseção)*
 
 *posicione aqui imagens e textos contendo exemplos padronizados de ícones e imagens, com seus respectivos atributos de aplicação, utilizadas na solução*
 
-## 3.5 Protótipo de alta fidelidade (sprint 3)
+## 3.5. Protótipo de alta fidelidade (sprint 3)
 
 *posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização)*
 
@@ -1297,12 +1299,12 @@ As consultas foram elaboradas com três ou quatro proposições para permitir a 
 
 ### #1 — Consulta de parceiros com vínculo comercial ativo ou fornecedor de cana
 
-#1 | ---
---- | ---
-**Expressão SQL** | `SELECT p.* FROM parceiro p JOIN vinculo_comercial vc ON vc.parceiro_id = p.id WHERE (p.tipo_pessoa = 'PJ' AND vc.status = 'ATIVO') OR vc.tipo_vinculo = 'FORNECEDOR_CANA';`
-**Proposições lógicas** | $A$: O parceiro é pessoa jurídica (`p.tipo_pessoa = 'PJ'`) <br> $B$: O vínculo comercial está ativo (`vc.status = 'ATIVO'`) <br> $C$: O vínculo comercial é do tipo fornecedor de cana (`vc.tipo_vinculo = 'FORNECEDOR_CANA'`)
-**Expressão lógica proposicional** | $(A \land B) \lor C$
-**Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(A \land B)$</th> <th>$(A \land B) \lor C$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table>
+| #1 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT p.* FROM parceiro p JOIN vinculo_comercial vc ON vc.parceiro_id = p.id WHERE (p.tipo_pessoa = 'PJ' AND vc.status = 'ATIVO') OR vc.tipo_vinculo = 'FORNECEDOR_CANA';` |
+| **Proposições lógicas** | $A$: O parceiro é pessoa jurídica (`p.tipo_pessoa = 'PJ'`) <br> $B$: O vínculo comercial está ativo (`vc.status = 'ATIVO'`) <br> $C$: O vínculo comercial é do tipo fornecedor de cana (`vc.tipo_vinculo = 'FORNECEDOR_CANA'`) |
+| **Expressão lógica proposicional** | $(A \land B) \lor C$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(A \land B)$</th> <th>$(A \land B) \lor C$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
 
 A consulta #1 é utilizada para recuperar parceiros que atendem a pelo menos uma das seguintes condições: serem pessoas jurídicas com vínculo comercial ativo ou possuírem vínculo comercial do tipo fornecedor de cana. A expressão $(A \land B) \lor C$ preserva essa lógica, pois o resultado será verdadeiro quando $A$ e $B$ forem verdadeiros simultaneamente, ou quando $C$ for verdadeiro.
 
@@ -1310,12 +1312,12 @@ A consulta #1 é utilizada para recuperar parceiros que atendem a pelo menos uma
 
 ### #2 — Consulta de terras com oportunidade relevante em unidades ativas
 
-#2 | ---
---- | ---
-**Expressão SQL** | `SELECT t.* FROM terra t JOIN unidade u ON u.id = t.unidade_id WHERE u.ativo = TRUE AND (t.oportunidade_ha > 0 OR t.area_potencial_ha >= 100);`
-**Proposições lógicas** | $A$: A unidade está ativa (`u.ativo = TRUE`) <br> $B$: A terra possui oportunidade em hectares maior que zero (`t.oportunidade_ha > 0`) <br> $C$: A terra possui área potencial maior ou igual a 100 hectares (`t.area_potencial_ha >= 100`)
-**Expressão lógica proposicional** | $A \land (B \lor C)$
-**Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table>
+| #2 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT t.* FROM terra t JOIN unidade u ON u.id = t.unidade_id WHERE u.ativo = TRUE AND (t.oportunidade_ha > 0 OR t.area_potencial_ha >= 100);` |
+| **Proposições lógicas** | $A$: A unidade está ativa (`u.ativo = TRUE`) <br> $B$: A terra possui oportunidade em hectares maior que zero (`t.oportunidade_ha > 0`) <br> $C$: A terra possui área potencial maior ou igual a 100 hectares (`t.area_potencial_ha >= 100`) |
+| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
 
 A consulta #2 é utilizada para listar terras associadas a unidades ativas que possuam oportunidade operacional ou área potencial relevante. A proposição $A$ é obrigatória, pois a unidade precisa estar ativa. Já as proposições $B$ e $C$ são alternativas: basta que a terra tenha oportunidade maior que zero ou área potencial maior ou igual a 100 hectares.
 
@@ -1323,12 +1325,12 @@ A consulta #2 é utilizada para listar terras associadas a unidades ativas que p
 
 ### #3 — Consulta de usuários ativos com perfil operacional
 
-#3 | ---
---- | ---
-**Expressão SQL** | `SELECT u.* FROM usuario u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE u.ativo = TRUE AND (pa.nome = 'ANALISTA' OR pa.nome = 'COORDENADOR');`
-**Proposições lógicas** | $A$: O usuário está ativo (`u.ativo = TRUE`) <br> $B$: O perfil de acesso do usuário é analista (`pa.nome = 'ANALISTA'`) <br> $C$: O perfil de acesso do usuário é coordenador (`pa.nome = 'COORDENADOR'`)
-**Expressão lógica proposicional** | $A \land (B \lor C)$
-**Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table>
+| #3 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT u.* FROM usuario u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE u.ativo = TRUE AND (pa.nome = 'ANALISTA' OR pa.nome = 'COORDENADOR');` |
+| **Proposições lógicas** | $A$: O usuário está ativo (`u.ativo = TRUE`) <br> $B$: O perfil de acesso do usuário é analista (`pa.nome = 'ANALISTA'`) <br> $C$: O perfil de acesso do usuário é coordenador (`pa.nome = 'COORDENADOR'`) |
+| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
 
 A consulta #3 é utilizada para listar usuários internos ativos com perfil operacional. O usuário precisa estar ativo e possuir perfil de analista ou coordenador. Assim, $A$ precisa ser verdadeiro, enquanto $B$ e $C$ representam perfis alternativos aceitos pela regra.
 
@@ -1336,12 +1338,12 @@ A consulta #3 é utilizada para listar usuários internos ativos com perfil oper
 
 ### #4 — Consulta de registros de alteração com dados auditáveis
 
-#4 | ---
---- | ---
-**Expressão SQL** | `SELECT ra.* FROM registro_alteracao ra WHERE (ra.tipo_operacao = 'ATUALIZACAO' OR ra.tipo_operacao = 'EXCLUSAO') AND ra.dados_anteriores IS NOT NULL AND ra.dados_novos IS NOT NULL;`
-**Proposições lógicas** | $A$: O tipo de operação é atualização (`ra.tipo_operacao = 'ATUALIZACAO'`) <br> $B$: O tipo de operação é exclusão (`ra.tipo_operacao = 'EXCLUSAO'`) <br> $C$: Os dados anteriores estão preenchidos (`ra.dados_anteriores IS NOT NULL`) <br> $D$: Os novos dados estão preenchidos (`ra.dados_novos IS NOT NULL`)
-**Expressão lógica proposicional** | $(A \lor B) \land C \land D$
-**Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(A \lor B)$</th> <th>$(A \lor B) \land C \land D$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table>
+| #4 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT ra.* FROM registro_alteracao ra WHERE (ra.tipo_operacao = 'ATUALIZACAO' OR ra.tipo_operacao = 'EXCLUSAO') AND ra.dados_anteriores IS NOT NULL AND ra.dados_novos IS NOT NULL;` |
+| **Proposições lógicas** | $A$: O tipo de operação é atualização (`ra.tipo_operacao = 'ATUALIZACAO'`) <br> $B$: O tipo de operação é exclusão (`ra.tipo_operacao = 'EXCLUSAO'`) <br> $C$: Os dados anteriores estão preenchidos (`ra.dados_anteriores IS NOT NULL`) <br> $D$: Os novos dados estão preenchidos (`ra.dados_novos IS NOT NULL`) |
+| **Expressão lógica proposicional** | $(A \lor B) \land C \land D$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(A \lor B)$</th> <th>$(A \lor B) \land C \land D$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
 
 A consulta #4 é utilizada para recuperar registros relevantes para auditoria. A operação deve ser atualização ou exclusão, e o registro precisa conter tanto os dados anteriores quanto os novos dados. Dessa forma, a expressão exige que $(A \lor B)$ seja verdadeiro e, ao mesmo tempo, que $C$ e $D$ também sejam verdadeiros.
 
