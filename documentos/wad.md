@@ -184,19 +184,19 @@ Os critérios de classificação de impacto seguem uma escala de cinco níveis: 
 
 <div align="center">
   <sub>Figura 2.1.5.1 - Classificação de Impacto</sub><br>
-  <img src="/documentos/assets/matriz_de_risco/classificacao_de_impacto.png" width="100%" alt="Descrição breve"><br>
+  <img src="./assets/matriz_de_risco/classificacao_de_impacto.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 2.1.5.2 - Classificação de Probabilidade</sub><br>
-  <img src="/documentos/assets/matriz_de_risco/classificacao_de_probabilidade.png" width="100%" alt="Descrição breve"><br>
+  <img src="./assets/matriz_de_risco/classificacao_de_probabilidade.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 2.1.5.3 - Matriz de Risco</sub><br>
-  <img src="/documentos/assets/matriz_de_risco/matriz_de_risco.png" width="100%" alt="Descrição breve"><br>
+  <img src="./assets/matriz_de_risco/matriz_de_risco.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -284,19 +284,19 @@ Personas são representações fictícias dos usuários da aplicação, constru�
 
 <div align="center">
   <sub>Figura 2.2.1 - Persona 1: Juliano Soares</sub><br>
-  <img src="/documentos/assets/personas/persona_1_juliano_soares.png" width="100%" alt="Persona Juliano Soares"><br>
+  <img src="./assets/personas/persona_1_juliano_soares.png" width="100%" alt="Persona Juliano Soares"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
 <div align="center">
   <sub>Figura 2.2.2 - Persona 2: Bianca Souza</sub><br>
-  <img src="/documentos/assets/personas/persona_2_bianc_souza.png" width="100%" alt="Persona Bianca Souza"><br>
+  <img src="./assets/personas/persona_2_bianc_souza.png" width="100%" alt="Persona Bianca Souza"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
 <div align="center">
   <sub>Figura 2.2.3 - Persona 3: Marcelo Andrade</sub><br>
-  <img src="/documentos/assets/personas/persona_3_marcelo_andrade.png" width="100%" alt="Persona Marcelo Andrade"><br>
+  <img src="./assets/personas/persona_3_marcelo_andrade.png" width="100%" alt="Persona Marcelo Andrade"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Imagem de pessoa produzida por IA generativa)</sup>
 </div><br>
 
@@ -572,7 +572,7 @@ A modelagem funcional reflete os quatro níveis de maturidade definidos pela ATV
 
 <div align="center">
   <sub>Figura 3.2.2 - Diagrama de casos de uso</sub><br>
-  <img src="/documentos/assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso ATVOS"><br>
+  <img src="./assets/diagrama_de_casos_de_uso.png" width="100%" alt="Diagrama de Casos de Uso ATVOS"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no https://plantuml.com/)</sup>
 </div>
 
@@ -717,7 +717,7 @@ A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnic
 
 ### Imagem do diagrama
 
-![Diagrama de Classes do Domínio](/documentos/assets/diagrama_de_classes_do_dominio.png)
+![Diagrama de Classes do Domínio](./assets/diagrama_de_classes_do_dominio.png)
 
 [Acesse o diagrama de classes UML](https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYjsSGEjZExWFO18O64n0iIFm1uG23nX7ZXDV-4Ny9nBctYf9qEeYjjEpuNV-Vu-3kstrAQI9sdYQEPJYWQCxAM92KefiXDY59KeLYWiKYBFpWJZlCiUdFV1sHk64pyTvOpN7nRV1sYAt--n9S7RHAwqaWB9Dbwer7C98qq4znnr2F6Cm9OK6HmOAqbkyurzIF1v-mBYkwrLDI6nE8nuskq8ecYBKd2EDMVPnG9gJUY9U0YfefcwEBrjYD9-AF-Q4RYs3Y_UBcD2qif7ay4roMSYrS7HVfpoEgrI69RkjYmw16dIg6By_ksq1M9aEYPbylFaDzQuLxvwIKBVUaWz3Q97gsbo7bSAqzUC_-CHCYOodhqrV83eost5-N7UTfsJ7cUxl4xcRpYtRVzOdmV0xHR_NAXwLw_hxklzFpUVytuVNfRANh1yg5N5kAFtloWRWOJapL59nw4I2KfVYt-eke4GC7SPTWBbeafB9KW9LA4ffFgwptuUjfHks8yoXDHwqt2MU2vtZYSVUBY09TZU3RpWZ4sOmjlDiCT5tDDTAwwJl32lmhBNtwm--q5hh4UXpq8OGP1HAGnTsS-Td5OkuBzw7-u_TjxtxrSpd7buzQKJl7CzVnPE4SUkYg-3zpbPNXaQgT4HfH9eH05qp_Ay1Ho1UGxOeGrsQwgjr6k0pXZyGWjb_wu-ek3qGWI9M57LYDwkpoZrb9LiYXRkJpxj6j0Ky8IomS59XBSyXmJJGAY8fPIhiK8ZOccEnGu4cb6-8PmRTbjcD92iaZu88B545G1DFf4L-Apykl5YCH4QKdaSyzN0x3s965V4EbM4j48WFDKdW1LZu7dL3dwT9UlkboQR2R3USlghFgTKRshsL6xW2kfAijnr2tBNMfypYBMIOiPdR2qFIIk5PKtTGxQIJfhWcOtknHG7b4vb98AWXrwKofBpc8Iqxj4dbSctK637qFrG1fX1xN3QD1MGcbDRECgrsaY9ASHZO6s1d7TLFdi8g3fDM5Fm5nsnzSvaJ4ZbdOgOaYFGU02pKfYYdGmntKMBLo3iA79K1wJky7kxyhRrxsDQJUfZMbXwk4EI0RNjG-FI4hgdC5cUnUeOqnXdvEaHf_1WQ5srHCQsodqBMvsMqyQKKua4zZ4TqJaPNnrqBTIy7A-BBwQ-U7y52q37xg8PyWOkzvy7Xx7n4kL5py1F0KUgl0C9-F8S6Q7XGzkgKZ4R6tLsa2EOMk3qjj299Jm0xiUGBG6slkRoXLBAdJ7jWD9Fykfn9aKDzKcximFKqN0p6HueyHqnJYJC6tAO4hQ8nn8drdSFKJJGdjR_Gtq84MXbxnBrERuBCA1c6k8fi-NkqvnABzrE0VNEgzq_a_sx4wxZzHTOGv-V3yJxI7s8Rp_MxkITCtAfjsWWqZjvcMBMh7DAdE14zqvfHsJSxFK9bzuHGrdMVLK2_ljlJaFZZgdmoO1XdlD8OK9QI9-Rnu6BL4WReGr2alSOA_oje3JqN2Ajeh7qjlCkyIk7mRueHSiu9mvdVc1wq-nRuwP6ALm1c9P0gjOLYk1zOS-XZXHA0CgXoyFxXD85dzgStm68WOKoS4vdUrXy-JY1BrmTePExfsVlt3IFrIDq1lN3oxGFz_yW8p66ozTFt2SdbRR2_oqpm5T9nUbawDyj9hoqJx4BfggYGw6q4d0pi8-MGtPDhAxM-un_Uymsrmn2BNcxVzclSVSOi_ZKtI4eTDfVOFcTu7Qvvr1uyFRS-nDuUfQV0Tx4i-H6puiRzc7hu2xXJi_Vz2-IOzGhaY_S1kjvWvyGArxMQuK-t4s3hVNuahnbb23S04XUkzFBttNNBhnBL6MpnZbOvPORSlA2H6fdgq46hWIefLWJaeCSGDPYHJ-8saca8QB8dJnKmUkVIiXKs0w9EcAok9tS-8q3t9n_I1txW0hb6yeDOHheRL83GWxPKwBXg3c8i897Fp8ZbTWK9lzv_3Y5m7OpEiCt2zeOlYdmgVowwXw5JnrCi4Koa65Af0qhHY86FnaGgcSIISj_YuP6-nljhV-Q7lhHuePIYz-vbIeSyS9geaPC3kGFBGuj85KyU9NOcYzn29WNWddEuElYQOJXG8VZcbxoWJKpBgTD3b5PNYbXhDYJogz1lw1V9RSv5GCPJ1Mbmy3alHoNMT7qHmcvcOzOSbe1hwfMRq6bRD5PJ3KGPHF3QSGL8cJW15HZYcG-aq0hIalVZELP5nD1u0VhknB_46uN20_kFBdnVTNtgLvry78cqznyMtLU0-NUciFdtsqOJ4GvyUnUCpFEky7xJrigNLV4xgxUC3ZziIoen9BgrVgFRgm3AosxDXjUgjUFakVsItOiLkohL_LIfV2BGWrJM_fUbXSTmZ7QXYMSe_qTltLqhHwisFtwZtghVxeE6z1r7cQ_0i0)
 
@@ -822,97 +822,97 @@ Portanto, a herança foi diferenciada e avaliada, mas não aplicada no modelo fi
 
 <div align="center">
   <sub>Figura 3.2.4.1 - Primeiro fluxo: Cadastro de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/primeiro_fluxo_cadastro_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <img src="./assets/diagrama_de_sequencia/primeiro_fluxo_cadastro_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 1"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.2 - Segundo fluxo: Cadastro de usuários (nível de acesso)</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/segundo_fluxo_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 2"><br>
+  <img src="./assets/diagrama_de_sequencia/segundo_fluxo_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 2"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.3 - Terceiro fluxo: Login de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/terceiro_fluxo_login.png" width="100%" alt="Diagrama de Sequencia 3"><br>
+  <img src="./assets/diagrama_de_sequencia/terceiro_fluxo_login.png" width="100%" alt="Diagrama de Sequencia 3"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.4 - Quarto fluxo: Inativação de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/quarto_fluxo_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <img src="./assets/diagrama_de_sequencia/quarto_fluxo_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.5 - Quinto fluxo: Cadastro de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/quinto_fluxo_cadastro_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
+  <img src="./assets/diagrama_de_sequencia/quinto_fluxo_cadastro_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.6 - Sexto fluxo: Consulta histórico de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/sexto_fluxo_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 6"><br>
+  <img src="./assets/diagrama_de_sequencia/sexto_fluxo_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 6"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.7 - Sétimo fluxo: Edição dos dados do usuário</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/setimo_fluxo_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 7"><br>
+  <img src="./assets/diagrama_de_sequencia/setimo_fluxo_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 7"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.8 - Oitavo fluxo: Edição dos dados dos parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/oitavo_fluxo_atualiza_dados_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 8"><br>
+  <img src="./assets/diagrama_de_sequencia/oitavo_fluxo_atualiza_dados_de_parceiros.png" width="100%" alt="Diagrama de Sequencia 8"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.9 - Nono fluxo: Cadastro de dados das terras</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/nono_fluxo_cadastro_de_terras.png" width="100%" alt="Diagrama de Sequencia 9"><br>
+  <img src="./assets/diagrama_de_sequencia/nono_fluxo_cadastro_de_terras.png" width="100%" alt="Diagrama de Sequencia 9"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.10 - Décimo fluxo: Edição de dados das terras</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/decimo_fluxo_edicao_de_terras.png" width="100%" alt="Diagrama de Sequencia 10"><br>
+  <img src="./assets/diagrama_de_sequencia/decimo_fluxo_edicao_de_terras.png" width="100%" alt="Diagrama de Sequencia 10"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.11 - Fluxo 11: Registro de interações</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_11_registra_interacoes.png" width="100%" alt="Diagrama de Sequencia 11"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_11_registra_interacoes.png" width="100%" alt="Diagrama de Sequencia 11"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.12 - Fluxo 12: Visualização dos dados dos parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_12_visualiza_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 12"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_12_visualiza_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 12"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.13 - Fluxo 13: Visualização dos parceiros por filtros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_13_visualisar_parceiros_por_filtro.png" width="100%" alt="Diagrama de Sequencia 13"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_13_visualisar_parceiros_por_filtro.png" width="100%" alt="Diagrama de Sequencia 13"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.14 - Fluxo 14: Visualização do painel de dados dos parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_14_dashboard_parceiros.png" width="100%" alt="Diagrama de Sequencia 14"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_14_dashboard_parceiros.png" width="100%" alt="Diagrama de Sequencia 14"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.15 - Fluxo 15: Visualização do painel de dados das interações com os parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_15_visualizacao_dashboard_de_interacoes.png" width="100%" alt="Diagrama de Sequencia 15"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_15_visualizacao_dashboard_de_interacoes.png" width="100%" alt="Diagrama de Sequencia 15"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.2.4.16 - Fluxo 16: Exportação de dados</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 16"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequencia 16"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1255,7 +1255,7 @@ Por fim, o princípio de **modelagem dirigida por evidência**, com cada atribut
 
 <div align="center">
   <sub>Figura 3.6.2.1 - Diagrama Entidade-Relacionamento (DER)</sub><br>
-  <img src="/documentos/assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
+  <img src="./assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
