@@ -321,105 +321,137 @@ User Stories são descrições simples de funcionalidades escritas do ponto de v
 
 Identificação | US01
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso cadastrar fornecedores de cana com suas informações específicas, para que os dados de cada agricultor parceiro estejam centralizados e padronizados no sistema."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o formulário de cadastro de fornecedor de cana, quando preenche todos os campos obrigatórios (CPF/CNPJ, inscrição estadual, área plantada em hectares, TCH médio, ATR médio, histórico de cumprimento de cota, certificações e usina de referência) e confirma, então o fornecedor é salvo e exibido na listagem de parceiros.
-Critério de aceite 2 | CR2: Dado que o editor está no formulário de cadastro de fornecedor de cana, quando tenta salvar sem preencher um ou mais campos obrigatórios, então o sistema exibe aviso de validação para cada campo vazio e não conclui o cadastro.
-Critérios INVEST | Independente: pode ser desenvolvida sem depender do cadastro de proprietários ou de interações. Negociável: os campos do formulário podem ser revistos com a equipe da ATVOS sem alterar o objetivo central. Valiosa: resolve diretamente a dispersão dos dados de fornecedores em planilhas, centralizando as informações em um único sistema acessível a toda a equipe e facilitando a consulta organizada das informações dos agricultores parceiros. Estimável: envolve formulário, validação e persistência no banco de dados, com escopo claro para estimar o esforço. Pequena: abrange apenas o fluxo de criação de um novo fornecedor de cana, sem integrações externas. Testável: verifica-se se o fornecedor aparece na listagem após o cadastro e se os campos obrigatórios são devidamente validados.
+User Story | "Como analista de negócios agrícolas, posso cadastrar fornecedores de cana salvando o registro como rascunho e enviando para validação, para que os dados de cada agricultor parceiro sejam revisados e ativados de forma padronizada no sistema."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o formulário de cadastro de fornecedor de cana, quando preenche os campos disponíveis e salva como rascunho, então o registro é persistido com status rascunho e fica disponível na seção de rascunhos do analista.
+Critério de aceite 2 | CR2: Dado que o analista concluiu o preenchimento do formulário de fornecedor de cana, quando aciona o envio para validação, então o registro muda para status pendente e aparece na fila de validação do coordenador.
+Critérios INVEST | Independente: pode ser desenvolvida sem depender do cadastro de proprietários ou de interações. Negociável: os campos do formulário podem ser revistos com a equipe da ATVOS sem alterar o objetivo central. Valiosa: resolve diretamente a dispersão dos dados de fornecedores em planilhas, centralizando as informações em um único sistema com fluxo de validação rastreável. Estimável: envolve formulário, validação, persistência e fluxo de status, com escopo claro para estimar o esforço. Pequena: abrange apenas o fluxo de criação e envio de um novo fornecedor de cana para validação, sem integrações externas. Testável: verifica-se se o registro aparece como rascunho após salvar e se muda para pendente após o envio para validação.
 
 ---
 
 Identificação | US02
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso cadastrar proprietários de terra com suas informações específicas, para que os dados de cada proprietário parceiro estejam centralizados e padronizados no sistema."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o formulário de cadastro de proprietário de terra, quando preenche todos os campos obrigatórios (CPF/CNPJ, documentação da terra, localização, distância da usina, área total disponível em hectares, topografia, status da documentação fundiária, CAR, situação ambiental e tipo de contrato) e confirma, então o proprietário é salvo e exibido na listagem de parceiros.
-Critério de aceite 2 | CR2: Dado que o editor está no formulário de cadastro de proprietário de terra, quando tenta salvar sem preencher um ou mais campos obrigatórios, então o sistema exibe aviso de validação para cada campo vazio e não conclui o cadastro.
-Critérios INVEST | Independente: pode ser desenvolvida em paralelo à US01, com formulário e lógica próprios para o perfil de proprietário. Negociável: os campos podem ser ajustados conforme as necessidades da área de Estratégia de Terras. Valiosa: centraliza os dados de proprietários que hoje estão dispersos em planilhas, eliminando retrabalho e padronizando o cadastro. Estimável: reutiliza a estrutura da US01 com campos distintos para o perfil de proprietário, com esforço bem delimitado. Pequena: escopo restrito ao fluxo de criação de um proprietário de terra. Testável: verifica-se se o proprietário aparece na listagem após o cadastro e se os campos específicos são corretamente salvos.
+User Story | "Como analista de negócios agrícolas, posso cadastrar proprietários de terra salvando o registro como rascunho e enviando para validação, para que os dados de cada proprietário parceiro sejam revisados e ativados de forma padronizada no sistema."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o formulário de cadastro de proprietário de terra, quando preenche os campos disponíveis e salva como rascunho, então o registro é persistido com status rascunho e fica disponível na seção de rascunhos do analista.
+Critério de aceite 2 | CR2: Dado que o analista concluiu o preenchimento do formulário de proprietário de terra, quando aciona o envio para validação, então o registro muda para status pendente e aparece na fila de validação do coordenador.
+Critérios INVEST | Independente: pode ser desenvolvida em paralelo à US01, com formulário e lógica próprios para o perfil de proprietário. Negociável: os campos podem ser ajustados conforme as necessidades da área de Estratégia de Terras. Valiosa: centraliza os dados de proprietários que hoje estão dispersos em planilhas, eliminando retrabalho e padronizando o cadastro com fluxo de validação. Estimável: reutiliza a estrutura da US01 com campos distintos para o perfil de proprietário, com esforço bem delimitado. Pequena: escopo restrito ao fluxo de criação e envio de um proprietário de terra para validação. Testável: verifica-se se o registro aparece como rascunho após salvar e se muda para pendente após o envio para validação.
 
 ---
 
 Identificação | US03
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso registrar o histórico de interações com parceiros, para que o relacionamento seja documentado e acessível a toda a equipe."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o perfil de um parceiro cadastrado, quando preenche os campos de interação (data, tipo e descrição) e confirma, então a interação é salva e exibida no histórico do parceiro em ordem cronológica.
-Critério de aceite 2 | CR2: Dado que o editor registrou uma ou mais interações com um parceiro, quando acessa o histórico desse parceiro, então todos os registros são exibidos com data, tipo e descrição visíveis, e a interação mais recente aparece no topo da lista.
+User Story | "Como analista de negócios agrícolas, posso registrar o histórico de interações com parceiros, para que o relacionamento seja documentado e acessível a toda a equipe."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o perfil de um parceiro com status ativo, quando preenche os campos de interação (data, tipo e descrição) e confirma, então a interação é salva e exibida no histórico do parceiro em ordem cronológica.
+Critério de aceite 2 | CR2: Dado que o analista registrou uma ou mais interações com um parceiro, quando acessa o histórico desse parceiro, então todos os registros são exibidos com data, tipo e descrição visíveis, e a interação mais recente aparece no topo da lista.
 Critérios INVEST | Independente: pode ser construída separadamente das funcionalidades de visualização e filtro, com lógica própria de persistência. Negociável: os tipos de interação e os campos do formulário podem ser ajustados conforme o fluxo de trabalho real da equipe. Valiosa: resolve a perda de histórico de relacionamento, uma das principais dores identificadas no briefing da ATVOS. Estimável: envolve formulário de registro e listagem cronológica, com escopo claro e bem delimitado. Pequena: funcionalidade focada em um único fluxo, registrar e listar interações por parceiro. Testável: verifica-se se a interação registrada aparece no histórico do parceiro correto e na ordem cronológica esperada.
 
 ---
 
 Identificação | US04
 --- | ---
-Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
 Prioridade | Alta
-User Story | "Como observador, posso visualizar o perfil detalhado de cada parceiro, para que eu possa consultar rapidamente as informações necessárias para a tomada de decisão."
-Critério de aceite 1 | CR1: Dado que o observador está autenticado e visualiza a listagem de parceiros, quando clica em um parceiro, então o sistema exibe todos os dados cadastrais e o histórico de interações na tela de perfil.
-Critério de aceite 2 | CR2: Dado que o observador acessa a tela de perfil de um parceiro, quando a página é carregada, então todos os dados são exibidos em até 3 segundos, conforme o requisito de desempenho definido.
-Critérios INVEST | Independente: a tela de visualização pode ser prototipada e desenvolvida antes mesmo de todas as funcionalidades de edição estarem concluídas. Negociável: o layout e as informações exibidas no perfil podem ser ajustados com base no feedback dos usuários internos. Valiosa: permite que observadores consultem dados de forma centralizada, eliminando a necessidade de buscar planilhas dispersas. Estimável: tela somente de leitura, sem formulários complexos, com esforço menor que as User Stories de edição. Pequena: escopo limitado a exibir dados já cadastrados de forma organizada e legível. Testável: verifica-se se todos os dados do parceiro são exibidos corretamente e se o tempo de carregamento está dentro do limite definido.
+User Story | "Como coordenadora de estratégia de terras, posso visualizar o perfil detalhado de cada parceiro com status ativo, para que eu possa consultar rapidamente as informações necessárias para a tomada de decisão."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e visualiza a listagem de parceiros com status ativo, quando clica em um parceiro, então o sistema exibe todos os dados cadastrais e o histórico de interações na tela de perfil.
+Critério de aceite 2 | CR2: Dado que a coordenadora acessa a tela de perfil de um parceiro ativo, quando a página é carregada, então todos os dados são exibidos em até 3 segundos, conforme o requisito de desempenho definido.
+Critérios INVEST | Independente: a tela de visualização pode ser prototipada e desenvolvida antes mesmo de todas as funcionalidades de edição estarem concluídas. Negociável: o layout e as informações exibidas no perfil podem ser ajustados com base no feedback dos usuários internos. Valiosa: permite que coordenadoras consultem dados de parceiros ativos de forma centralizada, eliminando a necessidade de buscar planilhas dispersas. Estimável: tela somente de leitura, sem formulários complexos, com esforço menor que as User Stories de edição. Pequena: escopo limitado a exibir dados de parceiros ativos de forma organizada e legível. Testável: verifica-se se todos os dados do parceiro ativo são exibidos corretamente e se o tempo de carregamento está dentro do limite definido.
 
 ---
 
 Identificação | US05
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso editar os dados cadastrais de parceiros, para que as informações estejam sempre atualizadas e confiáveis para a equipe."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o perfil de um parceiro existente, quando altera um ou mais dados cadastrais e confirma, então as mudanças são salvas e refletidas imediatamente no perfil do parceiro.
-Critério de aceite 2 | CR2: Dado que o editor realizou uma alteração nos dados de um parceiro, quando a edição é confirmada, então o sistema registra automaticamente a data e hora da atualização no histórico do cadastro.
-Critérios INVEST | Independente: pode ser desenvolvida em paralelo às User Stories de cadastro, compartilhando o formulário com lógica de edição. Negociável: os campos editáveis e as regras de validação podem ser revistos conforme o feedback dos usuários. Valiosa: garante que as informações dos parceiros reflitam a realidade atual, mantendo a confiabilidade dos dados no sistema. Estimável: reutiliza a interface das User Stories de cadastro com adaptações para edição, com esforço bem delimitado. Pequena: fluxo limitado a buscar, alterar e salvar dados de um parceiro existente. Testável: verifica-se se as alterações são salvas corretamente e se a data de atualização é registrada.
+User Story | "Como analista de negócios agrícolas, posso editar os dados cadastrais de parceiros com status rascunho, devolvido ou ativo, para que as informações estejam sempre atualizadas e confiáveis para a equipe."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o perfil de um parceiro com status rascunho, devolvido ou ativo, quando altera um ou mais dados cadastrais e confirma, então as mudanças são salvas, o sistema registra data, hora e usuário responsável, e a versão anterior é preservada no histórico.
+Critério de aceite 2 | CR2: Dado que o analista tenta editar um parceiro com status excluído, quando tenta acessar a opção de edição, então o sistema bloqueia a ação e exibe mensagem informando que o registro não pode ser editado neste status.
+Critérios INVEST | Independente: pode ser desenvolvida em paralelo às User Stories de cadastro, compartilhando o formulário com lógica de edição. Negociável: os campos editáveis e as regras de validação podem ser revistos conforme o feedback dos usuários. Valiosa: garante que as informações dos parceiros reflitam a realidade atual, mantendo a confiabilidade e a rastreabilidade dos dados no sistema. Estimável: reutiliza a interface das User Stories de cadastro com adaptações para edição e controle de status, com esforço bem delimitado. Pequena: fluxo limitado a buscar, alterar e salvar dados de um parceiro existente com status compatível. Testável: verifica-se se as alterações são salvas com rastreabilidade e se a edição é bloqueada para registros excluídos.
 
 ---
-
-Identificação | US09
---- | ---
-Persona | Marcelo Andrade — Administrador do Sistema / Gerente de coordenadores
-Prioridade | Alta
-User Story | "Como administrador, posso cadastrar usuários com perfis de acesso definidos, para que o sistema seja utilizado de forma segura e com acessos controlados."
-Critério de aceite 1 | CR1: Dado que o administrador está autenticado e acessa o formulário de cadastro de usuário, quando preenche nome, e-mail e perfil de acesso (administrador, editor ou observador) e confirma, então o usuário é salvo e exibido na listagem de usuários.
-Critério de aceite 2 | CR2: Dado que o administrador está no formulário de cadastro de usuário, quando tenta cadastrar um e-mail já existente no sistema, então uma mensagem de erro é exibida e o cadastro não é concluído.
-Critérios INVEST | Independente: pode ser desenvolvida antes de qualquer funcionalidade de gestão de parceiros, pois define os acessos que viabilizam o uso do restante do sistema. Negociável: os campos do formulário de cadastro e os perfis de acesso disponíveis podem ser revistos conforme as políticas internas de TI e segurança da informação da ATVOS. Valiosa: garante que apenas usuários autorizados acessem o sistema, atendendo aos requisitos de segurança e controle de acesso definidos para o projeto. Estimável: envolve formulário de cadastro com atribuição de perfil e persistência no banco de dados, com escopo claro e bem delimitado. Pequena: fluxo restrito ao cadastro e atribuição de perfil de acesso de um único usuário, sem integrações externas. Testável: verifica-se se o usuário cadastrado consegue realizar login e acessa apenas as funcionalidades correspondentes ao seu perfil de acesso.
-
----
-
-Identificação | US10
---- | ---
-Persona | Marcelo Andrade — Administrador do Sistema / Gerente de coordenadores
-Prioridade | Alta
-User Story | "Como administrador, posso inativar usuários do sistema, para que colaboradores que saíram da equipe não tenham mais acesso às informações da ATVOS."
-Critério de aceite 1 | CR1: Dado que o administrador está autenticado e acessa o cadastro de um usuário ativo, quando aciona a inativação e confirma, então o usuário perde o acesso imediatamente e não consegue realizar login no sistema.
-Critério de aceite 2 | CR2: Dado que um usuário foi inativado, quando o administrador consulta o registro desse usuário, então o registro é exibido com status inativo e o histórico de ações é preservado, sem exclusão de dados.
-Critérios INVEST | Independente: pode ser desenvolvida logo após o cadastro de usuários (US09), com lógica própria de atualização de status no banco de dados. Negociável: o comportamento da inativação — como o encerramento imediato de sessão e a preservação do histórico de ações — pode ser refinado conforme as políticas internas da ATVOS. Valiosa: garante que ex-colaboradores não mantenham acesso às informações sensíveis do sistema, reduzindo riscos de segurança sem a necessidade de excluir registros históricos. Estimável: envolve atualização de status no banco de dados e invalidação de sessão ativa, com esforço bem delimitado. Pequena: funcionalidade restrita à alteração do status do usuário para inativo, sem exclusão de dados ou impacto em outros módulos. Testável: verifica-se se o usuário inativado não consegue realizar login e se o histórico de ações permanece acessível para fins de auditoria.
-
----
-
 
 Identificação | US06
 --- | ---
-Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
 Prioridade | Média
-User Story | "Como observador, posso filtrar a lista de parceiros por nome, região, área ou tipo de parceiro, para que eu encontre rapidamente o parceiro que procuro sem precisar percorrer toda a lista."
-Critério de aceite 1 | CR1: Dado que o observador está autenticado e visualiza a listagem de parceiros, quando aplica um ou mais filtros (nome, região, área ou tipo de parceiro), então a listagem exibe apenas os parceiros que correspondem ao critério selecionado.
-Critério de aceite 2 | CR2: Dado que o observador aplicou um filtro na listagem, quando adiciona um segundo critério de filtro, então o resultado é atualizado combinando os dois filtros sem necessidade de recarregar a página.
-Critérios INVEST | Independente: pode ser implementada de forma isolada após a listagem básica de parceiros estar disponível, sem depender de funcionalidades de edição ou cadastro. Negociável: os critérios de filtro (nome, região, área, tipo de parceiro) podem ser ajustados conforme as prioridades operacionais da equipe da ATVOS. Valiosa: reduz o tempo de busca por parceiros específicos, aumentando a eficiência do observador na consulta e na tomada de decisão. Estimável: envolve parâmetros de consulta ao banco de dados sobre registros já existentes, sem lógica de negócio complexa. Pequena: funcionalidade restrita à aplicação de filtros sobre uma listagem já existente, sem impacto nas funcionalidades de edição ou cadastro. Testável: verifica-se se, ao aplicar um filtro, apenas os parceiros correspondentes ao critério selecionado são exibidos na listagem.
+User Story | "Como coordenadora de estratégia de terras, posso filtrar a lista de parceiros ativos por nome, região, área ou tipo de parceiro, para que eu encontre rapidamente o parceiro que procuro sem precisar percorrer toda a lista."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e visualiza a listagem de parceiros com status ativo, quando aplica um ou mais filtros (nome, região, área ou tipo de parceiro), então a listagem exibe apenas os parceiros ativos que correspondem ao critério selecionado.
+Critério de aceite 2 | CR2: Dado que a coordenadora aplicou um filtro na listagem de parceiros ativos, quando adiciona um segundo critério de filtro, então o resultado é atualizado combinando os dois filtros sem necessidade de recarregar a página.
+Critérios INVEST | Independente: pode ser implementada de forma isolada após a listagem básica de parceiros ativos estar disponível, sem depender de funcionalidades de edição ou cadastro. Negociável: os critérios de filtro (nome, região, área, tipo de parceiro) podem ser ajustados conforme as prioridades operacionais da equipe da ATVOS. Valiosa: reduz o tempo de busca por parceiros ativos específicos, aumentando a eficiência da coordenadora na consulta e na tomada de decisão. Estimável: envolve parâmetros de consulta ao banco de dados sobre registros já existentes, sem lógica de negócio complexa. Pequena: funcionalidade restrita à aplicação de filtros sobre a listagem de parceiros ativos, sem impacto nas funcionalidades de edição ou cadastro. Testável: verifica-se se, ao aplicar um filtro, apenas os parceiros ativos correspondentes ao critério selecionado são exibidos na listagem.
+
+---
+
+Identificação | US07
+--- | ---
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
+Prioridade | Média
+User Story | "Como coordenadora de estratégia de terras, posso exportar a lista de contatos dos parceiros ativos, para que eu possa compartilhar informações com pessoas que não têm acesso ao sistema."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e acessa a funcionalidade de exportação, quando aciona a exportação da lista de contatos, então o sistema gera um arquivo contendo nome, contato, tipo e região de cada parceiro com status ativo.
+Critério de aceite 2 | CR2: Dado que o sistema gerou o arquivo de exportação, quando a coordenadora faz o download e abre o arquivo, então o arquivo está em formato CSV ou XLSX e pode ser aberto sem erros em ferramentas de planilha.
+Critérios INVEST | Independente: pode ser desenvolvida separadamente das funcionalidades de filtro, com lógica própria de geração de arquivo. Negociável: o formato do arquivo exportado (CSV ou XLSX) e os campos incluídos podem ser definidos conforme as necessidades da equipe e os sistemas de destino utilizados pela ATVOS. Valiosa: permite que informações dos parceiros ativos sejam compartilhadas com pessoas sem acesso ao sistema, ampliando o alcance dos dados sem comprometer o controle de acesso interno. Estimável: envolve consulta ao banco de dados e geração de arquivo estruturado, com lógica bem delimitada e sem dependências externas. Pequena: funcionalidade restrita à exportação de uma lista de contatos de parceiros ativos já existente no sistema. Testável: verifica-se se o arquivo gerado contém todos os dados esperados de parceiros ativos, está no formato correto e pode ser aberto sem erros em ferramentas de planilha.
 
 ---
 
 Identificação | US08
 --- | ---
-Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
-Prioridade | Média
-User Story | "Como observador, posso exportar a lista de contatos dos parceiros, para que eu possa compartilhar informações com pessoas que não têm acesso ao sistema."
-Critério de aceite 1 | CR1: Dado que o observador está autenticado e acessa a funcionalidade de exportação, quando aciona a exportação da lista de contatos, então o sistema gera um arquivo contendo nome, contato, tipo e região de cada parceiro ativo.
-Critério de aceite 2 | CR2: Dado que o sistema gerou o arquivo de exportação, quando o observador faz o download e abre o arquivo, então o arquivo está em formato CSV ou XLSX e pode ser aberto sem erros em ferramentas de planilha.
-Critérios INVEST | Independente: pode ser desenvolvida separadamente das funcionalidades de filtro, com lógica própria de geração de arquivo. Negociável: o formato do arquivo exportado (CSV ou XLSX) e os campos incluídos podem ser definidos conforme as necessidades da equipe e os sistemas de destino utilizados pela ATVOS. Valiosa: permite que informações dos parceiros sejam compartilhadas com pessoas sem acesso ao sistema, ampliando o alcance dos dados sem comprometer o controle de acesso interno. Estimável: envolve consulta ao banco de dados e geração de arquivo estruturado, com lógica bem delimitada e sem dependências externas. Pequena: funcionalidade restrita à exportação de uma lista de contatos já existente no sistema. Testável: verifica-se se o arquivo gerado contém todos os dados esperados, está no formato correto e pode ser aberto sem erros em ferramentas de planilha.
+Persona | Marcelo Andrade — Gerente de Coordenadores
+Prioridade | Alta
+User Story | "Como gerente de coordenadores, posso cadastrar usuários com perfis de acesso definidos, para que o sistema seja utilizado de forma segura e com acessos controlados."
+Critério de aceite 1 | CR1: Dado que o gerente de coordenadores está autenticado e acessa o formulário de cadastro de usuário, quando preenche nome, e-mail e perfil de acesso (gerente de coordenadores, analista de negócios agrícolas ou coordenador de estratégia de terras) e confirma, então o usuário é salvo e exibido na listagem com status ativo.
+Critério de aceite 2 | CR2: Dado que o gerente de coordenadores está no formulário de cadastro de usuário, quando tenta cadastrar um e-mail já existente no sistema, então uma mensagem de erro é exibida e o cadastro não é concluído.
+Critérios INVEST | Independente: pode ser desenvolvida antes de qualquer funcionalidade de gestão de parceiros, pois define os acessos que viabilizam o uso do restante do sistema. Negociável: os campos do formulário de cadastro e os perfis de acesso disponíveis podem ser revistos conforme as políticas internas de TI e segurança da informação da ATVOS. Valiosa: garante que apenas usuários autorizados acessem o sistema, atendendo aos requisitos de segurança e controle de acesso definidos para o projeto. Estimável: envolve formulário de cadastro com atribuição de perfil e persistência no banco de dados, com escopo claro e bem delimitado. Pequena: fluxo restrito ao cadastro e atribuição de perfil de acesso de um único usuário, sem integrações externas. Testável: verifica-se se o usuário cadastrado consegue realizar login e acessa apenas as funcionalidades correspondentes ao seu perfil de acesso.
 
 ---
 
-As User Stories levantadas cobrem os fluxos essenciais para resolver a principal dor identificada pela ATVOS: a dispersão dos dados de fornecedores de cana e proprietários de terra em planilhas desconectadas. A priorização reflete esse objetivo, garantindo que o sistema entregue valor desde as primeiras sprints. As funcionalidades de suporte, como filtros e exportação, serão implementadas conforme o avanço do projeto.
+Identificação | US09
+--- | ---
+Persona | Marcelo Andrade — Gerente de Coordenadores
+Prioridade | Alta
+User Story | "Como gerente de coordenadores, posso inativar usuários do sistema, para que colaboradores que saíram da equipe não tenham mais acesso às informações da ATVOS."
+Critério de aceite 1 | CR1: Dado que o gerente de coordenadores está autenticado e acessa o cadastro de um usuário ativo, quando aciona a inativação e confirma, então o usuário perde o acesso imediatamente, as sessões ativas são encerradas e não consegue realizar login no sistema.
+Critério de aceite 2 | CR2: Dado que um usuário foi inativado, quando o gerente de coordenadores consulta o registro desse usuário, então o registro é exibido com status inativo e o histórico de ações é preservado, sem exclusão de dados.
+Critérios INVEST | Independente: pode ser desenvolvida logo após o cadastro de usuários (US08), com lógica própria de atualização de status no banco de dados. Negociável: o comportamento da inativação, como o encerramento imediato de sessão e a preservação do histórico de ações, pode ser refinado conforme as políticas internas da ATVOS. Valiosa: garante que ex-colaboradores não mantenham acesso às informações sensíveis do sistema, reduzindo riscos de segurança sem a necessidade de excluir registros históricos. Estimável: envolve atualização de status no banco de dados e invalidação de sessão ativa, com esforço bem delimitado. Pequena: funcionalidade restrita à alteração do status do usuário para inativo, sem exclusão de dados ou impacto em outros módulos. Testável: verifica-se se o usuário inativado não consegue realizar login e se o histórico de ações permanece acessível para fins de auditoria.
+
+---
+
+Identificação | US10
+--- | ---
+Persona | Marcelo Andrade — Gerente de Coordenadores
+Prioridade | Alta
+User Story | "Como gerente de coordenadores, posso editar os dados de usuários cadastrados, para que as informações e permissões de acesso estejam sempre corretas e atualizadas no sistema."
+Critério de aceite 1 | CR1: Dado que o gerente de coordenadores está autenticado e acessa o perfil de um usuário ativo, quando altera os dados (nome, e-mail ou perfil de acesso) e confirma, então as mudanças são salvas, o sistema registra data, hora e responsável pela alteração, e o usuário atualizado aparece na listagem.
+Critério de aceite 2 | CR2: Dado que o gerente de coordenadores tenta alterar o e-mail de um usuário para um já cadastrado por outro usuário, quando confirma a alteração, então o sistema exibe mensagem de erro informando duplicidade e não persiste a alteração.
+Critérios INVEST | Independente: pode ser desenvolvida logo após o cadastro de usuários (US08), compartilhando a interface do formulário com adaptações para edição. Negociável: os campos editáveis e as regras de validação podem ser revistos conforme as políticas internas de TI e segurança da ATVOS. Valiosa: permite que o gerente mantenha os dados dos usuários sempre corretos, garantindo que os perfis de acesso reflitam as responsabilidades atuais de cada colaborador. Estimável: reutiliza o formulário de cadastro com lógica de edição e validação de unicidade de e-mail, com esforço bem delimitado. Pequena: fluxo restrito à alteração de dados de um usuário existente, sem impacto em outros módulos. Testável: verifica-se se as alterações são salvas com rastreabilidade e se a duplicidade de e-mail é corretamente bloqueada.
+
+---
+
+Identificação | US11
+--- | ---
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
+Prioridade | Média
+User Story | "Como coordenadora de estratégia de terras, posso validar registros de parceiros pendentes aprovando ou devolvendo com comentário, para que apenas dados corretos e revisados sejam ativados no sistema."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e acessa a fila de validação com registros pendentes, quando seleciona um registro e aciona a aprovação, então o status do registro muda para ativo, o registro passa a aparecer nas consultas do sistema e o analista responsável é notificado.
+Critério de aceite 2 | CR2: Dado que a coordenadora identifica inconsistências em um registro pendente, quando aciona a devolução e preenche um comentário, então o status muda para devolvido, o analista responsável é notificado com o comentário e o registro sai da fila de validação.
+Critérios INVEST | Independente: pode ser desenvolvida após o fluxo de envio para validação (US01 e US02) estar implementado, com lógica própria de transição de status. Negociável: os critérios de revisão e o formato do comentário de devolução podem ser ajustados conforme o fluxo de trabalho real da equipe de coordenação. Valiosa: garante que apenas registros revisados e aprovados pela coordenação se tornem ativos no sistema, mantendo a qualidade e a confiabilidade dos dados. Estimável: envolve transição de status, notificação ao analista e persistência de comentário, com escopo bem delimitado. Pequena: fluxo restrito à revisão e aprovação ou devolução de um registro pendente por vez. Testável: verifica-se se o registro aprovado aparece como ativo nas consultas e se o registro devolvido retorna ao analista com o comentário visível.
+
+---
+
+Identificação | US12
+--- | ---
+Persona | Juliano Soares — Analista de Negócios Agrícolas
+Prioridade | Média
+User Story | "Como analista de negócios agrícolas, posso visualizar meus rascunhos e registros devolvidos com o comentário do coordenador, para que eu saiba quais cadastros preciso corrigir ou concluir."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa a seção de rascunhos, quando a página é carregada, então o sistema exibe todos os registros com status rascunho e devolvido vinculados ao analista logado, com nome do parceiro, status e data da última atualização.
+Critério de aceite 2 | CR2: Dado que o analista seleciona um registro com status devolvido, quando a tela de perfil é carregada, então o comentário do coordenador é exibido em destaque junto aos dados do parceiro, permitindo identificar o que precisa ser corrigido.
+Critérios INVEST | Independente: pode ser desenvolvida após o cadastro e envio para validação (US01 e US02) estarem implementados, com lógica própria de consulta filtrada por usuário e status. Negociável: os campos exibidos na listagem de rascunhos e o formato de destaque do comentário podem ser ajustados conforme o feedback dos analistas. Valiosa: permite que o analista retome cadastros incompletos ou corrija registros devolvidos sem perder o contexto, reduzindo retrabalho e aumentando a rastreabilidade do fluxo de validação. Estimável: envolve consulta filtrada ao banco de dados por usuário e status, com exibição de listagem e detalhes do registro, com esforço bem delimitado. Pequena: funcionalidade restrita à visualização de registros próprios com status rascunho ou devolvido, sem lógica de edição embutida. Testável: verifica-se se apenas os rascunhos do analista logado são exibidos e se o comentário do coordenador aparece em destaque nos registros devolvidos.
+
+---
+
+As User Stories levantadas cobrem os fluxos essenciais para resolver a principal dor identificada pela ATVOS: a dispersão dos dados de fornecedores de cana e proprietários de terra em planilhas desconectadas. O fluxo de validação por status (rascunho, pendente, ativo, devolvido) garante rastreabilidade e governança das informações desde o cadastro. A priorização reflete esse objetivo, com as histórias de alta prioridade cobrindo os fluxos centrais de cadastro, edição e gestão de usuários, e as de prioridade média endereçando funcionalidades de consulta, filtro, exportação e validação que ampliam a utilidade e a governança do sistema.
 
 # <a name="c3"></a>3. Projeto da Aplicação Web (sprints 1 a 5)
 
@@ -521,26 +553,29 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 | RF    | US relacionada | RN associadas    | Endpoint                                             | Método      |
 |-------|----------------|------------------|------------------------------------------------------|-------------|
-| RF001 | US09 | RN01, RN03 | `/usuarios` | POST |
-| RF002 | US09, US10 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
-| RF003 | US09 | RN03 | `/usuarios/:id/perfil` | PUT |
+| RF001 | US08 | RN01, RN03 | `/usuarios` | POST |
+| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
+| RF003 | US08 | RN03 | `/usuarios/:id/perfil` | PUT |
 | RF004 | US01, US02 | RN09, RN10 | `/parceiros` | POST |
 | RF005 | US05 | RN10, RN11, RN12 | `/parceiros/:id` | PUT |
 | RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
 | RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET |
 | RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
-| RF009 | US01, US02, US09 | RN09 | `/usuarios`, `/parceiros` | POST, PUT |
-| RF010 | US01, US02, US09 | RN10 | `/usuarios`, `/parceiros`, `/terras` | POST, PUT |
-| RF011 | US09, US10 | RN01, RN02 | `/auth/login` | POST |
-| RF012 | US04, US06, US08 | RN07, RN08 | `/parceiros`, `/terras` | GET |
+| RF009 | US01, US02, US08 | RN09 | `/usuarios`, `/parceiros` | POST, PUT |
+| RF010 | US01, US02, US08 | RN10 | `/usuarios`, `/parceiros`, `/terras` | POST, PUT |
+| RF011 | US08, US09 | RN01, RN02 | `/auth/login` | POST |
+| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros`, `/terras` | GET |
 | RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET |
 | RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | PUT (A exclusão é lógica) |
 | RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` e `/terras/:id/parceiros` | GET, POST |
 | RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
-| RF017 | US08 | RN04 | `/parceiros/exportar` | GET |
-| RF018 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF019 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF020 | US10 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
+| RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
+| RF020 | US09 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
+| RF021 | US01, US02 | RN16 | `/parceiros/:id/validacao` | PUT |
+| RF022 | US11 | RN17 | `/parceiros/:id/aprovar` | PUT |
+| RF023 | US11 | RN17 | `/parceiros/:id/devolver` | PUT |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
@@ -628,7 +663,7 @@ Identificação | UC04 - Validar Registro
 **FLUXO PRINCIPAL** | 1. O coordenador acessa a fila de validação.<br> 2. O sistema exibe os registros com status pendente, ordenados por data de envio.<br> 3. O coordenador seleciona um registro.<br> 4. O sistema exibe os dados completos do registro. <br>5. O coordenador revisa os dados e seleciona a opção de aprovar. <br>6. O sistema altera o status do registro para ativo.<br> 7. O registro passa a aparecer nas consultas normais do sistema.<br> 8. O sistema notifica o analista responsável sobre a aprovação.
 **FLUXOS ALTERNATIVOS** | **FA01 — Coordenador devolve o registro:**<br> 1. O coordenador identifica inconsistências nos dados. <br>2. O coordenador seleciona a opção de devolver e preenche um comentário explicando o motivo. <br>3. O sistema altera o status do registro para devolvido. <br>4. O sistema notifica o analista responsável com o comentário do coordenador.<br> 5. O fluxo é encerrado. <br> **FA02 — Fila vazia:** <br> 1. O coordenador acessa a fila de validação sem registros pendentes. <br>2. O sistema exibe mensagem informando que não há registros aguardando validação.
 **PÓS-CONDIÇÕES** | Registro aprovado com status ativo e visível no sistema, ou devolvido ao analista com comentário.
-**US RELACIONADAS** | ---
+**US RELACIONADAS** | US11
 **RN RELACIONADAS** | RN05, RN16, RN17, RN18
 
 Identificação | UC05 - Cadastrar usuário
@@ -639,7 +674,7 @@ Identificação | UC05 - Cadastrar usuário
 **FLUXO PRINCIPAL** | 1. O administrador acessa a tela de cadastro de usuário.<br> 2. O sistema exibe o formulário com campos: nome, e-mail e perfil de acesso. <br> 3. O administrador preenche os campos e confirma. <br> 4. O sistema valida unicidade do e-mail. <br> 5. O sistema persiste o novo usuário e registra data, hora e responsável. <br> 6. O sistema exibe o usuário na listagem com status ativo.
 **FLUXOS ALTERNATIVOS** | **FA01 — E-mail já cadastrado:** <br> 1. O administrador informa um e-mail já existente no sistema. <br> 2. O sistema exibe mensagem de erro informando duplicidade.<br> 3. O sistema não persiste o registro. <br> 4. O fluxo retorna ao passo 3 do fluxo principal.<br> **FA02 — Campo obrigatório não preenchido:** <br> 1. O administrador tenta confirmar sem preencher todos os campos. <br> 2. O sistema exibe mensagem indicando o campo ausente. <br> 3. O fluxo retorna ao passo 3 do fluxo principal.
 **PÓS-CONDIÇÕES** | Novo usuário cadastrado e habilitado para login conforme perfil atribuído.
-**US RELACIONADAS** | US09
+**US RELACIONADAS** | US08
 **RN RELACIONADAS** | RN01, RN03, RN06, RN11
 
 Identificação | UC06 - Editar Usuário
@@ -650,7 +685,7 @@ Identificação | UC06 - Editar Usuário
 **FLUXO PRINCIPAL** | 1. O administrador acessa o perfil do usuário na listagem. <br> 2. O administrador seleciona a opção de editar.<br> 3. O sistema exibe o formulário com os dados atuais preenchidos.<br> 4. O administrador altera os campos desejados e confirma.<br> 5. O sistema valida unicidade do e-mail caso tenha sido alterado.<br> 6. O sistema persiste as alterações e registra data, hora e responsável.
 **FLUXOS ALTERNATIVOS** | **FA01 — E-mail já cadastrado por outro usuário:** <br> 1. O administrador altera o e-mail para um já existente no sistema. <br> 2. O sistema exibe mensagem de erro informando duplicidade. <br> 3. O sistema não persiste a alteração. <br> 4. O fluxo retorna ao passo 4 do fluxo principal.
 **PÓS-CONDIÇÕES** | Dados do usuário atualizados no sistema.
-**US RELACIONADAS** | US11
+**US RELACIONADAS** | US10
 **RN RELACIONADAS** | RN01, RN11
 
 Identificação | UC07 - Inativar Usuário
@@ -661,7 +696,7 @@ Identificação | UC07 - Inativar Usuário
 **FLUXO PRINCIPAL** | 1. O administrador acessa o perfil do usuário na listagem. <br> 2. O administrador seleciona a opção de inativar. <br> 3. O sistema exibe confirmação da ação. <br> 4. O administrador confirma. <br> 5. O sistema altera o status do usuário para inativo.<br> 6. O sistema encerra imediatamente as sessões ativas do usuário. <br> 7. O sistema preserva o histórico de ações do usuário inativado.
 **FLUXOS ALTERNATIVOS** | **FA01 — Administrador cancela a ação:** <br> 1. O administrador seleciona cancelar na tela de confirmação. <br> 2. O sistema não realiza nenhuma alteração. <br> 3. O fluxo é encerrado.
 **PÓS-CONDIÇÕES** | Usuário inativado, sem acesso ao sistema, com histórico preservado.
-**US RELACIONADAS** | US10
+**US RELACIONADAS** | US09
 **RN RELACIONADAS** | RN06, RN07, RN15
 
 Identificação | UC08 - Receber Notificação de Inatividade
@@ -694,7 +729,7 @@ Identificação | UC10 - Visualizar Rascunhos Próprios
 **FLUXO PRINCIPAL** | 1. O analista acessa a seção de rascunhos. <br> 2. O sistema consulta os registros com status rascunho e devolvido vinculados ao usuário logado.<br> 3. O sistema exibe a listagem com nome do parceiro, status e data da última atualização.<br> 4. O analista seleciona um registro.<br> 5. O sistema exibe o perfil do parceiro com os dados preenchidos até o momento e, se houver, o comentário do coordenador.
 **FLUXOS ALTERNATIVOS** | **FA01 — Nenhum rascunho encontrado:** <br> 1. O analista não possui registros com status rascunho ou devolvido.<br> 2. O sistema exibe mensagem informando que não há rascunhos salvos.<br> 3. O sistema exibe opção de criar novo cadastro.<br> **FA02 — Registro com status devolvido:** <br> 1. O analista seleciona um registro com status devolvido.<br> 2. O sistema exibe o comentário do coordenador em destaque junto aos dados do parceiro. <br> 3. O analista pode editar o registro (UC03) ou reenviar para validação (UC06).
 **PÓS-CONDIÇÕES** | Rascunhos do analista exibidos; analista pode continuar editando ou enviar para validação.
-**US RELACIONADAS** | 
+**US RELACIONADAS** | US12
 **RN RELACIONADAS** | RN04, RN16, RN17
 
 Identificação | UC11 - Primeiro Acesso e Cadastro de Senha
@@ -997,9 +1032,9 @@ Wireframe é uma representação visual simplificada da interface de uma aplica�
 No contexto deste sistema, a interface foi concebida para atender a três perfis de usuário com necessidades e permissões distintas, garantindo que cada colaborador interaja apenas com as funcionalidades correspondentes ao seu nível de acesso.
 O fluxo se inicia com a tela de Login (Tela 01), onde o usuário realiza autenticação com e-mail e senha cadastrados pelo administrador. Não há autocadastro: o acesso à plataforma é concedido exclusivamente por um administrador, o que garante o controle de quem pode operar o sistema desde o primeiro acesso.
 
-A interface do perfil Administrador é direta e funcional, voltada à governança da plataforma. A tela de Gestão de Usuários (Tela 10), que atende às US09 e US10, concentra o gerenciamento de usuários internos, onde é possível cadastrar novos colaboradores, atribuir perfis de acesso (administrador, coordenador e analista) e inativar contas quando necessário. O histórico de ações dos usuários é preservado mesmo após a inativação, garantindo rastreabilidade e atendendo às regras de negócio definidas no projeto. Há também acesso ao histórico de auditoria do sistema, onde é possível consultar alterações realizadas por data, usuário responsável e registro modificado.
+A interface do perfil Administrador é direta e funcional, voltada à governança da plataforma. A tela de Gestão de Usuários (Tela 10), que atende às US08 e US09, concentra o gerenciamento de usuários internos, onde é possível cadastrar novos colaboradores, atribuir perfis de acesso (administrador, coordenador e analista) e inativar contas quando necessário. O histórico de ações dos usuários é preservado mesmo após a inativação, garantindo rastreabilidade e atendendo às regras de negócio definidas no projeto. Há também acesso ao histórico de auditoria do sistema, onde é possível consultar alterações realizadas por data, usuário responsável e registro modificado.
 
-A interface do perfil Coordenador é estruturada em torno do cadastro, da edição e da atualização de parceiros. O fluxo de cadastro contempla dois tipos de parceiro: as telas de Cadastro de Fornecedor (Tela 06) e Cadastro de Proprietário (Tela 07), que atendem respectivamente à US01 e à US02, apresentam formulários com campos específicos validados pelo sistema. A partir das telas de Listagem de Fornecedores (Tela 02) e Listagem de Proprietários (Tela 03), que atendem às US04, US06 e US08, o coordenador pode visualizar os parceiros cadastrados com suporte a filtros combinados. Ao acessar o Perfil do Fornecedor (Tela 04) ou o Perfil do Proprietário (Tela 05), ambos contemplados pela US04, é possível consultar as informações detalhadas de cada parceiro e o histórico de interações registradas. As telas de Edição de Fornecedor (Tela 08) e Edição de Proprietário (Tela 09), que atendem à US05, permitem atualizar os dados cadastrais e registrar novas interações com data, tipo e descrição, construindo progressivamente o histórico de relacionamento que hoje se perde em planilhas e anotações individuais. Cada alteração realizada é registrada automaticamente com data, hora e identificação do usuário responsável, garantindo a rastreabilidade definida nos requisitos do sistema.
+A interface do perfil Coordenador é estruturada em torno do cadastro, da edição e da atualização de parceiros. O fluxo de cadastro contempla dois tipos de parceiro: as telas de Cadastro de Fornecedor (Tela 06) e Cadastro de Proprietário (Tela 07), que atendem respectivamente à US01 e à US02, apresentam formulários com campos específicos validados pelo sistema. A partir das telas de Listagem de Fornecedores (Tela 02) e Listagem de Proprietários (Tela 03), que atendem às US04, US06 e US07, o coordenador pode visualizar os parceiros cadastrados com suporte a filtros combinados. Ao acessar o Perfil do Fornecedor (Tela 04) ou o Perfil do Proprietário (Tela 05), ambos contemplados pela US04, é possível consultar as informações detalhadas de cada parceiro e o histórico de interações registradas. As telas de Edição de Fornecedor (Tela 08) e Edição de Proprietário (Tela 09), que atendem à US05, permitem atualizar os dados cadastrais e registrar novas interações com data, tipo e descrição, construindo progressivamente o histórico de relacionamento que hoje se perde em planilhas e anotações individuais. Cada alteração realizada é registrada automaticamente com data, hora e identificação do usuário responsável, garantindo a rastreabilidade definida nos requisitos do sistema.
 
 A interface do perfil Analista combina capacidade de submissão de novos cadastros com acesso de visualização à base consolidada. O analista pode iniciar o cadastro de novos parceiros agrícolas por meio das telas de Cadastro de Fornecedor (Tela 06) e Cadastro de Proprietário (Tela 07), preenchendo o formulário com as informações disponíveis e submetendo o registro para análise; esse cadastro não é efetivado automaticamente na base, entrando em estado pendente de aprovação pelo coordenador responsável. Para consulta, as telas de Listagem de Fornecedores (Tela 02) e Listagem de Proprietários (Tela 03) permitem aplicar filtros combinados por nome, região, tipo de parceiro e área, reduzindo o tempo de busca sem necessidade de recarregar a página. Ao clicar em um parceiro, o analista acessa seu perfil detalhado — Perfil do Fornecedor (Tela 04) ou Perfil do Proprietário (Tela 05) — com todas as informações cadastrais e o histórico de interações registradas.
 
@@ -1284,7 +1319,7 @@ flowchart TB
 
 - **Histórico modelado apenas onde tem valor de negócio.** Optou-se por manter histórico (`data_inicio`/`data_fim`) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra) guardam apenas o estado atual ou o momento de associação, evitando complexidade desnecessária.
 
-- **Soft delete como padrão.** As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade) possuem o campo `ativo`, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US10) e à boa prática de preservação de dados auditáveis.
+- **Soft delete como padrão.** As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade) possuem o campo `ativo`, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US09) e à boa prática de preservação de dados auditáveis.
 
 - **Internacionalização de regra de negócio via dado.** O comportamento de aprovação obrigatória não está hard-coded no nome do cargo, mas sim no atributo `requer_aprovacao` da entidade Cargo. Isso permite que a ATVOS altere a política de aprovação no futuro (incluindo novos cargos ou alterando os existentes) sem necessidade de redeploy do código.
 
