@@ -1353,7 +1353,354 @@ Por fim, o princípio de **modelagem dirigida por evidência**, com cada atribut
 
 ### 3.6.3. Modelo Relacional e Modelo Físico (sprints 2 e 4)
 
-*Posicione aqui os diagramas de modelos relacionais do banco de dados, apresentando todos os esquemas de tabelas e suas relações. Inclua as migrations DDL numeradas e reproduzíveis (`CREATE TABLE`, `CREATE INDEX`, constraints `NOT NULL`, `UNIQUE`, `FOREIGN KEY`, `CHECK`). Utilize texto para complementar suas explicações quando necessário.*
+### 3.6.3.2 Modelo Físico
+<br>
+Com base no modelo relacional apresentado anteriormente, foi desenvolvido o modelo físico do banco de dados utilizando o PostgreSQL. Nessa etapa, as estruturas lógicas foram convertidas em comandos SQL executáveis (DDL), incluindo a criação de tabelas, tipos personalizados, restrições de integridade (NOT NULL, CHECK, UNIQUE e FOREIGN KEY) e índices para otimização de consultas.
+
+Além de representar a implementação prática do banco de dados, o modelo físico garante maior consistência, desempenho e confiabilidade no armazenamento das informações utilizadas pelo sistema.
+<br><br>
+
+#### Pré requistos:
+<br>
+1. Para utilizar a função opcional gen_random_uuid() pertencente a extensão pgcrypto (já existente no PostgreSQL), precisamos adicionar essa extensão no banco de dados.
+<br><br>
+
+```SQL
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+```
+<br>
+2. Aqui foi criado um ENUM status_validacao, já que esse mesmo padrão será utilizado em muitas outras entidades.
+<br><br>
+
+```SQL
+CREATE TYPE status_validacao AS ENUM (
+  'rascunho', 'pendente', 'ativo', 'devolvido', 'inativo'
+);
+```
+
+<br><br>
+
+
+#### 01. TABELA perfil_acesso 
+<br>
+É a tabela responsável por definir os possíveis níveis de acesso do usuário, podendo ser 'analista', 'coordenador' ou 'administrador'. Ela é referenciada na tabela usuario.
+<br><br>
+
+```SQL
+CREATE TABLE perfil_acesso (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nome        VARCHAR NOT NULL UNIQUE
+                CHECK (nome IN ('analista', 'coordenador', 'administrador')),
+  requer_aprovacao BOOLEAN NOT NULL DEFAULT FALSE,
+  descricao   TEXT
+);
+```
+<br><br>
+
+#### 02. TABELA usuarios
+<br>
+É a tabela que armazena os usuários internos do sistema e seus respectivos dados. Note que o campo senha_hash permite ausência de valor (null). Isso acontece devido ao modo de como o sistema interpreta novos usuários: é verificado se o campo senha_hash desse usuário possui valor nulo e, caso positivo, o usuário é direcionado para uma tela de criar sua senha.
+<br><br>
+Além da tabela, aqui já são explícitados os índices relacionados à tabela usuarios, sendo eles relacionados ao nome e ao perfil_acesso_id.
+<br><br>
+
+``` SQL
+CREATE TABLE usuarios (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  perfil_acesso_id  UUID NOT NULL REFERENCES perfil_acesso(id),
+  nome              VARCHAR NOT NULL,
+  email             VARCHAR NOT NULL UNIQUE,
+  senha_hash        VARCHAR,
+  ativo             BOOLEAN NOT NULL DEFAULT TRUE,
+  criado_em         TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_usuario_perfil ON usuarios(perfil_acesso_id);
+CREATE INDEX idx_usuario_nome ON usuarios(nome);
+```
+<br><br>
+
+#### 03. TABELA unidades
+<br>
+A tabela unidade representa as unidades operacionais - as usinas - da ATVOS. O campo codigo é único e identifica a unidade internamente.
+<br><br>
+
+``` SQL
+CREATE TABLE unidades (
+  id      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  codigo  VARCHAR NOT NULL UNIQUE,
+  nome    VARCHAR NOT NULL,
+  ativo   BOOLEAN NOT NULL DEFAULT TRUE
+);
+```
+<br><br>
+
+#### 04. TABELA parceiros
+<br>
+A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador.
+<br><br>
+Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome e ao tipo_pessoa.
+<br>
+
+```SQL
+CREATE TABLE parceiros (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nome             VARCHAR NOT NULL,
+  apelido          VARCHAR,
+  tipo_pessoa      VARCHAR NOT NULL
+                     CHECK (tipo_pessoa IN ('fisica', 'juridica')),
+  cpf_cnpj         VARCHAR NOT NULL UNIQUE,
+  email            VARCHAR,
+  data_nascimento  DATE,
+  nome_acompanhante VARCHAR,
+  status           status_validacao NOT NULL DEFAULT 'rascunho',
+  criado_em        TIMESTAMP NOT NULL DEFAULT NOW(),
+  atualizado_em    TIMESTAMP,
+  criado_por       UUID NOT NULL REFERENCES usuarios(id),
+  atualizado_por   UUID REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_parceiro_status   ON parceiros(status);
+CREATE INDEX idx_parceiro_cpf_cnpj ON parceiros(cpf_cnpj);
+CREATE INDEX idx_parceiro_nome ON parceiros(nome);
+CREATE INDEX idx_parceiro_tipo_pessoa ON parceiros(tipo_pessoa);
+```
+<br><br>
+
+#### 05. TABELA terras
+<br>
+A tabela terra armazena os dados das propriedades rurais. Assim como parceiro, passa pelo mesmo ciclo de validação via status. O campo area_contratada_ha representa a área física da terra disponível para contrato. Note algumas considerações, como estado aceitar apenas dois caracteres, para que seja forçada a padronização (SP, MG, RJ etc) e como a area_contratada_ha poder ter até 12 dígitos com até 4 casas decimais.
+<br><br>
+Além disso, note que os índices escolhidos foram relacionados ao status, à cidade e ao estado.
+<br><br>
+
+```SQL
+CREATE TABLE terras (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nome               VARCHAR NOT NULL,
+  area_contratada_ha DECIMAL(12,4) NOT NULL
+                     CHECK (area_contratada_ha > 0),
+  cidade             VARCHAR NOT NULL,
+  estado             VARCHAR(2) NOT NULL,
+  status             status_validacao NOT NULL DEFAULT 'rascunho',
+  criado_em          TIMESTAMP NOT NULL DEFAULT NOW(),
+  atualizado_em      TIMESTAMP,
+  criado_por         UUID NOT NULL REFERENCES usuarios(id),
+  atualizado_por     UUID REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_terra_status ON terras(status);
+CREATE INDEX idx_terra_cidade ON terras(cidade);
+CREATE INDEX idx_terra_estado ON terras(estado);
+```
+
+<br><br>
+
+#### 06. TABELA vinculo_comercial
+<br>
+A tabela vinculo_comercial representa o contrato formal entre um parceiro e uma terra. Um parceiro pode ter múltiplos vínculos com terras diferentes, e uma terra pode ter múltiplos vínculos com parceiros diferentes. O campo tipo_parceiro define se o parceiro atua como arrendador ou fornecedor naquele vínculo específico.
+<br><br>
+Os índices escolhidos foram relacionados ao parceiro_id, à terra_id e ao tipo_parceiro. Esse último principalmente ajuda bastante nas filtragens.
+<br><br>
+
+```SQL
+CREATE TABLE vinculo_comercial (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id      UUID NOT NULL REFERENCES parceiros(id),
+  terra_id         UUID NOT NULL REFERENCES terras(id),
+  tipo_parceiro    VARCHAR NOT NULL DEFAULT 'arrendador'
+                     CHECK (tipo_parceiro IN ('arrendador', 'fornecedor')),
+  tipo_vinculo     VARCHAR NOT NULL,
+  status           VARCHAR NOT NULL DEFAULT 'ativo'
+                     CHECK (status IN ('ativo', 'inativo', 'encerrado')),
+  modalidade_contrato VARCHAR,
+  data_inicio      DATE,
+  data_fim         DATE,
+  observacoes      TEXT
+);
+
+CREATE INDEX idx_vinculo_parceiro         ON vinculo_comercial(parceiro_id);
+CREATE INDEX idx_vinculo_terra            ON vinculo_comercial(terra_id);
+CREATE INDEX idx_vinculo_tipo_parceiro    ON vinculo_comercial(tipo_parceiro);
+```
+
+<br><br>
+
+#### 07. TABELA parceiro_terra
+<br>
+A tabela parceiro_terra resolve a relação N:M entre parceiros e terras, isso sem necessidade de vínculo comercial formal, isto é, de um contrato. Um parceiro pode estar associado a uma terra sem contrato com a Atvos, e uma terra pode ter múltiplos parceiros associados.
+<br><br>
+Apesar de ter a mesma associação que vinculo_comercial, essa tabela representa mais situações como a de uma família possuir uma terra, mas nem toda família está presente no contrato/vínculo comercial com a Atvos.
+<br><br>
+
+```SQL
+CREATE TABLE parceiro_terra (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  terra_id    UUID NOT NULL REFERENCES terras(id),
+  tipo_vinculo VARCHAR,
+  UNIQUE (parceiro_id, terra_id)
+);
+```
+
+<br><br>
+
+#### 08. TABELA terra_unidade
+<br>
+Essa tabela resolve a relação N:M entre terras e unidades operacionais da ATVOS (Uma terra pode ter mais de uma unidade e vice-versa).
+<br><br>
+
+```SQL
+CREATE TABLE terra_unidade (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  terra_id    UUID NOT NULL REFERENCES terras(id),
+  unidade_id  UUID NOT NULL REFERENCES unidades(id),
+  data_associacao DATE NOT NULL,
+  UNIQUE (terra_id, unidade_id)
+);
+```
+
+<br><br>
+
+#### 09. TABELA parceiro_unidade
+<br>
+A tabela parceiro_unidade associa parceiros às unidades operacionais da ATVOS com as quais se relacionam.
+<br><br>
+
+```SQL
+CREATE TABLE parceiro_unidade (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  unidade_id  UUID NOT NULL REFERENCES unidades(id),
+  data_associacao DATE NOT NULL,
+  UNIQUE (parceiro_id, unidade_id)
+);
+```
+
+<br><br>
+
+#### 10. TABELA usuario_unidade
+<br>
+A tabela usuario_unidade associa usuários internos às unidades em que atuam.
+<br><br>
+
+```SQL
+CREATE TABLE usuario_unidade (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id  UUID NOT NULL REFERENCES usuarios(id),
+  unidade_id  UUID NOT NULL REFERENCES unidades(id),
+  data_associacao DATE NOT NULL,
+  UNIQUE (usuario_id, unidade_id)
+);
+```
+
+<br><br>
+
+#### 11. TABELA parceiro_coordenador
+<br>
+A tabela parceiro_coordenador registra qual coordenador/analista é responsável por cada parceiro. O campo data_fim nulo indica que o vínculo está ativo, o que dispensa um campo ativo separado.
+<br><br>
+O indíce criado a partir dessa tabela é relacionado ao parceiro_id.
+<br><br>
+
+```SQL
+CREATE TABLE parceiro_coordenador (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  usuario_id  UUID NOT NULL REFERENCES usuarios(id),
+  data_inicio DATE NOT NULL,
+  data_fim    DATE,
+  observacoes TEXT
+);
+
+CREATE INDEX idx_parceiro_coordenador_parceiro ON parceiro_coordenador(parceiro_id);
+```
+
+<br><br>
+
+#### 12. TABELA interacao
+<br>
+A tabela interacao registra o histórico de contatos entre a equipe interna e os parceiros - visitas, ligações, reuniões e outros tipos de interação. Não passa por fluxo de validação.
+<br><br>
+Os índices escolhidos se relacionam com parceiro_id e tipo.
+<br><br>
+
+```SQL
+CREATE TABLE interacao (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id   UUID NOT NULL REFERENCES parceiros(id),
+  registrado_por UUID NOT NULL REFERENCES usuarios(id),
+  tipo          VARCHAR NOT NULL,
+  descricao     TEXT NOT NULL,
+  data          DATE NOT NULL,
+  criado_em     TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_interacao_parceiro ON interacao(parceiro_id);
+CREATE INDEX idx_interacao_tipo     ON interacao(tipo);
+```
+
+<br><br>
+
+#### 13. TABELA telefone_parceiro
+<br>
+A tabela telefone_parceiro permite que um parceiro tenha múltiplos telefones cadastrados. O campo principal indica o número preferencial de contato.
+<br>
+<br><br>
+
+```SQL
+CREATE TABLE telefone_parceiro (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  numero      VARCHAR NOT NULL,
+  tipo        VARCHAR CHECK (tipo IN ('celular', 'fixo', 'whatsapp')),
+  principal   BOOLEAN NOT NULL DEFAULT FALSE,
+  ativo       BOOLEAN NOT NULL DEFAULT TRUE,
+  criado_em   TIMESTAMP NOT NULL DEFAULT NOW(),
+  atualizado_em TIMESTAMP,
+  criado_por  UUID NOT NULL REFERENCES usuarios(id),
+  atualizado_por UUID REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_telefone_parceiro ON telefone_parceiro(parceiro_id);
+```
+
+<br><br>
+
+#### 14. TABELA registro_alteracao
+<br>
+Essa tabela registra as alterações de qualquer entidade do sistema através dos campos entidade_afetada e entidade_id. Também controla o fluxo de aprovação entre analista e coordenador. Além disso, ela também armazena os dados anteriores e os dados novos em JSONB.
+<br><br>
+Os índices criados a partir dessa tabela estão relacionados à entidade_afetada, à entidade_id, ao usuario_id, ao status e ao tipo_operacao.
+<br><br>
+
+```SQL
+CREATE TABLE registro_alteracao (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id       UUID NOT NULL REFERENCES usuarios(id),
+  aprovado_por     UUID REFERENCES usuarios(id),
+  entidade_afetada VARCHAR NOT NULL,
+  entidade_id      UUID NOT NULL,
+  tipo_operacao    VARCHAR NOT NULL
+                     CHECK (tipo_operacao IN (
+                       'criacao', 'edicao', 'envio',
+                       'aprovacao', 'devolucao', 'exclusao'
+                     )),
+  dados_anteriores JSONB,
+  dados_novos      JSONB,
+  status           VARCHAR NOT NULL
+                     CHECK (status IN ('pendente', 'aprovado', 'devolvido')),
+  comentario       TEXT,
+  data_solicitacao TIMESTAMP NOT NULL DEFAULT NOW(),
+  data_aprovacao   TIMESTAMP,
+  data_alteracao   TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_registro_entidade  ON registro_alteracao(entidade_afetada, entidade_id);
+CREATE INDEX idx_registro_usuario   ON registro_alteracao(usuario_id);
+CREATE INDEX idx_registro_status    ON registro_alteracao(status);
+CREATE INDEX idx_registro_operacao    ON registro_alteracao(tipo_operacao);
+```
 
 ## 3.6.4. Consultas SQL e lógica proposicional
 
