@@ -321,105 +321,137 @@ User Stories são descrições simples de funcionalidades escritas do ponto de v
 
 Identificação | US01
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso cadastrar fornecedores de cana com suas informações específicas, para que os dados de cada agricultor parceiro estejam centralizados e padronizados no sistema."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o formulário de cadastro de fornecedor de cana, quando preenche todos os campos obrigatórios (CPF/CNPJ, inscrição estadual, área plantada em hectares, TCH médio, ATR médio, histórico de cumprimento de cota, certificações e usina de referência) e confirma, então o fornecedor é salvo e exibido na listagem de parceiros.
-Critério de aceite 2 | CR2: Dado que o editor está no formulário de cadastro de fornecedor de cana, quando tenta salvar sem preencher um ou mais campos obrigatórios, então o sistema exibe aviso de validação para cada campo vazio e não conclui o cadastro.
-Critérios INVEST | Independente: pode ser desenvolvida sem depender do cadastro de proprietários ou de interações. Negociável: os campos do formulário podem ser revistos com a equipe da ATVOS sem alterar o objetivo central. Valiosa: resolve diretamente a dispersão dos dados de fornecedores em planilhas, centralizando as informações em um único sistema acessível a toda a equipe e facilitando a consulta organizada das informações dos agricultores parceiros. Estimável: envolve formulário, validação e persistência no banco de dados, com escopo claro para estimar o esforço. Pequena: abrange apenas o fluxo de criação de um novo fornecedor de cana, sem integrações externas. Testável: verifica-se se o fornecedor aparece na listagem após o cadastro e se os campos obrigatórios são devidamente validados.
+User Story | "Como analista de negócios agrícolas, posso cadastrar fornecedores de cana salvando o registro como rascunho e enviando para validação, para que os dados de cada agricultor parceiro sejam revisados e ativados de forma padronizada no sistema."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o formulário de cadastro de fornecedor de cana, quando preenche os campos disponíveis e salva como rascunho, então o registro é persistido com status rascunho e fica disponível na seção de rascunhos do analista.
+Critério de aceite 2 | CR2: Dado que o analista concluiu o preenchimento do formulário de fornecedor de cana, quando aciona o envio para validação, então o registro muda para status pendente e aparece na fila de validação do coordenador.
+Critérios INVEST | Independente: pode ser desenvolvida sem depender do cadastro de proprietários ou de interações. Negociável: os campos do formulário podem ser revistos com a equipe da ATVOS sem alterar o objetivo central. Valiosa: resolve diretamente a dispersão dos dados de fornecedores em planilhas, centralizando as informações em um único sistema com fluxo de validação rastreável. Estimável: envolve formulário, validação, persistência e fluxo de status, com escopo claro para estimar o esforço. Pequena: abrange apenas o fluxo de criação e envio de um novo fornecedor de cana para validação, sem integrações externas. Testável: verifica-se se o registro aparece como rascunho após salvar e se muda para pendente após o envio para validação.
 
 ---
 
 Identificação | US02
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso cadastrar proprietários de terra com suas informações específicas, para que os dados de cada proprietário parceiro estejam centralizados e padronizados no sistema."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o formulário de cadastro de proprietário de terra, quando preenche todos os campos obrigatórios (CPF/CNPJ, documentação da terra, localização, distância da usina, área total disponível em hectares, topografia, status da documentação fundiária, CAR, situação ambiental e tipo de contrato) e confirma, então o proprietário é salvo e exibido na listagem de parceiros.
-Critério de aceite 2 | CR2: Dado que o editor está no formulário de cadastro de proprietário de terra, quando tenta salvar sem preencher um ou mais campos obrigatórios, então o sistema exibe aviso de validação para cada campo vazio e não conclui o cadastro.
-Critérios INVEST | Independente: pode ser desenvolvida em paralelo à US01, com formulário e lógica próprios para o perfil de proprietário. Negociável: os campos podem ser ajustados conforme as necessidades da área de Estratégia de Terras. Valiosa: centraliza os dados de proprietários que hoje estão dispersos em planilhas, eliminando retrabalho e padronizando o cadastro. Estimável: reutiliza a estrutura da US01 com campos distintos para o perfil de proprietário, com esforço bem delimitado. Pequena: escopo restrito ao fluxo de criação de um proprietário de terra. Testável: verifica-se se o proprietário aparece na listagem após o cadastro e se os campos específicos são corretamente salvos.
+User Story | "Como analista de negócios agrícolas, posso cadastrar proprietários de terra salvando o registro como rascunho e enviando para validação, para que os dados de cada proprietário parceiro sejam revisados e ativados de forma padronizada no sistema."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o formulário de cadastro de proprietário de terra, quando preenche os campos disponíveis e salva como rascunho, então o registro é persistido com status rascunho e fica disponível na seção de rascunhos do analista.
+Critério de aceite 2 | CR2: Dado que o analista concluiu o preenchimento do formulário de proprietário de terra, quando aciona o envio para validação, então o registro muda para status pendente e aparece na fila de validação do coordenador.
+Critérios INVEST | Independente: pode ser desenvolvida em paralelo à US01, com formulário e lógica próprios para o perfil de proprietário. Negociável: os campos podem ser ajustados conforme as necessidades da área de Estratégia de Terras. Valiosa: centraliza os dados de proprietários que hoje estão dispersos em planilhas, eliminando retrabalho e padronizando o cadastro com fluxo de validação. Estimável: reutiliza a estrutura da US01 com campos distintos para o perfil de proprietário, com esforço bem delimitado. Pequena: escopo restrito ao fluxo de criação e envio de um proprietário de terra para validação. Testável: verifica-se se o registro aparece como rascunho após salvar e se muda para pendente após o envio para validação.
 
 ---
 
 Identificação | US03
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso registrar o histórico de interações com parceiros, para que o relacionamento seja documentado e acessível a toda a equipe."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o perfil de um parceiro cadastrado, quando preenche os campos de interação (data, tipo e descrição) e confirma, então a interação é salva e exibida no histórico do parceiro em ordem cronológica.
-Critério de aceite 2 | CR2: Dado que o editor registrou uma ou mais interações com um parceiro, quando acessa o histórico desse parceiro, então todos os registros são exibidos com data, tipo e descrição visíveis, e a interação mais recente aparece no topo da lista.
+User Story | "Como analista de negócios agrícolas, posso registrar o histórico de interações com parceiros, para que o relacionamento seja documentado e acessível a toda a equipe."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o perfil de um parceiro com status ativo, quando preenche os campos de interação (data, tipo e descrição) e confirma, então a interação é salva e exibida no histórico do parceiro em ordem cronológica.
+Critério de aceite 2 | CR2: Dado que o analista registrou uma ou mais interações com um parceiro, quando acessa o histórico desse parceiro, então todos os registros são exibidos com data, tipo e descrição visíveis, e a interação mais recente aparece no topo da lista.
 Critérios INVEST | Independente: pode ser construída separadamente das funcionalidades de visualização e filtro, com lógica própria de persistência. Negociável: os tipos de interação e os campos do formulário podem ser ajustados conforme o fluxo de trabalho real da equipe. Valiosa: resolve a perda de histórico de relacionamento, uma das principais dores identificadas no briefing da ATVOS. Estimável: envolve formulário de registro e listagem cronológica, com escopo claro e bem delimitado. Pequena: funcionalidade focada em um único fluxo, registrar e listar interações por parceiro. Testável: verifica-se se a interação registrada aparece no histórico do parceiro correto e na ordem cronológica esperada.
 
 ---
 
 Identificação | US04
 --- | ---
-Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
 Prioridade | Alta
-User Story | "Como observador, posso visualizar o perfil detalhado de cada parceiro, para que eu possa consultar rapidamente as informações necessárias para a tomada de decisão."
-Critério de aceite 1 | CR1: Dado que o observador está autenticado e visualiza a listagem de parceiros, quando clica em um parceiro, então o sistema exibe todos os dados cadastrais e o histórico de interações na tela de perfil.
-Critério de aceite 2 | CR2: Dado que o observador acessa a tela de perfil de um parceiro, quando a página é carregada, então todos os dados são exibidos em até 3 segundos, conforme o requisito de desempenho definido.
-Critérios INVEST | Independente: a tela de visualização pode ser prototipada e desenvolvida antes mesmo de todas as funcionalidades de edição estarem concluídas. Negociável: o layout e as informações exibidas no perfil podem ser ajustados com base no feedback dos usuários internos. Valiosa: permite que observadores consultem dados de forma centralizada, eliminando a necessidade de buscar planilhas dispersas. Estimável: tela somente de leitura, sem formulários complexos, com esforço menor que as User Stories de edição. Pequena: escopo limitado a exibir dados já cadastrados de forma organizada e legível. Testável: verifica-se se todos os dados do parceiro são exibidos corretamente e se o tempo de carregamento está dentro do limite definido.
+User Story | "Como coordenadora de estratégia de terras, posso visualizar o perfil detalhado de cada parceiro com status ativo, para que eu possa consultar rapidamente as informações necessárias para a tomada de decisão."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e visualiza a listagem de parceiros com status ativo, quando clica em um parceiro, então o sistema exibe todos os dados cadastrais e o histórico de interações na tela de perfil.
+Critério de aceite 2 | CR2: Dado que a coordenadora acessa a tela de perfil de um parceiro ativo, quando a página é carregada, então todos os dados são exibidos em até 3 segundos, conforme o requisito de desempenho definido.
+Critérios INVEST | Independente: a tela de visualização pode ser prototipada e desenvolvida antes mesmo de todas as funcionalidades de edição estarem concluídas. Negociável: o layout e as informações exibidas no perfil podem ser ajustados com base no feedback dos usuários internos. Valiosa: permite que coordenadoras consultem dados de parceiros ativos de forma centralizada, eliminando a necessidade de buscar planilhas dispersas. Estimável: tela somente de leitura, sem formulários complexos, com esforço menor que as User Stories de edição. Pequena: escopo limitado a exibir dados de parceiros ativos de forma organizada e legível. Testável: verifica-se se todos os dados do parceiro ativo são exibidos corretamente e se o tempo de carregamento está dentro do limite definido.
 
 ---
 
 Identificação | US05
 --- | ---
-Persona | Juliano Soares — Editor / Analista de Negócios Agrícolas
+Persona | Juliano Soares — Analista de Negócios Agrícolas
 Prioridade | Alta
-User Story | "Como editor, posso editar os dados cadastrais de parceiros, para que as informações estejam sempre atualizadas e confiáveis para a equipe."
-Critério de aceite 1 | CR1: Dado que o editor está autenticado e acessa o perfil de um parceiro existente, quando altera um ou mais dados cadastrais e confirma, então as mudanças são salvas e refletidas imediatamente no perfil do parceiro.
-Critério de aceite 2 | CR2: Dado que o editor realizou uma alteração nos dados de um parceiro, quando a edição é confirmada, então o sistema registra automaticamente a data e hora da atualização no histórico do cadastro.
-Critérios INVEST | Independente: pode ser desenvolvida em paralelo às User Stories de cadastro, compartilhando o formulário com lógica de edição. Negociável: os campos editáveis e as regras de validação podem ser revistos conforme o feedback dos usuários. Valiosa: garante que as informações dos parceiros reflitam a realidade atual, mantendo a confiabilidade dos dados no sistema. Estimável: reutiliza a interface das User Stories de cadastro com adaptações para edição, com esforço bem delimitado. Pequena: fluxo limitado a buscar, alterar e salvar dados de um parceiro existente. Testável: verifica-se se as alterações são salvas corretamente e se a data de atualização é registrada.
+User Story | "Como analista de negócios agrícolas, posso editar os dados cadastrais de parceiros com status rascunho, devolvido ou ativo, para que as informações estejam sempre atualizadas e confiáveis para a equipe."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa o perfil de um parceiro com status rascunho, devolvido ou ativo, quando altera um ou mais dados cadastrais e confirma, então as mudanças são salvas, o sistema registra data, hora e usuário responsável, e a versão anterior é preservada no histórico.
+Critério de aceite 2 | CR2: Dado que o analista tenta editar um parceiro com status excluído, quando tenta acessar a opção de edição, então o sistema bloqueia a ação e exibe mensagem informando que o registro não pode ser editado neste status.
+Critérios INVEST | Independente: pode ser desenvolvida em paralelo às User Stories de cadastro, compartilhando o formulário com lógica de edição. Negociável: os campos editáveis e as regras de validação podem ser revistos conforme o feedback dos usuários. Valiosa: garante que as informações dos parceiros reflitam a realidade atual, mantendo a confiabilidade e a rastreabilidade dos dados no sistema. Estimável: reutiliza a interface das User Stories de cadastro com adaptações para edição e controle de status, com esforço bem delimitado. Pequena: fluxo limitado a buscar, alterar e salvar dados de um parceiro existente com status compatível. Testável: verifica-se se as alterações são salvas com rastreabilidade e se a edição é bloqueada para registros excluídos.
 
 ---
-
-Identificação | US09
---- | ---
-Persona | Marcelo Andrade — Administrador do Sistema / Gerente de coordenadores
-Prioridade | Alta
-User Story | "Como administrador, posso cadastrar usuários com perfis de acesso definidos, para que o sistema seja utilizado de forma segura e com acessos controlados."
-Critério de aceite 1 | CR1: Dado que o administrador está autenticado e acessa o formulário de cadastro de usuário, quando preenche nome, e-mail e perfil de acesso (administrador, editor ou observador) e confirma, então o usuário é salvo e exibido na listagem de usuários.
-Critério de aceite 2 | CR2: Dado que o administrador está no formulário de cadastro de usuário, quando tenta cadastrar um e-mail já existente no sistema, então uma mensagem de erro é exibida e o cadastro não é concluído.
-Critérios INVEST | Independente: pode ser desenvolvida antes de qualquer funcionalidade de gestão de parceiros, pois define os acessos que viabilizam o uso do restante do sistema. Negociável: os campos do formulário de cadastro e os perfis de acesso disponíveis podem ser revistos conforme as políticas internas de TI e segurança da informação da ATVOS. Valiosa: garante que apenas usuários autorizados acessem o sistema, atendendo aos requisitos de segurança e controle de acesso definidos para o projeto. Estimável: envolve formulário de cadastro com atribuição de perfil e persistência no banco de dados, com escopo claro e bem delimitado. Pequena: fluxo restrito ao cadastro e atribuição de perfil de acesso de um único usuário, sem integrações externas. Testável: verifica-se se o usuário cadastrado consegue realizar login e acessa apenas as funcionalidades correspondentes ao seu perfil de acesso.
-
----
-
-Identificação | US10
---- | ---
-Persona | Marcelo Andrade — Administrador do Sistema / Gerente de coordenadores
-Prioridade | Alta
-User Story | "Como administrador, posso inativar usuários do sistema, para que colaboradores que saíram da equipe não tenham mais acesso às informações da ATVOS."
-Critério de aceite 1 | CR1: Dado que o administrador está autenticado e acessa o cadastro de um usuário ativo, quando aciona a inativação e confirma, então o usuário perde o acesso imediatamente e não consegue realizar login no sistema.
-Critério de aceite 2 | CR2: Dado que um usuário foi inativado, quando o administrador consulta o registro desse usuário, então o registro é exibido com status inativo e o histórico de ações é preservado, sem exclusão de dados.
-Critérios INVEST | Independente: pode ser desenvolvida logo após o cadastro de usuários (US09), com lógica própria de atualização de status no banco de dados. Negociável: o comportamento da inativação — como o encerramento imediato de sessão e a preservação do histórico de ações — pode ser refinado conforme as políticas internas da ATVOS. Valiosa: garante que ex-colaboradores não mantenham acesso às informações sensíveis do sistema, reduzindo riscos de segurança sem a necessidade de excluir registros históricos. Estimável: envolve atualização de status no banco de dados e invalidação de sessão ativa, com esforço bem delimitado. Pequena: funcionalidade restrita à alteração do status do usuário para inativo, sem exclusão de dados ou impacto em outros módulos. Testável: verifica-se se o usuário inativado não consegue realizar login e se o histórico de ações permanece acessível para fins de auditoria.
-
----
-
 
 Identificação | US06
 --- | ---
-Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
 Prioridade | Média
-User Story | "Como observador, posso filtrar a lista de parceiros por nome, região, área ou tipo de parceiro, para que eu encontre rapidamente o parceiro que procuro sem precisar percorrer toda a lista."
-Critério de aceite 1 | CR1: Dado que o observador está autenticado e visualiza a listagem de parceiros, quando aplica um ou mais filtros (nome, região, área ou tipo de parceiro), então a listagem exibe apenas os parceiros que correspondem ao critério selecionado.
-Critério de aceite 2 | CR2: Dado que o observador aplicou um filtro na listagem, quando adiciona um segundo critério de filtro, então o resultado é atualizado combinando os dois filtros sem necessidade de recarregar a página.
-Critérios INVEST | Independente: pode ser implementada de forma isolada após a listagem básica de parceiros estar disponível, sem depender de funcionalidades de edição ou cadastro. Negociável: os critérios de filtro (nome, região, área, tipo de parceiro) podem ser ajustados conforme as prioridades operacionais da equipe da ATVOS. Valiosa: reduz o tempo de busca por parceiros específicos, aumentando a eficiência do observador na consulta e na tomada de decisão. Estimável: envolve parâmetros de consulta ao banco de dados sobre registros já existentes, sem lógica de negócio complexa. Pequena: funcionalidade restrita à aplicação de filtros sobre uma listagem já existente, sem impacto nas funcionalidades de edição ou cadastro. Testável: verifica-se se, ao aplicar um filtro, apenas os parceiros correspondentes ao critério selecionado são exibidos na listagem.
+User Story | "Como coordenadora de estratégia de terras, posso filtrar a lista de parceiros ativos por nome, região, área ou tipo de parceiro, para que eu encontre rapidamente o parceiro que procuro sem precisar percorrer toda a lista."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e visualiza a listagem de parceiros com status ativo, quando aplica um ou mais filtros (nome, região, área ou tipo de parceiro), então a listagem exibe apenas os parceiros ativos que correspondem ao critério selecionado.
+Critério de aceite 2 | CR2: Dado que a coordenadora aplicou um filtro na listagem de parceiros ativos, quando adiciona um segundo critério de filtro, então o resultado é atualizado combinando os dois filtros sem necessidade de recarregar a página.
+Critérios INVEST | Independente: pode ser implementada de forma isolada após a listagem básica de parceiros ativos estar disponível, sem depender de funcionalidades de edição ou cadastro. Negociável: os critérios de filtro (nome, região, área, tipo de parceiro) podem ser ajustados conforme as prioridades operacionais da equipe da ATVOS. Valiosa: reduz o tempo de busca por parceiros ativos específicos, aumentando a eficiência da coordenadora na consulta e na tomada de decisão. Estimável: envolve parâmetros de consulta ao banco de dados sobre registros já existentes, sem lógica de negócio complexa. Pequena: funcionalidade restrita à aplicação de filtros sobre a listagem de parceiros ativos, sem impacto nas funcionalidades de edição ou cadastro. Testável: verifica-se se, ao aplicar um filtro, apenas os parceiros ativos correspondentes ao critério selecionado são exibidos na listagem.
+
+---
+
+Identificação | US07
+--- | ---
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
+Prioridade | Média
+User Story | "Como coordenadora de estratégia de terras, posso exportar a lista de contatos dos parceiros ativos, para que eu possa compartilhar informações com pessoas que não têm acesso ao sistema."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e acessa a funcionalidade de exportação, quando aciona a exportação da lista de contatos, então o sistema gera um arquivo contendo nome, contato, tipo e região de cada parceiro com status ativo.
+Critério de aceite 2 | CR2: Dado que o sistema gerou o arquivo de exportação, quando a coordenadora faz o download e abre o arquivo, então o arquivo está em formato CSV ou XLSX e pode ser aberto sem erros em ferramentas de planilha.
+Critérios INVEST | Independente: pode ser desenvolvida separadamente das funcionalidades de filtro, com lógica própria de geração de arquivo. Negociável: o formato do arquivo exportado (CSV ou XLSX) e os campos incluídos podem ser definidos conforme as necessidades da equipe e os sistemas de destino utilizados pela ATVOS. Valiosa: permite que informações dos parceiros ativos sejam compartilhadas com pessoas sem acesso ao sistema, ampliando o alcance dos dados sem comprometer o controle de acesso interno. Estimável: envolve consulta ao banco de dados e geração de arquivo estruturado, com lógica bem delimitada e sem dependências externas. Pequena: funcionalidade restrita à exportação de uma lista de contatos de parceiros ativos já existente no sistema. Testável: verifica-se se o arquivo gerado contém todos os dados esperados de parceiros ativos, está no formato correto e pode ser aberto sem erros em ferramentas de planilha.
 
 ---
 
 Identificação | US08
 --- | ---
-Persona | Bianca Souza — Observadora / Coordenadora de Estratégia de Terras
-Prioridade | Média
-User Story | "Como observador, posso exportar a lista de contatos dos parceiros, para que eu possa compartilhar informações com pessoas que não têm acesso ao sistema."
-Critério de aceite 1 | CR1: Dado que o observador está autenticado e acessa a funcionalidade de exportação, quando aciona a exportação da lista de contatos, então o sistema gera um arquivo contendo nome, contato, tipo e região de cada parceiro ativo.
-Critério de aceite 2 | CR2: Dado que o sistema gerou o arquivo de exportação, quando o observador faz o download e abre o arquivo, então o arquivo está em formato CSV ou XLSX e pode ser aberto sem erros em ferramentas de planilha.
-Critérios INVEST | Independente: pode ser desenvolvida separadamente das funcionalidades de filtro, com lógica própria de geração de arquivo. Negociável: o formato do arquivo exportado (CSV ou XLSX) e os campos incluídos podem ser definidos conforme as necessidades da equipe e os sistemas de destino utilizados pela ATVOS. Valiosa: permite que informações dos parceiros sejam compartilhadas com pessoas sem acesso ao sistema, ampliando o alcance dos dados sem comprometer o controle de acesso interno. Estimável: envolve consulta ao banco de dados e geração de arquivo estruturado, com lógica bem delimitada e sem dependências externas. Pequena: funcionalidade restrita à exportação de uma lista de contatos já existente no sistema. Testável: verifica-se se o arquivo gerado contém todos os dados esperados, está no formato correto e pode ser aberto sem erros em ferramentas de planilha.
+Persona | Marcelo Andrade — Gerente de Coordenadores
+Prioridade | Alta
+User Story | "Como gerente de coordenadores, posso cadastrar usuários com perfis de acesso definidos, para que o sistema seja utilizado de forma segura e com acessos controlados."
+Critério de aceite 1 | CR1: Dado que o gerente de coordenadores está autenticado e acessa o formulário de cadastro de usuário, quando preenche nome, e-mail e perfil de acesso (gerente de coordenadores, analista de negócios agrícolas ou coordenador de estratégia de terras) e confirma, então o usuário é salvo e exibido na listagem com status ativo.
+Critério de aceite 2 | CR2: Dado que o gerente de coordenadores está no formulário de cadastro de usuário, quando tenta cadastrar um e-mail já existente no sistema, então uma mensagem de erro é exibida e o cadastro não é concluído.
+Critérios INVEST | Independente: pode ser desenvolvida antes de qualquer funcionalidade de gestão de parceiros, pois define os acessos que viabilizam o uso do restante do sistema. Negociável: os campos do formulário de cadastro e os perfis de acesso disponíveis podem ser revistos conforme as políticas internas de TI e segurança da informação da ATVOS. Valiosa: garante que apenas usuários autorizados acessem o sistema, atendendo aos requisitos de segurança e controle de acesso definidos para o projeto. Estimável: envolve formulário de cadastro com atribuição de perfil e persistência no banco de dados, com escopo claro e bem delimitado. Pequena: fluxo restrito ao cadastro e atribuição de perfil de acesso de um único usuário, sem integrações externas. Testável: verifica-se se o usuário cadastrado consegue realizar login e acessa apenas as funcionalidades correspondentes ao seu perfil de acesso.
 
 ---
 
-As User Stories levantadas cobrem os fluxos essenciais para resolver a principal dor identificada pela ATVOS: a dispersão dos dados de fornecedores de cana e proprietários de terra em planilhas desconectadas. A priorização reflete esse objetivo, garantindo que o sistema entregue valor desde as primeiras sprints. As funcionalidades de suporte, como filtros e exportação, serão implementadas conforme o avanço do projeto.
+Identificação | US09
+--- | ---
+Persona | Marcelo Andrade — Gerente de Coordenadores
+Prioridade | Alta
+User Story | "Como gerente de coordenadores, posso inativar usuários do sistema, para que colaboradores que saíram da equipe não tenham mais acesso às informações da ATVOS."
+Critério de aceite 1 | CR1: Dado que o gerente de coordenadores está autenticado e acessa o cadastro de um usuário ativo, quando aciona a inativação e confirma, então o usuário perde o acesso imediatamente, as sessões ativas são encerradas e não consegue realizar login no sistema.
+Critério de aceite 2 | CR2: Dado que um usuário foi inativado, quando o gerente de coordenadores consulta o registro desse usuário, então o registro é exibido com status inativo e o histórico de ações é preservado, sem exclusão de dados.
+Critérios INVEST | Independente: pode ser desenvolvida logo após o cadastro de usuários (US08), com lógica própria de atualização de status no banco de dados. Negociável: o comportamento da inativação, como o encerramento imediato de sessão e a preservação do histórico de ações, pode ser refinado conforme as políticas internas da ATVOS. Valiosa: garante que ex-colaboradores não mantenham acesso às informações sensíveis do sistema, reduzindo riscos de segurança sem a necessidade de excluir registros históricos. Estimável: envolve atualização de status no banco de dados e invalidação de sessão ativa, com esforço bem delimitado. Pequena: funcionalidade restrita à alteração do status do usuário para inativo, sem exclusão de dados ou impacto em outros módulos. Testável: verifica-se se o usuário inativado não consegue realizar login e se o histórico de ações permanece acessível para fins de auditoria.
+
+---
+
+Identificação | US10
+--- | ---
+Persona | Marcelo Andrade — Gerente de Coordenadores
+Prioridade | Alta
+User Story | "Como gerente de coordenadores, posso editar os dados de usuários cadastrados, para que as informações e permissões de acesso estejam sempre corretas e atualizadas no sistema."
+Critério de aceite 1 | CR1: Dado que o gerente de coordenadores está autenticado e acessa o perfil de um usuário ativo, quando altera os dados (nome, e-mail ou perfil de acesso) e confirma, então as mudanças são salvas, o sistema registra data, hora e responsável pela alteração, e o usuário atualizado aparece na listagem.
+Critério de aceite 2 | CR2: Dado que o gerente de coordenadores tenta alterar o e-mail de um usuário para um já cadastrado por outro usuário, quando confirma a alteração, então o sistema exibe mensagem de erro informando duplicidade e não persiste a alteração.
+Critérios INVEST | Independente: pode ser desenvolvida logo após o cadastro de usuários (US08), compartilhando a interface do formulário com adaptações para edição. Negociável: os campos editáveis e as regras de validação podem ser revistos conforme as políticas internas de TI e segurança da ATVOS. Valiosa: permite que o gerente mantenha os dados dos usuários sempre corretos, garantindo que os perfis de acesso reflitam as responsabilidades atuais de cada colaborador. Estimável: reutiliza o formulário de cadastro com lógica de edição e validação de unicidade de e-mail, com esforço bem delimitado. Pequena: fluxo restrito à alteração de dados de um usuário existente, sem impacto em outros módulos. Testável: verifica-se se as alterações são salvas com rastreabilidade e se a duplicidade de e-mail é corretamente bloqueada.
+
+---
+
+Identificação | US11
+--- | ---
+Persona | Bianca Souza — Coordenadora de Estratégia de Terras
+Prioridade | Média
+User Story | "Como coordenadora de estratégia de terras, posso validar registros de parceiros pendentes aprovando ou devolvendo com comentário, para que apenas dados corretos e revisados sejam ativados no sistema."
+Critério de aceite 1 | CR1: Dado que a coordenadora está autenticada e acessa a fila de validação com registros pendentes, quando seleciona um registro e aciona a aprovação, então o status do registro muda para ativo, o registro passa a aparecer nas consultas do sistema e o analista responsável é notificado.
+Critério de aceite 2 | CR2: Dado que a coordenadora identifica inconsistências em um registro pendente, quando aciona a devolução e preenche um comentário, então o status muda para devolvido, o analista responsável é notificado com o comentário e o registro sai da fila de validação.
+Critérios INVEST | Independente: pode ser desenvolvida após o fluxo de envio para validação (US01 e US02) estar implementado, com lógica própria de transição de status. Negociável: os critérios de revisão e o formato do comentário de devolução podem ser ajustados conforme o fluxo de trabalho real da equipe de coordenação. Valiosa: garante que apenas registros revisados e aprovados pela coordenação se tornem ativos no sistema, mantendo a qualidade e a confiabilidade dos dados. Estimável: envolve transição de status, notificação ao analista e persistência de comentário, com escopo bem delimitado. Pequena: fluxo restrito à revisão e aprovação ou devolução de um registro pendente por vez. Testável: verifica-se se o registro aprovado aparece como ativo nas consultas e se o registro devolvido retorna ao analista com o comentário visível.
+
+---
+
+Identificação | US12
+--- | ---
+Persona | Juliano Soares — Analista de Negócios Agrícolas
+Prioridade | Média
+User Story | "Como analista de negócios agrícolas, posso visualizar meus rascunhos e registros devolvidos com o comentário do coordenador, para que eu saiba quais cadastros preciso corrigir ou concluir."
+Critério de aceite 1 | CR1: Dado que o analista está autenticado e acessa a seção de rascunhos, quando a página é carregada, então o sistema exibe todos os registros com status rascunho e devolvido vinculados ao analista logado, com nome do parceiro, status e data da última atualização.
+Critério de aceite 2 | CR2: Dado que o analista seleciona um registro com status devolvido, quando a tela de perfil é carregada, então o comentário do coordenador é exibido em destaque junto aos dados do parceiro, permitindo identificar o que precisa ser corrigido.
+Critérios INVEST | Independente: pode ser desenvolvida após o cadastro e envio para validação (US01 e US02) estarem implementados, com lógica própria de consulta filtrada por usuário e status. Negociável: os campos exibidos na listagem de rascunhos e o formato de destaque do comentário podem ser ajustados conforme o feedback dos analistas. Valiosa: permite que o analista retome cadastros incompletos ou corrija registros devolvidos sem perder o contexto, reduzindo retrabalho e aumentando a rastreabilidade do fluxo de validação. Estimável: envolve consulta filtrada ao banco de dados por usuário e status, com exibição de listagem e detalhes do registro, com esforço bem delimitado. Pequena: funcionalidade restrita à visualização de registros próprios com status rascunho ou devolvido, sem lógica de edição embutida. Testável: verifica-se se apenas os rascunhos do analista logado são exibidos e se o comentário do coordenador aparece em destaque nos registros devolvidos.
+
+---
+
+As User Stories levantadas cobrem os fluxos essenciais para resolver a principal dor identificada pela ATVOS: a dispersão dos dados de fornecedores de cana e proprietários de terra em planilhas desconectadas. O fluxo de validação por status (rascunho, pendente, ativo, devolvido) garante rastreabilidade e governança das informações desde o cadastro. A priorização reflete esse objetivo, com as histórias de alta prioridade cobrindo os fluxos centrais de cadastro, edição e gestão de usuários, e as de prioridade média endereçando funcionalidades de consulta, filtro, exportação e validação que ampliam a utilidade e a governança do sistema.
 
 # <a name="c3"></a>3. Projeto da Aplicação Web (sprints 1 a 5)
 
@@ -521,26 +553,29 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 | RF    | US relacionada | RN associadas    | Endpoint                                             | Método      |
 |-------|----------------|------------------|------------------------------------------------------|-------------|
-| RF001 | US09 | RN01, RN03 | `/usuarios` | POST |
-| RF002 | US09, US10 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
-| RF003 | US09 | RN03 | `/usuarios/:id/perfil` | PUT |
+| RF001 | US08 | RN01, RN03 | `/usuarios` | POST |
+| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
+| RF003 | US08 | RN03 | `/usuarios/:id/perfil` | PUT |
 | RF004 | US01, US02 | RN09, RN10 | `/parceiros` | POST |
 | RF005 | US05 | RN10, RN11, RN12 | `/parceiros/:id` | PUT |
 | RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
 | RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET |
 | RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
-| RF009 | US01, US02, US09 | RN09 | `/usuarios`, `/parceiros` | POST, PUT |
-| RF010 | US01, US02, US09 | RN10 | `/usuarios`, `/parceiros`, `/terras` | POST, PUT |
-| RF011 | US09, US10 | RN01, RN02 | `/auth/login` | POST |
-| RF012 | US04, US06, US08 | RN07, RN08 | `/parceiros`, `/terras` | GET |
+| RF009 | US01, US02, US08 | RN09 | `/usuarios`, `/parceiros` | POST, PUT |
+| RF010 | US01, US02, US08 | RN10 | `/usuarios`, `/parceiros`, `/terras` | POST, PUT |
+| RF011 | US08, US09 | RN01, RN02 | `/auth/login` | POST |
+| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros`, `/terras` | GET |
 | RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET |
 | RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | PUT (A exclusão é lógica) |
 | RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` e `/terras/:id/parceiros` | GET, POST |
 | RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
-| RF017 | US08 | RN04 | `/parceiros/exportar` | GET |
-| RF018 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF019 | US01, US02, US03, US05, US09, US10 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF020 | US10 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
+| RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
+| RF020 | US09 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
+| RF021 | US01, US02 | RN16 | `/parceiros/:id/validacao` | PUT |
+| RF022 | US11 | RN17 | `/parceiros/:id/aprovar` | PUT |
+| RF023 | US11 | RN17 | `/parceiros/:id/devolver` | PUT |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
@@ -594,7 +629,7 @@ Identificação | UC01 - Enviar Parceiro/Fornecedor para validação.
 **PRÉ-CONDIÇÕES** |  Usuário autenticado com perfil de analista.
 **FLUXO PRINCIPAL** | 1. O analista acessa a tela de cadastro de parceiro.<br> 2. O sistema exibe o formulário de cadastro.<br> 3. O analista preenche os campos disponíveis. <br> 4. O analista salva o registro como rascunho. <br> 5. O sistema persiste o registro com status rascunho, sem exigir campos obrigatórios. <br> 6. O analista conclui o preenchimento. <br> 7. O sistema envia o registro com status pendente para os coordenadores.
 **FLUXOS ALTERNATIVOS** | **FA01: Analista não envia o registro** <br> 6. Analista deixa a página de preenchimento. <br> 7. Sistema armazena registro rascunho do Analista no seu perfil. 
-**PÓS-CONDIÇÕES** | Novo registro de parceiro criado com status rascunho.
+**PÓS-CONDIÇÕES** | Novo registro de parceiro criado com status rascunho, ou com status pendente caso tenha sido enviado para validação.
 **US RELACIONADAS** | US01, US02
 **RN RELACIONADAS** | RN04, RN16
 
@@ -628,7 +663,7 @@ Identificação | UC04 - Validar Registro
 **FLUXO PRINCIPAL** | 1. O coordenador acessa a fila de validação.<br> 2. O sistema exibe os registros com status pendente, ordenados por data de envio.<br> 3. O coordenador seleciona um registro.<br> 4. O sistema exibe os dados completos do registro. <br>5. O coordenador revisa os dados e seleciona a opção de aprovar. <br>6. O sistema altera o status do registro para ativo.<br> 7. O registro passa a aparecer nas consultas normais do sistema.<br> 8. O sistema notifica o analista responsável sobre a aprovação.
 **FLUXOS ALTERNATIVOS** | **FA01 — Coordenador devolve o registro:**<br> 1. O coordenador identifica inconsistências nos dados. <br>2. O coordenador seleciona a opção de devolver e preenche um comentário explicando o motivo. <br>3. O sistema altera o status do registro para devolvido. <br>4. O sistema notifica o analista responsável com o comentário do coordenador.<br> 5. O fluxo é encerrado. <br> **FA02 — Fila vazia:** <br> 1. O coordenador acessa a fila de validação sem registros pendentes. <br>2. O sistema exibe mensagem informando que não há registros aguardando validação.
 **PÓS-CONDIÇÕES** | Registro aprovado com status ativo e visível no sistema, ou devolvido ao analista com comentário.
-**US RELACIONADAS** | ---
+**US RELACIONADAS** | US11
 **RN RELACIONADAS** | RN05, RN16, RN17, RN18
 
 Identificação | UC05 - Cadastrar usuário
@@ -639,7 +674,7 @@ Identificação | UC05 - Cadastrar usuário
 **FLUXO PRINCIPAL** | 1. O administrador acessa a tela de cadastro de usuário.<br> 2. O sistema exibe o formulário com campos: nome, e-mail e perfil de acesso. <br> 3. O administrador preenche os campos e confirma. <br> 4. O sistema valida unicidade do e-mail. <br> 5. O sistema persiste o novo usuário e registra data, hora e responsável. <br> 6. O sistema exibe o usuário na listagem com status ativo.
 **FLUXOS ALTERNATIVOS** | **FA01 — E-mail já cadastrado:** <br> 1. O administrador informa um e-mail já existente no sistema. <br> 2. O sistema exibe mensagem de erro informando duplicidade.<br> 3. O sistema não persiste o registro. <br> 4. O fluxo retorna ao passo 3 do fluxo principal.<br> **FA02 — Campo obrigatório não preenchido:** <br> 1. O administrador tenta confirmar sem preencher todos os campos. <br> 2. O sistema exibe mensagem indicando o campo ausente. <br> 3. O fluxo retorna ao passo 3 do fluxo principal.
 **PÓS-CONDIÇÕES** | Novo usuário cadastrado e habilitado para login conforme perfil atribuído.
-**US RELACIONADAS** | US09
+**US RELACIONADAS** | US08
 **RN RELACIONADAS** | RN01, RN03, RN06, RN11
 
 Identificação | UC06 - Editar Usuário
@@ -650,7 +685,7 @@ Identificação | UC06 - Editar Usuário
 **FLUXO PRINCIPAL** | 1. O administrador acessa o perfil do usuário na listagem. <br> 2. O administrador seleciona a opção de editar.<br> 3. O sistema exibe o formulário com os dados atuais preenchidos.<br> 4. O administrador altera os campos desejados e confirma.<br> 5. O sistema valida unicidade do e-mail caso tenha sido alterado.<br> 6. O sistema persiste as alterações e registra data, hora e responsável.
 **FLUXOS ALTERNATIVOS** | **FA01 — E-mail já cadastrado por outro usuário:** <br> 1. O administrador altera o e-mail para um já existente no sistema. <br> 2. O sistema exibe mensagem de erro informando duplicidade. <br> 3. O sistema não persiste a alteração. <br> 4. O fluxo retorna ao passo 4 do fluxo principal.
 **PÓS-CONDIÇÕES** | Dados do usuário atualizados no sistema.
-**US RELACIONADAS** | US11
+**US RELACIONADAS** | US10
 **RN RELACIONADAS** | RN01, RN11
 
 Identificação | UC07 - Inativar Usuário
@@ -661,7 +696,7 @@ Identificação | UC07 - Inativar Usuário
 **FLUXO PRINCIPAL** | 1. O administrador acessa o perfil do usuário na listagem. <br> 2. O administrador seleciona a opção de inativar. <br> 3. O sistema exibe confirmação da ação. <br> 4. O administrador confirma. <br> 5. O sistema altera o status do usuário para inativo.<br> 6. O sistema encerra imediatamente as sessões ativas do usuário. <br> 7. O sistema preserva o histórico de ações do usuário inativado.
 **FLUXOS ALTERNATIVOS** | **FA01 — Administrador cancela a ação:** <br> 1. O administrador seleciona cancelar na tela de confirmação. <br> 2. O sistema não realiza nenhuma alteração. <br> 3. O fluxo é encerrado.
 **PÓS-CONDIÇÕES** | Usuário inativado, sem acesso ao sistema, com histórico preservado.
-**US RELACIONADAS** | US10
+**US RELACIONADAS** | US09
 **RN RELACIONADAS** | RN06, RN07, RN15
 
 Identificação | UC08 - Receber Notificação de Inatividade
@@ -692,9 +727,9 @@ Identificação | UC10 - Visualizar Rascunhos Próprios
 **ATOR(ES) SECUNDÁRIO(S)** | Sistema Web; Banco de Dados
 **PRÉ-CONDIÇÕES** | Usuário autenticado como Analista
 **FLUXO PRINCIPAL** | 1. O analista acessa a seção de rascunhos. <br> 2. O sistema consulta os registros com status rascunho e devolvido vinculados ao usuário logado.<br> 3. O sistema exibe a listagem com nome do parceiro, status e data da última atualização.<br> 4. O analista seleciona um registro.<br> 5. O sistema exibe o perfil do parceiro com os dados preenchidos até o momento e, se houver, o comentário do coordenador.
-**FLUXOS ALTERNATIVOS** | **FA01 — Nenhum rascunho encontrado:** <br> 1. O analista não possui registros com status rascunho ou devolvido.<br> 2. O sistema exibe mensagem informando que não há rascunhos salvos.<br> 3. O sistema exibe opção de criar novo cadastro.<br> **FA02 — Registro com status devolvido:** <br> 1. O analista seleciona um registro com status devolvido.<br> 2. O sistema exibe o comentário do coordenador em destaque junto aos dados do parceiro. <br> 3. O analista pode editar o registro (UC03) ou reenviar para validação (UC06).
+**FLUXOS ALTERNATIVOS** | **FA01 — Nenhum rascunho encontrado:** <br> 1. O analista não possui registros com status rascunho ou devolvido.<br> 2. O sistema exibe mensagem informando que não há rascunhos salvos.<br> 3. O sistema exibe opção de criar novo cadastro.<br> **FA02 — Registro com status devolvido:** <br> 1. O analista seleciona um registro com status devolvido.<br> 2. O sistema exibe o comentário do coordenador em destaque junto aos dados do parceiro. <br> 3. O analista pode editar o registro (UC02) ou reenviar para validação (UC01).
 **PÓS-CONDIÇÕES** | Rascunhos do analista exibidos; analista pode continuar editando ou enviar para validação.
-**US RELACIONADAS** | 
+**US RELACIONADAS** | US12
 **RN RELACIONADAS** | RN04, RN16, RN17
 
 Identificação | UC11 - Primeiro Acesso e Cadastro de Senha
@@ -836,6 +871,8 @@ No fluxo principal, o sistema valida e salva o novo usuário (201). Alternativam
   <img src="/documentos/assets/diagrama_de_sequencia/fluxo_01_cadastro_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 1"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
+
+Em suma, os diagramas de sequência apresentados consolidam a lógica operacional e de governança do sistema. Eles detalham a interação fluida entre as camadas de controle, serviço e persistência (PostgreSQL), garantindo que cada operação de CRUD — desde o cadastro de parceiros até a auditoria de terras — trate rigorosamente os fluxos de erro (400, 404, 409, 500) e as regras de negócio da Atvos.
 
 #### Cadastro de usuários (nível de acesso)
 O fluxo principal valida o nível de acesso e cadastra o usuário (201). Alternativas barram dados incompletos (400) ou evitam e-mails já existentes (409), mantendo a governança da base Atvos.
@@ -996,14 +1033,9 @@ A seguir são apresentados os sete fluxos centrais construídos durante a sprint
 #### Cadastro de fornecedores de cana
 Este fluxo atende à US01, na qual o editor cadastra fornecedores de cana com informações específicas para centralizar e padronizar os dados no sistema. A partir da listagem de fornecedores, o usuário abre o formulário e preenche os campos previstos nos critérios de aceite, CPF/CNPJ, inscrição estadual, área plantada em hectares, TCH médio, ATR médio, histórico de cumprimento de cota, certificações e usina de referência. Ao confirmar, o sistema valida os campos obrigatórios e exibe o novo fornecedor na listagem; quando algum campo obrigatório fica em branco, o sistema bloqueia o envio e sinaliza o erro para o usuário, conforme o critério CR2 da história.
 
-<div align="center">
-  <sub>Figura 3.3.1 - Fluxo de cadastro de fornecedores de cana (US01)</sub><br>
-  <img src="./assets/wireframe/cadastrando_fornecedores.png" width="100%" alt="Wireframe do fluxo de cadastro de fornecedores de cana"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Figma)</sup>
-</div>
+A interface do perfil Administrador é direta e funcional, voltada à governança da plataforma. A tela de Gestão de Usuários (Tela 10), que atende às US08 e US09, concentra o gerenciamento de usuários internos, onde é possível cadastrar novos colaboradores, atribuir perfis de acesso (administrador, coordenador e analista) e inativar contas quando necessário. O histórico de ações dos usuários é preservado mesmo após a inativação, garantindo rastreabilidade e atendendo às regras de negócio definidas no projeto. Há também acesso ao histórico de auditoria do sistema, onde é possível consultar alterações realizadas por data, usuário responsável e registro modificado.
 
-#### Cadastro de proprietários cedentes
-Este fluxo atende à US02, complementar à US01 e voltada à área de Estratégia de Terras. O formulário trata dos campos próprios do perfil de proprietário cedente, CPF/CNPJ, documentação da terra, localização, distância da usina, área total disponível, topografia, status da documentação fundiária, CAR, situação ambiental e tipo de contrato. Ao confirmar, o registro passa a integrar a listagem de proprietários, padronizando dados que hoje circulam em planilhas paralelas mantidas por cada coordenador e eliminando o retrabalho de consolidação manual entre regiões.
+A interface do perfil Coordenador é estruturada em torno do cadastro, da edição e da atualização de parceiros. O fluxo de cadastro contempla dois tipos de parceiro: as telas de Cadastro de Fornecedor (Tela 06) e Cadastro de Proprietário (Tela 07), que atendem respectivamente à US01 e à US02, apresentam formulários com campos específicos validados pelo sistema. A partir das telas de Listagem de Fornecedores (Tela 02) e Listagem de Proprietários (Tela 03), que atendem às US04, US06 e US07, o coordenador pode visualizar os parceiros cadastrados com suporte a filtros combinados. Ao acessar o Perfil do Fornecedor (Tela 04) ou o Perfil do Proprietário (Tela 05), ambos contemplados pela US04, é possível consultar as informações detalhadas de cada parceiro e o histórico de interações registradas. As telas de Edição de Fornecedor (Tela 08) e Edição de Proprietário (Tela 09), que atendem à US05, permitem atualizar os dados cadastrais e registrar novas interações com data, tipo e descrição, construindo progressivamente o histórico de relacionamento que hoje se perde em planilhas e anotações individuais. Cada alteração realizada é registrada automaticamente com data, hora e identificação do usuário responsável, garantindo a rastreabilidade definida nos requisitos do sistema.
 
 <div align="center">
   <sub>Figura 3.3.2 - Fluxo de cadastro de proprietários cedentes (US02)</sub><br>
@@ -1086,42 +1118,105 @@ Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS,
 
 ### Introdução
 
-O Modelo Entidade-Relacionamento Conceitual representa a **fundação lógica** do sistema CRM da ATVOS: descreve **quais entidades existem no domínio**, **quais informações cada uma carrega** e **como elas se relacionam**, sem comprometer-se ainda com decisões de implementação técnica.
+O Modelo Entidade-Relacionamento Conceitual representa a base do sistema CRM da ATVOS: descreve quais entidades existem no domínio, quais informações cada uma carrega e como elas se relacionam. Esta seção está alinhada com o modelo físico (3.6.3) e o DER Lógico (3.6.2), que são as representações mais completas e servem como referência para as decisões aqui documentadas.
 
-Esta seção tem como objetivo oferecer uma visão abstrata e compreensível por todos os envolvidos no projeto, incluindo equipe técnica, professor, time da ATVOS e demais stakeholders, sobre **como a realidade operacional da gestão de parceiros agrícolas será traduzida em estrutura de dados**. As decisões aqui tomadas servem de base direta para o Diagrama de Classes (3.2.3), o DER Lógico (3.6.2) e o Modelo Físico (3.6.3), garantindo coerência ao longo de todo o projeto.
+Esta seção tem como objetivo oferecer uma visão organizada do banco de dados para todos os envolvidos no projeto, incluindo equipe técnica, professor, time da ATVOS e demais stakeholders, mostrando como a realidade operacional da gestão de parceiros agrícolas foi traduzida em estrutura de dados. As decisões aqui documentadas derivam diretamente do modelo físico (3.6.3) e do DER Lógico (3.6.2), garantindo coerência ao longo de todo o projeto.
 
-A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **minimundo** descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os **dados reais** disponibilizados pela ATVOS, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi **modelar o que tem evidência de uso**: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
+A modelagem foi conduzida com base em dois pilares: (1) o minimundo descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os dados reais disponibilizados pela ATVOS, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi modelar o que tem evidência de uso: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
 
 
 ### Notação e visão geral
 
-A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas **14 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
+A notação adotada é Chen, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas 14 entidades distribuídas em três grupos lógicos, conforme apresentado a seguir:
 
-- **Núcleo do parceiro externo**: Parceiro, Interacao, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+- Núcleo do parceiro externo: Parceiro, TelefoneParceiro, Interacao, VinculoComercial, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando a identidade da pessoa física ou jurídica do papel comercial que ela exerce (fornecedor de cana ou arrendador de terra). TelefoneParceiro armazena os telefones de cada parceiro de forma separada, permitindo múltiplos contatos por parceiro. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. VinculoComercial referencia a Terra associada ao vínculo. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
 
-- **Núcleo de operação interna**: Usuario, Cargo e Unidade. Representa os colaboradores internos da ATVOS, sua estrutura organizacional e as unidades industriais onde a operação acontece.
+- Núcleo de operação interna: Usuario, PerfilAcesso e Unidade. Representa os colaboradores internos da ATVOS, seu nível de acesso ao sistema e as unidades industriais onde a operação acontece. PerfilAcesso unifica o papel organizacional do usuário (analista, coordenador, administrador) e a regra de aprovação associada a cada perfil.
 
-- **Auditoria e associações**: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade e UsuarioUnidade. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros dois grupos. RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável, tornando todos os elos de rastreabilidade visíveis no próprio diagrama conceitual.
+- Auditoria e associações: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade, UsuarioUnidade e TerraUnidade. Implementa o fluxo de aprovação de alterações (RN11, RN12), o histórico de coordenação entre parceiros e colaboradores, e os relacionamentos N:N entre as entidades dos outros dois grupos. RegistroAlteracao identifica a entidade auditada pelos campos entidade_afetada e entidade_id, centralizando toda a trilha de auditoria em uma única estrutura.
 
 
 ### Decisões estruturais relevantes
 
-Quatro decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
+Cinco decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
 
-1. **Separação entre identidade e papel comercial.** Uma mesma pessoa física ou jurídica pode atuar simultaneamente como Fornecedor e Arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, contatos), enquanto VinculoComercial concretiza cada papel exercido. Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
+1. Separação entre identidade e papel comercial. Uma mesma pessoa física ou jurídica pode atuar simultaneamente como fornecedor e arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, e-mail), enquanto VinculoComercial concretiza cada papel exercido por meio do campo tipo_parceiro ('arrendador' ou 'fornecedor'). Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
 
-2. **Especialização para vínculos com atributos próprios.** As entidades DadosFornecedor e DadosArrendador são especializações de VinculoComercial: existem apenas quando o vínculo é do tipo correspondente. DadosFornecedor concentra atributos específicos de fornecimento de cana (modalidade contratual, embaixador, guardião). DadosArrendador, neste momento, está modelada como entidade preparada para receber atributos próprios conforme retorno da ATVOS. A separação foi mantida por solicitação do cliente, prevendo divergência de atributos em iterações futuras.
+2. Papel comercial e atributos específicos dentro de VinculoComercial. Os atributos específicos de cada tipo de vínculo, como modalidade_contrato para fornecedores, estão diretamente na entidade VinculoComercial. O campo tipo_parceiro identifica o papel exercido naquele vínculo. Esta abordagem simplifica a estrutura em relação a entidades especializadas separadas, mantendo todos os dados do vínculo em uma única tabela.
 
-3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Chen adotada. A implementação física desta restrição, via cinco chaves estrangeiras opcionais individuais para cada entidade auditável, está detalhada na seção 3.6.3.
+3. Auditoria via campos genéricos em RegistroAlteracao. A entidade RegistroAlteracao implementa o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. A entidade auditada é identificada pelos campos entidade_afetada (nome da tabela, como 'parceiros' ou 'terras') e entidade_id (UUID do registro auditado). Esta abordagem centraliza toda a auditoria em uma única estrutura sem necessidade de múltiplas chaves estrangeiras opcionais.
 
-4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos mínimos identificados: `tipo` (visita, ligação, WhatsApp, reunião), `data`, `texto` e `nome_responsavel`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo". Os atributos definitivos de Interacao serão validados com a ATVOS e poderão incluir campos adicionais como resultado, próximo passo ou duração, dependendo das necessidades operacionais levantadas com o cliente.
+4. Histórico de interações como entidade independente. O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos: tipo (visita, ligação, WhatsApp, reunião), data, descricao e registrado_por (FK para Usuario). Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo".
 
-Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
+5. Telefones como entidade independente. O campo telefone foi extraído de Parceiro para a entidade TelefoneParceiro, permitindo que um parceiro tenha múltiplos números cadastrados com tipo (celular, fixo, whatsapp) e indicação de contato principal. Esta decisão atende à Primeira Forma Normal e evita campos multivalorados na entidade principal.
+
+Adicionalmente, a relação entre Parceiro e Terra foi modelada como N:N via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras. Da mesma forma, a relação entre Terra e Unidade também foi modelada como N:N via TerraUnidade, pois uma terra pode ser processada por mais de uma unidade industrial.
 
 
 ### Modelos Entidade Relacionamento (MER)
 
-**Grupo 1 — Núcleo do parceiro externo**
+O diagrama a seguir apresenta uma visão geral com todas as 14 entidades e seus relacionamentos, sem atributos. Em seguida, cada grupo é detalhado separadamente.
+
+```mermaid
+flowchart TB
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+
+    PERF[PERFIL ACESSO]:::entity
+    USUA[USUARIO]:::entity
+    UNID[UNIDADE]:::entity
+    PARC[PARCEIRO]:::entity
+    TELEF[TELEFONE PARCEIRO]:::entity
+    INTER[INTERACAO]:::entity
+    VINC[VINCULO COMERCIAL]:::entity
+    TERR[TERRA]:::entity
+    PT[PARCEIRO TERRA]:::entity
+    TU[TERRA UNIDADE]:::entity
+    RA[REGISTRO ALTERACAO]:::entity
+    PCOORD[PARCEIRO COORDENADOR]:::entity
+    PUNID[PARCEIRO UNIDADE]:::entity
+    UUNID[USUARIO UNIDADE]:::entity
+
+    Rclass{classifica}:::rel
+    Rtem{tem}:::rel
+    Rtelef{possui}:::rel
+    Rreg{registra}:::rel
+    Rexerce{exerce}:::rel
+    Rvt{referencia}:::rel
+    Rvinc{vincula-se a}:::rel
+    Rtunid{pertence a}:::rel
+    Rsol{solicita}:::rel
+    Rapr{aprova}:::rel
+    Rcoord{coordena}:::rel
+    Ropun{opera em}:::rel
+    Ratun{atua em}:::rel
+
+    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
+    PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
+    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
+    PARC -- "1,1" --- Rvinc
+    TERR -- "1,1" --- Rvinc
+    Rvinc --- PT
+    TERR -- "1,1" --- Rtunid
+    UNID -- "1,1" --- Rtunid
+    Rtunid --- TU
+    USUA -- "1,1" --- Rsol -- "0,N" --- RA
+    USUA -- "0,1" --- Rapr -- "0,N" --- RA
+    PARC -- "1,1" --- Rcoord
+    USUA -- "1,1" --- Rcoord
+    Rcoord --- PCOORD
+    PARC -- "1,1" --- Ropun
+    UNID -- "1,1" --- Ropun
+    Ropun --- PUNID
+    USUA -- "1,1" --- Ratun
+    UNID -- "1,1" --- Ratun
+    Ratun --- UUNID
+```
+
+Grupo 1 - Núcleo do parceiro externo
 
 ```mermaid
 flowchart TB
@@ -1130,79 +1225,81 @@ flowchart TB
     classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
 
     PARC[PARCEIRO]:::entity
+    TELEF[TELEFONE PARCEIRO]:::entity
     INTER[INTERACAO]:::entity
+    USUA[USUARIO]:::entity
     VINC[VINCULO COMERCIAL]:::entity
-    DFORN[DADOS FORNECEDOR]:::entity
-    DARR[DADOS ARRENDADOR]:::entity
     TERR[TERRA]:::entity
     PT[PARCEIRO TERRA]:::entity
-    UNID[UNIDADE]:::entity
 
     p1(cpf_cnpj):::attr
     p2(nome):::attr
     p3(tipo_pessoa):::attr
     p4(email):::attr
-    p5(telefone):::attr
+    p5(apelido):::attr
     PARC --- p1
     PARC --- p2
     PARC --- p3
     PARC --- p4
     PARC --- p5
 
+    tel1(numero):::attr
+    tel2(tipo):::attr
+    tel3(principal):::attr
+    TELEF --- tel1
+    TELEF --- tel2
+    TELEF --- tel3
+
     i1(tipo):::attr
     i2(data):::attr
-    i3(texto):::attr
-    i4(nome_responsavel):::attr
+    i3(descricao):::attr
     INTER --- i1
     INTER --- i2
     INTER --- i3
-    INTER --- i4
 
     v1(tipo_vinculo):::attr
-    v2(status):::attr
-    v3(data_inicio):::attr
+    v2(tipo_parceiro):::attr
+    v3(status):::attr
+    v4(modalidade_contrato):::attr
+    v5(data_inicio):::attr
     VINC --- v1
     VINC --- v2
     VINC --- v3
-
-    df1(modalidade_contrato):::attr
-    DFORN --- df1
-
-    da1(observacoes):::attr
-    DARR --- da1
+    VINC --- v4
+    VINC --- v5
 
     t1(nome):::attr
     t2(area_contratada_ha):::attr
-    t3(cenario_atual):::attr
+    t3(cidade):::attr
+    t4(estado):::attr
     TERR --- t1
     TERR --- t2
     TERR --- t3
+    TERR --- t4
 
     pt1(tipo_vinculo):::attr
-    pt2(data_associacao):::attr
     PT --- pt1
-    PT --- pt2
 
     Rtem{tem}:::rel
+    Rtelef{possui}:::rel
+    Rreg{registra}:::rel
     Rexerce{exerce}:::rel
-    Resforn{especializa Fornecedor}:::rel
-    Resarr{especializa Arrendador}:::rel
+    Rvt{referencia}:::rel
     Rvinc{vincula-se a}:::rel
-    Rpert{pertence a}:::rel
 
     PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
+    PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
     PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
-    VINC -- "1,1" --- Resforn -- "0,1" --- DFORN
-    VINC -- "1,1" --- Resarr -- "0,1" --- DARR
+    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
     PARC -- "1,1" --- Rvinc
     TERR -- "1,1" --- Rvinc
     Rvinc --- PT
-    TERR -- "1,1" --- Rpert -- "0,N" --- UNID
 ```
 
-**Grupo 2 — Núcleo de operação interna**
+Grupo 2 - Núcleo de operação interna
 
-> UNIDADE é exibida aqui para apresentação de seus atributos; seus relacionamentos estão no Grupo 1 (Terra → Unidade) e no Grupo 3 (ParceiroUnidade, UsuarioUnidade).
+> UNIDADE é exibida aqui para apresentação de seus atributos; seus relacionamentos com TerraUnidade, ParceiroUnidade e UsuarioUnidade estão no Grupo 3.
 
 ```mermaid
 flowchart TB
@@ -1211,33 +1308,35 @@ flowchart TB
     classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
 
     USUA[USUARIO]:::entity
-    CARG[CARGO]:::entity
+    PERF[PERFIL ACESSO]:::entity
     UNID[UNIDADE]:::entity
 
     u1(nome):::attr
     u2(email):::attr
-    u3(perfil_acesso):::attr
-    u4(ativo):::attr
+    u3(ativo):::attr
     USUA --- u1
     USUA --- u2
     USUA --- u3
-    USUA --- u4
 
-    c1(nome):::attr
-    c2(requer_aprovacao):::attr
-    CARG --- c1
-    CARG --- c2
+    pf1(nome):::attr
+    pf2(requer_aprovacao):::attr
+    pf3(descricao):::attr
+    PERF --- pf1
+    PERF --- pf2
+    PERF --- pf3
 
     un1(codigo):::attr
     un2(nome):::attr
+    un3(ativo):::attr
     UNID --- un1
     UNID --- un2
+    UNID --- un3
 
     Rclass{classifica}:::rel
-    CARG -- "1,1" --- Rclass -- "0,N" --- USUA
+    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
 ```
 
-**Grupo 3 — Auditoria e associações**
+Grupo 3 - Auditoria e associações
 
 ```mermaid
 flowchart TB
@@ -1248,17 +1347,25 @@ flowchart TB
     PARC[PARCEIRO]:::entity
     USUA[USUARIO]:::entity
     UNID[UNIDADE]:::entity
+    TERR[TERRA]:::entity
     RA[REGISTRO ALTERACAO]:::entity
     PCOORD[PARCEIRO COORDENADOR]:::entity
     PUNID[PARCEIRO UNIDADE]:::entity
     UUNID[USUARIO UNIDADE]:::entity
+    TUNID[TERRA UNIDADE]:::entity
 
-    ra1(status):::attr
-    ra2(dados_anteriores):::attr
-    ra3(data_solicitacao):::attr
+    ra1(entidade_afetada):::attr
+    ra2(entidade_id):::attr
+    ra3(tipo_operacao):::attr
+    ra4(status):::attr
+    ra5(dados_anteriores):::attr
+    ra6(data_solicitacao):::attr
     RA --- ra1
     RA --- ra2
     RA --- ra3
+    RA --- ra4
+    RA --- ra5
+    RA --- ra6
 
     pc1(data_inicio):::attr
     pc2(data_fim):::attr
@@ -1271,16 +1378,18 @@ flowchart TB
     uu1(data_associacao):::attr
     UUNID --- uu1
 
+    tu1(data_associacao):::attr
+    TUNID --- tu1
+
     Rsol{solicita}:::rel
     Rapr{aprova}:::rel
-    Raud{audita}:::rel
     Rcoord{coordena}:::rel
     Ropun{opera em}:::rel
     Ratun{atua em}:::rel
+    Rpert{pertence a}:::rel
 
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
-    RA -- "0,N" --- Raud -- "0,1" --- PARC
     PARC -- "1,1" --- Rcoord
     USUA -- "1,1" --- Rcoord
     Rcoord --- PCOORD
@@ -1290,88 +1399,447 @@ flowchart TB
     USUA -- "1,1" --- Ratun
     UNID -- "1,1" --- Ratun
     Ratun --- UUNID
+    TERR -- "1,1" --- Rpert
+    UNID -- "1,1" --- Rpert
+    Rpert --- TUNID
 ```
 
 
 
-> **Nota sobre relacionamentos entre grupos:** Os relacionamentos 7a e 7b (Usuario como embaixador e guardião de DadosFornecedor) vinculam entidades do Grupo 2 (Usuario) ao Grupo 1 (DadosFornecedor). Por atravessarem dois grupos distintos, não são representados graficamente nos diagramas acima — estão detalhados na tabela a seguir e implementados como duas chaves estrangeiras opcionais na entidade DadosFornecedor (seção 3.6.3).
+> Nota: RegistroAlteracao não possui relacionamento explícito com entidades específicas no diagrama pois utiliza os campos entidade_afetada e entidade_id para identificar genericamente o registro auditado. Esta abordagem está detalhada na tabela de relacionamentos abaixo e implementada na seção 3.6.3.
 
 ### Resumo dos relacionamentos
 
 | # | Relacionamento | Cardinalidade | Descrição |
 |---|---|---|---|
-| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. Os atributos definitivos de Interacao serão validados com a ATVOS. |
-| 1 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente (Fornecedor, Arrendador ou ambos). Todo vínculo pertence a exatamente um Parceiro. |
-| 2 | VinculoComercial / DadosFornecedor | `[1..1] :: [0..1]` | Especialização: vínculos do tipo Fornecedor possuem registro em DadosFornecedor; vínculos do tipo Arrendador não. |
-| 3 | VinculoComercial / DadosArrendador | `[1..1] :: [0..1]` | Especialização irmã da anterior: vínculos do tipo Arrendador possuem registro em DadosArrendador. |
-| 4a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
-| 4b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
-| 5 | Terra / Unidade | `[1..1] :: [0..N]` | Toda terra processa cana em uma unidade industrial específica (cada Terra pertence a exatamente 1 Unidade); uma unidade recebe de várias terras (cada Unidade pode ter 0 a N Terras vinculadas). |
-| 6 | Cargo / Usuario | `[1..1] :: [0..N]` | Cada usuário ocupa um cargo organizacional; cada cargo pode ter vários usuários. |
-| 7a | Usuario / DadosFornecedor (embaixador) | `[0..1] :: [0..N]` | Cada DadosFornecedor pode ter um embaixador atribuído; um usuário pode ser embaixador de vários fornecedores. Os dois relacionamentos Usuario para DadosFornecedor materializam-se como duas FKs distintas na entidade. |
-| 7b | Usuario / DadosFornecedor (guardião) | `[0..1] :: [0..N]` | Mesma estrutura para o guardião (suplente do embaixador). |
-| 8 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação possui um solicitante obrigatório. |
-| 9 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional (NULL enquanto a solicitação está pendente). |
-| 10a | RegistroAlteracao / Parceiro | `[0..N] :: [0..1]` | Um RegistroAlteracao pode auditar zero ou um Parceiro; um Parceiro pode ter zero ou muitos registros de auditoria. |
-| 10b | RegistroAlteracao / VinculoComercial | `[0..N] :: [0..1]` | Idem para VinculoComercial. |
-| 10c | RegistroAlteracao / DadosFornecedor | `[0..N] :: [0..1]` | Idem para DadosFornecedor. |
-| 10d | RegistroAlteracao / DadosArrendador | `[0..N] :: [0..1]` | Idem para DadosArrendador. |
-| 10e | RegistroAlteracao / Terra | `[0..N] :: [0..1]` | Idem para Terra. |
-| ★ | Constraint 10a a 10e | exclusividade | Exatamente um dos cinco relacionamentos acima é não-nulo por registro de RegistroAlteracao. Validada em camada de aplicação (Service); os demais quatro ficam NULL. |
-| 11 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
-| 12 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
-| 13 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
+| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. |
+| 0b | Interacao / Usuario (registrado_por) | `[0..N] :: [1..1]` | Toda interação é registrada por exatamente um Usuario interno. Um Usuario pode ter registrado zero ou muitas interações. |
+| 1 | Parceiro / TelefoneParceiro | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitos telefones cadastrados. Cada telefone pertence a exatamente um Parceiro e indica o tipo (celular, fixo, whatsapp) e se é o contato principal. |
+| 2 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente (fornecedor, arrendador ou ambos), identificados pelo campo tipo_parceiro. Todo vínculo pertence a exatamente um Parceiro. |
+| 2b | VinculoComercial / Terra | `[0..N] :: [1..1]` | Cada vínculo comercial referencia exatamente uma Terra (campo terra_id NOT NULL). Uma Terra pode estar associada a zero ou muitos vínculos comerciais. |
+| 3a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
+| 3b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
+| 4 | Terra / Unidade via TerraUnidade | N:N | Uma terra pode ser processada por mais de uma unidade industrial e uma unidade pode processar cana de múltiplas terras. A entidade TerraUnidade resolve este relacionamento N:N com data_associacao. |
+| 5 | PerfilAcesso / Usuario | `[1..1] :: [0..N]` | Cada usuário possui exatamente um perfil de acesso (analista, coordenador ou administrador); cada perfil pode classificar vários usuários. O campo requer_aprovacao no perfil define se alterações feitas por usuarios com esse perfil precisam de aprovação. |
+| 6 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação de alteração possui um usuário solicitante obrigatório. |
+| 7 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional (NULL enquanto a solicitação está pendente). |
+| 8 | RegistroAlteracao / entidade auditada | genérico | RegistroAlteracao identifica a entidade auditada pelos campos entidade_afetada (nome da tabela, ex: 'parceiros') e entidade_id (UUID do registro). O campo tipo_operacao indica a ação realizada (criacao, edicao, envio, aprovacao, devolucao, exclusao). |
+| 9 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
+| 10 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
+| 11 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
 
 
 ### Boas práticas aplicadas no modelo
 
-- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, texto, nome_responsavel) foram identificados com base no uso atual das planilhas, e os atributos adicionais aguardam validação com a ATVOS antes de serem incorporados.
+- Modelagem dirigida por evidência. Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, descricao e registrado_por) foram identificados com base no uso atual das planilhas.
 
-- **Normalização até a Terceira Forma Normal.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. A entidade é referenciada por uma chave estrangeira para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
+- Normalização até a Terceira Forma Normal. O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. Da mesma forma, o campo telefone foi extraído de Parceiro para a entidade TelefoneParceiro, eliminando campos multivalorados e permitindo o cadastro de múltiplos contatos por parceiro. Ambas as entidades são referenciadas por chaves estrangeiras para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
 
-- **Separação clara entre identidade, papel e atributo específico.** A divisão Parceiro / VinculoComercial / (DadosFornecedor ou DadosArrendador) elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis, garante consistência de contato (alterar telefone do parceiro afeta todos os papéis) e permite especialização limpa quando atributos específicos forem necessários.
+- Separação entre identidade e papel comercial. A divisão Parceiro / VinculoComercial elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis, pois os dados de identidade ficam em Parceiro enquanto cada papel comercial é representado por um registro em VinculoComercial com o campo tipo_parceiro. Alterar o telefone do parceiro em TelefoneParceiro afeta automaticamente todos os vínculos comerciais daquele parceiro.
 
-- **Distinção entre cargo organizacional e perfil de acesso.** A entidade Cargo modela a função do colaborador na estrutura da ATVOS (Analista, Coordenador, Gerente, Especialista de Campo) e carrega regra de negócio (`requer_aprovacao`). Já o atributo `perfil_acesso` em Usuario representa a permissão técnica no sistema (Admin, Editor, Observador). Os dois conceitos coexistem porque são dimensões independentes: um Coordenador pode ser Editor, um Gerente pode ser Admin.
+- Perfil de acesso unificado em PerfilAcesso. A entidade PerfilAcesso concentra tanto o papel organizacional do usuário quanto a regra de aprovação associada a esse papel via campo requer_aprovacao. Os perfis possíveis são analista, coordenador e administrador. Esta abordagem permite que a ATVOS altere a política de aprovação no futuro sem necessidade de alteração no código da aplicação.
 
-- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No modelo conceitual, RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra), com a constraint de que exatamente um desses vínculos é não-nulo por registro. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `Pendente` e aguardam aprovação de Coordenador ou Gerente; registros originados de Admin ou Editor recebem `Aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
+- Auditoria estrutural via RegistroAlteracao. O fluxo de aprovação obrigatório para alterações feitas por analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com uma única entidade, que serve simultaneamente como fila de aprovação e log de auditoria. A entidade auditada é identificada pelos campos entidade_afetada e entidade_id, e o campo status opera em dois modos: registros de analistas iniciam como pendente e aguardam aprovação; registros de coordenadores e administradores recebem aprovado diretamente.
 
-- **Histórico modelado apenas onde tem valor de negócio.** Optou-se por manter histórico (`data_inicio`/`data_fim`) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra) guardam apenas o estado atual ou o momento de associação, evitando complexidade desnecessária.
+- Histórico modelado apenas onde tem valor de negócio. Optou-se por manter histórico (data_inicio / data_fim) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra e TerraUnidade) guardam apenas o momento de associação via data_associacao, evitando complexidade desnecessária.
 
-- **Soft delete como padrão.** As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade) possuem o campo `ativo`, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US10) e à boa prática de preservação de dados auditáveis.
+- Soft delete como padrão. As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade, TelefoneParceiro e Parceiro) possuem o campo ativo ou status, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US09) e à boa prática de preservação de dados auditáveis.
 
-- **Internacionalização de regra de negócio via dado.** O comportamento de aprovação obrigatória não está hard-coded no nome do cargo, mas sim no atributo `requer_aprovacao` da entidade Cargo. Isso permite que a ATVOS altere a política de aprovação no futuro (incluindo novos cargos ou alterando os existentes) sem necessidade de redeploy do código.
-
-- **Documentação de pendências.** Decisões que dependem de validação com a ATVOS (Top 15, Portal PMF, definições de áreas, atributos específicos de Arrendador, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
+- Documentação de pendências. Decisões que dependem de validação com a ATVOS (Top 15, Portal PMF, definições de áreas, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
 
 
 ### Conclusão
 
-A modelagem ER Conceitual apresentada nesta seção não é apenas um artefato formal de documentação: é a **espinha dorsal técnica** que viabiliza concretamente os requisitos do sistema CRM da ATVOS. Cada decisão tomada aqui responde a uma necessidade operacional específica e mensurável.
+A modelagem ER Conceitual apresentada nesta seção está alinhada com o modelo físico (3.6.3) e o DER Lógico (3.6.2), servindo como referência conceitual das decisões de implementação adotadas. Cada estrutura aqui documentada responde a uma necessidade operacional identificada nas planilhas e regras de negócio da ATVOS.
 
-A separação entre Parceiro e VinculoComercial é o que permite que **uma mesma empresa cadastrada uma vez** apareça simultaneamente como fornecedora de cana e arrendadora de terra, situação real observada em diversas linhas das planilhas, e que sem esse cuidado de modelagem geraria duplicação cadastral e inconsistência de contato. A especialização DadosFornecedor / DadosArrendador, mesmo com a segunda começando enxuta, **prepara o sistema para evolução estruturada** conforme a ATVOS confirme atributos específicos por papel, evitando refatoração custosa em iteração futura.
+A separação entre Parceiro e VinculoComercial permite que uma mesma empresa cadastrada uma vez apareça simultaneamente como fornecedora de cana e arrendadora de terra, situação real observada em diversas linhas das planilhas. O campo tipo_parceiro em VinculoComercial identifica o papel exercido em cada vínculo, e os atributos específicos como modalidade_contrato estão diretamente nessa entidade, mantendo a estrutura simples e consultável.
 
-A entidade ParceiroTerra, introduzida como associativa N:N entre Parceiro e Terra, resolve diretamente a contradição que existiria em um modelo 1:N diante das regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Ambos os sentidos do relacionamento precisam ser "muitos para muitos".
+A entidade ParceiroTerra, associativa N:N entre Parceiro e Terra, resolve diretamente as regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Da mesma forma, TerraUnidade resolve o relacionamento N:N entre Terra e Unidade, pois uma terra pode ser processada por mais de uma unidade industrial.
 
-A entidade RegistroAlteracao concretiza diretamente as regras RN11 (auditoria), RN12 (versionamento) e o fluxo de aprovação obrigatória descrito nas conversas com a ATVOS: alterações de Analistas vão para fila, são revisadas por Coordenadores ou Gerentes, e o histórico é preservado para sempre. Os relacionamentos explícitos e opcionais com cada entidade auditável, representados no diagrama conceitual com cardinalidade `[0..1]` em cada elo, permitem que **uma única estrutura** atenda todo o domínio auditável do sistema, sem multiplicação de entidades de auditoria e sem recorrer a técnicas de implementação no modelo conceitual.
+A entidade RegistroAlteracao concretiza as regras RN11 (auditoria) e RN12 (versionamento) e o fluxo de aprovação obrigatória descrito nas conversas com a ATVOS: alterações de analistas vão para fila, são revisadas por coordenadores ou administradores, e o histórico é preservado para sempre. Os campos entidade_afetada e entidade_id permitem que uma única estrutura atenda todo o domínio auditável do sistema sem necessidade de chaves estrangeiras para cada entidade.
 
-A entidade ParceiroCoordenador com histórico responde ao caso, observado em campo, de coordenadores que se aposentam, mudam de função ou são realocados, preservando a memória institucional de "quem cuidou de quem e quando", informação valiosa em decisões futuras de relacionamento. As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
+A entidade ParceiroCoordenador com histórico preserva a memória institucional de quem cuidou de quem e quando, informação valiosa em decisões futuras de relacionamento. As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
 
-Por fim, o princípio de **modelagem dirigida por evidência**, com cada atributo justificado por planilha real ou regra de negócio explícita, torna este modelo não apenas tecnicamente sólido, mas também **negocialmente honesto**: ele entrega exatamente o que a ATVOS precisa hoje, com pontos de extensão claramente sinalizados para o que ainda virá, e zero complexidade especulativa. As próximas seções (3.6.2 DER Lógico e 3.6.3 Modelo Físico) detalharão como esta estrutura conceitual será concretizada em chaves, constraints e SQL executável, mantendo total coerência com o que foi estabelecido aqui.
+O princípio de modelagem dirigida por evidência, com cada atributo justificado por planilha real ou regra de negócio explícita, garante que este modelo entregue exatamente o que a ATVOS precisa. As seções 3.6.2 e 3.6.3 apresentam a implementação completa desta estrutura em DER e SQL executável.
 
 
 ### 3.6.2. Diagrama Entidade-Relacionamento (DER) (sprint 2)
 
-*Posicione aqui o DER com cardinalidades explícitas em ambos os lados de cada relação e identificação de PK/FK. O DER deve ser coerente com o diagrama de classes (3.2.3).*
+Um Diagrama de Entidade-Relacionamento (DER) é uma representação visual da estrutura de dados de um sistema, que mapeia as entidades envolvidas, seus atributos e os relacionamentos entre elas. Criado na fase de modelagem do banco de dados, o DER serve como ponte entre os requisitos do negócio e a implementação técnica, permitindo que tanto desenvolvedores quanto stakeholders não técnicos compreendam como os dados se organizam e se relacionam.
+
+A importância do DER em qualquer projeto de software está na clareza e na prevenção de erros que ele proporciona. Ao visualizar o modelo antes de implementá-lo, a equipe consegue identificar inconsistências, redundâncias e lacunas na estrutura de dados ainda na fase de planejamento — quando o custo de correção é muito menor do que durante ou após o desenvolvimento. Além disso, o DER serve como documentação viva do sistema, facilitando a integração de novos membros na equipe, a manutenção futura e a comunicação entre times de negócio e tecnologia.
+
 
 <div align="center">
   <sub>Figura 3.6.2.1 - Diagrama Entidade-Relacionamento (DER)</sub><br>
-  <img src="./assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
+  <img src="/documentos/assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
-### 3.6.3. Modelo Relacional e Modelo Físico (sprints 2 e 4)
+No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER é especialmente relevante por se tratar de um domínio com relacionamentos complexos e múltiplos perfis de usuário. Ele torna explícita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores, e garante que a rastreabilidade de alterações — central para a integridade do sistema — esteja corretamente estruturada desde a concepção do banco de dados.
 
-*Posicione aqui os diagramas de modelos relacionais do banco de dados, apresentando todos os esquemas de tabelas e suas relações. Inclua as migrations DDL numeradas e reproduzíveis (`CREATE TABLE`, `CREATE INDEX`, constraints `NOT NULL`, `UNIQUE`, `FOREIGN KEY`, `CHECK`). Utilize texto para complementar suas explicações quando necessário.*
+### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
+<br>
+O modelo relacional tem como objetivo representar de forma lógica as entidades do sistema, seus atributos e os relacionamentos existentes entre elas. Nessa etapa, as entidades foram convertidas em tabelas relacionais, com definição de chaves primárias e estrangeiras, além da normalização necessária para reduzir redundâncias e garantir maior integridade dos dados.
+
+A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional.
+
+<div align="center">
+  <sub>Figura 3.6.3.1.1</sub><br>
+  <img src="./assets/modelo_relacional_bd.png" width="100%" alt="Modelo Relacional"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Modelo Relacional feito no bddiagram)</sup>
+</div>
+
+<br><br> 
+
+### 3.6.3.2 Modelo Físico
+<br>
+Com base no modelo relacional apresentado anteriormente, foi desenvolvido o modelo físico do banco de dados utilizando o PostgreSQL. Nessa etapa, as estruturas lógicas foram convertidas em comandos SQL executáveis (DDL), incluindo a criação de tabelas, tipos personalizados, restrições de integridade (NOT NULL, CHECK, UNIQUE e FOREIGN KEY) e índices para otimização de consultas.
+
+Além de representar a implementação prática do banco de dados, o modelo físico garante maior consistência, desempenho e confiabilidade no armazenamento das informações utilizadas pelo sistema.
+<br><br>
+
+#### Pré requistos:
+<br>
+1. Para utilizar a função opcional gen_random_uuid() pertencente a extensão pgcrypto (já existente no PostgreSQL), precisamos adicionar essa extensão no banco de dados.
+<br><br>
+
+```SQL
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+```
+<br>
+2. Aqui foi criado um ENUM status_validacao, já que esse mesmo padrão será utilizado em muitas outras entidades.
+<br><br>
+
+```SQL
+CREATE TYPE status_validacao AS ENUM (
+  'rascunho', 'pendente', 'ativo', 'devolvido', 'inativo'
+);
+```
+
+<br><br>
+
+
+#### 01. TABELA perfil_acesso 
+<br>
+É a tabela responsável por definir os possíveis níveis de acesso do usuário, podendo ser 'analista', 'coordenador' ou 'administrador'. Ela é referenciada na tabela usuario.
+<br><br>
+
+```SQL
+CREATE TABLE perfil_acesso (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nome        VARCHAR NOT NULL UNIQUE
+                CHECK (nome IN ('analista', 'coordenador', 'administrador')),
+  requer_aprovacao BOOLEAN NOT NULL DEFAULT FALSE,
+  descricao   TEXT
+);
+```
+<br><br>
+
+#### 02. TABELA usuarios
+<br>
+É a tabela que armazena os usuários internos do sistema e seus respectivos dados. Note que o campo senha_hash permite ausência de valor (null). Isso acontece devido ao modo de como o sistema interpreta novos usuários: é verificado se o campo senha_hash desse usuário possui valor nulo e, caso positivo, o usuário é direcionado para uma tela de criar sua senha.
+<br><br>
+Além da tabela, aqui já são explícitados os índices relacionados à tabela usuarios, sendo eles relacionados ao nome e ao perfil_acesso_id.
+<br><br>
+
+``` SQL
+CREATE TABLE usuarios (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  perfil_acesso_id  UUID NOT NULL REFERENCES perfil_acesso(id),
+  nome              VARCHAR NOT NULL,
+  email             VARCHAR NOT NULL UNIQUE,
+  senha_hash        VARCHAR,
+  ativo             BOOLEAN NOT NULL DEFAULT TRUE,
+  criado_em         TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_usuario_perfil ON usuarios(perfil_acesso_id);
+CREATE INDEX idx_usuario_nome ON usuarios(nome);
+```
+<br><br>
+
+#### 03. TABELA unidades
+<br>
+A tabela unidade representa as unidades operacionais - as usinas - da ATVOS. O campo codigo é único e identifica a unidade internamente.
+<br><br>
+
+``` SQL
+CREATE TABLE unidades (
+  id      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  codigo  VARCHAR NOT NULL UNIQUE,
+  nome    VARCHAR NOT NULL,
+  ativo   BOOLEAN NOT NULL DEFAULT TRUE
+);
+```
+<br><br>
+
+#### 04. TABELA parceiros
+<br>
+A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador.
+<br><br>
+Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome e ao tipo_pessoa.
+<br>
+
+```SQL
+CREATE TABLE parceiros (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nome             VARCHAR NOT NULL,
+  apelido          VARCHAR,
+  tipo_pessoa      VARCHAR NOT NULL
+                     CHECK (tipo_pessoa IN ('fisica', 'juridica')),
+  cpf_cnpj         VARCHAR NOT NULL UNIQUE,
+  email            VARCHAR,
+  data_nascimento  DATE,
+  nome_acompanhante VARCHAR,
+  status           status_validacao NOT NULL DEFAULT 'rascunho',
+  criado_em        TIMESTAMP NOT NULL DEFAULT NOW(),
+  atualizado_em    TIMESTAMP,
+  criado_por       UUID NOT NULL REFERENCES usuarios(id),
+  atualizado_por   UUID REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_parceiro_status   ON parceiros(status);
+CREATE INDEX idx_parceiro_cpf_cnpj ON parceiros(cpf_cnpj);
+CREATE INDEX idx_parceiro_nome ON parceiros(nome);
+CREATE INDEX idx_parceiro_tipo_pessoa ON parceiros(tipo_pessoa);
+```
+<br><br>
+
+#### 05. TABELA terras
+<br>
+A tabela terra armazena os dados das propriedades rurais. Assim como parceiro, passa pelo mesmo ciclo de validação via status. O campo area_contratada_ha representa a área física da terra disponível para contrato. Note algumas considerações, como estado aceitar apenas dois caracteres, para que seja forçada a padronização (SP, MG, RJ etc) e como a area_contratada_ha poder ter até 12 dígitos com até 4 casas decimais.
+<br><br>
+Além disso, note que os índices escolhidos foram relacionados ao status, à cidade e ao estado.
+<br><br>
+
+```SQL
+CREATE TABLE terras (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nome               VARCHAR NOT NULL,
+  area_contratada_ha DECIMAL(12,4) NOT NULL
+                     CHECK (area_contratada_ha > 0),
+  cidade             VARCHAR NOT NULL,
+  estado             VARCHAR(2) NOT NULL,
+  status             status_validacao NOT NULL DEFAULT 'rascunho',
+  criado_em          TIMESTAMP NOT NULL DEFAULT NOW(),
+  atualizado_em      TIMESTAMP,
+  criado_por         UUID NOT NULL REFERENCES usuarios(id),
+  atualizado_por     UUID REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_terra_status ON terras(status);
+CREATE INDEX idx_terra_cidade ON terras(cidade);
+CREATE INDEX idx_terra_estado ON terras(estado);
+```
+
+<br><br>
+
+#### 06. TABELA vinculo_comercial
+<br>
+A tabela vinculo_comercial representa o contrato formal entre um parceiro e uma terra. Um parceiro pode ter múltiplos vínculos com terras diferentes, e uma terra pode ter múltiplos vínculos com parceiros diferentes. O campo tipo_parceiro define se o parceiro atua como arrendador ou fornecedor naquele vínculo específico.
+<br><br>
+Os índices escolhidos foram relacionados ao parceiro_id, à terra_id e ao tipo_parceiro. Esse último principalmente ajuda bastante nas filtragens.
+<br><br>
+
+```SQL
+CREATE TABLE vinculo_comercial (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id      UUID NOT NULL REFERENCES parceiros(id),
+  terra_id         UUID NOT NULL REFERENCES terras(id),
+  tipo_parceiro    VARCHAR NOT NULL DEFAULT 'arrendador'
+                     CHECK (tipo_parceiro IN ('arrendador', 'fornecedor')),
+  tipo_vinculo     VARCHAR NOT NULL,
+  status           VARCHAR NOT NULL DEFAULT 'ativo'
+                     CHECK (status IN ('ativo', 'inativo', 'encerrado')),
+  modalidade_contrato VARCHAR,
+  data_inicio      DATE,
+  data_fim         DATE,
+  observacoes      TEXT
+);
+
+CREATE INDEX idx_vinculo_parceiro         ON vinculo_comercial(parceiro_id);
+CREATE INDEX idx_vinculo_terra            ON vinculo_comercial(terra_id);
+CREATE INDEX idx_vinculo_tipo_parceiro    ON vinculo_comercial(tipo_parceiro);
+```
+
+<br><br>
+
+#### 07. TABELA parceiro_terra
+<br>
+A tabela parceiro_terra resolve a relação N:M entre parceiros e terras, isso sem necessidade de vínculo comercial formal, isto é, de um contrato. Um parceiro pode estar associado a uma terra sem contrato com a Atvos, e uma terra pode ter múltiplos parceiros associados.
+<br><br>
+Apesar de ter a mesma associação que vinculo_comercial, essa tabela representa mais situações como a de uma família possuir uma terra, mas nem toda família está presente no contrato/vínculo comercial com a Atvos.
+<br><br>
+
+```SQL
+CREATE TABLE parceiro_terra (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  terra_id    UUID NOT NULL REFERENCES terras(id),
+  tipo_vinculo VARCHAR,
+  UNIQUE (parceiro_id, terra_id)
+);
+```
+
+<br><br>
+
+#### 08. TABELA terra_unidade
+<br>
+Essa tabela resolve a relação N:M entre terras e unidades operacionais da ATVOS (Uma terra pode ter mais de uma unidade e vice-versa).
+<br><br>
+
+```SQL
+CREATE TABLE terra_unidade (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  terra_id    UUID NOT NULL REFERENCES terras(id),
+  unidade_id  UUID NOT NULL REFERENCES unidades(id),
+  data_associacao DATE NOT NULL,
+  UNIQUE (terra_id, unidade_id)
+);
+```
+
+<br><br>
+
+#### 09. TABELA parceiro_unidade
+<br>
+A tabela parceiro_unidade associa parceiros às unidades operacionais da ATVOS com as quais se relacionam.
+<br><br>
+
+```SQL
+CREATE TABLE parceiro_unidade (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  unidade_id  UUID NOT NULL REFERENCES unidades(id),
+  data_associacao DATE NOT NULL,
+  UNIQUE (parceiro_id, unidade_id)
+);
+```
+
+<br><br>
+
+#### 10. TABELA usuario_unidade
+<br>
+A tabela usuario_unidade associa usuários internos às unidades em que atuam.
+<br><br>
+
+```SQL
+CREATE TABLE usuario_unidade (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id  UUID NOT NULL REFERENCES usuarios(id),
+  unidade_id  UUID NOT NULL REFERENCES unidades(id),
+  data_associacao DATE NOT NULL,
+  UNIQUE (usuario_id, unidade_id)
+);
+```
+
+<br><br>
+
+#### 11. TABELA parceiro_coordenador
+<br>
+A tabela parceiro_coordenador registra qual coordenador/analista é responsável por cada parceiro. O campo data_fim nulo indica que o vínculo está ativo, o que dispensa um campo ativo separado.
+<br><br>
+O indíce criado a partir dessa tabela é relacionado ao parceiro_id.
+<br><br>
+
+```SQL
+CREATE TABLE parceiro_coordenador (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  usuario_id  UUID NOT NULL REFERENCES usuarios(id),
+  data_inicio DATE NOT NULL,
+  data_fim    DATE,
+  observacoes TEXT
+);
+
+CREATE INDEX idx_parceiro_coordenador_parceiro ON parceiro_coordenador(parceiro_id);
+```
+
+<br><br>
+
+#### 12. TABELA interacao
+<br>
+A tabela interacao registra o histórico de contatos entre a equipe interna e os parceiros - visitas, ligações, reuniões e outros tipos de interação. Não passa por fluxo de validação.
+<br><br>
+Os índices escolhidos se relacionam com parceiro_id e tipo.
+<br><br>
+
+```SQL
+CREATE TABLE interacao (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id   UUID NOT NULL REFERENCES parceiros(id),
+  registrado_por UUID NOT NULL REFERENCES usuarios(id),
+  tipo          VARCHAR NOT NULL,
+  descricao     TEXT NOT NULL,
+  data          DATE NOT NULL,
+  criado_em     TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_interacao_parceiro ON interacao(parceiro_id);
+CREATE INDEX idx_interacao_tipo     ON interacao(tipo);
+```
+
+<br><br>
+
+#### 13. TABELA telefone_parceiro
+<br>
+A tabela telefone_parceiro permite que um parceiro tenha múltiplos telefones cadastrados. O campo principal indica o número preferencial de contato.
+<br>
+<br><br>
+
+```SQL
+CREATE TABLE telefone_parceiro (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  parceiro_id UUID NOT NULL REFERENCES parceiros(id),
+  numero      VARCHAR NOT NULL,
+  tipo        VARCHAR CHECK (tipo IN ('celular', 'fixo', 'whatsapp')),
+  principal   BOOLEAN NOT NULL DEFAULT FALSE,
+  ativo       BOOLEAN NOT NULL DEFAULT TRUE,
+  criado_em   TIMESTAMP NOT NULL DEFAULT NOW(),
+  atualizado_em TIMESTAMP,
+  criado_por  UUID NOT NULL REFERENCES usuarios(id),
+  atualizado_por UUID REFERENCES usuarios(id)
+);
+
+CREATE INDEX idx_telefone_parceiro ON telefone_parceiro(parceiro_id);
+```
+
+<br><br>
+
+#### 14. TABELA registro_alteracao
+<br>
+Essa tabela registra as alterações de qualquer entidade do sistema através dos campos entidade_afetada e entidade_id. Também controla o fluxo de aprovação entre analista e coordenador. Além disso, ela também armazena os dados anteriores e os dados novos em JSONB.
+<br><br>
+Os índices criados a partir dessa tabela estão relacionados à entidade_afetada, à entidade_id, ao usuario_id, ao status e ao tipo_operacao.
+<br><br>
+
+```SQL
+CREATE TABLE registro_alteracao (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id       UUID NOT NULL REFERENCES usuarios(id),
+  aprovado_por     UUID REFERENCES usuarios(id),
+  entidade_afetada VARCHAR NOT NULL,
+  entidade_id      UUID NOT NULL,
+  tipo_operacao    VARCHAR NOT NULL
+                     CHECK (tipo_operacao IN (
+                       'criacao', 'edicao', 'envio',
+                       'aprovacao', 'devolucao', 'exclusao'
+                     )),
+  dados_anteriores JSONB,
+  dados_novos      JSONB,
+  status           VARCHAR NOT NULL
+                     CHECK (status IN ('pendente', 'aprovado', 'devolvido')),
+  comentario       TEXT,
+  data_solicitacao TIMESTAMP NOT NULL DEFAULT NOW(),
+  data_aprovacao   TIMESTAMP,
+  data_alteracao   TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_registro_entidade  ON registro_alteracao(entidade_afetada, entidade_id);
+CREATE INDEX idx_registro_usuario   ON registro_alteracao(usuario_id);
+CREATE INDEX idx_registro_status    ON registro_alteracao(status);
+CREATE INDEX idx_registro_operacao    ON registro_alteracao(tipo_operacao);
+```
 
 ## 3.6.4. Consultas SQL e lógica proposicional
 
