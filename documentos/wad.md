@@ -1351,7 +1351,19 @@ Por fim, o princípio de **modelagem dirigida por evidência**, com cada atribut
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
-### 3.6.3. Modelo Relacional e Modelo Físico (sprints 2 e 4)
+### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
+<br>
+O modelo relacional tem como objetivo representar de forma lógica as entidades do sistema, seus atributos e os relacionamentos existentes entre elas. Nessa etapa, as entidades foram convertidas em tabelas relacionais, com definição de chaves primárias e estrangeiras, além da normalização necessária para reduzir redundâncias e garantir maior integridade dos dados.
+
+A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional.
+
+<div align="center">
+  <sub>Figura 3.6.3.1.1</sub><br>
+  <img src="./assets/modelo_relacional_bd.png" width="100%" alt="Modelo Relacional"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Modelo Relacional feito no bddiagram)</sup>
+</div>
+
+<br><br> 
 
 ### 3.6.3.2 Modelo Físico
 <br>
