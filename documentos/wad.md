@@ -991,7 +991,7 @@ Wireframe é uma representação visual simplificada da interface, utilizada par
 
 O fluxo de uso da plataforma começa na tela de Login, onde o usuário se autentica com e-mail e senha cadastrados previamente. Não há autocadastro: o acesso é concedido exclusivamente pelo administrador, o que garante o controle de quem opera o sistema desde o primeiro acesso. A partir desse ponto, o conteúdo exibido depende do perfil. O administrador acessa a Gestão de Usuários — atendendo à US09 (cadastro de usuários com perfis de acesso) e à US10 (inativação de usuários) — onde cadastra colaboradores, atribui perfis e inativa contas, mantendo o histórico de ações para fins de auditoria. O coordenador concentra-se no cadastro, na edição e na consulta de parceiros, com permissão para aprovar registros submetidos pelo analista. O analista pode submeter novos cadastros e consultar a base, sem efetivar alterações na base sem aprovação.
 
-A seguir são apresentados os seis fluxos centrais construídos durante a sprint 2, com a indicação das User Stories atendidas em cada caso.
+A seguir são apresentados os sete fluxos centrais construídos durante a sprint 2, com a indicação das User Stories atendidas em cada caso.
 
 #### Cadastro de fornecedores de cana
 Este fluxo atende à US01, na qual o editor cadastra fornecedores de cana com informações específicas para centralizar e padronizar os dados no sistema. A partir da listagem de fornecedores, o usuário abre o formulário e preenche os campos previstos nos critérios de aceite — CPF/CNPJ, inscrição estadual, área plantada em hectares, TCH médio, ATR médio, histórico de cumprimento de cota, certificações e usina de referência. Ao confirmar, o sistema valida os campos obrigatórios e exibe o novo fornecedor na listagem; quando algum campo obrigatório fica em branco, o sistema bloqueia o envio e sinaliza o erro para o usuário, conforme o critério CR2 da história.
@@ -1047,7 +1047,16 @@ A versão equivalente para proprietários cedentes atende às mesmas US03 e US04
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
-Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS — US01, US02, US03, US04 e US05 — e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários — filtros combinados na listagem (US06), exportação de contatos (US08) e gestão de usuários internos (US09 e US10) — que serão prototipados nas próximas sprints.
+#### Exportação de lista de contatos em CSV
+Este fluxo atende à US08, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
+
+<div align="center">
+  <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US08)</sub><br>
+  <img src="./assets/wireframe/exportando_CSV.png" width="100%" alt="Wireframe do fluxo de exportação de lista de contatos em CSV"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Figma)</sup>
+</div>
+
+Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS — US01, US02, US03, US04, US05 e US08 — e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários — filtros combinados na listagem (US06) e gestão de usuários internos (US09 e US10) — que serão prototipados nas próximas sprints.
 
 ## 3.4. Guia de estilos (sprint 3)
 
