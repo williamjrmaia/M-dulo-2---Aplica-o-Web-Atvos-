@@ -989,6 +989,63 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 Wireframe é uma representação visual simplificada da interface, utilizada para planejar navegação, disposição de elementos e experiência do usuário antes do desenvolvimento. Nesta seção são apresentadas as telas planejadas para o CRM da ATVOS, organizadas a partir dos três perfis de acesso definidos no projeto — administrador, coordenador e analista — e dos fluxos identificados como prioritários nas User Stories descritas na seção 2.3. Cada wireframe foi construído no Figma com o uso de grids, garantindo consistência de espaçamento, hierarquia visual e organização entre as telas, e responde diretamente a uma ou mais histórias priorizadas pelo time de Negócios Agrícolas.
 
+O fluxo de uso da plataforma começa na tela de Login, onde o usuário se autentica com e-mail e senha cadastrados previamente. Não há autocadastro: o acesso é concedido exclusivamente pelo administrador, o que garante o controle de quem opera o sistema desde o primeiro acesso. A partir desse ponto, o conteúdo exibido depende do perfil. O administrador acessa a Gestão de Usuários — atendendo à US09 (cadastro de usuários com perfis de acesso) e à US10 (inativação de usuários) — onde cadastra colaboradores, atribui perfis e inativa contas, mantendo o histórico de ações para fins de auditoria. O coordenador concentra-se no cadastro, na edição e na consulta de parceiros, com permissão para aprovar registros submetidos pelo analista. O analista pode submeter novos cadastros e consultar a base, sem efetivar alterações na base sem aprovação.
+
+A seguir são apresentados os seis fluxos centrais construídos durante a sprint 2, com a indicação das User Stories atendidas em cada caso.
+
+#### Cadastro de fornecedores de cana
+Este fluxo atende à US01, na qual o editor cadastra fornecedores de cana com informações específicas para centralizar e padronizar os dados no sistema. A partir da listagem de fornecedores, o usuário abre o formulário e preenche os campos previstos nos critérios de aceite — CPF/CNPJ, inscrição estadual, área plantada em hectares, TCH médio, ATR médio, histórico de cumprimento de cota, certificações e usina de referência. Ao confirmar, o sistema valida os campos obrigatórios e exibe o novo fornecedor na listagem; quando algum campo obrigatório fica em branco, o sistema bloqueia o envio e sinaliza o erro para o usuário, conforme o critério CR2 da história.
+
+<div align="center">
+  <sub>Figura 3.3.1 - Fluxo de cadastro de fornecedores de cana (US01)</sub><br>
+  <img src="./assets/wireframe/cadastrando_fornecedores.png" width="100%" alt="Wireframe do fluxo de cadastro de fornecedores de cana"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Figma)</sup>
+</div>
+
+#### Cadastro de proprietários cedentes
+Este fluxo atende à US02, complementar à US01 e voltada à área de Estratégia de Terras. O formulário trata dos campos próprios do perfil de proprietário cedente — CPF/CNPJ, documentação da terra, localização, distância da usina, área total disponível, topografia, status da documentação fundiária, CAR, situação ambiental e tipo de contrato. Ao confirmar, o registro passa a integrar a listagem de proprietários, padronizando dados que hoje circulam em planilhas paralelas mantidas por cada coordenador e eliminando o retrabalho de consolidação manual entre regiões.
+
+<div align="center">
+  <sub>Figura 3.3.2 - Fluxo de cadastro de proprietários cedentes (US02)</sub><br>
+  <img src="./assets/wireframe/cadastrando_proprietarios.png" width="100%" alt="Wireframe do fluxo de cadastro de proprietários cedentes"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Atualização de fornecedores de cana
+Este fluxo cobre a US05 aplicada ao perfil de fornecedor de cana. O editor acessa o perfil de um fornecedor existente, altera um ou mais campos cadastrais e confirma a edição; o sistema registra automaticamente data, hora e identificação do usuário responsável pela alteração, atendendo ao critério de rastreabilidade definido na história. As telas reaproveitam os mesmos campos do formulário de cadastro, agora preenchidos com os dados atuais do parceiro, reduzindo a curva de aprendizado para quem já utiliza o fluxo de criação.
+
+<div align="center">
+  <sub>Figura 3.3.3 - Fluxo de atualização de fornecedores de cana (US05)</sub><br>
+  <img src="./assets/wireframe/atualizando_fornecedores.png" width="100%" alt="Wireframe do fluxo de atualização de fornecedores de cana"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Atualização de proprietários cedentes
+A versão da US05 voltada a proprietários cedentes funciona de forma análoga ao fluxo de fornecedores, mas atua sobre os campos específicos do contrato e da terra: localização, área disponível, status da documentação fundiária, CAR e tipo de contrato. Manter esses dados atualizados é o que permite ao time de Estratégia de Terras planejar a expansão de safra com base em informação confiável, em vez de depender de consultas pontuais aos coordenadores responsáveis por cada região.
+
+<div align="center">
+  <sub>Figura 3.3.4 - Fluxo de atualização de proprietários cedentes (US05)</sub><br>
+  <img src="./assets/wireframe/atualizando_proprietarios.png" width="100%" alt="Wireframe do fluxo de atualização de proprietários cedentes"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Detalhes e histórico de interações dos fornecedores de cana
+Este fluxo atende simultaneamente à US04 — visualização do perfil detalhado do parceiro pelo observador — e à US03, na qual o editor registra interações para documentar o relacionamento. A tela de perfil concentra os dados cadastrais e o histórico de interações em ordem cronológica, com a interação mais recente no topo, conforme o critério CR2 da US03. O formulário de nova interação solicita data, tipo e descrição, e o registro passa a compor o histórico do parceiro imediatamente após a confirmação.
+
+<div align="center">
+  <sub>Figura 3.3.5 - Fluxo de detalhes e histórico de interações dos fornecedores de cana (US03 e US04)</sub><br>
+  <img src="./assets/wireframe/historico_de_interacoes_e_detalhes_dos_fornecedores.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos fornecedores de cana"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Detalhes e histórico de interações dos proprietários cedentes
+A versão equivalente para proprietários cedentes atende às mesmas US03 e US04, com a diferença de que os dados exibidos no perfil refletem os campos próprios do tipo proprietário, incluindo informações da terra e do contrato vigente. O histórico de interações compartilha a estrutura usada no fluxo de fornecedores, garantindo que coordenadores e analistas naveguem por uma experiência consistente, independentemente do tipo de parceiro consultado.
+
+<div align="center">
+  <sub>Figura 3.3.6 - Fluxo de detalhes e histórico de interações dos proprietários cedentes (US03 e US04)</sub><br>
+  <img src="./assets/wireframe/historico_de_interacoes_e_detalhes_dos_proprietarios.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos proprietários cedentes"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
 
 Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS — US01, US02, US03, US04 e US05 — e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários — filtros combinados na listagem (US06), exportação de contatos (US08) e gestão de usuários internos (US09 e US10) — que serão prototipados nas próximas sprints.
 
