@@ -1068,42 +1068,105 @@ Para garantir coerência visual e alinhamento entre todas as telas, foram utiliz
 
 ### Introdução
 
-O Modelo Entidade-Relacionamento Conceitual representa a **fundação lógica** do sistema CRM da ATVOS: descreve **quais entidades existem no domínio**, **quais informações cada uma carrega** e **como elas se relacionam**, sem comprometer-se ainda com decisões de implementação técnica.
+O Modelo Entidade-Relacionamento Conceitual representa a base do sistema CRM da ATVOS: descreve quais entidades existem no domínio, quais informações cada uma carrega e como elas se relacionam. Esta seção está alinhada com o modelo físico (3.6.3) e o DER Lógico (3.6.2), que são as representações mais completas e servem como referência para as decisões aqui documentadas.
 
-Esta seção tem como objetivo oferecer uma visão abstrata e compreensível por todos os envolvidos no projeto, incluindo equipe técnica, professor, time da ATVOS e demais stakeholders, sobre **como a realidade operacional da gestão de parceiros agrícolas será traduzida em estrutura de dados**. As decisões aqui tomadas servem de base direta para o Diagrama de Classes (3.2.3), o DER Lógico (3.6.2) e o Modelo Físico (3.6.3), garantindo coerência ao longo de todo o projeto.
+Esta seção tem como objetivo oferecer uma visão organizada do banco de dados para todos os envolvidos no projeto, incluindo equipe técnica, professor, time da ATVOS e demais stakeholders, mostrando como a realidade operacional da gestão de parceiros agrícolas foi traduzida em estrutura de dados. As decisões aqui documentadas derivam diretamente do modelo físico (3.6.3) e do DER Lógico (3.6.2), garantindo coerência ao longo de todo o projeto.
 
-A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **minimundo** descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os **dados reais** disponibilizados pela ATVOS, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi **modelar o que tem evidência de uso**: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
+A modelagem foi conduzida com base em dois pilares: (1) o minimundo descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os dados reais disponibilizados pela ATVOS, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi modelar o que tem evidência de uso: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
 
 
 ### Notação e visão geral
 
-A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas **14 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
+A notação adotada é Chen, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas 14 entidades distribuídas em três grupos lógicos, conforme apresentado a seguir:
 
-- **Núcleo do parceiro externo**: Parceiro, Interacao, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+- Núcleo do parceiro externo: Parceiro, TelefoneParceiro, Interacao, VinculoComercial, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando a identidade da pessoa física ou jurídica do papel comercial que ela exerce (fornecedor de cana ou arrendador de terra). TelefoneParceiro armazena os telefones de cada parceiro de forma separada, permitindo múltiplos contatos por parceiro. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. VinculoComercial referencia a Terra associada ao vínculo. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
 
-- **Núcleo de operação interna**: Usuario, Cargo e Unidade. Representa os colaboradores internos da ATVOS, sua estrutura organizacional e as unidades industriais onde a operação acontece.
+- Núcleo de operação interna: Usuario, PerfilAcesso e Unidade. Representa os colaboradores internos da ATVOS, seu nível de acesso ao sistema e as unidades industriais onde a operação acontece. PerfilAcesso unifica o papel organizacional do usuário (analista, coordenador, administrador) e a regra de aprovação associada a cada perfil.
 
-- **Auditoria e associações**: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade e UsuarioUnidade. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros dois grupos. RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável, tornando todos os elos de rastreabilidade visíveis no próprio diagrama conceitual.
+- Auditoria e associações: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade, UsuarioUnidade e TerraUnidade. Implementa o fluxo de aprovação de alterações (RN11, RN12), o histórico de coordenação entre parceiros e colaboradores, e os relacionamentos N:N entre as entidades dos outros dois grupos. RegistroAlteracao identifica a entidade auditada pelos campos entidade_afetada e entidade_id, centralizando toda a trilha de auditoria em uma única estrutura.
 
 
 ### Decisões estruturais relevantes
 
-Quatro decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
+Cinco decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
 
-1. **Separação entre identidade e papel comercial.** Uma mesma pessoa física ou jurídica pode atuar simultaneamente como Fornecedor e Arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, contatos), enquanto VinculoComercial concretiza cada papel exercido. Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
+1. Separação entre identidade e papel comercial. Uma mesma pessoa física ou jurídica pode atuar simultaneamente como fornecedor e arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, e-mail), enquanto VinculoComercial concretiza cada papel exercido por meio do campo tipo_parceiro ('arrendador' ou 'fornecedor'). Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
 
-2. **Especialização para vínculos com atributos próprios.** As entidades DadosFornecedor e DadosArrendador são especializações de VinculoComercial: existem apenas quando o vínculo é do tipo correspondente. DadosFornecedor concentra atributos específicos de fornecimento de cana (modalidade contratual, embaixador, guardião). DadosArrendador, neste momento, está modelada como entidade preparada para receber atributos próprios conforme retorno da ATVOS. A separação foi mantida por solicitação do cliente, prevendo divergência de atributos em iterações futuras.
+2. Papel comercial e atributos específicos dentro de VinculoComercial. Os atributos específicos de cada tipo de vínculo, como modalidade_contrato para fornecedores, estão diretamente na entidade VinculoComercial. O campo tipo_parceiro identifica o papel exercido naquele vínculo. Esta abordagem simplifica a estrutura em relação a entidades especializadas separadas, mantendo todos os dados do vínculo em uma única tabela.
 
-3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Chen adotada. A implementação física desta restrição, via cinco chaves estrangeiras opcionais individuais para cada entidade auditável, está detalhada na seção 3.6.3.
+3. Auditoria via campos genéricos em RegistroAlteracao. A entidade RegistroAlteracao implementa o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. A entidade auditada é identificada pelos campos entidade_afetada (nome da tabela, como 'parceiros' ou 'terras') e entidade_id (UUID do registro auditado). Esta abordagem centraliza toda a auditoria em uma única estrutura sem necessidade de múltiplas chaves estrangeiras opcionais.
 
-4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos mínimos identificados: `tipo` (visita, ligação, WhatsApp, reunião), `data`, `texto` e `nome_responsavel`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo". Os atributos definitivos de Interacao serão validados com a ATVOS e poderão incluir campos adicionais como resultado, próximo passo ou duração, dependendo das necessidades operacionais levantadas com o cliente.
+4. Histórico de interações como entidade independente. O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos: tipo (visita, ligação, WhatsApp, reunião), data, descricao e registrado_por (FK para Usuario). Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo".
 
-Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
+5. Telefones como entidade independente. O campo telefone foi extraído de Parceiro para a entidade TelefoneParceiro, permitindo que um parceiro tenha múltiplos números cadastrados com tipo (celular, fixo, whatsapp) e indicação de contato principal. Esta decisão atende à Primeira Forma Normal e evita campos multivalorados na entidade principal.
+
+Adicionalmente, a relação entre Parceiro e Terra foi modelada como N:N via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras. Da mesma forma, a relação entre Terra e Unidade também foi modelada como N:N via TerraUnidade, pois uma terra pode ser processada por mais de uma unidade industrial.
 
 
 ### Modelos Entidade Relacionamento (MER)
 
-**Grupo 1 — Núcleo do parceiro externo**
+O diagrama a seguir apresenta uma visão geral com todas as 14 entidades e seus relacionamentos, sem atributos. Em seguida, cada grupo é detalhado separadamente.
+
+```mermaid
+flowchart TB
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+
+    PERF[PERFIL ACESSO]:::entity
+    USUA[USUARIO]:::entity
+    UNID[UNIDADE]:::entity
+    PARC[PARCEIRO]:::entity
+    TELEF[TELEFONE PARCEIRO]:::entity
+    INTER[INTERACAO]:::entity
+    VINC[VINCULO COMERCIAL]:::entity
+    TERR[TERRA]:::entity
+    PT[PARCEIRO TERRA]:::entity
+    TU[TERRA UNIDADE]:::entity
+    RA[REGISTRO ALTERACAO]:::entity
+    PCOORD[PARCEIRO COORDENADOR]:::entity
+    PUNID[PARCEIRO UNIDADE]:::entity
+    UUNID[USUARIO UNIDADE]:::entity
+
+    Rclass{classifica}:::rel
+    Rtem{tem}:::rel
+    Rtelef{possui}:::rel
+    Rreg{registra}:::rel
+    Rexerce{exerce}:::rel
+    Rvt{referencia}:::rel
+    Rvinc{vincula-se a}:::rel
+    Rtunid{pertence a}:::rel
+    Rsol{solicita}:::rel
+    Rapr{aprova}:::rel
+    Rcoord{coordena}:::rel
+    Ropun{opera em}:::rel
+    Ratun{atua em}:::rel
+
+    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
+    PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
+    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
+    PARC -- "1,1" --- Rvinc
+    TERR -- "1,1" --- Rvinc
+    Rvinc --- PT
+    TERR -- "1,1" --- Rtunid
+    UNID -- "1,1" --- Rtunid
+    Rtunid --- TU
+    USUA -- "1,1" --- Rsol -- "0,N" --- RA
+    USUA -- "0,1" --- Rapr -- "0,N" --- RA
+    PARC -- "1,1" --- Rcoord
+    USUA -- "1,1" --- Rcoord
+    Rcoord --- PCOORD
+    PARC -- "1,1" --- Ropun
+    UNID -- "1,1" --- Ropun
+    Ropun --- PUNID
+    USUA -- "1,1" --- Ratun
+    UNID -- "1,1" --- Ratun
+    Ratun --- UUNID
+```
+
+Grupo 1 - Núcleo do parceiro externo
 
 ```mermaid
 flowchart TB
@@ -1112,79 +1175,81 @@ flowchart TB
     classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
 
     PARC[PARCEIRO]:::entity
+    TELEF[TELEFONE PARCEIRO]:::entity
     INTER[INTERACAO]:::entity
+    USUA[USUARIO]:::entity
     VINC[VINCULO COMERCIAL]:::entity
-    DFORN[DADOS FORNECEDOR]:::entity
-    DARR[DADOS ARRENDADOR]:::entity
     TERR[TERRA]:::entity
     PT[PARCEIRO TERRA]:::entity
-    UNID[UNIDADE]:::entity
 
     p1(cpf_cnpj):::attr
     p2(nome):::attr
     p3(tipo_pessoa):::attr
     p4(email):::attr
-    p5(telefone):::attr
+    p5(apelido):::attr
     PARC --- p1
     PARC --- p2
     PARC --- p3
     PARC --- p4
     PARC --- p5
 
+    tel1(numero):::attr
+    tel2(tipo):::attr
+    tel3(principal):::attr
+    TELEF --- tel1
+    TELEF --- tel2
+    TELEF --- tel3
+
     i1(tipo):::attr
     i2(data):::attr
-    i3(texto):::attr
-    i4(nome_responsavel):::attr
+    i3(descricao):::attr
     INTER --- i1
     INTER --- i2
     INTER --- i3
-    INTER --- i4
 
     v1(tipo_vinculo):::attr
-    v2(status):::attr
-    v3(data_inicio):::attr
+    v2(tipo_parceiro):::attr
+    v3(status):::attr
+    v4(modalidade_contrato):::attr
+    v5(data_inicio):::attr
     VINC --- v1
     VINC --- v2
     VINC --- v3
-
-    df1(modalidade_contrato):::attr
-    DFORN --- df1
-
-    da1(observacoes):::attr
-    DARR --- da1
+    VINC --- v4
+    VINC --- v5
 
     t1(nome):::attr
     t2(area_contratada_ha):::attr
-    t3(cenario_atual):::attr
+    t3(cidade):::attr
+    t4(estado):::attr
     TERR --- t1
     TERR --- t2
     TERR --- t3
+    TERR --- t4
 
     pt1(tipo_vinculo):::attr
-    pt2(data_associacao):::attr
     PT --- pt1
-    PT --- pt2
 
     Rtem{tem}:::rel
+    Rtelef{possui}:::rel
+    Rreg{registra}:::rel
     Rexerce{exerce}:::rel
-    Resforn{especializa Fornecedor}:::rel
-    Resarr{especializa Arrendador}:::rel
+    Rvt{referencia}:::rel
     Rvinc{vincula-se a}:::rel
-    Rpert{pertence a}:::rel
 
     PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
+    PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
     PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
-    VINC -- "1,1" --- Resforn -- "0,1" --- DFORN
-    VINC -- "1,1" --- Resarr -- "0,1" --- DARR
+    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
     PARC -- "1,1" --- Rvinc
     TERR -- "1,1" --- Rvinc
     Rvinc --- PT
-    TERR -- "1,1" --- Rpert -- "0,N" --- UNID
 ```
 
-**Grupo 2 — Núcleo de operação interna**
+Grupo 2 - Núcleo de operação interna
 
-> UNIDADE é exibida aqui para apresentação de seus atributos; seus relacionamentos estão no Grupo 1 (Terra → Unidade) e no Grupo 3 (ParceiroUnidade, UsuarioUnidade).
+> UNIDADE é exibida aqui para apresentação de seus atributos; seus relacionamentos com TerraUnidade, ParceiroUnidade e UsuarioUnidade estão no Grupo 3.
 
 ```mermaid
 flowchart TB
@@ -1193,33 +1258,35 @@ flowchart TB
     classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
 
     USUA[USUARIO]:::entity
-    CARG[CARGO]:::entity
+    PERF[PERFIL ACESSO]:::entity
     UNID[UNIDADE]:::entity
 
     u1(nome):::attr
     u2(email):::attr
-    u3(perfil_acesso):::attr
-    u4(ativo):::attr
+    u3(ativo):::attr
     USUA --- u1
     USUA --- u2
     USUA --- u3
-    USUA --- u4
 
-    c1(nome):::attr
-    c2(requer_aprovacao):::attr
-    CARG --- c1
-    CARG --- c2
+    pf1(nome):::attr
+    pf2(requer_aprovacao):::attr
+    pf3(descricao):::attr
+    PERF --- pf1
+    PERF --- pf2
+    PERF --- pf3
 
     un1(codigo):::attr
     un2(nome):::attr
+    un3(ativo):::attr
     UNID --- un1
     UNID --- un2
+    UNID --- un3
 
     Rclass{classifica}:::rel
-    CARG -- "1,1" --- Rclass -- "0,N" --- USUA
+    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
 ```
 
-**Grupo 3 — Auditoria e associações**
+Grupo 3 - Auditoria e associações
 
 ```mermaid
 flowchart TB
@@ -1230,17 +1297,25 @@ flowchart TB
     PARC[PARCEIRO]:::entity
     USUA[USUARIO]:::entity
     UNID[UNIDADE]:::entity
+    TERR[TERRA]:::entity
     RA[REGISTRO ALTERACAO]:::entity
     PCOORD[PARCEIRO COORDENADOR]:::entity
     PUNID[PARCEIRO UNIDADE]:::entity
     UUNID[USUARIO UNIDADE]:::entity
+    TUNID[TERRA UNIDADE]:::entity
 
-    ra1(status):::attr
-    ra2(dados_anteriores):::attr
-    ra3(data_solicitacao):::attr
+    ra1(entidade_afetada):::attr
+    ra2(entidade_id):::attr
+    ra3(tipo_operacao):::attr
+    ra4(status):::attr
+    ra5(dados_anteriores):::attr
+    ra6(data_solicitacao):::attr
     RA --- ra1
     RA --- ra2
     RA --- ra3
+    RA --- ra4
+    RA --- ra5
+    RA --- ra6
 
     pc1(data_inicio):::attr
     pc2(data_fim):::attr
@@ -1253,16 +1328,18 @@ flowchart TB
     uu1(data_associacao):::attr
     UUNID --- uu1
 
+    tu1(data_associacao):::attr
+    TUNID --- tu1
+
     Rsol{solicita}:::rel
     Rapr{aprova}:::rel
-    Raud{audita}:::rel
     Rcoord{coordena}:::rel
     Ropun{opera em}:::rel
     Ratun{atua em}:::rel
+    Rpert{pertence a}:::rel
 
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
-    RA -- "0,N" --- Raud -- "0,1" --- PARC
     PARC -- "1,1" --- Rcoord
     USUA -- "1,1" --- Rcoord
     Rcoord --- PCOORD
@@ -1272,73 +1349,68 @@ flowchart TB
     USUA -- "1,1" --- Ratun
     UNID -- "1,1" --- Ratun
     Ratun --- UUNID
+    TERR -- "1,1" --- Rpert
+    UNID -- "1,1" --- Rpert
+    Rpert --- TUNID
 ```
 
 
 
-> **Nota sobre relacionamentos entre grupos:** Os relacionamentos 7a e 7b (Usuario como embaixador e guardião de DadosFornecedor) vinculam entidades do Grupo 2 (Usuario) ao Grupo 1 (DadosFornecedor). Por atravessarem dois grupos distintos, não são representados graficamente nos diagramas acima — estão detalhados na tabela a seguir e implementados como duas chaves estrangeiras opcionais na entidade DadosFornecedor (seção 3.6.3).
+> Nota: RegistroAlteracao não possui relacionamento explícito com entidades específicas no diagrama pois utiliza os campos entidade_afetada e entidade_id para identificar genericamente o registro auditado. Esta abordagem está detalhada na tabela de relacionamentos abaixo e implementada na seção 3.6.3.
 
 ### Resumo dos relacionamentos
 
 | # | Relacionamento | Cardinalidade | Descrição |
 |---|---|---|---|
-| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. Os atributos definitivos de Interacao serão validados com a ATVOS. |
-| 1 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente (Fornecedor, Arrendador ou ambos). Todo vínculo pertence a exatamente um Parceiro. |
-| 2 | VinculoComercial / DadosFornecedor | `[1..1] :: [0..1]` | Especialização: vínculos do tipo Fornecedor possuem registro em DadosFornecedor; vínculos do tipo Arrendador não. |
-| 3 | VinculoComercial / DadosArrendador | `[1..1] :: [0..1]` | Especialização irmã da anterior: vínculos do tipo Arrendador possuem registro em DadosArrendador. |
-| 4a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
-| 4b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
-| 5 | Terra / Unidade | `[1..1] :: [0..N]` | Toda terra processa cana em uma unidade industrial específica (cada Terra pertence a exatamente 1 Unidade); uma unidade recebe de várias terras (cada Unidade pode ter 0 a N Terras vinculadas). |
-| 6 | Cargo / Usuario | `[1..1] :: [0..N]` | Cada usuário ocupa um cargo organizacional; cada cargo pode ter vários usuários. |
-| 7a | Usuario / DadosFornecedor (embaixador) | `[0..1] :: [0..N]` | Cada DadosFornecedor pode ter um embaixador atribuído; um usuário pode ser embaixador de vários fornecedores. Os dois relacionamentos Usuario para DadosFornecedor materializam-se como duas FKs distintas na entidade. |
-| 7b | Usuario / DadosFornecedor (guardião) | `[0..1] :: [0..N]` | Mesma estrutura para o guardião (suplente do embaixador). |
-| 8 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação possui um solicitante obrigatório. |
-| 9 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional (NULL enquanto a solicitação está pendente). |
-| 10a | RegistroAlteracao / Parceiro | `[0..N] :: [0..1]` | Um RegistroAlteracao pode auditar zero ou um Parceiro; um Parceiro pode ter zero ou muitos registros de auditoria. |
-| 10b | RegistroAlteracao / VinculoComercial | `[0..N] :: [0..1]` | Idem para VinculoComercial. |
-| 10c | RegistroAlteracao / DadosFornecedor | `[0..N] :: [0..1]` | Idem para DadosFornecedor. |
-| 10d | RegistroAlteracao / DadosArrendador | `[0..N] :: [0..1]` | Idem para DadosArrendador. |
-| 10e | RegistroAlteracao / Terra | `[0..N] :: [0..1]` | Idem para Terra. |
-| ★ | Constraint 10a a 10e | exclusividade | Exatamente um dos cinco relacionamentos acima é não-nulo por registro de RegistroAlteracao. Validada em camada de aplicação (Service); os demais quatro ficam NULL. |
-| 11 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
-| 12 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
-| 13 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
+| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. |
+| 0b | Interacao / Usuario (registrado_por) | `[0..N] :: [1..1]` | Toda interação é registrada por exatamente um Usuario interno. Um Usuario pode ter registrado zero ou muitas interações. |
+| 1 | Parceiro / TelefoneParceiro | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitos telefones cadastrados. Cada telefone pertence a exatamente um Parceiro e indica o tipo (celular, fixo, whatsapp) e se é o contato principal. |
+| 2 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente (fornecedor, arrendador ou ambos), identificados pelo campo tipo_parceiro. Todo vínculo pertence a exatamente um Parceiro. |
+| 2b | VinculoComercial / Terra | `[0..N] :: [1..1]` | Cada vínculo comercial referencia exatamente uma Terra (campo terra_id NOT NULL). Uma Terra pode estar associada a zero ou muitos vínculos comerciais. |
+| 3a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
+| 3b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
+| 4 | Terra / Unidade via TerraUnidade | N:N | Uma terra pode ser processada por mais de uma unidade industrial e uma unidade pode processar cana de múltiplas terras. A entidade TerraUnidade resolve este relacionamento N:N com data_associacao. |
+| 5 | PerfilAcesso / Usuario | `[1..1] :: [0..N]` | Cada usuário possui exatamente um perfil de acesso (analista, coordenador ou administrador); cada perfil pode classificar vários usuários. O campo requer_aprovacao no perfil define se alterações feitas por usuarios com esse perfil precisam de aprovação. |
+| 6 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação de alteração possui um usuário solicitante obrigatório. |
+| 7 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional (NULL enquanto a solicitação está pendente). |
+| 8 | RegistroAlteracao / entidade auditada | genérico | RegistroAlteracao identifica a entidade auditada pelos campos entidade_afetada (nome da tabela, ex: 'parceiros') e entidade_id (UUID do registro). O campo tipo_operacao indica a ação realizada (criacao, edicao, envio, aprovacao, devolucao, exclusao). |
+| 9 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
+| 10 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
+| 11 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
 
 
 ### Boas práticas aplicadas no modelo
 
-- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, texto, nome_responsavel) foram identificados com base no uso atual das planilhas, e os atributos adicionais aguardam validação com a ATVOS antes de serem incorporados.
+- Modelagem dirigida por evidência. Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, descricao e registrado_por) foram identificados com base no uso atual das planilhas.
 
-- **Normalização até a Terceira Forma Normal.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. A entidade é referenciada por uma chave estrangeira para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
+- Normalização até a Terceira Forma Normal. O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. Da mesma forma, o campo telefone foi extraído de Parceiro para a entidade TelefoneParceiro, eliminando campos multivalorados e permitindo o cadastro de múltiplos contatos por parceiro. Ambas as entidades são referenciadas por chaves estrangeiras para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
 
-- **Separação clara entre identidade, papel e atributo específico.** A divisão Parceiro / VinculoComercial / (DadosFornecedor ou DadosArrendador) elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis, garante consistência de contato (alterar telefone do parceiro afeta todos os papéis) e permite especialização limpa quando atributos específicos forem necessários.
+- Separação entre identidade e papel comercial. A divisão Parceiro / VinculoComercial elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis, pois os dados de identidade ficam em Parceiro enquanto cada papel comercial é representado por um registro em VinculoComercial com o campo tipo_parceiro. Alterar o telefone do parceiro em TelefoneParceiro afeta automaticamente todos os vínculos comerciais daquele parceiro.
 
-- **Distinção entre cargo organizacional e perfil de acesso.** A entidade Cargo modela a função do colaborador na estrutura da ATVOS (Analista, Coordenador, Gerente, Especialista de Campo) e carrega regra de negócio (`requer_aprovacao`). Já o atributo `perfil_acesso` em Usuario representa a permissão técnica no sistema (Admin, Editor, Observador). Os dois conceitos coexistem porque são dimensões independentes: um Coordenador pode ser Editor, um Gerente pode ser Admin.
+- Perfil de acesso unificado em PerfilAcesso. A entidade PerfilAcesso concentra tanto o papel organizacional do usuário quanto a regra de aprovação associada a esse papel via campo requer_aprovacao. Os perfis possíveis são analista, coordenador e administrador. Esta abordagem permite que a ATVOS altere a política de aprovação no futuro sem necessidade de alteração no código da aplicação.
 
-- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No modelo conceitual, RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra), com a constraint de que exatamente um desses vínculos é não-nulo por registro. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `Pendente` e aguardam aprovação de Coordenador ou Gerente; registros originados de Admin ou Editor recebem `Aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
+- Auditoria estrutural via RegistroAlteracao. O fluxo de aprovação obrigatório para alterações feitas por analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com uma única entidade, que serve simultaneamente como fila de aprovação e log de auditoria. A entidade auditada é identificada pelos campos entidade_afetada e entidade_id, e o campo status opera em dois modos: registros de analistas iniciam como pendente e aguardam aprovação; registros de coordenadores e administradores recebem aprovado diretamente.
 
-- **Histórico modelado apenas onde tem valor de negócio.** Optou-se por manter histórico (`data_inicio`/`data_fim`) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra) guardam apenas o estado atual ou o momento de associação, evitando complexidade desnecessária.
+- Histórico modelado apenas onde tem valor de negócio. Optou-se por manter histórico (data_inicio / data_fim) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra e TerraUnidade) guardam apenas o momento de associação via data_associacao, evitando complexidade desnecessária.
 
-- **Soft delete como padrão.** As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade) possuem o campo `ativo`, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US09) e à boa prática de preservação de dados auditáveis.
+- Soft delete como padrão. As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade, TelefoneParceiro e Parceiro) possuem o campo ativo ou status, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US09) e à boa prática de preservação de dados auditáveis.
 
-- **Internacionalização de regra de negócio via dado.** O comportamento de aprovação obrigatória não está hard-coded no nome do cargo, mas sim no atributo `requer_aprovacao` da entidade Cargo. Isso permite que a ATVOS altere a política de aprovação no futuro (incluindo novos cargos ou alterando os existentes) sem necessidade de redeploy do código.
-
-- **Documentação de pendências.** Decisões que dependem de validação com a ATVOS (Top 15, Portal PMF, definições de áreas, atributos específicos de Arrendador, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
+- Documentação de pendências. Decisões que dependem de validação com a ATVOS (Top 15, Portal PMF, definições de áreas, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
 
 
 ### Conclusão
 
-A modelagem ER Conceitual apresentada nesta seção não é apenas um artefato formal de documentação: é a **espinha dorsal técnica** que viabiliza concretamente os requisitos do sistema CRM da ATVOS. Cada decisão tomada aqui responde a uma necessidade operacional específica e mensurável.
+A modelagem ER Conceitual apresentada nesta seção está alinhada com o modelo físico (3.6.3) e o DER Lógico (3.6.2), servindo como referência conceitual das decisões de implementação adotadas. Cada estrutura aqui documentada responde a uma necessidade operacional identificada nas planilhas e regras de negócio da ATVOS.
 
-A separação entre Parceiro e VinculoComercial é o que permite que **uma mesma empresa cadastrada uma vez** apareça simultaneamente como fornecedora de cana e arrendadora de terra, situação real observada em diversas linhas das planilhas, e que sem esse cuidado de modelagem geraria duplicação cadastral e inconsistência de contato. A especialização DadosFornecedor / DadosArrendador, mesmo com a segunda começando enxuta, **prepara o sistema para evolução estruturada** conforme a ATVOS confirme atributos específicos por papel, evitando refatoração custosa em iteração futura.
+A separação entre Parceiro e VinculoComercial permite que uma mesma empresa cadastrada uma vez apareça simultaneamente como fornecedora de cana e arrendadora de terra, situação real observada em diversas linhas das planilhas. O campo tipo_parceiro em VinculoComercial identifica o papel exercido em cada vínculo, e os atributos específicos como modalidade_contrato estão diretamente nessa entidade, mantendo a estrutura simples e consultável.
 
-A entidade ParceiroTerra, introduzida como associativa N:N entre Parceiro e Terra, resolve diretamente a contradição que existiria em um modelo 1:N diante das regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Ambos os sentidos do relacionamento precisam ser "muitos para muitos".
+A entidade ParceiroTerra, associativa N:N entre Parceiro e Terra, resolve diretamente as regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Da mesma forma, TerraUnidade resolve o relacionamento N:N entre Terra e Unidade, pois uma terra pode ser processada por mais de uma unidade industrial.
 
-A entidade RegistroAlteracao concretiza diretamente as regras RN11 (auditoria), RN12 (versionamento) e o fluxo de aprovação obrigatória descrito nas conversas com a ATVOS: alterações de Analistas vão para fila, são revisadas por Coordenadores ou Gerentes, e o histórico é preservado para sempre. Os relacionamentos explícitos e opcionais com cada entidade auditável, representados no diagrama conceitual com cardinalidade `[0..1]` em cada elo, permitem que **uma única estrutura** atenda todo o domínio auditável do sistema, sem multiplicação de entidades de auditoria e sem recorrer a técnicas de implementação no modelo conceitual.
+A entidade RegistroAlteracao concretiza as regras RN11 (auditoria) e RN12 (versionamento) e o fluxo de aprovação obrigatória descrito nas conversas com a ATVOS: alterações de analistas vão para fila, são revisadas por coordenadores ou administradores, e o histórico é preservado para sempre. Os campos entidade_afetada e entidade_id permitem que uma única estrutura atenda todo o domínio auditável do sistema sem necessidade de chaves estrangeiras para cada entidade.
 
-A entidade ParceiroCoordenador com histórico responde ao caso, observado em campo, de coordenadores que se aposentam, mudam de função ou são realocados, preservando a memória institucional de "quem cuidou de quem e quando", informação valiosa em decisões futuras de relacionamento. As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
+A entidade ParceiroCoordenador com histórico preserva a memória institucional de quem cuidou de quem e quando, informação valiosa em decisões futuras de relacionamento. As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
 
-Por fim, o princípio de **modelagem dirigida por evidência**, com cada atributo justificado por planilha real ou regra de negócio explícita, torna este modelo não apenas tecnicamente sólido, mas também **negocialmente honesto**: ele entrega exatamente o que a ATVOS precisa hoje, com pontos de extensão claramente sinalizados para o que ainda virá, e zero complexidade especulativa. As próximas seções (3.6.2 DER Lógico e 3.6.3 Modelo Físico) detalharão como esta estrutura conceitual será concretizada em chaves, constraints e SQL executável, mantendo total coerência com o que foi estabelecido aqui.
+O princípio de modelagem dirigida por evidência, com cada atributo justificado por planilha real ou regra de negócio explícita, garante que este modelo entregue exatamente o que a ATVOS precisa. As seções 3.6.2 e 3.6.3 apresentam a implementação completa desta estrutura em DER e SQL executável.
 
 
 ### 3.6.2. Diagrama Entidade-Relacionamento (DER) (sprint 2)
