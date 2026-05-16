@@ -1079,7 +1079,7 @@ A modelagem foi conduzida com base em dois pilares: (1) o minimundo descrito no 
 
 A notação adotada é Chen, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas 14 entidades distribuídas em três grupos lógicos, conforme apresentado a seguir:
 
-- Núcleo do parceiro externo: Parceiro, TelefoneParceiro, Interacao, VinculoComercial, Terra, ParceiroTerra e Unidade. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando a identidade da pessoa física ou jurídica do papel comercial que ela exerce (fornecedor de cana ou arrendador de terra). TelefoneParceiro armazena os telefones de cada parceiro de forma separada, permitindo múltiplos contatos por parceiro. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+- Núcleo do parceiro externo: Parceiro, TelefoneParceiro, Interacao, VinculoComercial, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando a identidade da pessoa física ou jurídica do papel comercial que ela exerce (fornecedor de cana ou arrendador de terra). TelefoneParceiro armazena os telefones de cada parceiro de forma separada, permitindo múltiplos contatos por parceiro. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. VinculoComercial referencia a Terra associada ao vínculo. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
 
 - Núcleo de operação interna: Usuario, PerfilAcesso e Unidade. Representa os colaboradores internos da ATVOS, seu nível de acesso ao sistema e as unidades industriais onde a operação acontece. PerfilAcesso unifica o papel organizacional do usuário (analista, coordenador, administrador) e a regra de aprovação associada a cada perfil.
 
@@ -1132,6 +1132,7 @@ flowchart TB
     Rtelef{possui}:::rel
     Rreg{registra}:::rel
     Rexerce{exerce}:::rel
+    Rvt{referencia}:::rel
     Rvinc{vincula-se a}:::rel
     Rtunid{pertence a}:::rel
     Rsol{solicita}:::rel
@@ -1145,6 +1146,7 @@ flowchart TB
     INTER -- "0,N" --- Rreg -- "1,1" --- USUA
     PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
     PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
     PARC -- "1,1" --- Rvinc
     TERR -- "1,1" --- Rvinc
     Rvinc --- PT
@@ -1175,11 +1177,10 @@ flowchart TB
     PARC[PARCEIRO]:::entity
     TELEF[TELEFONE PARCEIRO]:::entity
     INTER[INTERACAO]:::entity
+    USUA[USUARIO]:::entity
     VINC[VINCULO COMERCIAL]:::entity
     TERR[TERRA]:::entity
     PT[PARCEIRO TERRA]:::entity
-    TU[TERRA UNIDADE]:::entity
-    UNID[UNIDADE]:::entity
 
     p1(cpf_cnpj):::attr
     p2(nome):::attr
@@ -1229,29 +1230,21 @@ flowchart TB
     pt1(tipo_vinculo):::attr
     PT --- pt1
 
-    tu1(data_associacao):::attr
-    TU --- tu1
-
-    un1(codigo):::attr
-    un2(nome):::attr
-    UNID --- un1
-    UNID --- un2
-
     Rtem{tem}:::rel
     Rtelef{possui}:::rel
+    Rreg{registra}:::rel
     Rexerce{exerce}:::rel
+    Rvt{referencia}:::rel
     Rvinc{vincula-se a}:::rel
-    Rpert{pertence a}:::rel
 
     PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
     PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
     PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
     PARC -- "1,1" --- Rvinc
     TERR -- "1,1" --- Rvinc
     Rvinc --- PT
-    TERR -- "1,1" --- Rpert
-    UNID -- "1,1" --- Rpert
-    Rpert --- TU
 ```
 
 Grupo 2 - Núcleo de operação interna
@@ -1369,9 +1362,11 @@ flowchart TB
 
 | # | Relacionamento | Cardinalidade | Descrição |
 |---|---|---|---|
-| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. O campo registrado_por referencia o Usuario que registrou a interação. |
+| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. |
+| 0b | Interacao / Usuario (registrado_por) | `[0..N] :: [1..1]` | Toda interação é registrada por exatamente um Usuario interno. Um Usuario pode ter registrado zero ou muitas interações. |
 | 1 | Parceiro / TelefoneParceiro | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitos telefones cadastrados. Cada telefone pertence a exatamente um Parceiro e indica o tipo (celular, fixo, whatsapp) e se é o contato principal. |
 | 2 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente (fornecedor, arrendador ou ambos), identificados pelo campo tipo_parceiro. Todo vínculo pertence a exatamente um Parceiro. |
+| 2b | VinculoComercial / Terra | `[0..N] :: [1..1]` | Cada vínculo comercial referencia exatamente uma Terra (campo terra_id NOT NULL). Uma Terra pode estar associada a zero ou muitos vínculos comerciais. |
 | 3a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
 | 3b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
 | 4 | Terra / Unidade via TerraUnidade | N:N | Uma terra pode ser processada por mais de uma unidade industrial e uma unidade pode processar cana de múltiplas terras. A entidade TerraUnidade resolve este relacionamento N:N com data_associacao. |
