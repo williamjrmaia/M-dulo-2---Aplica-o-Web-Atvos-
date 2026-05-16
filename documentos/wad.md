@@ -1347,7 +1347,7 @@ Por fim, o princípio de **modelagem dirigida por evidência**, com cada atribut
 
 <div align="center">
   <sub>Figura 3.6.2.1 - Diagrama Entidade-Relacionamento (DER)</sub><br>
-  <img src="./assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
+  <img src="/documentos/assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
