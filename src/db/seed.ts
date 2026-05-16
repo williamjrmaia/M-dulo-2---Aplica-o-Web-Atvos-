@@ -1,7 +1,7 @@
-require('dotenv').config();
-const { Client } = require('pg');
+import 'dotenv/config';
+import { Client } from 'pg';
 
-async function seed() {
+async function seed(): Promise<void> {
   const client = new Client({ connectionString: process.env.DATABASE_URL });
   await client.connect();
 
@@ -18,6 +18,6 @@ async function seed() {
 }
 
 seed().catch(err => {
-  console.error('Erro no seed:', err.message);
+  console.error('Erro no seed:', (err as Error).message);
   process.exit(1);
 });

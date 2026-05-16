@@ -1,9 +1,9 @@
-require('dotenv').config();
-const { Client } = require('pg');
-const fs = require('fs');
-const path = require('path');
+import 'dotenv/config';
+import { Client } from 'pg';
+import fs from 'fs';
+import path from 'path';
 
-async function migrate() {
+async function migrate(): Promise<void> {
   const client = new Client({ connectionString: process.env.DATABASE_URL });
   await client.connect();
 
@@ -15,6 +15,6 @@ async function migrate() {
 }
 
 migrate().catch(err => {
-  console.error('Erro na migration:', err.message);
+  console.error('Erro na migration:', (err as Error).message);
   process.exit(1);
 });
