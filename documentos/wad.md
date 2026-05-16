@@ -1105,6 +1105,65 @@ Adicionalmente, a relação entre Parceiro e Terra foi modelada como N:N via ent
 
 ### Modelos Entidade Relacionamento (MER)
 
+O diagrama a seguir apresenta uma visão geral com todas as 14 entidades e seus relacionamentos, sem atributos. Em seguida, cada grupo é detalhado separadamente.
+
+```mermaid
+flowchart TB
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+
+    PERF[PERFIL ACESSO]:::entity
+    USUA[USUARIO]:::entity
+    UNID[UNIDADE]:::entity
+    PARC[PARCEIRO]:::entity
+    TELEF[TELEFONE PARCEIRO]:::entity
+    INTER[INTERACAO]:::entity
+    VINC[VINCULO COMERCIAL]:::entity
+    TERR[TERRA]:::entity
+    PT[PARCEIRO TERRA]:::entity
+    TU[TERRA UNIDADE]:::entity
+    RA[REGISTRO ALTERACAO]:::entity
+    PCOORD[PARCEIRO COORDENADOR]:::entity
+    PUNID[PARCEIRO UNIDADE]:::entity
+    UUNID[USUARIO UNIDADE]:::entity
+
+    Rclass{classifica}:::rel
+    Rtem{tem}:::rel
+    Rtelef{possui}:::rel
+    Rreg{registra}:::rel
+    Rexerce{exerce}:::rel
+    Rvinc{vincula-se a}:::rel
+    Rtunid{pertence a}:::rel
+    Rsol{solicita}:::rel
+    Rapr{aprova}:::rel
+    Rcoord{coordena}:::rel
+    Ropun{opera em}:::rel
+    Ratun{atua em}:::rel
+
+    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
+    PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
+    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    PARC -- "1,1" --- Rvinc
+    TERR -- "1,1" --- Rvinc
+    Rvinc --- PT
+    TERR -- "1,1" --- Rtunid
+    UNID -- "1,1" --- Rtunid
+    Rtunid --- TU
+    USUA -- "1,1" --- Rsol -- "0,N" --- RA
+    USUA -- "0,1" --- Rapr -- "0,N" --- RA
+    PARC -- "1,1" --- Rcoord
+    USUA -- "1,1" --- Rcoord
+    Rcoord --- PCOORD
+    PARC -- "1,1" --- Ropun
+    UNID -- "1,1" --- Ropun
+    Ropun --- PUNID
+    USUA -- "1,1" --- Ratun
+    UNID -- "1,1" --- Ratun
+    Ratun --- UUNID
+```
+
 Grupo 1 - Núcleo do parceiro externo
 
 ```mermaid
