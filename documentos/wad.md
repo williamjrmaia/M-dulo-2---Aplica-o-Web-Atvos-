@@ -1024,23 +1024,71 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 ## 3.3. Wireframes (sprint 2)
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização)*
+Wireframe é uma representação visual simplificada da interface, utilizada para planejar navegação, disposição de elementos e experiência do usuário antes do desenvolvimento. Nesta seção são apresentadas as telas planejadas para o CRM da ATVOS, organizadas a partir dos três perfis de acesso definidos no projeto, administrador, coordenador e analista, e dos fluxos identificados como prioritários nas User Stories descritas na seção 2.3. Cada wireframe foi construído no Figma com o uso de grids, garantindo consistência de espaçamento, hierarquia visual e organização entre as telas, e responde diretamente a uma ou mais histórias priorizadas pelo time de Negócios Agrícolas.
 
-Wireframe é uma representação visual simplificada da interface de uma aplicação web, utilizada para planejar a navegação, a disposição dos elementos e a experiência do usuário antes do desenvolvimento. Nesta seção, são apresentadas as telas planejadas para a aplicação CRM da ATVOS, com a descrição das principais funcionalidades disponíveis para cada perfil de acesso: administrador, coordenador e analista. Também é abordado o fluxo de navegação entre as telas e de que forma o design contribui para tornar o uso da plataforma mais claro, eficiente e alinhado às necessidades dos times internos de Negócios Agrícolas.
+O fluxo de uso da plataforma começa na tela de Login, onde o usuário se autentica com e-mail e senha cadastrados previamente. Não há autocadastro: o acesso é concedido exclusivamente pelo administrador, o que garante o controle de quem opera o sistema desde o primeiro acesso. A partir desse ponto, o conteúdo exibido depende do perfil. O administrador acessa a Gestão de Usuários, atendendo à US09 (cadastro de usuários com perfis de acesso) e à US10 (inativação de usuários), onde cadastra colaboradores, atribui perfis e inativa contas, mantendo o histórico de ações para fins de auditoria. O coordenador concentra-se no cadastro, na edição e na consulta de parceiros, com permissão para aprovar registros submetidos pelo analista. O analista pode submeter novos cadastros e consultar a base, sem efetivar alterações na base sem aprovação.
 
-(imagens)
-(link de acesso)
+A seguir são apresentados os sete fluxos centrais construídos durante a sprint 2, com a indicação das User Stories atendidas em cada caso.
 
-No contexto deste sistema, a interface foi concebida para atender a três perfis de usuário com necessidades e permissões distintas, garantindo que cada colaborador interaja apenas com as funcionalidades correspondentes ao seu nível de acesso.
-O fluxo se inicia com a tela de Login (Tela 01), onde o usuário realiza autenticação com e-mail e senha cadastrados pelo administrador. Não há autocadastro: o acesso à plataforma é concedido exclusivamente por um administrador, o que garante o controle de quem pode operar o sistema desde o primeiro acesso.
+#### Cadastro de fornecedores de cana
+Este fluxo atende à US01, na qual o editor cadastra fornecedores de cana com informações específicas para centralizar e padronizar os dados no sistema. A partir da listagem de fornecedores, o usuário abre o formulário e preenche os campos previstos nos critérios de aceite, CPF/CNPJ, inscrição estadual, área plantada em hectares, TCH médio, ATR médio, histórico de cumprimento de cota, certificações e usina de referência. Ao confirmar, o sistema valida os campos obrigatórios e exibe o novo fornecedor na listagem; quando algum campo obrigatório fica em branco, o sistema bloqueia o envio e sinaliza o erro para o usuário, conforme o critério CR2 da história.
 
 A interface do perfil Administrador é direta e funcional, voltada à governança da plataforma. A tela de Gestão de Usuários (Tela 10), que atende às US08 e US09, concentra o gerenciamento de usuários internos, onde é possível cadastrar novos colaboradores, atribuir perfis de acesso (administrador, coordenador e analista) e inativar contas quando necessário. O histórico de ações dos usuários é preservado mesmo após a inativação, garantindo rastreabilidade e atendendo às regras de negócio definidas no projeto. Há também acesso ao histórico de auditoria do sistema, onde é possível consultar alterações realizadas por data, usuário responsável e registro modificado.
 
 A interface do perfil Coordenador é estruturada em torno do cadastro, da edição e da atualização de parceiros. O fluxo de cadastro contempla dois tipos de parceiro: as telas de Cadastro de Fornecedor (Tela 06) e Cadastro de Proprietário (Tela 07), que atendem respectivamente à US01 e à US02, apresentam formulários com campos específicos validados pelo sistema. A partir das telas de Listagem de Fornecedores (Tela 02) e Listagem de Proprietários (Tela 03), que atendem às US04, US06 e US07, o coordenador pode visualizar os parceiros cadastrados com suporte a filtros combinados. Ao acessar o Perfil do Fornecedor (Tela 04) ou o Perfil do Proprietário (Tela 05), ambos contemplados pela US04, é possível consultar as informações detalhadas de cada parceiro e o histórico de interações registradas. As telas de Edição de Fornecedor (Tela 08) e Edição de Proprietário (Tela 09), que atendem à US05, permitem atualizar os dados cadastrais e registrar novas interações com data, tipo e descrição, construindo progressivamente o histórico de relacionamento que hoje se perde em planilhas e anotações individuais. Cada alteração realizada é registrada automaticamente com data, hora e identificação do usuário responsável, garantindo a rastreabilidade definida nos requisitos do sistema.
 
-A interface do perfil Analista combina capacidade de submissão de novos cadastros com acesso de visualização à base consolidada. O analista pode iniciar o cadastro de novos parceiros agrícolas por meio das telas de Cadastro de Fornecedor (Tela 06) e Cadastro de Proprietário (Tela 07), preenchendo o formulário com as informações disponíveis e submetendo o registro para análise; esse cadastro não é efetivado automaticamente na base, entrando em estado pendente de aprovação pelo coordenador responsável. Para consulta, as telas de Listagem de Fornecedores (Tela 02) e Listagem de Proprietários (Tela 03) permitem aplicar filtros combinados por nome, região, tipo de parceiro e área, reduzindo o tempo de busca sem necessidade de recarregar a página. Ao clicar em um parceiro, o analista acessa seu perfil detalhado — Perfil do Fornecedor (Tela 04) ou Perfil do Proprietário (Tela 05) — com todas as informações cadastrais e o histórico de interações registradas.
+<div align="center">
+  <sub>Figura 3.3.2 - Fluxo de cadastro de proprietários cedentes (US02)</sub><br>
+  <img src="./assets/wireframe/cadastrando_proprietarios.png" width="100%" alt="Wireframe do fluxo de cadastro de proprietários cedentes"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
 
-Para garantir coerência visual e alinhamento entre todas as telas, foram utilizadas grids no Figma durante a construção dos wireframes, assegurando consistência no espaçamento, na hierarquia dos elementos e na organização do layout em todas as interfaces projetadas.
+#### Atualização de fornecedores de cana
+Este fluxo cobre a US05 aplicada ao perfil de fornecedor de cana. O editor acessa o perfil de um fornecedor existente, altera um ou mais campos cadastrais e confirma a edição; o sistema registra automaticamente data, hora e identificação do usuário responsável pela alteração, atendendo ao critério de rastreabilidade definido na história. As telas reaproveitam os mesmos campos do formulário de cadastro, agora preenchidos com os dados atuais do parceiro, reduzindo a curva de aprendizado para quem já utiliza o fluxo de criação.
+
+<div align="center">
+  <sub>Figura 3.3.3 - Fluxo de atualização de fornecedores de cana (US05)</sub><br>
+  <img src="./assets/wireframe/atualizando_fornecedores.png" width="100%" alt="Wireframe do fluxo de atualização de fornecedores de cana"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Atualização de proprietários cedentes
+A versão da US05 voltada a proprietários cedentes funciona de forma análoga ao fluxo de fornecedores, mas atua sobre os campos específicos do contrato e da terra: localização, área disponível, status da documentação fundiária, CAR e tipo de contrato. Manter esses dados atualizados é o que permite ao time de Estratégia de Terras planejar a expansão de safra com base em informação confiável, em vez de depender de consultas pontuais aos coordenadores responsáveis por cada região.
+
+<div align="center">
+  <sub>Figura 3.3.4 - Fluxo de atualização de proprietários cedentes (US05)</sub><br>
+  <img src="./assets/wireframe/atualizando_proprietarios.png" width="100%" alt="Wireframe do fluxo de atualização de proprietários cedentes"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Detalhes e histórico de interações dos fornecedores de cana
+Este fluxo atende simultaneamente à US04, visualização do perfil detalhado do parceiro pelo observador, e à US03, na qual o editor registra interações para documentar o relacionamento. A tela de perfil concentra os dados cadastrais e o histórico de interações em ordem cronológica, com a interação mais recente no topo, conforme o critério CR2 da US03. O formulário de nova interação solicita data, tipo e descrição, e o registro passa a compor o histórico do parceiro imediatamente após a confirmação.
+
+<div align="center">
+  <sub>Figura 3.3.5 - Fluxo de detalhes e histórico de interações dos fornecedores de cana (US03 e US04)</sub><br>
+  <img src="./assets/wireframe/historico_de_interacoes_e_detalhes_dos_fornecedores.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos fornecedores de cana"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Detalhes e histórico de interações dos proprietários cedentes
+A versão equivalente para proprietários cedentes atende às mesmas US03 e US04, com a diferença de que os dados exibidos no perfil refletem os campos próprios do tipo proprietário, incluindo informações da terra e do contrato vigente. O histórico de interações compartilha a estrutura usada no fluxo de fornecedores, garantindo que coordenadores e analistas naveguem por uma experiência consistente, independentemente do tipo de parceiro consultado.
+
+<div align="center">
+  <sub>Figura 3.3.6 - Fluxo de detalhes e histórico de interações dos proprietários cedentes (US03 e US04)</sub><br>
+  <img src="./assets/wireframe/historico_de_interacoes_e_detalhes_dos_proprietarios.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos proprietários cedentes"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
+</div>
+
+#### Exportação de lista de contatos em CSV
+Este fluxo atende à US08, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
+
+<div align="center">
+  <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US08)</sub><br>
+  <img src="./assets/wireframe/exportando_CSV.png" width="100%" alt="Wireframe do fluxo de exportação de lista de contatos em CSV"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Figma)</sup>
+</div>
+
+Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS, US01, US02, US03, US04, US05 e US08, e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários, filtros combinados na listagem (US06) e gestão de usuários internos (US09 e US10), que serão prototipados nas próximas sprints.
 
 ## 3.4. Guia de estilos (sprint 3)
 
