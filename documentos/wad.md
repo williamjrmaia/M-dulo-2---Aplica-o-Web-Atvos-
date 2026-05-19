@@ -1855,38 +1855,44 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 
 ### Rastreabilidade das consultas
 
-| Consulta | Classes/Tabelas envolvidas | Finalidade no back-end |
-|---|---|---|
-| #1 | `Parceiro`, `VinculoComercial` | Filtrar parceiros por tipo de pessoa, status e tipo de vínculo comercial. |
-| #2 | `Terra`, `Unidade` | Identificar terras com oportunidade relevante em unidades ativas. |
-| #3 | `Usuario`, `PerfilAcesso` | Listar usuários ativos com perfil operacional. |
-| #4 | `RegistroAlteracao` | Recuperar registros auditáveis de atualização ou exclusão. |
+| Consulta | Tipo | Tabelas envolvidas | Finalidade no back-end |
+|---|---|---|---|
+| 01 | SELECT | `parceiros`, `vinculo_comercial` | Listar parceiros ativos cujo nome corresponde a um termo de busca ou que possuem vínculo ativo. |
+| 02 | | `Terra`, `Unidade` | Identificar terras com oportunidade relevante em unidades ativas. |
+| 03 | | `Usuario`, `PerfilAcesso` | Listar usuários ativos com perfil operacional. |
+| 04 | | `RegistroAlteracao` | Recuperar registros auditáveis de atualização ou exclusão. |
 
 ### Regras de negócio representadas pelas consultas
 
-| Consulta | Regra representada |
-|---|---|
-| #1 | Parceiros pessoa jurídica ativos ou fornecedores de cana devem poder ser recuperados para consulta operacional. |
-| #2 | Terras relevantes para análise devem estar associadas a unidades ativas e possuir oportunidade ou área potencial significativa. |
-| #3 | Apenas usuários ativos com perfil operacional devem aparecer em determinadas listagens internas. |
-| #4 | Alterações sensíveis devem conter dados anteriores e novos dados para garantir rastreabilidade. |
+| Consulta | Regra representada | Regras de Negócio associadas |
+|---|---|---|
+| 01 | Parceiros ativos ou com vínculo comercial ativo devem poder ser recuperados para consulta operacional, com suporte a busca por nome. | RN04, RN08 |
+| 02 | Terras relevantes para análise devem estar associadas a unidades ativas e possuir oportunidade ou área potencial significativa. |
+| 03 | Apenas usuários ativos com perfil operacional devem aparecer em determinadas listagens internas. |
+| 04 | Alterações sensíveis devem conter dados anteriores e novos dados para garantir rastreabilidade. |
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
 ---
 
-### #1 — Consulta de parceiros com vínculo comercial ativo ou fornecedor de cana
+### 01 — Consulta de parceiros com vínculo comercial ativo ou fornecedor de cana
 
-| #1 | --- |
+| 01 | --- |
 |---|---|
-| **Expressão SQL** | `SELECT p.* FROM parceiro p JOIN vinculo_comercial vc ON vc.parceiro_id = p.id WHERE (p.tipo_pessoa = 'PJ' AND vc.status = 'ATIVO') OR vc.tipo_vinculo = 'FORNECEDOR_CANA';` |
-| **Proposições lógicas** | $A$: O parceiro é pessoa jurídica (`p.tipo_pessoa = 'PJ'`) <br> $B$: O vínculo comercial está ativo (`vc.status = 'ATIVO'`) <br> $C$: O vínculo comercial é do tipo fornecedor de cana (`vc.tipo_vinculo = 'FORNECEDOR_CANA'`) |
-| **Expressão lógica proposicional** | $(A \land B) \lor C$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(A \land B)$</th> <th>$(A \land B) \lor C$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL SELECT p.* FROM parceiros p LEFT JOIN vinculo_comercial vc ON vc.parceiro_id = p.id WHERE p.status = 'ativo' AND (p.nome LIKE '%termo%' OR vc.status = 'ativo');``` |
+| **Proposições lógicas** | $A$: O parceiro possui status ativo (p.status = 'ativo') <br> $B$: O nome do parceiro contém o termo buscado (p.nome LIKE '%termo%') <br> $C$: O vínculo comercial está ativo (vc.status = 'ativo') |
+| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td></tr><tr><td>V</td><td>V</td><td>F</td><td>V</td><td>V</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #1 é utilizada para recuperar parceiros que atendem a pelo menos uma das seguintes condições: serem pessoas jurídicas com vínculo comercial ativo ou possuírem vínculo comercial do tipo fornecedor de cana. A expressão $(A \land B) \lor C$ preserva essa lógica, pois o resultado será verdadeiro quando $A$ e $B$ forem verdadeiros simultaneamente, ou quando $C$ for verdadeiro.
+A consulta 01 possui utilidade para o fluxo de listagem de parceiros (RF007 e RF016). A proposição A é obrigatória para a listagem, isto é, o parceiro deve estar com o status ativo para que ele apareça na listagem normal (Para admins, esse fluxo de listagem é diferente, já que A deixa de ser obrigatório), estando de acordo com a RN08. Dentre esses, a consulta deve retornar aqueles cujo o nome contém o termo buscado (Proposição B) ou aqueles que possuem ao menos um vínculo comercial ativo (Proposição C)
 
----
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=V, B=F, C=F) \rightarrow A \land (B \lor C) = F$ : parceiro está ativo mas não atende nenhum critério de busca, ou seja, não é retornado.
+2- $(A=V, B=V, C=F) \rightarrow A \land (B \lor C) = V$ : parceiro ativo cujo nome corresponde ao termo buscado, mas sem vínculo ativo. Possui retorno.
+3- $(A=V, B=F, C=V) \rightarrow A \land (B \lor C) = V$ : sem correspondência ao nome, são retornados os parceiros com vínculo ativo.
+4- $(A=F, B=V, C=V) \rightarrow A \land (B \lor C) = F$ : parceiro inativo nunca é retornado, independentemente dos demais critérios (Para consultas normais).
+--- 
 
 ### #2 — Consulta de terras com oportunidade relevante em unidades ativas
 
