@@ -1935,20 +1935,20 @@ A consulta #4 é utilizada para recuperar registros relevantes para auditoria. A
 
 ---
 
-### 05 — Inativação lógica de parceiro
+### #5 — Inativação lógica de parceiro
 
-| 05 | --- |
+| #5 | --- |
 |---|---|
 | **Expressão SQL** | `UPDATE parceiros SET status = 'inativo', atualizado_em = NOW(), atualizado_por = :usuario_id WHERE id = :id AND status = 'ativo' AND tipo_pessoa NOT IN ('juridica') AND id NOT IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo');` |
 | **Proposições lógicas** | $A$: O parceiro está com status ativo (`status = 'ativo'`) <br> $B$: O parceiro é pessoa jurídica (`tipo_pessoa = 'juridica'`) — o `NOT IN ('juridica')` no SQL expressa $\lnot B$ <br> $C$: O parceiro possui ao menos um vínculo comercial ativo (`id IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo')`) — o `NOT IN (SELECT ...)` expressa $\lnot C$ |
 | **Expressão lógica proposicional** | $A \land \lnot B \land \lnot C$, equivalente por De Morgan a $A \land \lnot(B \lor C)$ |
 | **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$\lnot(B \lor C)$</th> <th>$A \land \lnot(B \lor C)$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> </tbody> </table> |
 
-A consulta 05 implementa a inativação lógica de um parceiro — isto é, a exclusão sem remoção física do registro (RF012, RN08). O UPDATE altera o campo `status` de `'ativo'` para `'inativo'` e registra o momento e o responsável pela operação. Nenhuma linha é deletada: o histórico permanece íntegro para auditoria.
+A consulta #5 implementa a inativação lógica de um parceiro — a exclusão sem remoção física do registro (RF012, RN08). O UPDATE altera o campo `status` de `'ativo'` para `'inativo'` e registra o momento e o responsável pela operação. Nenhuma linha é deletada: o histórico permanece íntegro para auditoria.
 
 A condição A é mandatória: apenas parceiros com status `'ativo'` passam por esse fluxo. Parceiros em `'rascunho'`, `'pendente'` ou `'devolvido'` possuem outros caminhos de transição de status. As proposições B e C representam salvaguardas que bloqueiam a inativação. O operador `NOT IN` aparece duas vezes no SQL — uma vez para excluir o tipo `'juridica'` (¬B) e outra vez como subconsulta para verificar a ausência de vínculos ativos (¬C). Pessoas jurídicas exigem um fluxo específico de encerramento com documentação contratual; por isso, esse endpoint é restrito a pessoas físicas. A subconsulta impede que um parceiro ainda vinculado a um contrato ativo seja inativado, evitando inconsistência entre o status do parceiro e seus contratos em vigor.
 
-A equivalência $A \land \lnot B \land \lnot C = A \land \lnot(B \lor C)$ pela lei de De Morgan revela que a inativação é bloqueada sempre que **pelo menos uma** das condições B ou C for verdadeira — mesmo que a outra seja falsa. Isso diferencia a estrutura desta consulta das anteriores: enquanto as consultas #1, #2 e #3 ampliam o resultado via disjunção interna $(B \lor C)$, aqui a disjunção atua como gatilho de bloqueio pela negação externa.
+A equivalência $A \land \lnot B \land \lnot C = A \land \lnot(B \lor C)$ pela lei de De Morgan revela que a inativação é bloqueada sempre que pelo menos uma das condições B ou C for verdadeira — mesmo que a outra seja falsa. Isso diferencia a estrutura desta consulta das anteriores: enquanto as consultas #1, #2 e #3 ampliam o resultado via disjunção interna $(B \lor C)$, aqui a disjunção atua como gatilho de bloqueio pela negação externa.
 
 #### Combinações relevantes da tabela verdade:
 
@@ -1956,7 +1956,7 @@ A equivalência $A \land \lnot B \land \lnot C = A \land \lnot(B \lor C)$ pela l
 
 2- $(A=V, B=F, C=F) \rightarrow A \land \lnot(B \lor C) = V$ : parceiro ativo, do tipo pessoa física e sem vínculo comercial ativo — **inativação executada**. Única combinação que satisfaz todas as condições.
 
-3- $(A=V, B=V, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa jurídica; UPDATE bloqueado. A inativação de pessoas jurídicas exige fluxo específico com documentação contratual.
+3- $(A=V, B=V, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa jurídica; UPDATE bloqueado — a inativação de pessoas jurídicas exige fluxo específico com documentação contratual.
 
 4- $(A=V, B=F, C=V) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa física, mas ainda possui vínculo comercial ativo; UPDATE bloqueado para preservar a integridade do contrato vigente.
 
@@ -1964,15 +1964,46 @@ A equivalência $A \land \lnot B \land \lnot C = A \land \lnot(B \lor C)$ pela l
 
 ---
 
+### #6 — Aprovação de registro pendente por coordenador
+
+| #6 | --- |
+|---|---|
+| **Expressão SQL** | `UPDATE parceiros p SET status = 'ativo', atualizado_em = NOW(), atualizado_por = :usuario_id FROM usuarios u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE p.id = :parceiro_id AND p.status = 'pendente' AND u.id = :usuario_id AND u.ativo = TRUE AND pa.nome IN ('coordenador', 'administrador');` |
+| **Proposições lógicas** | $A$: O registro do parceiro está com status pendente (`p.status = 'pendente'`) <br> $B$: O usuário aprovador está ativo (`u.ativo = TRUE`) <br> $C$: O perfil do aprovador é coordenador ou administrador (`pa.nome IN ('coordenador', 'administrador')`) |
+| **Expressão lógica proposicional** | $A \land B \land C$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$A \land B$</th> <th>$A \land B \land C$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> </tbody> </table> |
+
+A consulta #6 implementa a aprovação de um registro pendente por um coordenador ou administrador. O UPDATE utiliza a cláusula FROM para cruzar `parceiros` com `usuarios` e `perfil_acesso` na mesma instrução, eliminando a necessidade de uma consulta de verificação separada antes da alteração. Ao executar, o sistema transita o status do parceiro de `'pendente'` para `'ativo'`, tornando o registro visível nas consultas e listagens normais do sistema (RN08).
+
+A proposição A restringe o fluxo ao status `'pendente'`: registros em `'rascunho'`, `'devolvido'`, `'ativo'` ou `'inativo'` não passam por esse UPDATE. A proposição B garante que contas de usuário inativadas administrativamente não executam aprovações, mesmo que mantenham o perfil de coordenador. A proposição C verifica o perfil via `IN ('coordenador', 'administrador')`, permitindo que administradores também realizem aprovações diretas quando necessário, sem depender de um coordenador disponível.
+
+A estrutura $A \land B \land C$ é uma conjunção pura de três guardas obrigatórias — nenhuma substitui a outra. Isso contrasta com as consultas #1, #2 e #3, onde a disjunção interna permite que um critério compense a ausência do outro, e com a consulta #5, onde a disjunção age como bloqueio por negação. Aqui não há alternativas: o UPDATE só é executado quando as três proposições são verdadeiras ao mesmo tempo.
+
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : aprovador ativo com perfil válido, mas o registro não está pendente; a aprovação não é executada.
+
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : registro pendente e aprovador ativo, mas o perfil é analista; UPDATE bloqueado — analistas não possuem permissão de aprovação.
+
+3- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : registro pendente e perfil de coordenador válido, mas a conta do aprovador está inativa; UPDATE bloqueado independentemente do perfil.
+
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : registro pendente, aprovador ativo e com perfil autorizado — **aprovação executada**, status transita para `'ativo'`.
+
+5- $(A=V, B=F, C=F) \rightarrow A \land B \land C = F$ : registro pendente, mas aprovador inativo e sem perfil correto; bloqueio duplo — nenhuma condição isolada é suficiente para liberar o UPDATE.
+
+---
+
 ### Síntese de validação lógica
 
-As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Nas consultas 01, 02 e 03, o uso de parênteses é essencial para manter a precedência correta entre conjunção e disjunção. Na consulta 01, a condição de pessoa jurídica com vínculo ativo é agrupada antes da alternativa de fornecedor de cana. Nas consultas 02 e 03, a primeira condição é obrigatória, enquanto as duas condições internas funcionam como alternativas.
+As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Nas consultas #1, #2 e #3, o uso de parênteses é essencial para manter a precedência correta entre conjunção e disjunção. Na consulta #1, a condição de pessoa jurídica com vínculo ativo é agrupada antes da alternativa de fornecedor de cana. Nas consultas #2 e #3, a primeira condição é obrigatória, enquanto as duas condições internas funcionam como alternativas.
 
-Na consulta 04, a expressão exige simultaneamente que a operação seja de atualização ou exclusão e que os dados anteriores e novos estejam preenchidos. Essa estrutura reforça a finalidade de auditoria da consulta, pois impede que registros incompletos sejam considerados válidos para análise de alteração.
+Na consulta #4, a expressão exige simultaneamente que a operação seja de atualização ou exclusão e que os dados anteriores e novos estejam preenchidos. Essa estrutura reforça a finalidade de auditoria da consulta, pois impede que registros incompletos sejam considerados válidos para análise de alteração.
 
-A consulta 05 introduz um padrão distinto: $A \land \lnot(B \lor C)$. Aqui, a disjunção interna não amplia o resultado — ela opera como gatilho de bloqueio invertido pela negação. O UPDATE só é executado quando nenhuma das condições B ou C é verdadeira, ou seja, quando $\lnot(B \lor C) = V$. Esse comportamento contrasta diretamente com as consultas #1, #2 e #3, nas quais a disjunção interna $(B \lor C)$ expande os registros retornados. A equivalência com $A \land \lnot B \land \lnot C$ pela lei de De Morgan reforça que basta uma das salvaguardas estar ativa para bloquear a operação. A tabela verdade confirma que apenas a combinação $(A=V, B=F, C=F)$ resulta em execução do UPDATE.
+A consulta #5 introduz um padrão distinto: $A \land \lnot(B \lor C)$. Aqui, a disjunção interna não amplia o resultado — ela opera como gatilho de bloqueio invertido pela negação. O UPDATE só é executado quando nenhuma das condições B ou C é verdadeira, ou seja, quando $\lnot(B \lor C) = V$. Esse comportamento contrasta diretamente com as consultas #1, #2 e #3, nas quais a disjunção interna $(B \lor C)$ expande os registros retornados. A equivalência com $A \land \lnot B \land \lnot C$ pela lei de De Morgan reforça que basta uma das salvaguardas estar ativa para bloquear a operação. A tabela verdade confirma que apenas a combinação $(A=V, B=F, C=F)$ resulta em execução do UPDATE.
 
-Portanto, as consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal, permitindo verificar a coerência das condições compostas por meio das respectivas tabelas verdade.
+A consulta #6 fecha o conjunto com a estrutura $A \land B \land C$, conjunção pura de três guardas obrigatórias. Diferente das consultas com disjunção interna, aqui não há critérios alternativos: o UPDATE só executa quando os três fatores — status do registro, atividade do aprovador e perfil de acesso — são todos verdadeiros ao mesmo tempo. A tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução.
+
+Portanto, as seis consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$ e $A \land B \land C$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 
