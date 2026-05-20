@@ -1094,11 +1094,80 @@ https://excalidraw.com/#json=5HLRZVY2n7lELvcKSG7r3,M0e1IsL3CvTZeFLNSC1-ww
 
 ## 3.4. Guia de estilos (sprint 3)
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução*
+Este guia de estilos apresenta orientações gerais para a utilização dos elementos visuais e comunicacionais da solução, com o objetivo de garantir consistência e padronização em todas as aplicações da marca. Nele, são definidos aspectos como paleta de cores, tipografia, iconografia e demais componentes visuais, assegurando que o desenvolvimento de interfaces e materiais mantenha uma identidade coesa e alinhada aos valores do projeto. Além disso, o guia contribui para facilitar a aplicação correta desses elementos, promovendo uma comunicação mais clara, organizada e reconhecível pelo público-alvo.
 
 ### 3.4.1. Cores
 
-*Apresente aqui a paleta de cores, com seus códigos de aplicação e suas respectivas funções*
+A definição da paleta de cores do projeto foi baseada na identidade visual da Atvos, seguindo os princípios estabelecidos em seu guia de marca. As cores escolhidas têm como objetivo transmitir os valores da empresa, como inovação, sustentabilidade, energia, confiança e transformação, reforçando visualmente a proposta da plataforma web desenvolvida para o gerenciamento de parceiros e fornecedores de cana.
+
+De acordo com Farina et al. (2011), as cores possuem influência direta na percepção emocional e sensorial dos usuários, sendo capazes de despertar sentimentos e fortalecer a comunicação visual de um produto digital. Pensando nisso, a paleta adotada busca criar uma experiência visual moderna, acessível e alinhada ao posicionamento da Atvos como uma empresa voltada à produção de energia limpa e inovação sustentável.
+
+Os tons de laranja e amarelo, presentes na identidade da Atvos, foram selecionados para representar energia, dinamismo, inovação e proximidade. Essas cores reforçam o conceito de movimento e transformação presentes no propósito da marca. Já o azul institucional transmite estabilidade, confiança e profissionalismo, contribuindo para a credibilidade da plataforma e para uma navegação mais equilibrada visualmente.
+
+---
+
+<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FF681A;border-radius:14px;"></div>
+
+**Laranja Escuro**  
+HEX: `#FF681A`  
+RGB: `rgb(255, 104, 26)`  
+RGBA: `rgba(255, 104, 26, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FF8100;border-radius:14px;"></div>
+
+**Laranja Médio**  
+HEX: `#FF8100`  
+RGB: `rgb(255, 129, 0)`  
+RGBA: `rgba(255, 129, 0, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FFA500;border-radius:14px;"></div>
+
+**Laranja Claro**  
+HEX: `#FFA500`  
+RGB: `rgb(255, 165, 0)`  
+RGBA: `rgba(255, 165, 0, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FFCD00;border-radius:14px;"></div>
+
+**Amarelo Atvos**  
+HEX: `#FFCD00`  
+RGB: `rgb(255, 205, 0)`  
+RGBA: `rgba(255, 205, 0, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#3F5B70;border-radius:14px;"></div>
+
+**Azul Atvos**  
+HEX: `#3F5B70`  
+RGB: `rgb(63, 91, 112)`  
+RGBA: `rgba(63, 91, 112, 1)`
+
+</div>
+
+</div>
+
+---
+
+Dessa forma, a paleta de cores estabelece uma conexão estratégica entre a identidade visual da Atvos e a experiência do usuário dentro da plataforma, fortalecendo a consistência visual, o reconhecimento da marca e a proposta tecnológica e sustentável do projeto.
 
 ### 3.4.2. Tipografia
 
@@ -2136,6 +2205,8 @@ Grupo 6. (2026). Value Proposition Canvas ATVOS. Canva. https://canva.link/towo8
 
 Grupo 6. (2026). Diagrama de Classes UML do Domínio ATVOS. 
 https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYjsSGEjZExWFO18O64n0iIFm1uG23nX7ZXDV-4Ny9nBctYf9qEeYjjEpuNV-Vu-3kstrAQI9sdYQEPJYWQCxAM92KefiXDY59KeLYWiKYBFpWJZlCiUdFV1sHk64pyTvOpN7nRV1sYAt--n9S7RHAwqaWB9Dbwer7C98qq4znnr2F6Cm9OK6HmOAqbkyurzIF1v-mBYkwrLDI6nE8nuskq8ecYBKd2EDMVPnG9gJUY9U0YfefcwEBrjYD9-AF-Q4RYs3Y_UBcD2qif7ay4roMSYrS7HVfpoEgrI69RkjYmw16dIg6By_ksq1M9aEYPbylFaDzQuLxvwIKBVUaWz3Q97gsbo7bSAqzUC_-CHCYOodhqrV83eost5-N7UTfsJ7cUxl4xcRpYtRVzOdmV0xHR_NAXwLw_hxklzFpUVytuVNfRANh1yg5N5kAFtloWRWOJapL59nw4I2KfVYt-eke4GC7SPTWBbeafB9KW9LA4ffFgwptuUjfHks8yoXDHwqt2MU2vtZYSVUBY09TZU3RpWZ4sOmjlDiCT5tDDTAwwJl32lmhBNtwm--q5hh4UXpq8OGP1HAGnTsS-Td5OkuBzw7-u_TjxtxrSpd7buzQKJl7CzVnPE4SUkYg-3zpbPNXaQgT4HfH9eH05qp_Ay1Ho1UGxOeGrsQwgjr6k0pXZyGWjb_wu-ek3qGWI9M57LYDwkpoZrb9LiYXRkJpxj6j0Ky8IomS59XBSyXmJJGAY8fPIhiK8ZOccEnGu4cb6-8PmRTbjcD92iaZu88B545G1DFf4L-Apykl5YCH4QKdaSyzN0x3s965V4EbM4j48WFDKdW1LZu7dL3dwT9UlkboQR2R3USlghFgTKRshsL6xW2kfAijnr2tBNMfypYBMIOiPdR2qFIIk5PKtTGxQIJfhWcOtknHG7b4vb98AWXrwKofBpc8Iqxj4dbSctK637qFrG1fX1xN3QD1MGcbDRECgrsaY9ASHZO6s1d7TLFdi8g3fDM5Fm5nsnzSvaJ4ZbdOgOaYFGU02pKfYYdGmntKMBLo3iA79K1wJky7kxyhRrxsDQJUfZMbXwk4EI0RNjG-FI4hgdC5cUnUeOqnXdvEaHf_1WQ5srHCQsodqBMvsMqyQKKua4zZ4TqJaPNnrqBTIy7A-BBwQ-U7y52q37xg8PyWOkzvy7Xx7n4kL5py1F0KUgl0C9-F8S6Q7XGzkgKZ4R6tLsa2EOMk3qjj299Jm0xiUGBG6slkRoXLBAdJ7jWD9Fykfn9aKDzKcximFKqN0p6HueyHqnJYJC6tAO4hQ8nn8drdSFKJJGdjR_Gtq84MXbxnBrERuBCA1c6k8fi-NkqvnABzrE0VNEgzq_a_sx4wxZzHTOGv-V3yJxI7s8Rp_MxkITCtAfjsWWqZjvcMBMh7DAdE14zqvfHsJSxFK9bzuHGrdMVLK2_ljlJaFZZgdmoO1XdlD8OK9QI9-Rnu6BL4WReGr2alSOA_oje3JqN2Ajeh7qjlCkyIk7mRueHSiu9mvdVc1wq-nRuwP6ALm1c9P0gjOLYk1zOS-XZXHA0CgXoyFxXD85dzgStm68WOKoS4vdUrXy-JY1BrmTePExfsVlt3IFrIDq1lN3oxGFz_yW8p66ozTFt2SdbRR2_oqpm5T9nUbawDyj9hoqJx4BfggYGw6q4d0pi8-MGtPDhAxM-un_Uymsrmn2BNcxVzclSVSOi_ZKtI4eTDfVOFcTu7Qvvr1uyFRS-nDuUfQV0Tx4i-H6puiRzc7hu2xXJi_Vz2-IOzGhaY_S1kjvWvyGArxMQuK-t4s3hVNuahnbb23S04XUkzFBttNNBhnBL6MpnZbOvPORSlA2H6fdgq46hWIefLWJaeCSGDPYHJ-8saca8QB8dJnKmUkVIiXKs0w9EcAok9tS-8q3t9n_I1txW0hb6yeDOHheRL83GWxPKwBXg3c8i897Fp8ZbTWK9lzv_3Y5m7OpEiCt2zeOlYdmgVowwXw5JnrCi4Koa65Af0qhHY86FnaGgcSIISj_YuP6-nljhV-Q7lhHuePIYz-vbIeSyS9geaPC3kGFBGuj85KyU9NOcYzn29WNWddEuElYQOJXG8VZcbxoWJKpBgTD3b5PNYbXhDYJogz1lw1V9RSv5GCPJ1Mbmy3alHoNMT7qHmcvcOzOSbe1hwfMRq6bRD5PJ3KGPHF3QSGL8cJW15HZYcG-aq0hIalVZELP5nD1u0VhknB_46uN20_kFBdnVTNtgLvry78cqznyMtLU0-NUciFdtsqOJ4GvyUnUCpFEky7xJrigNLV4xgxUC3ZziIoen9BgrVgFRgm3AosxDXjUgjUFakVsItOiLkohL_LIfV2BGWrJM_fUbXSTmZ7QXYMSe_qTltLqhHwisFtwZtghVxeE6z1r7cQ_0i0
+
+MODESTO, Farina et al, Psicodinâmica das cores em comunicação. In: BLUCHER, [S.l.], 2011. Disponível em: https://search.worldcat.org/pt/title/1295699137. Acesso em: 20 maio 2026.
 
 
 
