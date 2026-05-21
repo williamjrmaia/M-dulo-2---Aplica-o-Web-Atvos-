@@ -7,11 +7,12 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "migrate": "ts-node database/migrate.ts",
-    "seed": "ts-node database/seed.ts",
-    "test": "jest",
-    "dev": "ts-node-dev --respawn --transpile-only app.ts"
-  },
+  "migrate": "ts-node database/migrate.ts",
+  "seed": "ts-node database/seed.ts",
+  "test": "jest",
+  "dev": "ts-node-dev --respawn --transpile-only app.ts"
+  
+},
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^17.4.2",

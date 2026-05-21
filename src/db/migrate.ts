@@ -1,20 +1,22 @@
-import 'dotenv/config';
-import { Client } from 'pg';
-import fs from 'fs';
 import path from 'path';
+import fs from 'fs';
+import pool from '../config/connection';
 
-async function migrate(): Promise<void> {
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
-  await client.connect();
+const runMigrations = async (): Promise<void> => {
+  console.log('[MIGRATE] Iniciando migrations...');
 
-  const sql = fs.readFileSync(path.join(__dirname, 'migration.sql'), 'utf8');
-  await client.query(sql);
+  const sqlPath = path.resolve(__dirname, 'migration.sql');
+  const sql = fs.readFileSync(sqlPath, 'utf-8');
 
-  await client.end();
-  console.log('Migration concluída com sucesso.');
-}
+  try {
+    await pool.query(sql);
+    console.log('[MIGRATE] Migrations concluídas com sucesso!');
+  } catch (error) {
+    console.error('[MIGRATE] Erro ao rodar migrations:', error);
+    process.exit(1);
+  } finally {
+    await pool.end();
+  }
+};
 
-migrate().catch(err => {
-  console.error('Erro na migration:', (err as Error).message);
-  process.exit(1);
-});
+runMigrations();

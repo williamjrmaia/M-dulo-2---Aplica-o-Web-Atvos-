@@ -1,11 +1,9 @@
-import 'dotenv/config';
-import { Client } from 'pg';
+import pool from '../config/connection';
 
 async function seed(): Promise<void> {
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
-  await client.connect();
+  console.log('[SEED] Iniciando seed...');
 
-  await client.query(`
+  await pool.query(`
     INSERT INTO perfil_acesso (nome, requer_aprovacao, descricao) VALUES
       ('analista',      TRUE,  'Analista de negócios agrícolas'),
       ('coordenador',   FALSE, 'Coordenador de parceiros'),
@@ -13,11 +11,11 @@ async function seed(): Promise<void> {
     ON CONFLICT (nome) DO NOTHING;
   `);
 
-  await client.end();
-  console.log('Seed concluído com sucesso.');
+  console.log('[SEED] Seed concluído com sucesso!');
+  await pool.end();
 }
 
 seed().catch(err => {
-  console.error('Erro no seed:', (err as Error).message);
+  console.error('[SEED] Erro:', (err as Error).message);
   process.exit(1);
 });
