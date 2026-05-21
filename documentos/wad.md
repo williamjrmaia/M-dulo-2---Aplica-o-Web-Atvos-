@@ -1094,15 +1094,102 @@ https://excalidraw.com/#json=5HLRZVY2n7lELvcKSG7r3,M0e1IsL3CvTZeFLNSC1-ww
 
 ## 3.4. Guia de estilos (sprint 3)
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução*
+Este guia de estilos apresenta orientações gerais para a utilização dos elementos visuais e comunicacionais da solução, com o objetivo de garantir consistência e padronização em todas as aplicações da marca. Nele, são definidos aspectos como paleta de cores, tipografia, iconografia e demais componentes visuais, assegurando que o desenvolvimento de interfaces e materiais mantenha uma identidade coesa e alinhada aos valores do projeto. Além disso, o guia contribui para facilitar a aplicação correta desses elementos, promovendo uma comunicação mais clara, organizada e reconhecível pelo público-alvo.
 
 ### 3.4.1. Cores
 
-*Apresente aqui a paleta de cores, com seus códigos de aplicação e suas respectivas funções*
+A definição da paleta de cores do projeto foi baseada na identidade visual da Atvos, seguindo os princípios estabelecidos em seu guia de marca. As cores escolhidas têm como objetivo transmitir os valores da empresa, como inovação, sustentabilidade, energia, confiança e transformação, reforçando visualmente a proposta da plataforma web desenvolvida para o gerenciamento de parceiros e fornecedores de cana.
+
+De acordo com Farina et al. (2011), as cores possuem influência direta na percepção emocional e sensorial dos usuários, sendo capazes de despertar sentimentos e fortalecer a comunicação visual de um produto digital. Pensando nisso, a paleta adotada busca criar uma experiência visual moderna, acessível e alinhada ao posicionamento da Atvos como uma empresa voltada à produção de energia limpa e inovação sustentável.
+
+Os tons de laranja e amarelo, presentes na identidade da Atvos, foram selecionados para representar energia, dinamismo, inovação e proximidade. Essas cores reforçam o conceito de movimento e transformação presentes no propósito da marca. Já o azul institucional transmite estabilidade, confiança e profissionalismo, contribuindo para a credibilidade da plataforma e para uma navegação mais equilibrada visualmente.
+
+---
+
+<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FF681A;border-radius:14px;"></div>
+
+**Laranja Escuro**  
+HEX: `#FF681A`  
+RGB: `rgb(255, 104, 26)`  
+RGBA: `rgba(255, 104, 26, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FF8100;border-radius:14px;"></div>
+
+**Laranja Médio**  
+HEX: `#FF8100`  
+RGB: `rgb(255, 129, 0)`  
+RGBA: `rgba(255, 129, 0, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FFA500;border-radius:14px;"></div>
+
+**Laranja Claro**  
+HEX: `#FFA500`  
+RGB: `rgb(255, 165, 0)`  
+RGBA: `rgba(255, 165, 0, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#FFCD00;border-radius:14px;"></div>
+
+**Amarelo Atvos**  
+HEX: `#FFCD00`  
+RGB: `rgb(255, 205, 0)`  
+RGBA: `rgba(255, 205, 0, 1)`
+
+</div>
+
+<div align="center">
+
+<div style="width:140px;height:140px;background:#3F5B70;border-radius:14px;"></div>
+
+**Azul Atvos**  
+HEX: `#3F5B70`  
+RGB: `rgb(63, 91, 112)`  
+RGBA: `rgba(63, 91, 112, 1)`
+
+</div>
+
+</div>
+
+---
+
+Dessa forma, a paleta de cores estabelece uma conexão estratégica entre a identidade visual da Atvos e a experiência do usuário dentro da plataforma, fortalecendo a consistência visual, o reconhecimento da marca e a proposta tecnológica e sustentável do projeto.
 
 ### 3.4.2. Tipografia
 
-*Apresente aqui a tipografia da solução, com famílias de fontes e suas respectivas funções*
+A tipografia da solução foi definida com base no guia de identidade visual da Atvos, buscando manter alinhamento com a comunicação institucional da empresa e fortalecer a consistência visual da plataforma. A escolha tipográfica possui papel fundamental na experiência do usuário, influenciando diretamente a legibilidade, a organização das informações e a percepção visual da interface.
+
+De acordo com o guia de marca da Atvos, a fonte institucional utilizada é a **Tahoma**, adotada por sua simplicidade, clareza visual e ampla compatibilidade entre diferentes sistemas e dispositivos. Essas características tornam a tipografia adequada para aplicações digitais, garantindo boa leitura em diferentes resoluções e contextos de uso.
+
+A família tipográfica **Tahoma** será utilizada em toda a plataforma web, contribuindo para uma interface limpa, moderna e padronizada. Além disso, diferentes pesos tipográficos serão aplicados para estabelecer hierarquia visual entre títulos, subtítulos, textos corridos e elementos interativos da interface.
+
+<div align="center">
+
+**Imagem 3.4.2.: Tipografia utilizada na plataforma**
+<img src="./assets/tipografia/tipografia_do_sistema_web.png" alt="Tipografia da plataforma" width="800"/>
+**Fonte:** Elaborado pelos autores (2026).
+
+</div>
+
+A utilização da fonte Tahoma proporciona uma leitura clara e objetiva, favorecendo a usabilidade e a acessibilidade da plataforma. Sua estrutura simples e limpa contribui para uma comunicação visual mais organizada, reduzindo ruídos visuais e melhorando a experiência do usuário durante a navegação.
+
+Além disso, a padronização tipográfica fortalece a identidade visual do projeto, mantendo coerência com os materiais institucionais e com a identidade corporativa da Atvos.
+
+
 
 ### 3.4.3. Iconografia e imagens
 
@@ -1755,38 +1842,50 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 
 ### Rastreabilidade das consultas
 
-| Consulta | Classes/Tabelas envolvidas | Finalidade no back-end |
-|---|---|---|
-| #1 | `Parceiro`, `VinculoComercial` | Filtrar parceiros por tipo de pessoa, status e tipo de vínculo comercial. |
-| #2 | `Terra`, `Unidade` | Identificar terras com oportunidade relevante em unidades ativas. |
-| #3 | `Usuario`, `PerfilAcesso` | Listar usuários ativos com perfil operacional. |
-| #4 | `RegistroAlteracao` | Recuperar registros auditáveis de atualização ou exclusão. |
+| Consulta | Tipo | Tabelas envolvidas | Finalidade no back-end |
+|---|---|---|---|
+| 01 | SELECT | `parceiros`, `vinculo_comercial` | Listar parceiros ativos cujo nome corresponde a um termo de busca ou que possuem vínculo ativo. |
+| 02 | | `Terra`, `Unidade` | Identificar terras com oportunidade relevante em unidades ativas. |
+| 03 | | `Usuario`, `PerfilAcesso` | Listar usuários ativos com perfil operacional. |
+| 04 | SELECT | `RegistroAlteracao` | Recuperar registros auditáveis de atualização ou exclusão. |
+| 05 | UPDATE | `parceiros`, `vinculo_comercial` | Inativar logicamente um parceiro ativo do tipo pessoa física que não possua vínculos comerciais ativos. |
+| 06 | UPDATE | `parceiros`, `usuarios`, `perfil_acesso` | Aprovar o registro de um parceiro com status pendente, verificando se o aprovador está ativo e possui perfil autorizado. |
+| 07 | SELECT | `interacao`, `parceiros`, `usuarios` | Listar interações de parceiros ativos filtrando por tipo presencial ou por período de data, desde que registradas por usuário ativo. |
 
 ### Regras de negócio representadas pelas consultas
 
-| Consulta | Regra representada |
-|---|---|
-| #1 | Parceiros pessoa jurídica ativos ou fornecedores de cana devem poder ser recuperados para consulta operacional. |
-| #2 | Terras relevantes para análise devem estar associadas a unidades ativas e possuir oportunidade ou área potencial significativa. |
-| #3 | Apenas usuários ativos com perfil operacional devem aparecer em determinadas listagens internas. |
-| #4 | Alterações sensíveis devem conter dados anteriores e novos dados para garantir rastreabilidade. |
+| Consulta | Regra representada | Regras de Negócio associadas |
+|---|---|---|
+| 01 | Parceiros ativos ou com vínculo comercial ativo devem poder ser recuperados para consulta operacional, com suporte a busca por nome. | RN04, RN08 |
+| 02 | Terras relevantes para análise devem estar associadas a unidades ativas e possuir oportunidade ou área potencial significativa. |
+| 03 | Apenas usuários ativos com perfil operacional devem aparecer em determinadas listagens internas. |
+| 04 | Alterações sensíveis devem conter dados anteriores e novos dados para garantir rastreabilidade. |
+| 05 | Parceiros ativos do tipo pessoa física só podem ser inativados logicamente quando não possuem vínculo comercial ativo. | RN08, RF012 |
+| 06 | A aprovação de um registro pendente só pode ser realizada por usuários ativos com perfil de coordenador ou administrador. | RN04, RN09, RF010 |
+| 07 | Interações de parceiros ativos são listadas por tipo presencial ou dentro do período informado, desde que registradas por usuário ativo. | RN08, RF006, RF007 |
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
 ---
 
-### #1 — Consulta de parceiros com vínculo comercial ativo ou fornecedor de cana
+### 01 — Consulta de parceiros com vínculo comercial ativo ou fornecedor de cana
 
-| #1 | --- |
+| 01 | --- |
 |---|---|
-| **Expressão SQL** | `SELECT p.* FROM parceiro p JOIN vinculo_comercial vc ON vc.parceiro_id = p.id WHERE (p.tipo_pessoa = 'PJ' AND vc.status = 'ATIVO') OR vc.tipo_vinculo = 'FORNECEDOR_CANA';` |
-| **Proposições lógicas** | $A$: O parceiro é pessoa jurídica (`p.tipo_pessoa = 'PJ'`) <br> $B$: O vínculo comercial está ativo (`vc.status = 'ATIVO'`) <br> $C$: O vínculo comercial é do tipo fornecedor de cana (`vc.tipo_vinculo = 'FORNECEDOR_CANA'`) |
-| **Expressão lógica proposicional** | $(A \land B) \lor C$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(A \land B)$</th> <th>$(A \land B) \lor C$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL SELECT p.* FROM parceiros p LEFT JOIN vinculo_comercial vc ON vc.parceiro_id = p.id WHERE p.status = 'ativo' AND (p.nome LIKE '%termo%' OR vc.status = 'ativo');``` |
+| **Proposições lógicas** | $A$: O parceiro possui status ativo (p.status = 'ativo') <br> $B$: O nome do parceiro contém o termo buscado (p.nome LIKE '%termo%') <br> $C$: O vínculo comercial está ativo (vc.status = 'ativo') |
+| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td></tr><tr><td>V</td><td>V</td><td>F</td><td>V</td><td>V</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #1 é utilizada para recuperar parceiros que atendem a pelo menos uma das seguintes condições: serem pessoas jurídicas com vínculo comercial ativo ou possuírem vínculo comercial do tipo fornecedor de cana. A expressão $(A \land B) \lor C$ preserva essa lógica, pois o resultado será verdadeiro quando $A$ e $B$ forem verdadeiros simultaneamente, ou quando $C$ for verdadeiro.
+A consulta 01 possui utilidade para o fluxo de listagem de parceiros (RF007 e RF016). A proposição A é obrigatória para a listagem, isto é, o parceiro deve estar com o status ativo para que ele apareça na listagem normal (Para admins, esse fluxo de listagem é diferente, já que A deixa de ser obrigatório), estando de acordo com a RN08. Dentre esses, a consulta deve retornar aqueles cujo o nome contém o termo buscado (Proposição B) ou aqueles que possuem ao menos um vínculo comercial ativo (Proposição C)
 
----
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=V, B=F, C=F) \rightarrow A \land (B \lor C) = F$ : parceiro está ativo mas não atende nenhum critério de busca, ou seja, não é retornado.
+2- $(A=V, B=V, C=F) \rightarrow A \land (B \lor C) = V$ : parceiro ativo cujo nome corresponde ao termo buscado, mas sem vínculo ativo. Possui retorno.
+3- $(A=V, B=F, C=V) \rightarrow A \land (B \lor C) = V$ : sem correspondência ao nome, são retornados os parceiros com vínculo ativo.
+4- $(A=F, B=V, C=V) \rightarrow A \land (B \lor C) = F$ : parceiro inativo nunca é retornado, independentemente dos demais critérios (Para consultas normais).
+--- 
 
 ### #2 — Consulta de terras com oportunidade relevante em unidades ativas
 
@@ -1827,13 +1926,106 @@ A consulta #4 é utilizada para recuperar registros relevantes para auditoria. A
 
 ---
 
+### #5 — Inativação lógica de parceiro
+
+| #5 | --- |
+|---|---|
+| **Expressão SQL** | `UPDATE parceiros SET status = 'inativo', atualizado_em = NOW(), atualizado_por = :usuario_id WHERE id = :id AND status = 'ativo' AND tipo_pessoa NOT IN ('juridica') AND id NOT IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo');` |
+| **Proposições lógicas** | $A$: O parceiro está com status ativo (`status = 'ativo'`) <br> $B$: O parceiro é pessoa jurídica (`tipo_pessoa = 'juridica'`) — o `NOT IN ('juridica')` no SQL expressa $\lnot B$ <br> $C$: O parceiro possui ao menos um vínculo comercial ativo (`id IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo')`) — o `NOT IN (SELECT ...)` expressa $\lnot C$ |
+| **Expressão lógica proposicional** | $A \land \lnot B \land \lnot C$, equivalente por De Morgan a $A \land \lnot(B \lor C)$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$\lnot(B \lor C)$</th> <th>$A \land \lnot(B \lor C)$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> </tbody> </table> |
+
+A consulta #5 implementa a inativação lógica de um parceiro — a exclusão sem remoção física do registro (RF012, RN08). O UPDATE altera o campo `status` de `'ativo'` para `'inativo'` e registra o momento e o responsável pela operação. Nenhuma linha é deletada: o histórico permanece íntegro para auditoria.
+
+A condição A é mandatória: apenas parceiros com status `'ativo'` passam por esse fluxo. Parceiros em `'rascunho'`, `'pendente'` ou `'devolvido'` possuem outros caminhos de transição de status. As proposições B e C representam salvaguardas que bloqueiam a inativação. O operador `NOT IN` aparece duas vezes no SQL — uma vez para excluir o tipo `'juridica'` (¬B) e outra vez como subconsulta para verificar a ausência de vínculos ativos (¬C). Pessoas jurídicas exigem um fluxo específico de encerramento com documentação contratual; por isso, esse endpoint é restrito a pessoas físicas. A subconsulta impede que um parceiro ainda vinculado a um contrato ativo seja inativado, evitando inconsistência entre o status do parceiro e seus contratos em vigor.
+
+A equivalência $A \land \lnot B \land \lnot C = A \land \lnot(B \lor C)$ pela lei de De Morgan revela que a inativação é bloqueada sempre que pelo menos uma das condições B ou C for verdadeira — mesmo que a outra seja falsa. Isso diferencia a estrutura desta consulta das anteriores: enquanto as consultas #1, #2 e #3 ampliam o resultado via disjunção interna $(B \lor C)$, aqui a disjunção atua como gatilho de bloqueio pela negação externa.
+
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=F, B=F, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro não está com status ativo; UPDATE não é executado independentemente das demais condições.
+
+2- $(A=V, B=F, C=F) \rightarrow A \land \lnot(B \lor C) = V$ : parceiro ativo, do tipo pessoa física e sem vínculo comercial ativo — **inativação executada**. Única combinação que satisfaz todas as condições.
+
+3- $(A=V, B=V, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa jurídica; UPDATE bloqueado — a inativação de pessoas jurídicas exige fluxo específico com documentação contratual.
+
+4- $(A=V, B=F, C=V) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa física, mas ainda possui vínculo comercial ativo; UPDATE bloqueado para preservar a integridade do contrato vigente.
+
+5- $(A=V, B=V, C=V) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro é pessoa jurídica com vínculo ativo; ambas as salvaguardas estão ativas e o UPDATE não é executado.
+
+---
+
+### #6 — Aprovação de registro pendente por coordenador
+
+| #6 | --- |
+|---|---|
+| **Expressão SQL** | `UPDATE parceiros p SET status = 'ativo', atualizado_em = NOW(), atualizado_por = :usuario_id FROM usuarios u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE p.id = :parceiro_id AND p.status = 'pendente' AND u.id = :usuario_id AND u.ativo = TRUE AND pa.nome IN ('coordenador', 'administrador');` |
+| **Proposições lógicas** | $A$: O registro do parceiro está com status pendente (`p.status = 'pendente'`) <br> $B$: O usuário aprovador está ativo (`u.ativo = TRUE`) <br> $C$: O perfil do aprovador é coordenador ou administrador (`pa.nome IN ('coordenador', 'administrador')`) |
+| **Expressão lógica proposicional** | $A \land B \land C$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$A \land B$</th> <th>$A \land B \land C$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> </tbody> </table> |
+
+A consulta #6 implementa a aprovação de um registro pendente por um coordenador ou administrador. O UPDATE utiliza a cláusula FROM para cruzar `parceiros` com `usuarios` e `perfil_acesso` na mesma instrução, eliminando a necessidade de uma consulta de verificação separada antes da alteração. Ao executar, o sistema transita o status do parceiro de `'pendente'` para `'ativo'`, tornando o registro visível nas consultas e listagens normais do sistema (RN08).
+
+A proposição A restringe o fluxo ao status `'pendente'`: registros em `'rascunho'`, `'devolvido'`, `'ativo'` ou `'inativo'` não passam por esse UPDATE. A proposição B garante que contas de usuário inativadas administrativamente não executam aprovações, mesmo que mantenham o perfil de coordenador. A proposição C verifica o perfil via `IN ('coordenador', 'administrador')`, permitindo que administradores também realizem aprovações diretas quando necessário, sem depender de um coordenador disponível.
+
+A estrutura $A \land B \land C$ é uma conjunção pura de três guardas obrigatórias — nenhuma substitui a outra. Isso contrasta com as consultas #1, #2 e #3, onde a disjunção interna permite que um critério compense a ausência do outro, e com a consulta #5, onde a disjunção age como bloqueio por negação. Aqui não há alternativas: o UPDATE só é executado quando as três proposições são verdadeiras ao mesmo tempo.
+
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : aprovador ativo com perfil válido, mas o registro não está pendente; a aprovação não é executada.
+
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : registro pendente e aprovador ativo, mas o perfil é analista; UPDATE bloqueado — analistas não possuem permissão de aprovação.
+
+3- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : registro pendente e perfil de coordenador válido, mas a conta do aprovador está inativa; UPDATE bloqueado independentemente do perfil.
+
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : registro pendente, aprovador ativo e com perfil autorizado — **aprovação executada**, status transita para `'ativo'`.
+
+5- $(A=V, B=F, C=F) \rightarrow A \land B \land C = F$ : registro pendente, mas aprovador inativo e sem perfil correto; bloqueio duplo — nenhuma condição isolada é suficiente para liberar o UPDATE.
+
+---
+
+### #7 — Busca de interações por tipo e período em parceiros ativos
+
+| #7 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT i.*, p.nome AS nome_parceiro FROM interacao i JOIN parceiros p ON p.id = i.parceiro_id JOIN usuarios u ON u.id = i.registrado_por WHERE p.status = 'ativo' AND (i.tipo IN ('visita', 'reuniao') OR i.data BETWEEN :data_inicio AND :data_fim) AND u.ativo = TRUE;` |
+| **Proposições lógicas** | $A$: O parceiro está ativo (`p.status = 'ativo'`) <br> $B$: O tipo da interação é presencial (`i.tipo IN ('visita', 'reuniao')`) <br> $C$: A data da interação está dentro do período buscado (`i.data BETWEEN :data_inicio AND :data_fim`) <br> $D$: O usuário que registrou a interação está ativo (`u.ativo = TRUE`) |
+| **Expressão lógica proposicional** | $A \land (B \lor C) \land D$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C) \land D$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> </tbody> </table> |
+
+A consulta #7 recupera o histórico de interações de parceiros ativos com base em dois critérios alternativos de filtragem: o tipo da interação (presencial ou remota) e o período em que ocorreu. O SELECT cruza três tabelas — `interacao`, `parceiros` e `usuarios` — para garantir que os dados retornados correspondam a parceiros ativos e a registros inseridos por usuários cujas contas ainda estão ativas.
+
+A proposição A é o filtro de contexto: o parceiro precisa estar ativo para que suas interações apareçam nas listagens normais do sistema (RN08). A proposição D funciona como guarda de integridade: interações registradas por usuários cujas contas foram inativadas não são suprimidas do banco, mas o JOIN com `u.ativo = TRUE` as exclui da listagem, sinalizando implicitamente uma situação de auditoria. As proposições B e C são critérios alternativos conectados por disjunção: o sistema retorna a interação se ela for presencial (`IN ('visita', 'reuniao')`) independentemente da data, OU se sua data estiver dentro do período informado (`BETWEEN`), independentemente do tipo. Isso permite que o coordenador filtre por tipo de contato ou por janela temporal sem precisar combinar ambos obrigatoriamente.
+
+A estrutura $A \land (B \lor C) \land D$ difere de $A \land (B \lor C)$ das consultas #1 a #3 pela adição de uma quarta guarda obrigatória que envolve a disjunção, e difere de $(A \lor B) \land C \land D$ da consulta #4 porque a disjunção está no meio da expressão, não na primeira posição. Das 16 combinações possíveis, apenas três resultam em retorno: $(A=V, B=F, C=V, D=V)$, $(A=V, B=V, C=F, D=V)$ e $(A=V, B=V, C=V, D=V)$.
+
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=V, B=V, C=F, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação presencial de parceiro ativo registrada por usuário ativo — retornada mesmo que esteja fora do período informado.
+
+2- $(A=V, B=F, C=V, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação dentro do período, parceiro e registrador ativos — retornada mesmo que o tipo não seja presencial.
+
+3- $(A=V, B=F, C=F, D=V) \rightarrow A \land (B \lor C) \land D = F$ : parceiro ativo, registrador ativo, mas a interação não é presencial e está fora do período; não é retornada.
+
+4- $(A=F, B=V, C=V, D=V) \rightarrow A \land (B \lor C) \land D = F$ : tipo e período correspondem, registrador ativo, mas o parceiro está inativo; interação não aparece na listagem normal (RN08).
+
+5- $(A=V, B=V, C=V, D=F) \rightarrow A \land (B \lor C) \land D = F$ : todos os critérios de busca satisfeitos, mas o usuário registrador está inativo; registro excluído da listagem como guarda de integridade.
+
+---
+
 ### Síntese de validação lógica
 
 As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Nas consultas #1, #2 e #3, o uso de parênteses é essencial para manter a precedência correta entre conjunção e disjunção. Na consulta #1, a condição de pessoa jurídica com vínculo ativo é agrupada antes da alternativa de fornecedor de cana. Nas consultas #2 e #3, a primeira condição é obrigatória, enquanto as duas condições internas funcionam como alternativas.
 
 Na consulta #4, a expressão exige simultaneamente que a operação seja de atualização ou exclusão e que os dados anteriores e novos estejam preenchidos. Essa estrutura reforça a finalidade de auditoria da consulta, pois impede que registros incompletos sejam considerados válidos para análise de alteração.
 
-Portanto, as consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal, permitindo verificar a coerência das condições compostas por meio das respectivas tabelas verdade.
+A consulta #5 introduz um padrão distinto: $A \land \lnot(B \lor C)$. Aqui, a disjunção interna não amplia o resultado — ela opera como gatilho de bloqueio invertido pela negação. O UPDATE só é executado quando nenhuma das condições B ou C é verdadeira, ou seja, quando $\lnot(B \lor C) = V$. Esse comportamento contrasta diretamente com as consultas #1, #2 e #3, nas quais a disjunção interna $(B \lor C)$ expande os registros retornados. A equivalência com $A \land \lnot B \land \lnot C$ pela lei de De Morgan reforça que basta uma das salvaguardas estar ativa para bloquear a operação. A tabela verdade confirma que apenas a combinação $(A=V, B=F, C=F)$ resulta em execução do UPDATE.
+
+A consulta #6 apresenta a estrutura $A \land B \land C$, conjunção pura de três guardas obrigatórias. Diferente das consultas com disjunção interna, aqui não há critérios alternativos: o UPDATE só executa quando os três fatores — status do registro, atividade do aprovador e perfil de acesso — são todos verdadeiros ao mesmo tempo. A tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução.
+
+A consulta #7 fecha o conjunto com $A \land (B \lor C) \land D$, estrutura que combina dois fatores mandatórios externos com uma disjunção interna. Isso a diferencia de $A \land (B \lor C)$ das consultas #1 a #3 (sem quarta guarda) e de $(A \lor B) \land C \land D$ da consulta #4 (disjunção na posição inicial). A disjunção $(B \lor C)$ permite que o sistema retorne interações presenciais independentemente do período, ou interações dentro do período independentemente do tipo — enquanto as proposições A e D permanecem obrigatórias em qualquer caso.
+
+Portanto, as sete consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$, $A \land B \land C$ e $A \land (B \lor C) \land D$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 
@@ -2031,6 +2223,11 @@ Grupo 6. (2026). Value Proposition Canvas ATVOS. Canva. https://canva.link/towo8
 Grupo 6. (2026). Diagrama de Classes UML do Domínio ATVOS. 
 https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYjsSGEjZExWFO18O64n0iIFm1uG23nX7ZXDV-4Ny9nBctYf9qEeYjjEpuNV-Vu-3kstrAQI9sdYQEPJYWQCxAM92KefiXDY59KeLYWiKYBFpWJZlCiUdFV1sHk64pyTvOpN7nRV1sYAt--n9S7RHAwqaWB9Dbwer7C98qq4znnr2F6Cm9OK6HmOAqbkyurzIF1v-mBYkwrLDI6nE8nuskq8ecYBKd2EDMVPnG9gJUY9U0YfefcwEBrjYD9-AF-Q4RYs3Y_UBcD2qif7ay4roMSYrS7HVfpoEgrI69RkjYmw16dIg6By_ksq1M9aEYPbylFaDzQuLxvwIKBVUaWz3Q97gsbo7bSAqzUC_-CHCYOodhqrV83eost5-N7UTfsJ7cUxl4xcRpYtRVzOdmV0xHR_NAXwLw_hxklzFpUVytuVNfRANh1yg5N5kAFtloWRWOJapL59nw4I2KfVYt-eke4GC7SPTWBbeafB9KW9LA4ffFgwptuUjfHks8yoXDHwqt2MU2vtZYSVUBY09TZU3RpWZ4sOmjlDiCT5tDDTAwwJl32lmhBNtwm--q5hh4UXpq8OGP1HAGnTsS-Td5OkuBzw7-u_TjxtxrSpd7buzQKJl7CzVnPE4SUkYg-3zpbPNXaQgT4HfH9eH05qp_Ay1Ho1UGxOeGrsQwgjr6k0pXZyGWjb_wu-ek3qGWI9M57LYDwkpoZrb9LiYXRkJpxj6j0Ky8IomS59XBSyXmJJGAY8fPIhiK8ZOccEnGu4cb6-8PmRTbjcD92iaZu88B545G1DFf4L-Apykl5YCH4QKdaSyzN0x3s965V4EbM4j48WFDKdW1LZu7dL3dwT9UlkboQR2R3USlghFgTKRshsL6xW2kfAijnr2tBNMfypYBMIOiPdR2qFIIk5PKtTGxQIJfhWcOtknHG7b4vb98AWXrwKofBpc8Iqxj4dbSctK637qFrG1fX1xN3QD1MGcbDRECgrsaY9ASHZO6s1d7TLFdi8g3fDM5Fm5nsnzSvaJ4ZbdOgOaYFGU02pKfYYdGmntKMBLo3iA79K1wJky7kxyhRrxsDQJUfZMbXwk4EI0RNjG-FI4hgdC5cUnUeOqnXdvEaHf_1WQ5srHCQsodqBMvsMqyQKKua4zZ4TqJaPNnrqBTIy7A-BBwQ-U7y52q37xg8PyWOkzvy7Xx7n4kL5py1F0KUgl0C9-F8S6Q7XGzkgKZ4R6tLsa2EOMk3qjj299Jm0xiUGBG6slkRoXLBAdJ7jWD9Fykfn9aKDzKcximFKqN0p6HueyHqnJYJC6tAO4hQ8nn8drdSFKJJGdjR_Gtq84MXbxnBrERuBCA1c6k8fi-NkqvnABzrE0VNEgzq_a_sx4wxZzHTOGv-V3yJxI7s8Rp_MxkITCtAfjsWWqZjvcMBMh7DAdE14zqvfHsJSxFK9bzuHGrdMVLK2_ljlJaFZZgdmoO1XdlD8OK9QI9-Rnu6BL4WReGr2alSOA_oje3JqN2Ajeh7qjlCkyIk7mRueHSiu9mvdVc1wq-nRuwP6ALm1c9P0gjOLYk1zOS-XZXHA0CgXoyFxXD85dzgStm68WOKoS4vdUrXy-JY1BrmTePExfsVlt3IFrIDq1lN3oxGFz_yW8p66ozTFt2SdbRR2_oqpm5T9nUbawDyj9hoqJx4BfggYGw6q4d0pi8-MGtPDhAxM-un_Uymsrmn2BNcxVzclSVSOi_ZKtI4eTDfVOFcTu7Qvvr1uyFRS-nDuUfQV0Tx4i-H6puiRzc7hu2xXJi_Vz2-IOzGhaY_S1kjvWvyGArxMQuK-t4s3hVNuahnbb23S04XUkzFBttNNBhnBL6MpnZbOvPORSlA2H6fdgq46hWIefLWJaeCSGDPYHJ-8saca8QB8dJnKmUkVIiXKs0w9EcAok9tS-8q3t9n_I1txW0hb6yeDOHheRL83GWxPKwBXg3c8i897Fp8ZbTWK9lzv_3Y5m7OpEiCt2zeOlYdmgVowwXw5JnrCi4Koa65Af0qhHY86FnaGgcSIISj_YuP6-nljhV-Q7lhHuePIYz-vbIeSyS9geaPC3kGFBGuj85KyU9NOcYzn29WNWddEuElYQOJXG8VZcbxoWJKpBgTD3b5PNYbXhDYJogz1lw1V9RSv5GCPJ1Mbmy3alHoNMT7qHmcvcOzOSbe1hwfMRq6bRD5PJ3KGPHF3QSGL8cJW15HZYcG-aq0hIalVZELP5nD1u0VhknB_46uN20_kFBdnVTNtgLvry78cqznyMtLU0-NUciFdtsqOJ4GvyUnUCpFEky7xJrigNLV4xgxUC3ZziIoen9BgrVgFRgm3AosxDXjUgjUFakVsItOiLkohL_LIfV2BGWrJM_fUbXSTmZ7QXYMSe_qTltLqhHwisFtwZtghVxeE6z1r7cQ_0i0
 
+MODESTO, Farina et al, Psicodinâmica das cores em comunicação. In: BLUCHER, [S.l.], 2011. Disponível em: https://search.worldcat.org/pt/title/1295699137. Acesso em: 20 maio 2026.
+
+
+
+ATVOS. *Guia da marca Atvos*. São Paulo: Atvos, 2023. Material institucional disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli) por meio do Google Drive da disciplina. Acesso em: 20 maio 2026.
 
 
 # <a name="c9"></a>Anexos
