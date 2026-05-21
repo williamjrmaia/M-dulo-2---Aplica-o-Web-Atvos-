@@ -1931,6 +1931,8 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 03 | | `Usuario`, `PerfilAcesso` | Listar usuários ativos com perfil operacional. |
 | 04 | SELECT | `RegistroAlteracao` | Recuperar registros auditáveis de atualização ou exclusão. |
 | 05 | UPDATE | `parceiros`, `vinculo_comercial` | Inativar logicamente um parceiro ativo do tipo pessoa física que não possua vínculos comerciais ativos. |
+| 06 | UPDATE | `parceiros`, `usuarios`, `perfil_acesso` | Aprovar o registro de um parceiro com status pendente, verificando se o aprovador está ativo e possui perfil autorizado. |
+| 07 | SELECT | `interacao`, `parceiros`, `usuarios` | Listar interações de parceiros ativos filtrando por tipo presencial ou por período de data, desde que registradas por usuário ativo. |
 
 ### Regras de negócio representadas pelas consultas
 
@@ -1941,6 +1943,8 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 03 | Apenas usuários ativos com perfil operacional devem aparecer em determinadas listagens internas. |
 | 04 | Alterações sensíveis devem conter dados anteriores e novos dados para garantir rastreabilidade. |
 | 05 | Parceiros ativos do tipo pessoa física só podem ser inativados logicamente quando não possuem vínculo comercial ativo. | RN08, RF012 |
+| 06 | A aprovação de um registro pendente só pode ser realizada por usuários ativos com perfil de coordenador ou administrador. | RN04, RN09, RF010 |
+| 07 | Interações de parceiros ativos são listadas por tipo presencial ou dentro do período informado, desde que registradas por usuário ativo. | RN08, RF006, RF007 |
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
@@ -2062,6 +2066,35 @@ A estrutura $A \land B \land C$ é uma conjunção pura de três guardas obrigat
 
 ---
 
+### #7 — Busca de interações por tipo e período em parceiros ativos
+
+| #7 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT i.*, p.nome AS nome_parceiro FROM interacao i JOIN parceiros p ON p.id = i.parceiro_id JOIN usuarios u ON u.id = i.registrado_por WHERE p.status = 'ativo' AND (i.tipo IN ('visita', 'reuniao') OR i.data BETWEEN :data_inicio AND :data_fim) AND u.ativo = TRUE;` |
+| **Proposições lógicas** | $A$: O parceiro está ativo (`p.status = 'ativo'`) <br> $B$: O tipo da interação é presencial (`i.tipo IN ('visita', 'reuniao')`) <br> $C$: A data da interação está dentro do período buscado (`i.data BETWEEN :data_inicio AND :data_fim`) <br> $D$: O usuário que registrou a interação está ativo (`u.ativo = TRUE`) |
+| **Expressão lógica proposicional** | $A \land (B \lor C) \land D$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C) \land D$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> </tbody> </table> |
+
+A consulta #7 recupera o histórico de interações de parceiros ativos com base em dois critérios alternativos de filtragem: o tipo da interação (presencial ou remota) e o período em que ocorreu. O SELECT cruza três tabelas — `interacao`, `parceiros` e `usuarios` — para garantir que os dados retornados correspondam a parceiros ativos e a registros inseridos por usuários cujas contas ainda estão ativas.
+
+A proposição A é o filtro de contexto: o parceiro precisa estar ativo para que suas interações apareçam nas listagens normais do sistema (RN08). A proposição D funciona como guarda de integridade: interações registradas por usuários cujas contas foram inativadas não são suprimidas do banco, mas o JOIN com `u.ativo = TRUE` as exclui da listagem, sinalizando implicitamente uma situação de auditoria. As proposições B e C são critérios alternativos conectados por disjunção: o sistema retorna a interação se ela for presencial (`IN ('visita', 'reuniao')`) independentemente da data, OU se sua data estiver dentro do período informado (`BETWEEN`), independentemente do tipo. Isso permite que o coordenador filtre por tipo de contato ou por janela temporal sem precisar combinar ambos obrigatoriamente.
+
+A estrutura $A \land (B \lor C) \land D$ difere de $A \land (B \lor C)$ das consultas #1 a #3 pela adição de uma quarta guarda obrigatória que envolve a disjunção, e difere de $(A \lor B) \land C \land D$ da consulta #4 porque a disjunção está no meio da expressão, não na primeira posição. Das 16 combinações possíveis, apenas três resultam em retorno: $(A=V, B=F, C=V, D=V)$, $(A=V, B=V, C=F, D=V)$ e $(A=V, B=V, C=V, D=V)$.
+
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=V, B=V, C=F, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação presencial de parceiro ativo registrada por usuário ativo — retornada mesmo que esteja fora do período informado.
+
+2- $(A=V, B=F, C=V, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação dentro do período, parceiro e registrador ativos — retornada mesmo que o tipo não seja presencial.
+
+3- $(A=V, B=F, C=F, D=V) \rightarrow A \land (B \lor C) \land D = F$ : parceiro ativo, registrador ativo, mas a interação não é presencial e está fora do período; não é retornada.
+
+4- $(A=F, B=V, C=V, D=V) \rightarrow A \land (B \lor C) \land D = F$ : tipo e período correspondem, registrador ativo, mas o parceiro está inativo; interação não aparece na listagem normal (RN08).
+
+5- $(A=V, B=V, C=V, D=F) \rightarrow A \land (B \lor C) \land D = F$ : todos os critérios de busca satisfeitos, mas o usuário registrador está inativo; registro excluído da listagem como guarda de integridade.
+
+---
+
 ### Síntese de validação lógica
 
 As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Nas consultas #1, #2 e #3, o uso de parênteses é essencial para manter a precedência correta entre conjunção e disjunção. Na consulta #1, a condição de pessoa jurídica com vínculo ativo é agrupada antes da alternativa de fornecedor de cana. Nas consultas #2 e #3, a primeira condição é obrigatória, enquanto as duas condições internas funcionam como alternativas.
@@ -2070,9 +2103,11 @@ Na consulta #4, a expressão exige simultaneamente que a operação seja de atua
 
 A consulta #5 introduz um padrão distinto: $A \land \lnot(B \lor C)$. Aqui, a disjunção interna não amplia o resultado — ela opera como gatilho de bloqueio invertido pela negação. O UPDATE só é executado quando nenhuma das condições B ou C é verdadeira, ou seja, quando $\lnot(B \lor C) = V$. Esse comportamento contrasta diretamente com as consultas #1, #2 e #3, nas quais a disjunção interna $(B \lor C)$ expande os registros retornados. A equivalência com $A \land \lnot B \land \lnot C$ pela lei de De Morgan reforça que basta uma das salvaguardas estar ativa para bloquear a operação. A tabela verdade confirma que apenas a combinação $(A=V, B=F, C=F)$ resulta em execução do UPDATE.
 
-A consulta #6 fecha o conjunto com a estrutura $A \land B \land C$, conjunção pura de três guardas obrigatórias. Diferente das consultas com disjunção interna, aqui não há critérios alternativos: o UPDATE só executa quando os três fatores — status do registro, atividade do aprovador e perfil de acesso — são todos verdadeiros ao mesmo tempo. A tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução.
+A consulta #6 apresenta a estrutura $A \land B \land C$, conjunção pura de três guardas obrigatórias. Diferente das consultas com disjunção interna, aqui não há critérios alternativos: o UPDATE só executa quando os três fatores — status do registro, atividade do aprovador e perfil de acesso — são todos verdadeiros ao mesmo tempo. A tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução.
 
-Portanto, as seis consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$ e $A \land B \land C$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
+A consulta #7 fecha o conjunto com $A \land (B \lor C) \land D$, estrutura que combina dois fatores mandatórios externos com uma disjunção interna. Isso a diferencia de $A \land (B \lor C)$ das consultas #1 a #3 (sem quarta guarda) e de $(A \lor B) \land C \land D$ da consulta #4 (disjunção na posição inicial). A disjunção $(B \lor C)$ permite que o sistema retorne interações presenciais independentemente do período, ou interações dentro do período independentemente do tipo — enquanto as proposições A e D permanecem obrigatórias em qualquer caso.
+
+Portanto, as sete consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$, $A \land B \land C$ e $A \land (B \lor C) \land D$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 
