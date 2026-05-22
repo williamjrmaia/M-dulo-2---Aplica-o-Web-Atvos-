@@ -1951,6 +1951,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 05 | UPDATE | `parceiros`, `vinculo_comercial` | Inativar logicamente um parceiro ativo do tipo pessoa física que não possua vínculos comerciais ativos. |
 | 06 | UPDATE | `parceiros`, `usuarios`, `perfil_acesso` | Aprovar o registro de um parceiro com status pendente, verificando se o aprovador está ativo e possui perfil autorizado. |
 | 07 | SELECT | `interacao`, `parceiros`, `usuarios` | Listar interações de parceiros ativos filtrando por tipo presencial ou por período de data, desde que registradas por usuário ativo. |
+| 08 | SELECT | `usuarios`, `perfil_acesso` | Buscar usuários cujo nome corresponde a um termo, excluindo especificamente os que são administradores inativos. |
 
 ### Regras de negócio representadas pelas consultas
 
@@ -1963,6 +1964,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 05 | Parceiros ativos do tipo pessoa física só podem ser inativados logicamente quando não possuem vínculo comercial ativo. | RN08, RF012 |
 | 06 | A aprovação de um registro pendente só pode ser realizada por usuários ativos com perfil de coordenador ou administrador. | RN04, RN09, RF010 |
 | 07 | Interações de parceiros ativos são listadas por tipo presencial ou dentro do período informado, desde que registradas por usuário ativo. | RN08, RF006, RF007 |
+| 08 | A busca de usuários por nome retorna todos os perfis que correspondem ao termo, exceto administradores com conta inativa. | RN08, RF002 |
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
@@ -2113,6 +2115,35 @@ A estrutura $A \land (B \lor C) \land D$ difere de $A \land (B \lor C)$ das cons
 
 ---
 
+### #8 — Busca de usuários por nome excluindo administradores inativos
+
+| #8 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT u.id, u.nome, u.email, u.ativo, pa.nome AS perfil FROM usuarios u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE u.nome LIKE '%:termo%' AND NOT (pa.nome = 'administrador' AND u.ativo = FALSE);` |
+| **Proposições lógicas** | $A$: O nome do usuário contém o termo buscado (`u.nome LIKE '%:termo%'`) <br> $B$: O usuário possui perfil de administrador (`pa.nome = 'administrador'`) <br> $C$: O usuário está inativo (`u.ativo = FALSE`) |
+| **Expressão lógica proposicional** | $A \land \lnot(B \land C)$, equivalente por De Morgan a $A \land (\lnot B \lor \lnot C)$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \land C)$</th> <th>$\lnot(B \land C)$</th> <th>$A \land \lnot(B \land C)$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> </tbody> </table> |
+
+A consulta #8 implementa a busca de usuários por nome para o painel administrativo. O SELECT retorna os registros cujo nome corresponde ao termo buscado e cujo perfil não é simultaneamente administrador e inativo. Nenhum usuário é excluído do banco — a regra age apenas na exibição da listagem, preservando o histórico de auditoria (RN08, RF002).
+
+A proposição A é o critério de busca: apenas usuários cujo nome contém o termo digitado são candidatos ao retorno. As proposições B e C definem a única combinação excluída da listagem: um usuário que ao mesmo tempo é administrador (`pa.nome = 'administrador'`) e está inativo (`u.ativo = FALSE`). O operador `NOT` no SQL envolve a conjunção `(B ∧ C)`, e não cada condição individualmente — isso é o que torna a estrutura distinta de `A ∧ ¬B ∧ ¬C` da consulta #5. Um analista inativo continua sendo retornado (B=F, C=V → ¬(B∧C)=V); um administrador ativo também é retornado (B=V, C=F → ¬(B∧C)=V). A exclusão recai exclusivamente sobre o par (B=V, C=V).
+
+A equivalência $A \land \lnot(B \land C) = A \land (\lnot B \lor \lnot C)$ pela lei de De Morgan revela que o sistema retorna o usuário quando seu nome corresponde ao termo E (o perfil não é administrador OU a conta está ativa). Isso contrasta diretamente com a consulta #5, onde $A \land \lnot(B \lor C)$ usa a negação de uma disjunção — bastando uma condição positiva para bloquear o retorno. Aqui, ambas as condições B e C precisam ser verdadeiras simultaneamente para que o registro seja excluído.
+
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=V, B=F, C=F) \rightarrow A \land \lnot(B \land C) = V$ : nome corresponde, usuário ativo não-administrador — retornado.
+
+2- $(A=V, B=F, C=V) \rightarrow A \land \lnot(B \land C) = V$ : nome corresponde, analista ou coordenador inativo — **ainda retornado**. A exclusão por inatividade se aplica apenas a administradores; outros perfis inativos permanecem visíveis para gestão.
+
+3- $(A=V, B=V, C=F) \rightarrow A \land \lnot(B \land C) = V$ : nome corresponde, administrador ativo — retornado normalmente.
+
+4- $(A=V, B=V, C=V) \rightarrow A \land \lnot(B \land C) = F$ : nome corresponde, mas o usuário é administrador inativo — **única combinação com A=V excluída da listagem**. A conjunção B∧C precisa ser verdadeira para o NOT bloquear o retorno.
+
+5- $(A=F, B=V, C=F) \rightarrow A \land \lnot(B \land C) = F$ : administrador ativo com nome que não corresponde ao termo buscado; não retornado — o critério de busca (A) é sempre obrigatório.
+
+---
+
 ### Síntese de validação lógica
 
 As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Nas consultas #1, #2 e #3, o uso de parênteses é essencial para manter a precedência correta entre conjunção e disjunção. Na consulta #1, a condição de pessoa jurídica com vínculo ativo é agrupada antes da alternativa de fornecedor de cana. Nas consultas #2 e #3, a primeira condição é obrigatória, enquanto as duas condições internas funcionam como alternativas.
@@ -2123,9 +2154,11 @@ A consulta #5 introduz um padrão distinto: $A \land \lnot(B \lor C)$. Aqui, a d
 
 A consulta #6 apresenta a estrutura $A \land B \land C$, conjunção pura de três guardas obrigatórias. Diferente das consultas com disjunção interna, aqui não há critérios alternativos: o UPDATE só executa quando os três fatores — status do registro, atividade do aprovador e perfil de acesso — são todos verdadeiros ao mesmo tempo. A tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução.
 
-A consulta #7 fecha o conjunto com $A \land (B \lor C) \land D$, estrutura que combina dois fatores mandatórios externos com uma disjunção interna. Isso a diferencia de $A \land (B \lor C)$ das consultas #1 a #3 (sem quarta guarda) e de $(A \lor B) \land C \land D$ da consulta #4 (disjunção na posição inicial). A disjunção $(B \lor C)$ permite que o sistema retorne interações presenciais independentemente do período, ou interações dentro do período independentemente do tipo — enquanto as proposições A e D permanecem obrigatórias em qualquer caso.
+A consulta #7 apresenta $A \land (B \lor C) \land D$, estrutura que combina dois fatores mandatórios externos com uma disjunção interna. Isso a diferencia de $A \land (B \lor C)$ das consultas #1 a #3 (sem quarta guarda) e de $(A \lor B) \land C \land D$ da consulta #4 (disjunção na posição inicial). A disjunção $(B \lor C)$ permite que o sistema retorne interações presenciais independentemente do período, ou interações dentro do período independentemente do tipo — enquanto as proposições A e D permanecem obrigatórias em qualquer caso.
 
-Portanto, as sete consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$, $A \land B \land C$ e $A \land (B \lor C) \land D$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
+A consulta #8 fecha o conjunto com $A \land \lnot(B \land C)$, a única estrutura da seção que aplica NOT sobre uma conjunção. Pela lei de De Morgan, isso equivale a $A \land (\lnot B \lor \lnot C)$, o que revela que basta uma das condições B ou C ser falsa para que o registro seja retornado — a exclusão só ocorre quando ambas são verdadeiras simultaneamente. Isso contrasta com a consulta #5, onde $A \land \lnot(B \lor C)$ aplica NOT sobre uma disjunção: lá, basta uma condição ser verdadeira para bloquear o retorno; aqui, as duas precisam ser verdadeiras juntas para bloquear.
+
+Portanto, as oito consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$, $A \land B \land C$, $A \land (B \lor C) \land D$ e $A \land \lnot(B \land C)$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 
