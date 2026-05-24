@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../helpers/asyncHandler';
-import { cadastrarParceiro } from '../services/parceiroService';
+import { cadastrarParceiro, editarParceiro as editarParceiroService } from '../services/parceiroService';
 import { ValidationError } from '../errors/AppError';
 
 export const createParceiro = asyncHandler(async (req: Request, res: Response) => {
@@ -26,4 +26,32 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
   });
 
   res.status(201).json(parceiro);
+});
+
+export const editarParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status, atualizado_por
+  } = req.body;
+
+  if (atualizado_por === undefined) {
+    throw new ValidationError('Campo obrigatório: atualizado_por');
+  }
+
+  if (nome === undefined && apelido === undefined && tipo_pessoa === undefined && cpf_cnpj === undefined && email === undefined && data_nascimento === undefined && nome_acompanhante === undefined && status === undefined) {
+    throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
+  }
+
+  const parceiro = await editarParceiroService(id, {
+    nome,
+    apelido,
+    tipo_pessoa,
+    cpf_cnpj,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    status,
+    atualizado_por
+  });
+
+  res.status(200).json(parceiro);
 });
