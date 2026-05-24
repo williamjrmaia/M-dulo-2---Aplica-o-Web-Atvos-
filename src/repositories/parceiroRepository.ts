@@ -21,7 +21,7 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
   return rows[0];
 }
 
-export async function updateParceiro(id: string, data: UpdateParceiroInput): Promise<Parceiro> {
+export async function updateParceiro(id: string, data: UpdateParceiroInput): Promise<Parceiro | null> {
   const campos: string[] = [];
   const valores: any[] = [];
   let contador = 1;
@@ -75,5 +75,5 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
     `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
     valores
   );
-  return result.rows[0];
+  return result.rows[0] ?? null;
 }
