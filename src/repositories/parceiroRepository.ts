@@ -1,5 +1,5 @@
 import pool from '../db/pool';
-import { Parceiro, CreateParceiroInput } from '../models/parceiro';
+import { Parceiro, CreateParceiroInput, UpdateParceiroInput } from '../models/parceiro';
 
 export async function createParceiro(data: CreateParceiroInput): Promise<Parceiro> {
   const { rows } = await pool.query<Parceiro>(
@@ -19,4 +19,61 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
     ]
   );
   return rows[0];
+}
+
+export async function updateParceiro(id: string, data: UpdateParceiroInput): Promise<Parceiro> {
+  const campos: string[] = [];
+  const valores: any[] = [];
+  let contador = 1;
+
+  if (data.nome !== undefined) {
+    campos.push(`nome = $${contador++}`);
+    valores.push(data.nome);
+  }
+
+  if (data.apelido !== undefined) {
+    campos.push(`apelido = $${contador++}`);
+    valores.push(data.apelido);
+  }
+  if (data.tipo_pessoa !== undefined) {
+    campos.push(`tipo_pessoa = $${contador++}`);
+    valores.push(data.tipo_pessoa);
+  }
+  if (data.cpf_cnpj !== undefined) {
+    campos.push(`cpf_cnpj = $${contador++}`);
+    valores.push(data.cpf_cnpj);
+  }
+
+  if (data.email !== undefined) {
+    campos.push(`email = $${contador++}`);
+    valores.push(data.email);
+  }
+
+  if (data.data_nascimento !== undefined) {
+    campos.push(`data_nascimento = $${contador++}`);
+    valores.push(data.data_nascimento);
+  }
+
+  if (data.nome_acompanhante !== undefined) {
+    campos.push(`nome_acompanhante = $${contador++}`);
+    valores.push(data.nome_acompanhante);
+  }
+
+  if (data.status !== undefined) {
+    campos.push(`status = $${contador++}`);
+    valores.push(data.status);
+  }
+
+  campos.push(`atualizado_por = $${contador}`);
+  valores.push(data.atualizado_por);
+  campos.push(`atualizado_em = NOW()`);
+
+  contador++;
+  valores.push(id);
+
+  const result = await pool.query(
+    `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
+    valores
+  );
+  return result.rows[0];
 }
