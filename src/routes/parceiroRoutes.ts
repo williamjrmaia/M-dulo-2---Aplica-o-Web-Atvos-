@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { createParceiro } from '../controllers/parceiroController';
+import { createParceiro, editarParceiro } from '../controllers/parceiroController';
 
 const router = Router();
 
 router.post('/', createParceiro);
+router.patch('/:id', editarParceiro);
 
 export default router;
