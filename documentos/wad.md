@@ -2114,6 +2114,8 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 04 | UPDATE | `parceiros` | Editar dados cadastrais de um parceiro em status editável, com validação de consistência. |
 | 05 | SELECT | `parceiros`, `usuarios`, `perfil_acesso` | Exibir perfil detalhado de um parceiro ativo com informações do usuário criador. |
 | 06 | SELECT | `parceiros` | Listar parceiros ativos com filtros opcionais de nome, tipo de pessoa e e-mail. |
+| 07 | SELECT | `interacao`, `parceiros` | Agregar interações por tipo e mês para exibição no dashboard dos últimos 6 meses. |
+
 
 ### Regras de negócio representadas pelas consultas
 
@@ -2125,6 +2127,8 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 04 | A edição de parceiros é permitida apenas para registros com status rascunho, devolvido ou ativo, com validação de consistência entre tipo de pessoa e documento. | RN05, RN11, RN12 |
 | 05 | A visualização do perfil detalhado de um parceiro exige que ele esteja ativo e que o usuário criador também esteja ativo no sistema. | RN04, RN08 |
 | 06 | A listagem de parceiros exibe apenas registros ativos, com suporte a filtros opcionais que não comprometem o retorno quando não informados. | RN04, RN08 |
+| 07 | O dashboard de interações agrega apenas interações de parceiros ativos dentro dos últimos 6 meses, segmentadas por tipo e mês. | RN04, RN05, RN08 |
+
 
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
@@ -2352,32 +2356,40 @@ A consulta implementa a busca filtrada de parceiros ativos com filtros opcionais
 
 ---
 
-### #7 — Busca de interações por tipo e período em parceiros ativos
+### 07 — Visualização do painel de dados das interações com os parceiros 
 
-| #7 | --- |
+
+| 07 | --- |
 |---|---|
-| **Expressão SQL** | `SELECT i.*, p.nome AS nome_parceiro FROM interacao i JOIN parceiros p ON p.id = i.parceiro_id JOIN usuarios u ON u.id = i.registrado_por WHERE p.status = 'ativo' AND (i.tipo IN ('visita', 'reuniao') OR i.data BETWEEN :data_inicio AND :data_fim) AND u.ativo = TRUE;` |
-| **Proposições lógicas** | $A$: O parceiro está ativo (`p.status = 'ativo'`) <br> $B$: O tipo da interação é presencial (`i.tipo IN ('visita', 'reuniao')`) <br> $C$: A data da interação está dentro do período buscado (`i.data BETWEEN :data_inicio AND :data_fim`) <br> $D$: O usuário que registrou a interação está ativo (`u.ativo = TRUE`) |
-| **Expressão lógica proposicional** | $A \land (B \lor C) \land D$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C) \land D$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL SELECT i.tipo, COUNT(*) AS total, DATE_TRUNC('month', i.data) AS mes FROM interacao i JOIN parceiros p ON p.id = i.parceiro_id WHERE p.status = 'ativo' AND i.data >= NOW() - INTERVAL '6 months' AND i.tipo IN ('visita', 'reuniao', 'ligacao', 'whatsapp') GROUP BY i.tipo, DATE_TRUNC('month', i.data) ORDER BY mes DESC, total DESC;  ``` |
+| **Proposições lógicas** | $A$ : O parceiro da interação está ativo (p.status = 'ativo') <br> $B$ : A interação ocorreu nos últimos 18 meses (i.data >= NOW() - INTERVAL '18 months')  <br> $C$ : O tipo da interação está dentro dos tipos válidos do sistema (i.tipo IN ('visita', 'reuniao', 'ligacao', 'whatsapp')) |
+| **Expressão lógica proposicional** | $A \land B \land C$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $A \land B \land C$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #7 recupera o histórico de interações de parceiros ativos com base em dois critérios alternativos de filtragem: o tipo da interação (presencial ou remota) e o período em que ocorreu. O SELECT cruza três tabelas — `interacao`, `parceiros` e `usuarios` — para garantir que os dados retornados correspondam a parceiros ativos e a registros inseridos por usuários cujas contas ainda estão ativas.
 
-A proposição A é o filtro de contexto: o parceiro precisa estar ativo para que suas interações apareçam nas listagens normais do sistema (RN08). A proposição D funciona como guarda de integridade: interações registradas por usuários cujas contas foram inativadas não são suprimidas do banco, mas o JOIN com `u.ativo = TRUE` as exclui da listagem, sinalizando implicitamente uma situação de auditoria. As proposições B e C são critérios alternativos conectados por disjunção: o sistema retorna a interação se ela for presencial (`IN ('visita', 'reuniao')`) independentemente da data, OU se sua data estiver dentro do período informado (`BETWEEN`), independentemente do tipo. Isso permite que o coordenador filtre por tipo de contato ou por janela temporal sem precisar combinar ambos obrigatoriamente.
+#### Explicação do que significa essa consulta:
 
-A estrutura $A \land (B \lor C) \land D$ difere de $A \land (B \lor C)$ das consultas #1 a #3 pela adição de uma quarta guarda obrigatória que envolve a disjunção, e difere de $(A \lor B) \land C \land D$ da consulta #4 porque a disjunção está no meio da expressão, não na primeira posição. Das 16 combinações possíveis, apenas três resultam em retorno: $(A=V, B=F, C=V, D=V)$, $(A=V, B=V, C=F, D=V)$ e $(A=V, B=V, C=V, D=V)$.
+
+Essa consulta alimenta o painel estatístico de interações com parceiros, permitindo visualizar a quantidade de contatos realizados ao longo do tempo. O objetivo é gerar indicadores para acompanhamento comercial e análise de relacionamento.
+
+A lógica proposicional $A \land B \land C$ define que apenas interações válidas entram nos cálculos do painel. Isso significa que a interação precisa estar associada a um parceiro ativo, ter ocorrido dentro do período analisado e possuir um tipo reconhecido pelo sistema.
+
+Dessa forma, o dashboard exclui registros inválidos, antigos ou inconsistentes, garantindo que os indicadores apresentados representem apenas dados confiáveis e relevantes para análise gerencial.
+
+
+#### Explicação da consulta SQL:
+
+
+A consulta alimenta o dashboard de interações, retornando a contagem de interações agrupadas por tipo e mês nos últimos 18 meses. Um JOIN conecta interacao com parceiros para filtrar apenas interações de parceiros ativos. A função DATE_TRUNC('month', i.data) trunca a data ao início do mês, permitindo agrupamento mensal. O GROUP BY agrega os resultados por tipo e mês, COUNT(*) contabiliza cada grupo e ORDER BY organiza os resultados do mais recente para o mais antigo, com os tipos mais frequentes no topo de cada mês.   
+
 
 #### Combinações relevantes da tabela verdade:
 
-1- $(A=V, B=V, C=F, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação presencial de parceiro ativo registrada por usuário ativo — retornada mesmo que esteja fora do período informado.
 
-2- $(A=V, B=F, C=V, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação dentro do período, parceiro e registrador ativos — retornada mesmo que o tipo não seja presencial.
-
-3- $(A=V, B=F, C=F, D=V) \rightarrow A \land (B \lor C) \land D = F$ : parceiro ativo, registrador ativo, mas a interação não é presencial e está fora do período; não é retornada.
-
-4- $(A=F, B=V, C=V, D=V) \rightarrow A \land (B \lor C) \land D = F$ : tipo e período correspondem, registrador ativo, mas o parceiro está inativo; interação não aparece na listagem normal (RN08).
-
-5- $(A=V, B=V, C=V, D=F) \rightarrow A \land (B \lor C) \land D = F$ : todos os critérios de busca satisfeitos, mas o usuário registrador está inativo; registro excluído da listagem como guarda de integridade.
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : interação de parceiro ativo com tipo válido, mas fora do período de 18 meses, logo, é muito antiga para ser contabilizada no painel.
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : interação recente de parceiro ativo, mas com tipo não reconhecido pelo sistema (possivelmente por erro de preenchimento), logo, é excluída da agregação. 
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : interação válida no período correto, mas de parceiro inativo, portanto, é excluída do painel, conforme a RN08.  
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : interação válida, recente e de parceiro ativo. É contabilizada no painel por tipo e mês.
 
 ---
 
