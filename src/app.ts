@@ -1,6 +1,6 @@
 import path from 'path';
 import dotenv from 'dotenv';
-import app from '../server';
+import app from './server';
 
 [
   path.resolve(process.cwd(), '.env'),
