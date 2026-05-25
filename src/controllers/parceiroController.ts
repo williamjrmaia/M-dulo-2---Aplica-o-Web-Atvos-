@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../helpers/asyncHandler';
-import { cadastrarParceiro, editarParceiro as editarParceiroService } from '../services/parceiroService';
+import { cadastrarParceiro, editarParceiro as editarParceiroService, obterParceiros } from '../services/parceiroService';
 import { ValidationError } from '../errors/AppError';
 
 export const createParceiro = asyncHandler(async (req: Request, res: Response) => {
@@ -55,3 +55,8 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
 
   res.status(200).json(parceiro);
 });
+
+ export const listarParceiros = asyncHandler(async (req: Request, res: Response) => {
+    const parceiros = await obterParceiros();
+    res.status(200).json(parceiros);
+  });
