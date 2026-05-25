@@ -1,15 +1,8 @@
 import pool from '../config/connection';
+import { ParceiroExportacao } from '../models/parceiro.model';
 import { DataAccessException } from '../errors/exportaErrors';
 
-export interface ParceiroExportacao {
-  id: string;
-  nome: string;
-  tipo_pessoa: string;
-  cpf_cnpj: string;
-  email: string | null;
-  status: string;
-  criado_em: Date;
-}
+export { ParceiroExportacao };
 
 export class ExportaRepository {
   async buscarTodosDadosParceiros(): Promise<ParceiroExportacao[]> {

@@ -1,4 +1,5 @@
-import { ExportaRepository, ParceiroExportacao } from '../repositories/exportaRepository';
+import { ExportaRepository } from '../repositories/exportaRepository';
+import { ParceiroExportacao } from '../models/parceiro.model';
 import { EmptyDataException, DataAccessException, InternalError } from '../errors/exportaErrors';
 
 export class ExportaService {
@@ -21,7 +22,7 @@ export class ExportaService {
       throw new EmptyDataException();
     }
 
-    // RN03 — converter para formato de exportação (CSV/XLSX)
+    // RN03 — converter para formato de exportação
     try {
       console.log('[SERVICE] converterParaFormatoExportacao...');
       const buffer = this.converterParaFormatoExportacao(parceiros);

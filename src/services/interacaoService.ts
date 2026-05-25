@@ -1,4 +1,5 @@
-import { InteracaoRepository, CriarInteracaoDTO, Interacao } from '../repositories/interacaoRepository';
+import { InteracaoRepository } from '../repositories/interacaoRepository';
+import { CriarInteracaoDTO, Interacao } from '../models/interacao.model';
 
 export class InteracaoService {
   constructor(private readonly interacaoRepository: InteracaoRepository) {}
