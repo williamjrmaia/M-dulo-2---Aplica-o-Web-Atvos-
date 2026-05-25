@@ -1190,10 +1190,156 @@ Além disso, a padronização tipográfica fortalece a identidade visual do proj
 
 
 ### 3.4.3. Iconografia e imagens
+A identidade visual da plataforma **Atwatts** foi desenvolvida para representar a união entre o agronegócio, a gestão de parceiros agrícolas e a transformação digital. A proposta visual combina elementos associados à cana-de-açúcar, à energia renovável, à tecnologia e à organização de dados em um sistema CRM corporativo.
 
-*(esta subseção é opcional, caso não existam ícones e imagens, apague esta subseção)*
+A linguagem gráfica adotada segue um estilo **minimalista, geométrico e vetorial**, alinhado à identidade da ATVOS. O uso de formas simples, traços limpos, cores institucionais e composição equilibrada reforça a percepção de uma plataforma moderna, confiável e adequada ao contexto do agronegócio.
 
-*posicione aqui imagens e textos contendo exemplos padronizados de ícones e imagens, com seus respectivos atributos de aplicação, utilizadas na solução*
+---
+
+<div align="center">
+  <sub>Imagem 3.4.3.1.: Opções de cores - Fundo claro e escuro</sub><br>
+  <img src="./assets/iconografia_e_imagens/logo_modo_claro_e_escuro.png" alt="Logos"><br>
+  <sup>Fonte: Material produzido pelos autores (2026).</sup>
+</div>
+
+## Logo Atwatts
+
+A logo da **Atwatts** foi criada a partir de uma composição abstrata que combina referências visuais ao campo e à tecnologia. O símbolo principal utiliza formas geométricas para sugerir, ao mesmo tempo, **talos de cana-de-açúcar**, **linhas de energia** e **conexões digitais**.
+
+### Elementos da logo
+
+#### Canas-de-açúcar
+As formas verticais em tons de laranja e amarelo representam os **talos da cana-de-açúcar**, principal referência agrícola da marca. A divisão em segmentos remete à estrutura natural da cana, enquanto a construção geométrica reforça o caráter digital e sistematizado da plataforma.
+
+Esses elementos comunicam:
+
+- origem agrícola da plataforma;
+- vínculo com fornecedores e parceiros do campo;
+- produtividade;
+- energia renovável;
+- crescimento sustentável.
+
+#### Folha lateral
+
+A forma curva localizada ao lado dos talos representa uma **folha ou broto agrícola**. Esse elemento reforça a conexão com o campo, com a sustentabilidade e com o ciclo produtivo da cana-de-açúcar.
+
+A folha também contribui para suavizar a composição, equilibrando os elementos técnicos com uma referência orgânica.
+
+#### Elemento tecnológico lateral
+
+O elemento em azul aço, posicionado ao lado das canas, representa a dimensão tecnológica da plataforma. Sua forma inclinada contribui para a construção visual da letra **“A”**, inicial de **Atwatts**, enquanto as linhas paralelas e os pontos circulares remetem a **circuitos eletrônicos, conexões digitais e fluxo de dados**.
+
+Esse componente simboliza:
+
+- automação de processos;
+- inteligência de dados;
+- integração entre áreas;
+- gestão digital de parceiros;
+- inovação aplicada ao agronegócio.
+
+#### Composição em formato de “A”
+
+A junção entre as canas, a folha, o arco inferior e o elemento tecnológico forma uma composição que sugere a letra **“A”**. Essa construção reforça a identidade nominal da plataforma e cria um símbolo proprietário, reconhecível e alinhado ao nome **Atwatts**.
+
+### Cores da logo
+
+A paleta da logo utiliza cores associadas à identidade ATVOS:
+
+| Cor | Código | Aplicação | Significado |
+|---|---|---|---|
+| Laranja institucional | `#FF681A` | Elementos de energia e destaque | Energia, movimento e inovação |
+| Laranja de apoio | `#FF8100` | Acentos e variações quentes | Dinamismo e produtividade |
+| Amarelo dourado | `#FFCD00` | Canas, folhas e detalhes agrícolas | Luz, crescimento e sustentabilidade |
+| Azul aço profundo | `#3F5B70` | Elemento tecnológico e wordmark | Confiança, gestão e tecnologia |
+| Azul claro para modo escuro | `#6B8FA8` | Versão dark mode | Legibilidade e contraste |
+
+### Versões da logo
+
+A identidade contempla diferentes versões de aplicação:
+
+#### Versão principal
+
+A versão principal utiliza fundo branco ou claro, com elementos em laranja, amarelo e azul aço. Essa versão deve ser priorizada em telas institucionais, apresentações, documentação e ambientes com fundo claro.
+
+#### Versão monocromática formal
+
+A versão monocromática utiliza tons escuros de azul aço e azul-marinho sobre fundo branco ou off-white. Essa aplicação é recomendada para contextos mais formais, materiais técnicos, documentos institucionais ou situações em que o uso de múltiplas cores não seja adequado.
+
+---
+
+<div align="center">
+  <sub>Imagem 3.4.3.2.: Icones utilizados no protótipo de alta fidelidade</sub><br>
+  <img src="./assets/iconografia_e_imagens/iconografia.png" alt="Iconografia"><br>
+  <sup>Fonte: Material produzido pelos autores (2026).</sup>
+</div>
+
+A iconografia da plataforma **Atwatts** foi desenvolvida para apoiar a navegação e a compreensão das principais funcionalidades do CRM. Os ícones representam ações, estados e entidades comuns ao contexto de gestão de parceiros agrícolas e fornecedores de cana-de-açúcar.
+
+O conjunto segue uma linguagem visual consistente com a logo: formas simples, traços arredondados, composição geométrica e uso controlado das cores institucionais.
+
+### Estilo visual dos ícones
+
+Os ícones utilizam estilo **flat vector outline**, com traço aproximado de **2px**, cantos arredondados e baixa complexidade visual. A estrutura principal é desenhada em branco ou off-white, enquanto detalhes funcionais recebem acentos em laranja e amarelo.
+
+Essa abordagem garante:
+
+- leitura rápida em dashboards;
+- consistência entre diferentes telas;
+- boa adaptação a interfaces web;
+- aparência corporativa e moderna;
+- associação direta com a identidade ATVOS.
+
+### Paleta aplicada à iconografia
+
+| Cor | Código | Uso nos ícones |
+|---|---|---|
+| Azul aço profundo | `#3F5B70` | Fundo do painel e base institucional |
+| Branco / off-white | `#FFFFFF` / `#F5F5F5` | Traço principal dos ícones |
+| Laranja | `#FF8100` | Acentos de ação, destaque e interação |
+| Laranja institucional | `#FF681A` | Detalhes de energia e movimento |
+| Amarelo dourado | `#FFCD00` | Estados positivos, validação e elementos agrícolas |
+
+### Ícones do sistema
+
+O conjunto iconográfico contempla ícones associados às principais áreas e ações da plataforma:
+
+| Ícone | Uso principal | Função na interface |
+|---|---|---|
+| Perfil do Parceiro | Cadastro e detalhe de parceiro agrícola | Acessar informações do parceiro |
+| Lista de Registros | Listagens e tabelas | Visualizar registros organizados |
+| Editar | Formulários e detalhes | Alterar informações cadastradas |
+| Buscar | Busca global e tabelas | Pesquisar parceiros, contratos ou documentos |
+| Filtrar | Listagens e relatórios | Refinar resultados exibidos |
+| Aprovação | Validação cadastral | Confirmar ou aprovar informações |
+| Histórico de Interações | Timeline do parceiro | Consultar contatos, visitas e registros anteriores |
+| Upload / Exportação | Documentos e planilhas | Enviar ou exportar arquivos |
+| Notificações | Topbar e central de alertas | Acessar avisos e pendências |
+| Área Agrícola | Propriedades e talhões | Visualizar informações de campo |
+| Vínculo Comercial | Contratos e relacionamento | Consultar acordos e parcerias |
+| Menu | Navegação principal | Expandir ou recolher menu |
+| Seta à Esquerda | Paginação e navegação | Voltar para item anterior |
+| Seta à Direita | Paginação e navegação | Avançar para próximo item |
+| Alternância de Status | Status ativo/inativo | Ativar ou desativar parceiro ou registro |
+| Voltar | Telas internas | Retornar à tela anterior |
+| Equipe | Gestão de responsáveis | Visualizar ou atribuir usuários |
+| Documento com Checklist | Conformidade documental | Consultar requisitos e pendências |
+| Download em Nuvem | Relatórios e arquivos | Baixar documentos ou exportações |
+
+### Relação entre logo e iconografia
+
+A logo e a iconografia compartilham os mesmos princípios visuais. Ambas utilizam uma linguagem geométrica, limpa e corporativa, com equilíbrio entre elementos agrícolas e digitais.
+
+A logo apresenta essa relação de forma simbólica, combinando cana-de-açúcar, energia e circuitos digitais. Já os ícones aplicam essa mesma lógica ao uso funcional da interface, representando ações como cadastro, busca, validação, histórico, documentos, equipe e gestão de áreas agrícolas.
+
+Essa continuidade visual cria uma experiência mais coesa para o usuário, pois os elementos gráficos da marca e os elementos funcionais da interface seguem o mesmo sistema de cores, proporções e estilo.
+
+## Consistência com a identidade ATVOS
+
+A identidade visual da Atwatts mantém coerência com a marca ATVOS por meio do uso das cores institucionais e de uma linguagem visual associada à energia, sustentabilidade e inovação.
+
+Os tons de laranja e amarelo reforçam a relação com energia renovável, produtividade e cana-de-açúcar. O azul aço transmite confiança, controle, tecnologia e maturidade corporativa. A combinação dessas cores permite que a plataforma seja percebida como uma solução digital ligada diretamente ao agronegócio, mas com aparência moderna e profissional.
+
+A ausência de sombras, texturas e elementos realistas reforça a proposta de uma interface limpa, escalável e adequada para uso em dashboards web.
 
 ## 3.5. Protótipo de alta fidelidade (sprint 3)
 
