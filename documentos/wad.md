@@ -1079,15 +1079,15 @@ A versão equivalente para proprietários cedentes atende às mesmas US03 e US04
 </div>
 
 #### Exportação de lista de contatos em CSV
-Este fluxo atende à US08, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
+Este fluxo atende à US07, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
 
 <div align="center">
-  <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US08)</sub><br>
+  <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US07)</sub><br>
   <img src="./assets/wireframe/exportando_CSV.png" width="100%" alt="Wireframe do fluxo de exportação de lista de contatos em CSV"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
-Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS, US01, US02, US03, US04, US05 e US08, e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários, filtros combinados na listagem (US06) e gestão de usuários internos (US09 e US10), que serão prototipados nas próximas sprints.
+Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS, US01, US02, US03, US04, US05 e US07, e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários, filtros combinados na listagem (US06) e gestão de usuários internos (US09 e US10), que serão prototipados nas próximas sprints.
 
 A seguir, o link dos wireframes:
 https://excalidraw.com/#json=5HLRZVY2n7lELvcKSG7r3,M0e1IsL3CvTZeFLNSC1-ww
@@ -1199,7 +1199,27 @@ Além disso, a padronização tipográfica fortalece a identidade visual do proj
 
 ## 3.5. Protótipo de alta fidelidade (sprint 3)
 
-*posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização)*
+O mapeamento dos fluxos apresentados na seção 3.3 tem como objetivo definir quais wireframes devem ser evoluídos para o protótipo de alta fidelidade da aplicação web CRM da ATVOS. Essa seleção considera o escopo do MVP, as User Stories priorizadas, os requisitos funcionais relacionados e a relevância de cada fluxo para a gestão de parceiros agrícolas, especialmente fornecedores de cana e proprietários cedentes/proprietários de terra.
+
+Dessa forma, o protótipo de alta fidelidade deve representar, com maior nível de detalhamento visual e interativo, os fluxos centrais do sistema: cadastro, consulta, atualização, histórico de interações, listagem, filtragem e exportação de informações de parceiros ativos. Fluxos relacionados à gestão de usuários, embora relevantes para a administração do sistema, são tratados como secundários nesta etapa, pois não compõem o núcleo funcional principal do CRM agrícola.
+
+| Nome do fluxo | User Story relacionada | Tipo de usuário/persona | Prioridade | Entra no protótipo de alta fidelidade? | Justificativa |
+|---|---|---|---|---|---|
+| Cadastro de fornecedores de cana | US01 | Usuário interno responsável pelo relacionamento com parceiros agrícolas | Alta | Sim | Representa um dos fluxos centrais do MVP, relacionado ao RF004, pois permite o cadastro centralizado de fornecedores de cana no CRM. |
+| Cadastro de proprietários cedentes/proprietários de terra | US02 | Usuário interno responsável pelo relacionamento com parceiros agrícolas | Alta | Sim | É essencial para contemplar o segundo tipo principal de parceiro agrícola do sistema, atendendo ao RF004 e ao objetivo de centralização cadastral. |
+| Atualização de fornecedores de cana | US05 | Usuário interno responsável pela manutenção cadastral | Alta | Sim | Está diretamente associado ao RF005 e permite manter os dados cadastrais dos fornecedores atualizados, garantindo confiabilidade às informações do CRM. |
+| Atualização de proprietários cedentes/proprietários de terra | US05 | Usuário interno responsável pela manutenção cadastral | Alta | Sim | Complementa o fluxo de edição cadastral dos parceiros agrícolas, assegurando que proprietários de terra também possam ter seus dados atualizados no sistema. |
+| Visualização de detalhes e histórico de interações dos fornecedores | US03 e US04 | Usuário interno responsável pelo acompanhamento do relacionamento | Alta | Sim | Reúne informações detalhadas do parceiro e seu histórico de interações, atendendo aos RF006 e RF008, pilares fundamentais para a gestão do relacionamento. |
+| Visualização de detalhes e histórico de interações dos proprietários cedentes | US03 e US04 | Usuário interno responsável pelo acompanhamento do relacionamento | Alta | Sim | Permite consultar o perfil detalhado e as interações registradas com proprietários de terra, reforçando o controle e a rastreabilidade do relacionamento. |
+| Listagem e filtros de parceiros ativos | US06 | Usuário interno que consulta e acompanha a base de parceiros | Alta | Sim | Está relacionado aos RF007 e RF016, sendo necessário para localizar parceiros ativos, consultar informações e aplicar filtros de forma eficiente. |
+| Exportação de lista de contatos em CSV | US07 | Usuário interno que utiliza dados de parceiros para consulta, análise ou comunicação | Média | Sim | Atende ao RF017 e permite exportar informações de contatos e parceiros ativos, apoiando atividades operacionais e de acompanhamento fora do sistema. |
+| Gestão de usuários | US08 | Administrador do sistema | Baixa | Opcional | Embora relevante para a administração da aplicação, não faz parte do núcleo funcional do MVP voltado à gestão de parceiros agrícolas. Pode ser prototipado apenas se houver tempo disponível. |
+| Inativação de contas de usuários | US09 | Administrador do sistema | Baixa | Opcional | Trata-se de um fluxo administrativo secundário. Sua inclusão no protótipo de alta fidelidade não deve ter prioridade sobre os fluxos ligados a parceiros agrícolas. |
+
+Com base nesse mapeamento, os fluxos que devem ser priorizados no protótipo de alta fidelidade são aqueles relacionados diretamente à gestão de parceiros agrícolas: cadastro, atualização, listagem, filtragem, visualização de detalhes, histórico de interações e exportação de contatos. Esses fluxos correspondem aos principais pilares do MVP, pois viabilizam o cadastro centralizado de parceiros, o acompanhamento do relacionamento e a consulta estruturada das informações.
+
+A gestão de usuários e a inativação de contas devem ser tratadas como fluxos secundários ou opcionais nesta etapa. Apesar de contribuírem para a administração da aplicação, elas não representam o valor principal do CRM para a ATVOS no contexto do MVP, cujo foco está na melhoria da gestão de fornecedores de cana e proprietários cedentes/proprietários de terra.
+
 
 ## 3.6. Modelagem do banco de dados (sprints 2 e 4)
 
@@ -1951,6 +1971,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 05 | UPDATE | `parceiros`, `vinculo_comercial` | Inativar logicamente um parceiro ativo do tipo pessoa física que não possua vínculos comerciais ativos. |
 | 06 | UPDATE | `parceiros`, `usuarios`, `perfil_acesso` | Aprovar o registro de um parceiro com status pendente, verificando se o aprovador está ativo e possui perfil autorizado. |
 | 07 | SELECT | `interacao`, `parceiros`, `usuarios` | Listar interações de parceiros ativos filtrando por tipo presencial ou por período de data, desde que registradas por usuário ativo. |
+| 08 | SELECT | `usuarios`, `perfil_acesso` | Buscar usuários cujo nome corresponde a um termo, excluindo especificamente os que são administradores inativos. |
 
 ### Regras de negócio representadas pelas consultas
 
@@ -1963,6 +1984,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 05 | Parceiros ativos do tipo pessoa física só podem ser inativados logicamente quando não possuem vínculo comercial ativo. | RN08, RF012 |
 | 06 | A aprovação de um registro pendente só pode ser realizada por usuários ativos com perfil de coordenador ou administrador. | RN04, RN09, RF010 |
 | 07 | Interações de parceiros ativos são listadas por tipo presencial ou dentro do período informado, desde que registradas por usuário ativo. | RN08, RF006, RF007 |
+| 08 | A busca de usuários por nome retorna todos os perfis que correspondem ao termo, exceto administradores com conta inativa. | RN08, RF002 |
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
@@ -2113,6 +2135,35 @@ A estrutura $A \land (B \lor C) \land D$ difere de $A \land (B \lor C)$ das cons
 
 ---
 
+### #8 — Busca de usuários por nome excluindo administradores inativos
+
+| #8 | --- |
+|---|---|
+| **Expressão SQL** | `SELECT u.id, u.nome, u.email, u.ativo, pa.nome AS perfil FROM usuarios u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE u.nome LIKE '%:termo%' AND NOT (pa.nome = 'administrador' AND u.ativo = FALSE);` |
+| **Proposições lógicas** | $A$: O nome do usuário contém o termo buscado (`u.nome LIKE '%:termo%'`) <br> $B$: O usuário possui perfil de administrador (`pa.nome = 'administrador'`) <br> $C$: O usuário está inativo (`u.ativo = FALSE`) |
+| **Expressão lógica proposicional** | $A \land \lnot(B \land C)$, equivalente por De Morgan a $A \land (\lnot B \lor \lnot C)$ |
+| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \land C)$</th> <th>$\lnot(B \land C)$</th> <th>$A \land \lnot(B \land C)$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> </tbody> </table> |
+
+A consulta #8 implementa a busca de usuários por nome para o painel administrativo. O SELECT retorna os registros cujo nome corresponde ao termo buscado e cujo perfil não é simultaneamente administrador e inativo. Nenhum usuário é excluído do banco — a regra age apenas na exibição da listagem, preservando o histórico de auditoria (RN08, RF002).
+
+A proposição A é o critério de busca: apenas usuários cujo nome contém o termo digitado são candidatos ao retorno. As proposições B e C definem a única combinação excluída da listagem: um usuário que ao mesmo tempo é administrador (`pa.nome = 'administrador'`) e está inativo (`u.ativo = FALSE`). O operador `NOT` no SQL envolve a conjunção `(B ∧ C)`, e não cada condição individualmente — isso é o que torna a estrutura distinta de `A ∧ ¬B ∧ ¬C` da consulta #5. Um analista inativo continua sendo retornado (B=F, C=V → ¬(B∧C)=V); um administrador ativo também é retornado (B=V, C=F → ¬(B∧C)=V). A exclusão recai exclusivamente sobre o par (B=V, C=V).
+
+A equivalência $A \land \lnot(B \land C) = A \land (\lnot B \lor \lnot C)$ pela lei de De Morgan revela que o sistema retorna o usuário quando seu nome corresponde ao termo E (o perfil não é administrador OU a conta está ativa). Isso contrasta diretamente com a consulta #5, onde $A \land \lnot(B \lor C)$ usa a negação de uma disjunção — bastando uma condição positiva para bloquear o retorno. Aqui, ambas as condições B e C precisam ser verdadeiras simultaneamente para que o registro seja excluído.
+
+#### Combinações relevantes da tabela verdade:
+
+1- $(A=V, B=F, C=F) \rightarrow A \land \lnot(B \land C) = V$ : nome corresponde, usuário ativo não-administrador — retornado.
+
+2- $(A=V, B=F, C=V) \rightarrow A \land \lnot(B \land C) = V$ : nome corresponde, analista ou coordenador inativo — **ainda retornado**. A exclusão por inatividade se aplica apenas a administradores; outros perfis inativos permanecem visíveis para gestão.
+
+3- $(A=V, B=V, C=F) \rightarrow A \land \lnot(B \land C) = V$ : nome corresponde, administrador ativo — retornado normalmente.
+
+4- $(A=V, B=V, C=V) \rightarrow A \land \lnot(B \land C) = F$ : nome corresponde, mas o usuário é administrador inativo — **única combinação com A=V excluída da listagem**. A conjunção B∧C precisa ser verdadeira para o NOT bloquear o retorno.
+
+5- $(A=F, B=V, C=F) \rightarrow A \land \lnot(B \land C) = F$ : administrador ativo com nome que não corresponde ao termo buscado; não retornado — o critério de busca (A) é sempre obrigatório.
+
+---
+
 ### Síntese de validação lógica
 
 As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Nas consultas #1, #2 e #3, o uso de parênteses é essencial para manter a precedência correta entre conjunção e disjunção. Na consulta #1, a condição de pessoa jurídica com vínculo ativo é agrupada antes da alternativa de fornecedor de cana. Nas consultas #2 e #3, a primeira condição é obrigatória, enquanto as duas condições internas funcionam como alternativas.
@@ -2123,9 +2174,11 @@ A consulta #5 introduz um padrão distinto: $A \land \lnot(B \lor C)$. Aqui, a d
 
 A consulta #6 apresenta a estrutura $A \land B \land C$, conjunção pura de três guardas obrigatórias. Diferente das consultas com disjunção interna, aqui não há critérios alternativos: o UPDATE só executa quando os três fatores — status do registro, atividade do aprovador e perfil de acesso — são todos verdadeiros ao mesmo tempo. A tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução.
 
-A consulta #7 fecha o conjunto com $A \land (B \lor C) \land D$, estrutura que combina dois fatores mandatórios externos com uma disjunção interna. Isso a diferencia de $A \land (B \lor C)$ das consultas #1 a #3 (sem quarta guarda) e de $(A \lor B) \land C \land D$ da consulta #4 (disjunção na posição inicial). A disjunção $(B \lor C)$ permite que o sistema retorne interações presenciais independentemente do período, ou interações dentro do período independentemente do tipo — enquanto as proposições A e D permanecem obrigatórias em qualquer caso.
+A consulta #7 apresenta $A \land (B \lor C) \land D$, estrutura que combina dois fatores mandatórios externos com uma disjunção interna. Isso a diferencia de $A \land (B \lor C)$ das consultas #1 a #3 (sem quarta guarda) e de $(A \lor B) \land C \land D$ da consulta #4 (disjunção na posição inicial). A disjunção $(B \lor C)$ permite que o sistema retorne interações presenciais independentemente do período, ou interações dentro do período independentemente do tipo — enquanto as proposições A e D permanecem obrigatórias em qualquer caso.
 
-Portanto, as sete consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$, $A \land B \land C$ e $A \land (B \lor C) \land D$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
+A consulta #8 fecha o conjunto com $A \land \lnot(B \land C)$, a única estrutura da seção que aplica NOT sobre uma conjunção. Pela lei de De Morgan, isso equivale a $A \land (\lnot B \lor \lnot C)$, o que revela que basta uma das condições B ou C ser falsa para que o registro seja retornado — a exclusão só ocorre quando ambas são verdadeiras simultaneamente. Isso contrasta com a consulta #5, onde $A \land \lnot(B \lor C)$ aplica NOT sobre uma disjunção: lá, basta uma condição ser verdadeira para bloquear o retorno; aqui, as duas precisam ser verdadeiras juntas para bloquear.
+
+Portanto, as oito consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$, $A \land B \land C$, $A \land (B \lor C) \land D$ e $A \land \lnot(B \land C)$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 
