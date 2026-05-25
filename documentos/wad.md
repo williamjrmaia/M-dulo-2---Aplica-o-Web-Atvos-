@@ -1178,11 +1178,9 @@ De acordo com o guia de marca da Atvos, a fonte institucional utilizada é a **T
 A família tipográfica **Tahoma** será utilizada em toda a plataforma web, contribuindo para uma interface limpa, moderna e padronizada. Além disso, diferentes pesos tipográficos serão aplicados para estabelecer hierarquia visual entre títulos, subtítulos, textos corridos e elementos interativos da interface.
 
 <div align="center">
-
-**Imagem 3.4.2.: Tipografia utilizada na plataforma**
-<img src="./assets/tipografia/tipografia_do_sistema_web.png" alt="Tipografia da plataforma" width="800"/>
-**Fonte:** Elaborado pelos autores (2026).
-
+  <sub>Imagem 3.4.2.: Tipografia utilizada na plataforma</sub><br>
+  <img src="./assets/tipografia/tipografia_do_sistema_web.png" alt="Tipografia da plataforma"><br>
+  <sup>Fonte: Material produzido pelos autores (2026).</sup>
 </div>
 
 A utilização da fonte Tahoma proporciona uma leitura clara e objetiva, favorecendo a usabilidade e a acessibilidade da plataforma. Sua estrutura simples e limpa contribui para uma comunicação visual mais organizada, reduzindo ruídos visuais e melhorando a experiência do usuário durante a navegação.
