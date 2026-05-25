@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../app';
-import pool from '../db/pool';
+import pool from '../config/connection';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
