@@ -10,12 +10,12 @@ Eu escolhi o fluxo de cadastro de parceiro por concentrar o maior numero de regr
 
 ## Matriz
 
-| RF | RN | Caso de Teste | Arquivo | Status |
+| RF | RN | Caso de Teste | Arquivo | Evidência |
 |---|---|---|---|---|
-| RF004 | RN11 | POST /parceiros com campos minimos validos → 201, status='rascunho', criado_em presente | src/controllers/parceiroController.spec.ts | passou com sucesso: ✓ Caso 1 — campos mínimos válidos → 201, status rascunho, criado_em presente (2312 ms) |
-| RF009 | RN09 | POST /parceiros com cpf_cnpj ja existente no banco → 409 Conflict | src/controllers/parceiroController.spec.ts | passou com sucesso:  ✓ Caso 2 — RN09: cpf_cnpj duplicado → 409 (1376 ms) |
-| RF010 | RN10 | POST /parceiros com tipo_pessoa invalido ('empresa') → 400 Bad Request | src/controllers/parceiroController.spec.ts | passou com sucesso: Caso 3 — payload inválido: tipo_pessoa fora do ENUM → 400 (1764 ms) |
-| RF018/RF019 | RN11 | Apos POST 201, SELECT direto no banco confirma status='rascunho' e criado_por correto | src/controllers/parceiroController.spec.ts | passou com sucesso: ✓ Caso 4 — persistência: SELECT confirma status rascunho e criado_por correto (1391 ms)|
+| RF004 | RN11 | POST /parceiros com campos minimos validos → 201, status='rascunho', criado_em presente | src/controllers/parceiroController.spec.ts | ✓ deve cadastrar parceiro com campos mínimos válidos, retornando status 201 e status rascunho (RN11) (2312 ms) |
+| RF009 | RN09 | POST /parceiros com cpf_cnpj ja existente no banco → 409 Conflict | src/controllers/parceiroController.spec.ts | ✓ deve rejeitar cadastro de parceiro com CPF/CNPJ já existente, garantindo unicidade no banco (RN09) (1376 ms) |
+| RF010 | RN10 | POST /parceiros com tipo_pessoa invalido ('empresa') → 400 Bad Request | src/controllers/parceiroController.spec.ts | ✓ deve rejeitar payload com tipo_pessoa fora do ENUM, retornando 400 (RN10) (1764 ms) |
+| RF018/RF019 | RN11 | Apos POST 201, SELECT direto no banco confirma status='rascunho' e criado_por correto | src/controllers/parceiroController.spec.ts | ✓ deve persistir o parceiro no banco com status rascunho e criado_por correto (RN11) (1391 ms) |
 
 ---
 
