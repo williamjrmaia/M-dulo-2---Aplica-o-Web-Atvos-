@@ -1966,6 +1966,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 |---|---|---|---|
 | 01 | INSERT | `usuarios`, `perfil_acesso` | Cadastrar novo usuário com perfil válido, garantindo unicidade de e-mail. |
 | 02 | UPDATE | `usuarios` | Inativar logicamente um usuário ativo sem remover seu histórico do banco. |
+| 03 | INSERT | `parceiros` | Cadastrar novo parceiro como rascunho, verificando duplicidade de CPF/CNPJ. |
 
 
 ### Regras de negócio representadas pelas consultas
@@ -1974,6 +1975,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 |---|---|---|
 | 01 | Usuários só podem ser cadastrados com perfil existente no sistema e e-mail único, iniciando sem senha até o primeiro acesso. | RN01, RN03 |
 | 02 | A inativação de usuários é lógica — o registro é preservado, o acesso é revogado imediatamente e o usuário logado não pode se auto-inativar. | RN07, RN15 |
+| 03 | Novos parceiros são criados com status rascunho e têm o CPF/CNPJ validado contra duplicatas de registros não inativos. | RN09, RN16 |
 
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
@@ -2055,16 +2057,39 @@ O comando UPDATE realiza a inativação lógica de um usuário, alterando o camp
 
 ---
 
-### #3 — Consulta de usuários ativos com perfil operacional
+### 03 — Cadastro de parceiros
 
-| #3 | --- |
+
+| 03 | --- |
 |---|---|
-| **Expressão SQL** | `SELECT u.* FROM usuario u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE u.ativo = TRUE AND (pa.nome = 'ANALISTA' OR pa.nome = 'COORDENADOR');` |
-| **Proposições lógicas** | $A$: O usuário está ativo (`u.ativo = TRUE`) <br> $B$: O perfil de acesso do usuário é analista (`pa.nome = 'ANALISTA'`) <br> $C$: O perfil de acesso do usuário é coordenador (`pa.nome = 'COORDENADOR'`) |
-| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL INSERT INTO parceiros (id, nome, apelido, tipo_pessoa, cpf_cnpj, email, status, criado_em, criado_por) VALUES (gen_random_uuid(), :nome, :apelido, :tipo_pessoa, :cpf_cnpj, :email, 'rascunho', NOW(), :usuario_id) WHERE NOT EXISTS (SELECT 1 FROM parceiros p WHERE p.cpf_cnpj = :cpf_cnpj AND p.status != 'inativo'); ``` |
+| **Proposições lógicas** | $A$ : : O CPF ou CNPJ informado não está cadastrado em nenhum parceiro ativo, pendente, rascunho ou devolvido (NOT EXISTS ... AND p.status != 'inativo') <br> $B$ : O tipo de pessoa informado é válido (tipo_pessoa IN ('fisica', 'juridica')) |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #3 é utilizada para listar usuários internos ativos com perfil operacional. O usuário precisa estar ativo e possuir perfil de analista ou coordenador. Assim, $A$ precisa ser verdadeiro, enquanto $B$ e $C$ representam perfis alternativos aceitos pela regra.
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta controla o cadastro inicial de parceiros no sistema. O parceiro é criado inicialmente com status de rascunho, permitindo que seus dados sejam posteriormente revisados e validados.
+
+A lógica proposicional $A \land B$ determina que o cadastro só pode ocorrer quando o CPF/CNPJ ainda não estiver associado a outro parceiro ativo no sistema e quando o tipo de pessoa informado for válido.
+
+Isso garante duas regras importantes: evitar duplicidade de parceiros e manter consistência entre os dados cadastrais. Assim, o sistema impede registros repetidos e também evita classificações inválidas entre pessoa física e pessoa jurídica.
+
+
+#### Explicação da consulta SQL:
+
+
+O comando INSERT cria um novo registro de parceiro com status rascunho, conforme o fluxo de validação definido na RN16. O id é gerado automaticamente, criado_em recebe o timestamp atual e criado_por registra o usuário responsável pelo cadastro. O NOT EXISTS verifica se já existe algum parceiro não inativo com o mesmo CPF/CNPJ, implementando a RN09 que rejeita duplicatas. O CHECK implícito em tipo_pessoa garante que apenas os valores fisica ou juridica sejam aceitos.
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=F, B=V) \rightarrow A \land B = F$ : CPF/CNPJ já cadastrado em algum parceiro ou ausente no preenchimento, resultando no bloqueio do cadastro, respeitando a RN09.
+2- $(A=V, B=F) \rightarrow A \land B = F$ : tipo de pessoa inválido ou nulo, o que implica no cadastro rejeitado, devido à constraint do banco.  
+3- $(A=V, B=V) \rightarrow A \land B = V$ : CPF/CNPJ disponível e tipo_pessoa válido, portanto, o parceiro é cadastrado como rascunho. 
 
 ---
 
