@@ -531,6 +531,8 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 | RN16 | Um registro do tipo rascunho/devolvido só transita para status pendente após ser concluído por um analista. | RF021 |
 | RN17 | Um registro do tipo pendente só transita para status ativo/devolvido após ser revisado por um coordenador. | RF022, RF023 |
 | RN18 | Registros com status ativo que não sofreram alterações por um período configurado geram notificações para os usuários do sistema (analistas, coordenadores e gerentes). | RF025 |
+| RN19 | Requisicoes de edicao de parceiro sem nenhum campo editavel no body devem ser rejeitadas com erro 400. | RF005 |
+| RN20 | Tentativas de edicao de parceiros inexistentes devem ser rejeitadas com erro 404. | RF005 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
@@ -557,7 +559,7 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 | RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
 | RF003 | US08 | RN03 | `/usuarios/:id/perfil` | PUT |
 | RF004 | US01, US02 | RN09, RN10 | `/parceiros` | POST |
-| RF005 | US05 | RN10, RN11, RN12 | `/parceiros/:id` | PUT |
+| RF005 | US05 | RN10, RN11, RN12, RN19, RN20 | `/parceiros/:id` | PATCH |
 | RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
 | RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET |
 | RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
