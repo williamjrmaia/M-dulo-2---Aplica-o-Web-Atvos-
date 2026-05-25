@@ -1,4 +1,4 @@
-import pool from '../db/pool';
+import pool from '../config/connection';
 import { Parceiro, CreateParceiroInput } from '../models/parceiro';
 
 export async function createParceiro(data: CreateParceiroInput): Promise<Parceiro> {
