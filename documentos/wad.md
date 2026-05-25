@@ -1965,6 +1965,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | Consulta | Tipo | Tabelas envolvidas | Finalidade no back-end |
 |---|---|---|---|
 | 01 | INSERT | `usuarios`, `perfil_acesso` | Cadastrar novo usuário com perfil válido, garantindo unicidade de e-mail. |
+| 02 | UPDATE | `usuarios` | Inativar logicamente um usuário ativo sem remover seu histórico do banco. |
 
 
 ### Regras de negócio representadas pelas consultas
@@ -1972,6 +1973,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | Consulta | Regra representada | Regras de Negócio associadas |
 |---|---|---|
 | 01 | Usuários só podem ser cadastrados com perfil existente no sistema e e-mail único, iniciando sem senha até o primeiro acesso. | RN01, RN03 |
+| 02 | A inativação de usuários é lógica — o registro é preservado, o acesso é revogado imediatamente e o usuário logado não pode se auto-inativar. | RN07, RN15 |
 
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
@@ -2014,16 +2016,42 @@ O comando INSERT insere novos registros correspondentes à um novo usuário do s
 
 ---
 
-### #2 — Consulta de terras com oportunidade relevante em unidades ativas
+### 02 — Inativação de usuários 
 
-| #2 | --- |
+
+| 02 | --- |
 |---|---|
-| **Expressão SQL** | `SELECT t.* FROM terra t JOIN unidade u ON u.id = t.unidade_id WHERE u.ativo = TRUE AND (t.oportunidade_ha > 0 OR t.area_potencial_ha >= 100);` |
-| **Proposições lógicas** | $A$: A unidade está ativa (`u.ativo = TRUE`) <br> $B$: A terra possui oportunidade em hectares maior que zero (`t.oportunidade_ha > 0`) <br> $C$: A terra possui área potencial maior ou igual a 100 hectares (`t.area_potencial_ha >= 100`) |
-| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL UPDATE usuarios SET ativo = FALSE, atualizado_em = NOW() WHERE id = :usuario_id AND ativo = TRUE AND id != :usuario_logado_id; ``` |
+| **Proposições lógicas** | $A$ : O id corresponde ao usuário alvo (id = :usuario_id) <br> $B$ : O usuário está ativo (ativo = TRUE) <br> $C$ : O usuário alvo não é o próprio usuário logado (id != :usuario_logado_id) |
+| **Expressão lógica proposicional** | $A \land B \land C$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $A \land B \land C$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #2 é utilizada para listar terras associadas a unidades ativas que possuam oportunidade operacional ou área potencial relevante. A proposição $A$ é obrigatória, pois a unidade precisa estar ativa. Já as proposições $B$ e $C$ são alternativas: basta que a terra tenha oportunidade maior que zero ou área potencial maior ou igual a 100 hectares.
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta representa a inativação lógica de usuários do sistema. Em vez de apagar o usuário do banco de dados, o sistema apenas altera seu status para inativo, preservando o histórico de auditoria e rastreabilidade.
+
+A operação só acontece quando três condições forem verdadeiras simultaneamente: o usuário alvo precisa existir, ele deve estar ativo no momento da operação e não pode ser o próprio usuário logado.
+
+A expressão lógica $A \land B \land C$ demonstra que qualquer falha em uma dessas verificações impede a execução da inativação. Isso evita problemas como tentar desativar usuários já inativos, usuários inexistentes ou permitir que um administrador se auto-inative acidentalmente.
+
+
+
+
+#### Explicação da consulta SQL:
+
+
+O comando UPDATE realiza a inativação lógica de um usuário, alterando o campo ativo para FALSE e registrando o timestamp da operação em atualizado_em. O comando WHERE aplica três condições de segurança: o id deve corresponder ao usuário alvo, o usuário deve estar ativo no momento da operação e o usuário alvo não pode ser o próprio usuário logado, o que impede a inativação acidental de si mesmo. O registro não é removido do banco, preservando o histórico conforme a RN07 e a RN15.  
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : usuário já está inativo, implicando em operação não executada. 
+2- $(A=F, B=V, C=F) \rightarrow A \land B \land C = F$ : usuário alvo é o próprio usuário logado mas a auto-inativação é proibida, portanto a operação não é executada.
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum usuário, portanto nenhuma linha é afetada. 
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : usuário existe, está ativo e não é o usuário logado, portanto a inativação é executada com sucesso. 
 
 ---
 
