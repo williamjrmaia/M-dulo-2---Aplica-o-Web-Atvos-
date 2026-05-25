@@ -1968,7 +1968,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 02 | UPDATE | `usuarios` | Inativar logicamente um usuário ativo sem remover seu histórico do banco. |
 | 03 | INSERT | `parceiros` | Cadastrar novo parceiro como rascunho, verificando duplicidade de CPF/CNPJ. |
 | 04 | UPDATE | `parceiros` | Editar dados cadastrais de um parceiro em status editável, com validação de consistência. |
-
+| 05 | SELECT | `parceiros`, `usuarios`, `perfil_acesso` | Exibir perfil detalhado de um parceiro ativo com informações do usuário criador. |
 
 ### Regras de negócio representadas pelas consultas
 
@@ -1978,7 +1978,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 02 | A inativação de usuários é lógica — o registro é preservado, o acesso é revogado imediatamente e o usuário logado não pode se auto-inativar. | RN07, RN15 |
 | 03 | Novos parceiros são criados com status rascunho e têm o CPF/CNPJ validado contra duplicatas de registros não inativos. | RN09, RN16 |
 | 04 | A edição de parceiros é permitida apenas para registros com status rascunho, devolvido ou ativo, com validação de consistência entre tipo de pessoa e documento. | RN05, RN11, RN12 |
-
+| 05 | A visualização do perfil detalhado de um parceiro exige que ele esteja ativo e que o usuário criador também esteja ativo no sistema. | RN04, RN08 |
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
@@ -2132,32 +2132,39 @@ O comando UPDATE edita os dados cadastrais de um parceiro, registrando automatic
 
 ---
 
-### #5 — Inativação lógica de parceiro
+### 05 — Visualização dos dados de um parceiro
 
-| #5 | --- |
+
+| 05 | --- |
 |---|---|
-| **Expressão SQL** | `UPDATE parceiros SET status = 'inativo', atualizado_em = NOW(), atualizado_por = :usuario_id WHERE id = :id AND status = 'ativo' AND tipo_pessoa NOT IN ('juridica') AND id NOT IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo');` |
-| **Proposições lógicas** | $A$: O parceiro está com status ativo (`status = 'ativo'`) <br> $B$: O parceiro é pessoa jurídica (`tipo_pessoa = 'juridica'`) — o `NOT IN ('juridica')` no SQL expressa $\lnot B$ <br> $C$: O parceiro possui ao menos um vínculo comercial ativo (`id IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo')`) — o `NOT IN (SELECT ...)` expressa $\lnot C$ |
-| **Expressão lógica proposicional** | $A \land \lnot B \land \lnot C$, equivalente por De Morgan a $A \land \lnot(B \lor C)$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$\lnot(B \lor C)$</th> <th>$A \land \lnot(B \lor C)$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL SELECT p.*, pa.nome AS perfil_criador FROM parceiros p JOIN usuarios u ON u.id = p.criado_por JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE p.id = :parceiro_id AND p.status = 'ativo' ``` |
+| **Proposições lógicas** | $A$ : O id corresponde ao parceiro buscado (p.id = :parceiro_id) <br> $B$ : O parceiro possui status ativo (p.status = 'ativo')  |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #5 implementa a inativação lógica de um parceiro — a exclusão sem remoção física do registro (RF012, RN08). O UPDATE altera o campo `status` de `'ativo'` para `'inativo'` e registra o momento e o responsável pela operação. Nenhuma linha é deletada: o histórico permanece íntegro para auditoria.
 
-A condição A é mandatória: apenas parceiros com status `'ativo'` passam por esse fluxo. Parceiros em `'rascunho'`, `'pendente'` ou `'devolvido'` possuem outros caminhos de transição de status. As proposições B e C representam salvaguardas que bloqueiam a inativação. O operador `NOT IN` aparece duas vezes no SQL — uma vez para excluir o tipo `'juridica'` (¬B) e outra vez como subconsulta para verificar a ausência de vínculos ativos (¬C). Pessoas jurídicas exigem um fluxo específico de encerramento com documentação contratual; por isso, esse endpoint é restrito a pessoas físicas. A subconsulta impede que um parceiro ainda vinculado a um contrato ativo seja inativado, evitando inconsistência entre o status do parceiro e seus contratos em vigor.
+#### Explicação do que significa essa consulta:
 
-A equivalência $A \land \lnot B \land \lnot C = A \land \lnot(B \lor C)$ pela lei de De Morgan revela que a inativação é bloqueada sempre que pelo menos uma das condições B ou C for verdadeira — mesmo que a outra seja falsa. Isso diferencia a estrutura desta consulta das anteriores: enquanto as consultas #1, #2 e #3 ampliam o resultado via disjunção interna $(B \lor C)$, aqui a disjunção atua como gatilho de bloqueio pela negação externa.
+
+Essa consulta recupera os dados detalhados de um parceiro específico para visualização no sistema. Além das informações do parceiro, também são exibidos dados relacionados ao perfil do usuário responsável pelo cadastro.
+
+A lógica $A \land B$ estabelece que os dados somente serão exibidos se o parceiro procurado existir e estiver ativo. Isso impede que parceiros inativos ou inexistentes apareçam para consulta.
+
+Na prática, essa regra garante que apenas parceiros válidos e atualmente ativos possam ser visualizados pelos usuários do sistema, respeitando as regras de disponibilidade das informações.
+
+
+#### Explicação da consulta SQL:
+
+
+A consulta retorna todos os dados de um parceiro específico acrescidos do perfil do usuário que o criou. Dois JOIN são encadeados: o primeiro conecta parceiros com usuarios pelo campo criado_por, e o segundo conecta usuarios com perfil_acesso para recuperar o nome do perfil. A cláusula WHERE exige que o id corresponda ao parceiro buscado e que o parceiro esteja ativo. 
+
 
 #### Combinações relevantes da tabela verdade:
 
-1- $(A=F, B=F, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro não está com status ativo; UPDATE não é executado independentemente das demais condições.
 
-2- $(A=V, B=F, C=F) \rightarrow A \land \lnot(B \lor C) = V$ : parceiro ativo, do tipo pessoa física e sem vínculo comercial ativo — **inativação executada**. Única combinação que satisfaz todas as condições.
-
-3- $(A=V, B=V, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa jurídica; UPDATE bloqueado — a inativação de pessoas jurídicas exige fluxo específico com documentação contratual.
-
-4- $(A=V, B=F, C=V) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa física, mas ainda possui vínculo comercial ativo; UPDATE bloqueado para preservar a integridade do contrato vigente.
-
-5- $(A=V, B=V, C=V) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro é pessoa jurídica com vínculo ativo; ambas as salvaguardas estão ativas e o UPDATE não é executado.
+1- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro encontrado mas com status diferente de ativo, portanto, não é exibido conforme RN08. . 
+2- $(A=F, B=V) \rightarrow A \land B = F$ : id não corresponde a nenhum parceiro, portanto nenhum dado é retornado.
+3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo encontrado, resultando no perfil exibido corretamente. 
 
 ---
 
