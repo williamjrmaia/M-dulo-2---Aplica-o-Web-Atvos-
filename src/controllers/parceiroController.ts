@@ -29,9 +29,9 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
 });
 
 export const editarParceiro = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const id = req.params.id as string;
   const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status, atualizado_por
-  } = req.body;
+  } = req.body;   
 
   if (atualizado_por === undefined) {
     throw new ValidationError('Campo obrigatório: atualizado_por');
