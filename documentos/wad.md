@@ -1967,6 +1967,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 01 | INSERT | `usuarios`, `perfil_acesso` | Cadastrar novo usuário com perfil válido, garantindo unicidade de e-mail. |
 | 02 | UPDATE | `usuarios` | Inativar logicamente um usuário ativo sem remover seu histórico do banco. |
 | 03 | INSERT | `parceiros` | Cadastrar novo parceiro como rascunho, verificando duplicidade de CPF/CNPJ. |
+| 04 | UPDATE | `parceiros` | Editar dados cadastrais de um parceiro em status editável, com validação de consistência. |
 
 
 ### Regras de negócio representadas pelas consultas
@@ -1976,6 +1977,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 01 | Usuários só podem ser cadastrados com perfil existente no sistema e e-mail único, iniciando sem senha até o primeiro acesso. | RN01, RN03 |
 | 02 | A inativação de usuários é lógica — o registro é preservado, o acesso é revogado imediatamente e o usuário logado não pode se auto-inativar. | RN07, RN15 |
 | 03 | Novos parceiros são criados com status rascunho e têm o CPF/CNPJ validado contra duplicatas de registros não inativos. | RN09, RN16 |
+| 04 | A edição de parceiros é permitida apenas para registros com status rascunho, devolvido ou ativo, com validação de consistência entre tipo de pessoa e documento. | RN05, RN11, RN12 |
 
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
@@ -2093,16 +2095,40 @@ O comando INSERT cria um novo registro de parceiro com status rascunho, conforme
 
 ---
 
-### #4 — Consulta de registros de alteração com dados auditáveis
+### 04 — Edição dos dados dos parceiros
 
-| #4 | --- |
+
+| 04 | --- |
 |---|---|
-| **Expressão SQL** | `SELECT ra.* FROM registro_alteracao ra WHERE (ra.tipo_operacao = 'ATUALIZACAO' OR ra.tipo_operacao = 'EXCLUSAO') AND ra.dados_anteriores IS NOT NULL AND ra.dados_novos IS NOT NULL;` |
-| **Proposições lógicas** | $A$: O tipo de operação é atualização (`ra.tipo_operacao = 'ATUALIZACAO'`) <br> $B$: O tipo de operação é exclusão (`ra.tipo_operacao = 'EXCLUSAO'`) <br> $C$: Os dados anteriores estão preenchidos (`ra.dados_anteriores IS NOT NULL`) <br> $D$: Os novos dados estão preenchidos (`ra.dados_novos IS NOT NULL`) |
-| **Expressão lógica proposicional** | $(A \lor B) \land C \land D$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(A \lor B)$</th> <th>$(A \lor B) \land C \land D$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL UPDATE parceiros SET nome = :nome, email = :email, atualizado_em = NOW(), atualizado_por = :usuario_id WHERE id = :parceiro_id AND status IN ('rascunho', 'devolvido', 'ativo', 'pendente' ) AND NOT (tipo_pessoa = 'fisica' AND cpf_cnpj LIKE '%/%'); ``` |
+| **Proposições lógicas** | $A$ : id corresponde ao parceiro alvo (id = :parceiro_id) <br> $B$ : O status do parceiro permite edição (status IN ('rascunho', 'devolvido', 'ativo', ’pendente’)) <br> $C$ : A combinação tipo pessoa física com CNPJ é inválida (NOT (tipo_pessoa = 'fisica' AND cpf_cnpj LIKE '%/%')) |
+| **Expressão lógica proposicional** | $A \land B \land C$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $A \land B \land C$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #4 é utilizada para recuperar registros relevantes para auditoria. A operação deve ser atualização ou exclusão, e o registro precisa conter tanto os dados anteriores quanto os novos dados. Dessa forma, a expressão exige que $(A \lor B)$ seja verdadeiro e, ao mesmo tempo, que $C$ e $D$ também sejam verdadeiros.
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta representa a atualização cadastral de parceiros já existentes. O sistema permite editar apenas parceiros que estejam em estados considerados válidos para modificação, como rascunho, devolvido, ativo ou pendente.
+
+A expressão lógica $A \land B \land C$ mostra que a edição só é realizada quando o parceiro existe, possui um status editável e os dados informados permanecem consistentes.
+
+A terceira condição é especialmente importante porque impede incompatibilidades cadastrais, como registrar um parceiro do tipo pessoa física utilizando um documento característico de pessoa jurídica. Dessa forma, a consulta atua tanto na atualização das informações quanto na proteção da integridade dos dados.
+
+
+#### Explicação da consulta SQL:
+
+
+O comando UPDATE edita os dados cadastrais de um parceiro, registrando automaticamente a data e o responsável pela alteração nos campos atualizado_em e atualizado_por. A cláusula WHERE aplica três condições: o id deve corresponder ao parceiro alvo, o status deve estar dentro dos valores editáveis via IN, bloqueando edições nos parceiros com status inativo, e a combinação de pessoa física com documento contendo / (característica de CNPJ) é bloqueada via NOT com LIKE.   
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : parceiro com status inativo, portanto, a edição é bloqueada conforme a RN05.  
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : tentativa de salvar pessoa física com CNPJ, gerando uma inconsistência de dados. Portanto, a operação não é executada. 
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum parceiro, portanto nada é afetado. 
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : parceiro editável com dados consistentes, logo, a edição é executada com sucesso.
 
 ---
 
