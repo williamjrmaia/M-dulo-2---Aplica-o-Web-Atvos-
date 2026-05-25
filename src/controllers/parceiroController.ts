@@ -62,6 +62,6 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
 });
 
 export const obterParceiroPorId = asyncHandler(async (req: Request, res: Response) => {
-  const parceiro = await obterParceiroPorIdService(req.params.id);
+  const parceiro = await obterParceiroPorIdService(req.params.id as string);
   res.status(200).json(parceiro);
 });

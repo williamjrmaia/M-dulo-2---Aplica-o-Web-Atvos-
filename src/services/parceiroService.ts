@@ -35,9 +35,16 @@ export async function obterParceiros(): Promise<Parceiro[]> {
   }
 
 export async function obterParceiroPorId(id: string): Promise<Parceiro> {
-  const parceiro = await getParceiroById(id);
-  if (!parceiro) {
+  try {
+    const parceiro = await getParceiroById(id);
+    if (!parceiro) {
       throw new NotFoundError('Parceiro não encontrado');
     }
-  return parceiro;
+    return parceiro;
+  } catch (err: any) {
+    if (err.code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    throw err;
+  }
 }
