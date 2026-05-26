@@ -2,6 +2,8 @@
   "name": "atvos-crm",
   "version": "1.0.0",
   "scripts": {
+    "start": "ts-node src/server.ts",
+    "dev": "ts-node src/server.ts",
     "migrate": "ts-node src/db/migrate.ts",
     "seed": "ts-node src/db/seed.ts",
     "test": "jest --runInBand --forceExit"
@@ -9,7 +11,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/src/test/**/*.spec.ts"]
+    "testMatch": [
+      "**/src/test/**/*.spec.ts"
+    ]
   },
   "dependencies": {
     "dotenv": "^16.6.1",
