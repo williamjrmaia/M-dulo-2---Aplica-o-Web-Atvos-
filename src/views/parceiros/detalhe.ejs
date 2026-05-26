@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= naoEncontrado ? 'Parceiro não encontrado' : `Parceiro: ${parceiro.nome}` %></title>
+  <style>
+    body { font-family: Tahoma, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; color: #3F5B70; }
+    h1 { margin-bottom: 4px; color: #3F5B70; }
+    .subtitle { color: #64748b; margin-top: 0; margin-bottom: 24px; font-size: 14px; }
+    .nav { margin-bottom: 24px; }
+    .nav a { color: #FF681A; text-decoration: none; font-weight: bold; }
+    .nav a:hover { text-decoration: underline; }
+    .actions { margin: 20px 0 24px; display: flex; gap: 12px; }
+    .actions a { display: inline-block; padding: 10px 20px; background: #FF681A; color: #fff; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px; }
+    .actions a:hover { background: #FF8100; }
+    .card { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden; }
+    .card-header { background: #3F5B70; color: #fff; padding: 14px 18px; font-weight: bold; font-size: 16px; }
+    dl { margin: 0; padding: 18px; display: grid; grid-template-columns: 200px 1fr; row-gap: 14px; column-gap: 16px; }
+    dt { font-weight: bold; color: #64748b; font-size: 13px; text-transform: uppercase; }
+    dd { margin: 0; color: #3F5B70; font-size: 14px; word-break: break-word; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+    .badge-rascunho { background: #FFCD00; color: #3F5B70; }
+    .badge-ativo { background: #FF681A; color: #fff; }
+    .badge-pendente { background: #FFA500; color: #fff; }
+    .badge-inativo { background: #cbd5e1; color: #475569; }
+    .empty-state { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; padding: 20px; border-radius: 4px; text-align: center; font-size: 15px; }
+    .empty-state strong { display: block; margin-bottom: 6px; font-size: 18px; }
+    code { font-family: monospace; font-size: 13px; background: #f1f5f9; padding: 2px 6px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="/parceiros">&larr; Ver todos os parceiros</a>
+  </div>
+
+  <% if (naoEncontrado) { %>
+    <h1>Parceiro não encontrado</h1>
+    <div class="empty-state">
+      <strong>404</strong>
+      Nenhum parceiro corresponde ao ID informado.
+    </div>
+  <% } else { %>
+    <h1><%= parceiro.nome %></h1>
+    <p class="subtitle">Detalhes do parceiro</p>
+
+    <div class="actions">
+      <a href="/parceiros/<%= parceiro.id %>/editar">Editar parceiro</a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Dados cadastrais</div>
+      <dl>
+        <dt>ID</dt>
+        <dd><code><%= parceiro.id %></code></dd>
+
+        <dt>Nome</dt>
+        <dd><%= parceiro.nome %></dd>
+
+        <dt>Apelido</dt>
+        <dd><%= parceiro.apelido || '—' %></dd>
+
+        <dt>Tipo de pessoa</dt>
+        <dd><%= parceiro.tipo_pessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' %></dd>
+
+        <dt>CPF/CNPJ</dt>
+        <dd><%= parceiro.cpf_cnpj %></dd>
+
+        <dt>E-mail</dt>
+        <dd><%= parceiro.email || '—' %></dd>
+
+        <dt>Data de nascimento</dt>
+        <dd><%= parceiro.data_nascimento ? new Date(parceiro.data_nascimento).toLocaleDateString('pt-BR') : '—' %></dd>
+
+        <dt>Nome do acompanhante</dt>
+        <dd><%= parceiro.nome_acompanhante || '—' %></dd>
+
+        <dt>Status</dt>
+        <dd><span class="badge badge-<%= parceiro.status %>"><%= parceiro.status %></span></dd>
+
+        <dt>Criado em</dt>
+        <dd><%= new Date(parceiro.criado_em).toLocaleString('pt-BR') %></dd>
+
+        <dt>Criado por</dt>
+        <dd><code><%= parceiro.criado_por %></code></dd>
+
+        <dt>Atualizado em</dt>
+        <dd><%= parceiro.atualizado_em ? new Date(parceiro.atualizado_em).toLocaleString('pt-BR') : '—' %></dd>
+
+        <dt>Atualizado por</dt>
+        <dd><%= parceiro.atualizado_por ? `${parceiro.atualizado_por}` : '—' %></dd>
+      </dl>
+    </div>
+  <% } %>
+</body>
+</html>
