@@ -1,10 +1,19 @@
 import { Router } from 'express';
-import { createParceiro, editarParceiro, listarParceiros } from '../controllers/parceiroController';
+import {
+  createParceiro,
+  editarParceiro,
+  listarParceiros,
+  renderListaParceiros,
+} from '../controllers/parceiroController';
 
-const router = Router();
+// ─── API JSON (montado em /api/parceiros) ────────────────────────────────────
+export const apiRouter = Router();
 
-router.post('/', createParceiro);
-router.patch('/:id', editarParceiro);
-router.get('/', listarParceiros);
+apiRouter.post('/', createParceiro);
+apiRouter.patch('/:id', editarParceiro);
+apiRouter.get('/', listarParceiros);
 
-export default router;
+// ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
+export const viewRouter = Router();
+
+viewRouter.get('/', renderListaParceiros);
