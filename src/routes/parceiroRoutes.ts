@@ -1,9 +1,19 @@
 import { Router } from 'express';
-import { createParceiro, editarParceiro } from '../controllers/parceiroController';
+import {
+  createParceiro,
+  editarParceiro,
+  renderFormEdicao,
+  processarEdicao,
+} from '../controllers/parceiroController';
 
-const router = Router();
+// ─── API JSON (montado em /api/parceiros) ────────────────────────────────────
+export const apiRouter = Router();
 
-router.post('/', createParceiro);
-router.patch('/:id', editarParceiro);
+apiRouter.post('/', createParceiro);
+apiRouter.patch('/:id', editarParceiro);
 
-export default router;
+// ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
+export const viewRouter = Router();
+
+viewRouter.get('/:id/editar', renderFormEdicao);
+viewRouter.post('/:id/editar', processarEdicao);
