@@ -2,20 +2,22 @@
   "name": "atvos-crm",
   "version": "1.0.0",
   "scripts": {
+    "start": "ts-node src/server.ts",
+    "dev": "ts-node src/server.ts",
     "migrate": "ts-node src/db/migrate.ts",
     "seed": "ts-node src/db/seed.ts",
-    "test": "jest --runInBand --forceExit",
-    "dev": "ts-node src/server.ts"
+    "test": "jest --runInBand --forceExit"
   },
-   "jest": {
+  "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/*.spec.ts"]
-
+    "testMatch": [
+      "**/src/test/**/*.spec.ts"
+    ]
   },
-
   "dependencies": {
     "dotenv": "^16.6.1",
+    "ejs": "^5.0.2",
     "express": "^5.2.1",
     "pg": "^8.21.0"
   },
@@ -27,9 +29,8 @@
     "@types/supertest": "^7.2.0",
     "jest": "^30.4.2",
     "supertest": "^7.2.2",
-    "ts-jest": "^29.4.10",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   }
 }
-
