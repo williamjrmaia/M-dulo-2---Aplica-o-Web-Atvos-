@@ -1,15 +1,23 @@
+import express from 'express';
 import path from 'path';
-import dotenv from 'dotenv';
-import app from './server';
+import {
+  apiRouter as parceiroApiRoutes,
+  viewRouter as parceiroViewRoutes,
+} from './routes/parceiroRoutes';
+import { errorHandler } from './middlewares/errorHandler';
 
-[
-  path.resolve(process.cwd(), '.env'),
-  path.resolve(process.cwd(), '..', '.env'),
-].forEach((envPath) => {
-  dotenv.config({ path: envPath });
-});
+const app = express();
 
-const port = Number(process.env.PORT) || 3000;
-app.listen(port, () => {
-  console.log(`Servidor ATVOS CRM rodando na porta ${port}`);
-});
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/parceiros', parceiroApiRoutes);
+app.use('/parceiros', parceiroViewRoutes);
+
+app.use(errorHandler);
+
+export default app;
