@@ -1,0 +1,20 @@
+<%#
+  Layout principal da aplicação.
+  As views renderizam o conteúdo entre os includes de header e footer:
+
+    <%- include('../partials/header', { title: 'Algum Título' }) %>
+    <%- include('../partials/flash', { error: locals.error }) %>
+
+    <section>...conteúdo da view...</section>
+
+    <%- include('../partials/footer') %>
+
+  Para usar este layout automaticamente em todas as views,
+  instale e configure express-ejs-layouts no app.ts.
+%>
+<%- include('../partials/header', { title: typeof title !== 'undefined' ? title : 'ATVOS CRM' }) %>
+<%- include('../partials/flash', { error: locals.error, info: locals.info }) %>
+
+<%- body %>
+
+<%- include('../partials/footer') %>

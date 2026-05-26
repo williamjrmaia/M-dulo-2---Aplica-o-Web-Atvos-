@@ -1,8 +1,17 @@
 import { Router } from 'express';
-import { createParceiro } from '../controllers/parceiroController';
+import {
+  createParceiro,
+  renderFormCadastro,
+  processarCadastro,
+} from '../controllers/parceiroController';
 
-const router = Router();
+// ─── API JSON (montado em /api/parceiros) ────────────────────────────────────
+export const apiRouter = Router();
 
-router.post('/', createParceiro);
+apiRouter.post('/', createParceiro);
 
-export default router;
+// ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
+export const viewRouter = Router();
+
+viewRouter.get('/novo', renderFormCadastro);
+viewRouter.post('/', processarCadastro);
