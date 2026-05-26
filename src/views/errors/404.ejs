@@ -1,0 +1,13 @@
+<%- include('../partials/header', { title: 'Página não encontrada' }) %>
+
+<section aria-labelledby="titulo-404">
+  <h1 id="titulo-404">Página não encontrada</h1>
+  <p class="subtitle">O recurso solicitado não está disponível.</p>
+
+  <div class="empty-state">
+    <strong>404</strong>
+    <p><%= typeof mensagem !== 'undefined' ? mensagem : 'A página que você procurou não existe ou foi removida.' %></p>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

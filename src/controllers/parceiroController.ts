@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../helpers/asyncHandler';
-import { cadastrarParceiro, editarParceiro as editarParceiroService, obterParceiros, obterParceiroPorId as obterParceiroPorIdService } from '../services/parceiroService';
-import { ValidationError } from '../errors/AppError';
+import {
+  cadastrarParceiro,
+  editarParceiro as editarParceiroService,
+  obterParceiros,
+  obterParceiroPorId as obterParceiroPorIdService,
+} from '../services/parceiroService';
+import { NotFoundError, ValidationError } from '../errors/AppError';
+
+// ─── API JSON ────────────────────────────────────────────────────────────────
 
 export const createParceiro = asyncHandler(async (req: Request, res: Response) => {
   const { nome, tipo_pessoa, cpf_cnpj, criado_por, apelido, email, data_nascimento, nome_acompanhante } = req.body;
@@ -30,14 +37,22 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
 
 export const editarParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status, atualizado_por
-  } = req.body;
+  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status, atualizado_por } = req.body;
 
   if (atualizado_por === undefined) {
     throw new ValidationError('Campo obrigatório: atualizado_por');
   }
 
-  if (nome === undefined && apelido === undefined && tipo_pessoa === undefined && cpf_cnpj === undefined && email === undefined && data_nascimento === undefined && nome_acompanhante === undefined && status === undefined) {
+  if (
+    nome === undefined &&
+    apelido === undefined &&
+    tipo_pessoa === undefined &&
+    cpf_cnpj === undefined &&
+    email === undefined &&
+    data_nascimento === undefined &&
+    nome_acompanhante === undefined &&
+    status === undefined
+  ) {
     throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
   }
 
@@ -50,13 +65,13 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     data_nascimento,
     nome_acompanhante,
     status,
-    atualizado_por
+    atualizado_por,
   });
 
   res.status(200).json(parceiro);
 });
 
-export const listarParceiros = asyncHandler(async (req: Request, res: Response) => {
+export const listarParceiros = asyncHandler(async (_req: Request, res: Response) => {
   const parceiros = await obterParceiros();
   res.status(200).json(parceiros);
 });
@@ -64,4 +79,21 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
 export const obterParceiroPorId = asyncHandler(async (req: Request, res: Response) => {
   const parceiro = await obterParceiroPorIdService(req.params.id as string);
   res.status(200).json(parceiro);
+});
+
+// ─── Views HTML ──────────────────────────────────────────────────────────────
+
+export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+
+  try {
+    const parceiro = await obterParceiroPorIdService(id);
+    res.render('parceiros/show', { parceiro, naoEncontrado: false });
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      res.status(404).render('parceiros/show', { parceiro: null, naoEncontrado: true });
+      return;
+    }
+    throw err;
+  }
 });
