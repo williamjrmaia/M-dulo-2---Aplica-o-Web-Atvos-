@@ -2,7 +2,6 @@ import { createParceiro, updateParceiro } from '../repositories/parceiroReposito
 import { CreateParceiroInput, Parceiro, UpdateParceiroInput } from '../models/parceiro';
 import { ConflictError, NotFoundError } from '../errors/AppError';
 
-
 export async function cadastrarParceiro(data: CreateParceiroInput): Promise<Parceiro> {
   try {
     return await createParceiro(data);

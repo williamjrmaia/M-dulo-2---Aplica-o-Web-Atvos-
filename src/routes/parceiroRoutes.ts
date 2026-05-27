@@ -2,6 +2,8 @@ import { Router } from 'express';
 import {
   createParceiro,
   editarParceiro,
+  renderFormCadastro,
+  processarCadastro,
   renderFormEdicao,
   processarEdicao,
 } from '../controllers/parceiroController';
@@ -15,5 +17,7 @@ apiRouter.patch('/:id', editarParceiro);
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
 export const viewRouter = Router();
 
+viewRouter.get('/novo', renderFormCadastro);
+viewRouter.post('/', processarCadastro);
 viewRouter.get('/:id/editar', renderFormEdicao);
 viewRouter.post('/:id/editar', processarEdicao);
