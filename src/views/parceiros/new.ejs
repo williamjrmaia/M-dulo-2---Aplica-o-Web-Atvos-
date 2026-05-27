@@ -1,0 +1,58 @@
+<%- include('../partials/header', { title: 'Cadastrar Parceiro' }) %>
+
+<section aria-labelledby="titulo-cadastro">
+  <h1 id="titulo-cadastro">Cadastrar Parceiro</h1>
+  <p class="subtitle">Cadastro centralizado de fornecedor de cana ou proprietário cedente</p>
+
+  <%- include('../partials/flash', { error: locals.error }) %>
+
+  <p class="obrigatorios">Campos com <strong>*</strong> são obrigatórios</p>
+
+  <form action="/parceiros" method="POST" novalidate>
+    <label>
+      Nome *
+      <input type="text" name="nome" value="<%= dados.nome || '' %>" required />
+    </label>
+
+    <label>
+      Tipo de pessoa *
+      <select name="tipo_pessoa" required>
+        <option value="">Selecione...</option>
+        <option value="fisica" <%= dados.tipo_pessoa === 'fisica' ? 'selected' : '' %>>Pessoa Física</option>
+        <option value="juridica" <%= dados.tipo_pessoa === 'juridica' ? 'selected' : '' %>>Pessoa Jurídica</option>
+      </select>
+    </label>
+
+    <label>
+      CPF/CNPJ *
+      <input type="text" name="cpf_cnpj" value="<%= dados.cpf_cnpj || '' %>" required />
+    </label>
+
+    <label>
+      Apelido <span class="opcional">(opcional)</span>
+      <input type="text" name="apelido" value="<%= dados.apelido || '' %>" />
+    </label>
+
+    <label>
+      E-mail <span class="opcional">(opcional)</span>
+      <input type="email" name="email" value="<%= dados.email || '' %>" />
+    </label>
+
+    <label>
+      Data de nascimento <span class="opcional">(opcional)</span>
+      <input type="date" name="data_nascimento" value="<%= dados.data_nascimento || '' %>" />
+    </label>
+
+    <label>
+      Nome do acompanhante <span class="opcional">(opcional)</span>
+      <input type="text" name="nome_acompanhante" value="<%= dados.nome_acompanhante || '' %>" />
+    </label>
+
+    <div class="actions">
+      <button type="submit" class="btn">Salvar</button>
+      <a href="/parceiros" class="btn-link">Cancelar</a>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>

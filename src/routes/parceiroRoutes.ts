@@ -3,6 +3,8 @@ import {
   createParceiro,
   editarParceiro,
   listarParceiros,
+  renderFormCadastro,
+  processarCadastro,
   renderListaParceiros,
 } from '../controllers/parceiroController';
 
@@ -16,4 +18,6 @@ apiRouter.get('/', listarParceiros);
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
 export const viewRouter = Router();
 
+viewRouter.get('/novo', renderFormCadastro);
+viewRouter.post('/', processarCadastro);
 viewRouter.get('/', renderListaParceiros);
