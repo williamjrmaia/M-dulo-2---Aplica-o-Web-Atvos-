@@ -4,10 +4,21 @@ import path from 'path';
 
 async function migrate(): Promise<void> {
   console.log('[MIGRATE] Iniciando migrations...');
-  const sql = fs.readFileSync(path.join(__dirname, 'migration.sql'), 'utf8');
+  const migrationsDir = path.join(__dirname, 'migrations');
+
   try {
-    await pool.query(sql);
-    console.log('[MIGRATE] Migrations concluídas com sucesso!');
+    const files = fs
+      .readdirSync(migrationsDir)
+      .filter((file) => file.endsWith('.sql'))
+      .sort();
+
+    for (const file of files) {
+      const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
+      console.log(`[MIGRATE] Aplicando ${file}...`);
+      await pool.query(sql);
+    }
+
+    console.log('[MIGRATE] Migrations concluidas com sucesso!');
   } catch (error) {
     console.error('[MIGRATE] Erro:', (error as Error).message);
     process.exit(1);
