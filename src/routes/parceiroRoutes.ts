@@ -4,6 +4,8 @@ import {
   editarParceiro,
   listarParceiros,
   obterParceiroPorId,
+  renderFormCadastro,
+  processarCadastro,
   renderDetalheParceiro,
 } from '../controllers/parceiroController';
 
@@ -18,4 +20,6 @@ apiRouter.get('/:id', obterParceiroPorId);
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
 export const viewRouter = Router();
 
+viewRouter.get('/novo', renderFormCadastro);
+viewRouter.post('/', processarCadastro);
 viewRouter.get('/:id', renderDetalheParceiro);

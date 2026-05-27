@@ -36,4 +36,3 @@ export interface UpdateParceiroInput {
     status?: string;
     atualizado_por: string;
 }
-
