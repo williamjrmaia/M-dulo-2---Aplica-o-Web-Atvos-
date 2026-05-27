@@ -8,13 +8,6 @@
     "seed": "ts-node src/db/seed.ts",
     "test": "jest --runInBand --forceExit"
   },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/src/test/**/*.spec.ts"
-    ]
-  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.6.1",

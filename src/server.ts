@@ -1,7 +1,25 @@
-import app from './app';
+import express from 'express';
+import path from 'path';
+import {
+  apiRouter as parceiroApiRoutes,
+  viewRouter as parceiroViewRoutes,
+} from './routes/parceiroRoutes';
+import { errorHandler } from './middlewares/errorHandler';
+import routes from './routes/index';
 
-const PORT = process.env.PORT ?? 3000;
+const app = express();
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/parceiros', parceiroApiRoutes);
+app.use('/parceiros', parceiroViewRoutes);
+app.use(routes);
+
+app.use(errorHandler);
+
+export default app;
