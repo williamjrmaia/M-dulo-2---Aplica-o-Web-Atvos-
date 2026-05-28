@@ -7,12 +7,10 @@ export class AuthController {
   login = async (req: Request, res: Response) => {
     const { email, senha } = req.body;
 
-    // Payload inválido — campos ausentes
     if (!email || !senha) {
       return res.status(400).json({ error: 'E-mail e senha são obrigatórios' });
     }
 
-    // Formato de e-mail inválido
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: 'Formato de e-mail inválido' });

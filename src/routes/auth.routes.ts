@@ -9,6 +9,10 @@ const repository = new UserRepository();
 const service = new AuthService(repository);
 const controller = new AuthController(service);
 
+router.get('/login', (req, res) => {
+  res.render('login/index');
+});
+
 router.post('/login', (req, res) => {
   console.log(`[ROUTE] POST /login recebida para: ${req.body?.email}`);
   return controller.login(req, res);
