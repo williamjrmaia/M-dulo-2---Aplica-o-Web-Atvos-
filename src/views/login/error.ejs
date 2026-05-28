@@ -1,0 +1,12 @@
+<%- include('../partials/header', { title: 'Erro de autenticação' }) %>
+
+<section aria-labelledby="titulo-erro">
+  <h1 id="titulo-erro">Erro de autenticação</h1>
+  <p class="subtitle"><%= locals.message || 'Algo deu errado.' %></p>
+
+  <div class="actions">
+    <a href="/login" class="btn">Voltar ao login</a>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

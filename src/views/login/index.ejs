@@ -1,0 +1,26 @@
+<%- include('../partials/header', { title: 'Login' }) %>
+
+<section aria-labelledby="titulo-login">
+  <h1 id="titulo-login">Entrar</h1>
+  <p class="subtitle">Acesse o sistema com seu e-mail e senha</p>
+
+  <%- include('../partials/flash', { error: locals.error }) %>
+
+  <form action="/login" method="POST" novalidate>
+    <label>
+      E-mail
+      <input type="email" name="email" value="<%= locals.email || '' %>" placeholder="seu@email.com" />
+    </label>
+
+    <label>
+      Senha
+      <input type="password" name="senha" placeholder="••••••••" />
+    </label>
+
+    <div class="actions">
+      <button type="submit" class="btn">Entrar</button>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>
