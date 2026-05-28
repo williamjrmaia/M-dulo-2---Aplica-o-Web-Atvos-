@@ -4,6 +4,7 @@ import {
   apiRouter as parceiroApiRoutes,
   viewRouter as parceiroViewRoutes,
 } from './routes/parceiroRoutes';
+import routes from './routes';
 import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(routes);
 app.use('/api/parceiros', parceiroApiRoutes);
 app.use('/parceiros', parceiroViewRoutes);
 
