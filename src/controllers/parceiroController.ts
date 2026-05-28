@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../helpers/asyncHandler';
-import { cadastrarParceiro } from '../services/parceiroService';
+import {
+  cadastrarParceiro,
+  editarParceiro as editarParceiroService,
+} from '../services/parceiroService';
 import { AppError, ValidationError } from '../errors/AppError';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
@@ -30,6 +33,42 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
   });
 
   res.status(201).json(parceiro);
+});
+
+export const editarParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status, atualizado_por } = req.body;
+
+  if (atualizado_por === undefined) {
+    throw new ValidationError('Campo obrigatório: atualizado_por');
+  }
+
+  if (
+    nome === undefined &&
+    apelido === undefined &&
+    tipo_pessoa === undefined &&
+    cpf_cnpj === undefined &&
+    email === undefined &&
+    data_nascimento === undefined &&
+    nome_acompanhante === undefined &&
+    status === undefined
+  ) {
+    throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
+  }
+
+  const parceiro = await editarParceiroService(id, {
+    nome,
+    apelido,
+    tipo_pessoa,
+    cpf_cnpj,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    status,
+    atualizado_por,
+  });
+
+  res.status(200).json(parceiro);
 });
 
 // ─── Views HTML ──────────────────────────────────────────────────────────────
@@ -64,6 +103,45 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
   } catch (err) {
     const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao cadastrar parceiro';
     res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/new', {
+      error: mensagem,
+      dados: req.body,
+    });
+  }
+});
+
+export const renderFormEdicao = asyncHandler(async (req: Request, res: Response) => {
+  res.render('parceiros/edit', { id: req.params.id, error: null, dados: {} });
+});
+
+export const processarEdicao = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status } = req.body;
+
+  const camposEditaveis: Record<string, unknown> = {};
+  if (nome) camposEditaveis.nome = nome;
+  if (apelido) camposEditaveis.apelido = apelido;
+  if (tipo_pessoa) camposEditaveis.tipo_pessoa = tipo_pessoa;
+  if (cpf_cnpj) camposEditaveis.cpf_cnpj = cpf_cnpj;
+  if (email) camposEditaveis.email = email;
+  if (data_nascimento) camposEditaveis.data_nascimento = data_nascimento;
+  if (nome_acompanhante) camposEditaveis.nome_acompanhante = nome_acompanhante;
+  if (status) camposEditaveis.status = status;
+
+  try {
+    if (Object.keys(camposEditaveis).length === 0) {
+      throw new ValidationError('Preencha ao menos um campo para alterar');
+    }
+    if (tipo_pessoa && !['fisica', 'juridica'].includes(tipo_pessoa)) {
+      throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
+    }
+
+    await editarParceiroService(id, { ...camposEditaveis, atualizado_por: SEED_USER_ID });
+
+    res.redirect('/parceiros');
+  } catch (err) {
+    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao editar parceiro';
+    res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/edit', {
+      id,
       error: mensagem,
       dados: req.body,
     });

@@ -1,0 +1,76 @@
+<%- include('../partials/header', { title: 'Editar Parceiro' }) %>
+
+<section aria-labelledby="titulo-edicao">
+  <h1 id="titulo-edicao">Editar Parceiro</h1>
+  <p class="subtitle">Edição parcial dos dados de um parceiro existente</p>
+
+  <div class="id-box">
+    <p>Editando o parceiro com ID: <code><%= id %></code></p>
+  </div>
+
+  <aside class="flash flash-info" role="note">
+    <strong>Preencha apenas os campos que deseja alterar.</strong>
+    Campos em branco não serão modificados (comportamento PATCH).
+  </aside>
+
+  <%- include('../partials/flash', { error: locals.error }) %>
+
+  <form action="/parceiros/<%= id %>/editar" method="POST" novalidate>
+    <label>
+      Nome
+      <input type="text" name="nome" value="<%= dados.nome || '' %>" />
+    </label>
+
+    <label>
+      Tipo de pessoa
+      <select name="tipo_pessoa">
+        <option value="">(não alterar)</option>
+        <option value="fisica" <%= dados.tipo_pessoa === 'fisica' ? 'selected' : '' %>>Pessoa Física</option>
+        <option value="juridica" <%= dados.tipo_pessoa === 'juridica' ? 'selected' : '' %>>Pessoa Jurídica</option>
+      </select>
+    </label>
+
+    <label>
+      CPF/CNPJ
+      <input type="text" name="cpf_cnpj" value="<%= dados.cpf_cnpj || '' %>" />
+    </label>
+
+    <label>
+      Apelido
+      <input type="text" name="apelido" value="<%= dados.apelido || '' %>" />
+    </label>
+
+    <label>
+      E-mail
+      <input type="email" name="email" value="<%= dados.email || '' %>" />
+    </label>
+
+    <label>
+      Data de nascimento
+      <input type="date" name="data_nascimento" value="<%= dados.data_nascimento || '' %>" />
+    </label>
+
+    <label>
+      Nome do acompanhante
+      <input type="text" name="nome_acompanhante" value="<%= dados.nome_acompanhante || '' %>" />
+    </label>
+
+    <label>
+      Status
+      <select name="status">
+        <option value="">(não alterar)</option>
+        <option value="rascunho" <%= dados.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
+        <option value="pendente" <%= dados.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
+        <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
+        <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+      </select>
+    </label>
+
+    <div class="actions">
+      <button type="submit" class="btn">Salvar alterações</button>
+      <a href="/parceiros" class="btn-link">Cancelar</a>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>
