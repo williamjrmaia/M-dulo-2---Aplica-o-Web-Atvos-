@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil de acesso do usuario</title>
+  </head>
+  <body>
+    <main>
+      <h1>Perfil de acesso do usuario</h1>
+
+      <% if (error) { %>
+        <p><%= error %></p>
+      <% } %>
+
+      <% if (usuario) { %>
+        <form method="POST" action="/usuarios/<%= usuario.id %>/perfil">
+          <label for="role_id">Perfil</label>
+          <select id="role_id" name="role_id" required>
+            <% perfis.forEach((perfil) => { %>
+              <option value="<%= perfil.id %>" <%= usuario.perfil_acesso_id === perfil.id ? 'selected' : '' %>>
+                <%= perfil.nome %>
+              </option>
+            <% }) %>
+          </select>
+          <button type="submit">Atualizar perfil</button>
+        </form>
+      <% } %>
+    </main>
+  </body>
+</html>
