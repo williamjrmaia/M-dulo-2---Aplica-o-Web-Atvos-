@@ -1515,6 +1515,72 @@ Com base nesse mapeamento, os fluxos que devem ser priorizados no protótipo de 
 
 A gestão de usuários e a inativação de contas devem ser tratadas como fluxos secundários ou opcionais nesta etapa. Apesar de contribuírem para a administração da aplicação, elas não representam o valor principal do CRM para a ATVOS no contexto do MVP, cujo foco está na melhoria da gestão de fornecedores de cana e proprietários cedentes/proprietários de terra.
 
+Na evolução para alta fidelidade, os fluxos foram organizados em uma experiência única e coerente, partindo do acesso ao sistema, passando pela gestão de parceiros agrícolas e chegando aos processos administrativos de validação, exportação e controle de usuários. As telas utilizam a identidade visual definida no guia de estilos, com predominância das cores institucionais, componentes padronizados, hierarquia visual clara e organização voltada à consulta rápida de dados operacionais.
+
+O protótipo inicia pela autenticação do usuário e conduz para a listagem principal de parceiros, que funciona como ponto de entrada para cadastro, consulta, filtragem e exportação. A partir dela, o usuário pode registrar novos fornecedores de cana ou proprietários cedentes, acompanhar solicitações pendentes de validação e revisar registros antes da aprovação. Embora a gestão de usuários tenha sido classificada como fluxo secundário no mapeamento, suas telas também foram prototipadas em alta fidelidade para demonstrar como o administrador mantém o controle de acesso, cria novos usuários e edita dados de colaboradores internos.
+
+<div align="center">
+  <sub>Figura 3.5.1 - Tela de login do protótipo de alta fidelidade</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/login_af.png" width="100%" alt="Tela de login do protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.2 - Listagem de parceiros do protótipo de alta fidelidade</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/parceiros_af.png" width="100%" alt="Tela de listagem de parceiros do protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.3 - Cadastro de novo fornecedor de cana</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/novo_fornecedor_af.png" width="100%" alt="Tela de cadastro de novo fornecedor de cana no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.4 - Cadastro de novo proprietário cedente</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/novo_proprietario_af.png" width="100%" alt="Tela de cadastro de novo proprietário cedente no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.5 - Validação de registros pendentes</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/validacao_de_registros_af.png" width="100%" alt="Tela de validação de registros pendentes no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.6 - Revisão de registro antes da aprovação</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/revisar_registro_af.png" width="100%" alt="Tela de revisão de registro antes da aprovação no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.7 - Exportação de dados em CSV</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/exportar_csv_af.png" width="100%" alt="Tela de exportação de dados em CSV no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.8 - Gestão de usuários do sistema</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/gestao_de_usuario_af.png" width="100%" alt="Tela de gestão de usuários do sistema no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.9 - Cadastro de novo usuário</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/novo_usuario_af.png" width="100%" alt="Tela de cadastro de novo usuário no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.10 - Edição de usuário existente</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/editar_usuario_af.png" width="100%" alt="Tela de edição de usuário existente no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+Assim, o protótipo de alta fidelidade consolida o percurso principal do CRM da ATVOS em uma interface mais próxima da experiência final de uso. As telas representam tanto os fluxos prioritários de parceiros agrícolas quanto os pontos de apoio administrativo necessários para governança, rastreabilidade e controle de acesso, mantendo alinhamento com os requisitos funcionais, as User Stories priorizadas e o guia visual definido para o produto.
+
 
 ## 3.6. Modelagem do banco de dados (sprints 2 e 4)
 
