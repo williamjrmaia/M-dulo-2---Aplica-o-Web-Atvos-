@@ -1,131 +1,80 @@
-import { Request, Response } from 'express';
-import { UserController } from '../controllers/userController';
-import { UserService } from '../services/userService';
+import request from 'supertest';
+import app from '../app';
+import pool from '../config/connection';
+import { garantirPerfis, criarUsuario, removerUsuarioPorEmail, lerUsuario, ids } from './helpers/usuarios';
 
-describe('UserController - PUT /usuarios/:id/inativar', () => {
-  const criarResponseMock = () => {
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis(),
-      render: jest.fn().mockReturnThis(),
-      redirect: jest.fn().mockReturnThis(),
-    };
+const EMAIL = 'itg.ctrl.inativa@atvos.test';
+const ADMIN = { Authorization: 'Bearer token-valido', 'x-user-role': 'administrador' };
 
-    return res as unknown as jest.Mocked<Response>;
-  };
+let perfis: Record<string, string>;
+let usuarioId: string;
 
-  const criarServiceMock = () =>
-    ({
-      inativarUsuario: jest.fn(),
-      atualizaPerfilDeAcesso: jest.fn(),
-      buscarUsuario: jest.fn(),
-      listarPerfis: jest.fn(),
-    }) as unknown as jest.Mocked<UserService>;
+beforeAll(async () => {
+  perfis = await garantirPerfis();
+});
 
-  it('deve responder 200 quando admin inativar usuario existente', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    service.inativarUsuario.mockResolvedValue({
-      id: 'usuario-1',
-      perfil_acesso_id: 'perfil-1',
-      nome: 'Usuario Inativado',
-      email: 'usuario@atvos.com',
-      senha_hash: null,
-      ativo: false,
-      criado_em: new Date('2026-05-29T00:00:00.000Z'),
-    });
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-1' },
-      headers: { authorization: 'Bearer token-valido', 'x-user-role': 'administrador' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+beforeEach(async () => {
+  const u = await criarUsuario({ email: EMAIL, perfilId: perfis.administrador, ativo: true });
+  usuarioId = u.id;
+});
 
-    // Act
-    await controller.inativarUsuario(req, res);
+afterEach(async () => {
+  await removerUsuarioPorEmail(EMAIL);
+});
 
-    // Assert
-    expect(service.inativarUsuario).toHaveBeenCalledWith('usuario-1');
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({
-      success: 'Acesso revogado e historico preservado',
-      usuario: expect.objectContaining({ id: 'usuario-1', ativo: false }),
-    });
+afterAll(async () => {
+  await pool.end();
+});
+
+describe('PUT /usuarios/:id/inativar (integração com banco real)', () => {
+  it('responde 200 quando admin inativa usuario existente e persiste ativo=false', async () => {
+    const res = await request(app).put(`/usuarios/${usuarioId}/inativar`).set(ADMIN).send();
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe('Acesso revogado e historico preservado');
+    expect(res.body.usuario.ativo).toBe(false);
+
+    const salvo = await lerUsuario(usuarioId);
+    expect(salvo?.ativo).toBe(false);
   });
 
-  it('deve responder 401 quando token estiver ausente', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-1' },
-      headers: { 'x-user-role': 'administrador' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+  it('responde 401 quando o token estiver ausente', async () => {
+    const res = await request(app)
+      .put(`/usuarios/${usuarioId}/inativar`)
+      .set('x-user-role', 'administrador')
+      .send();
 
-    // Act
-    await controller.inativarUsuario(req, res);
+    expect(res.status).toBe(401);
+    expect(res.body.error).toBe('Token invalido ou ausente');
 
-    // Assert
-    expect(service.inativarUsuario).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Token invalido ou ausente' });
+    const salvo = await lerUsuario(usuarioId);
+    expect(salvo?.ativo).toBe(true);
   });
 
-  it('deve responder 403 quando usuario nao for administrador', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-1' },
-      headers: { authorization: 'Bearer token-valido', 'x-user-role': 'coordenador' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+  it('responde 403 quando o usuario nao for administrador', async () => {
+    const res = await request(app)
+      .put(`/usuarios/${usuarioId}/inativar`)
+      .set({ Authorization: 'Bearer token-valido', 'x-user-role': 'coordenador' })
+      .send();
 
-    // Act
-    await controller.inativarUsuario(req, res);
+    expect(res.status).toBe(403);
+    expect(res.body.error).toBe('Usuario sem permissao de administrador');
 
-    // Assert
-    expect(service.inativarUsuario).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(403);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Usuario sem permissao de administrador' });
+    const salvo = await lerUsuario(usuarioId);
+    expect(salvo?.ativo).toBe(true);
   });
 
-  it('deve responder 404 quando usuario nao existir', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    service.inativarUsuario.mockRejectedValue(new Error('Usuario nao encontrado'));
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-inexistente' },
-      headers: { authorization: 'Bearer token-valido', 'x-user-role': 'administrador' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+  it('responde 404 quando o usuario nao existir', async () => {
+    const res = await request(app).put(`/usuarios/${ids.inexistente}/inativar`).set(ADMIN).send();
 
-    // Act
-    await controller.inativarUsuario(req, res);
-
-    // Assert
-    expect(res.status).toHaveBeenCalledWith(404);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Usuario nao encontrado' });
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe('Usuario nao encontrado');
   });
 
-  it('deve responder 500 quando houver falha tecnica', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    service.inativarUsuario.mockRejectedValue(new Error('Falha de banco'));
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-1' },
-      headers: { authorization: 'Bearer token-valido', 'x-user-role': 'administrador' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+  it('responde 500 quando ocorre erro inesperado de banco (uuid malformado)', async () => {
+    const res = await request(app).put(`/usuarios/${ids.malformado}/inativar`).set(ADMIN).send();
 
-    // Act
-    await controller.inativarUsuario(req, res);
-
-    // Assert
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Erro interno do servidor' });
+    expect(res.status).toBe(500);
+    expect(res.body.error).toBe('Erro interno do servidor');
   });
 });

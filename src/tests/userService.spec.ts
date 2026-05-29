@@ -1,79 +1,53 @@
 import { UserService } from '../services/userService';
 import { UserRepository } from '../repositories/userRepository';
+import pool from '../config/connection';
+import { garantirPerfis, criarUsuario, removerUsuarioPorEmail, ids } from './helpers/usuarios';
 
-describe('UserService - atualizaPerfilDeAcesso', () => {
-  const usuarioAtualizado = {
-    id: 'usuario-1',
-    perfil_acesso_id: 'perfil-1',
-    nome: 'Usuario Teste',
-    email: 'usuario@atvos.com',
-    senha_hash: null,
-    ativo: true,
-    criado_em: new Date('2026-05-27T00:00:00.000Z'),
-  };
+const service = new UserService(new UserRepository());
+const EMAIL = 'itg.svc.perfil@atvos.test';
 
-  const criarRepositoryMock = () =>
-    ({
-      checarExistenciaPerfil: jest.fn(),
-      atualizaPerfilDeAcesso: jest.fn(),
-      buscarPorId: jest.fn(),
-      listarPerfis: jest.fn(),
-    }) as unknown as jest.Mocked<UserRepository>;
+let perfis: Record<string, string>;
+let usuarioId: string;
 
-  it('deve atualizar o perfil quando o perfil existe', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.checarExistenciaPerfil.mockResolvedValue(true);
-    repository.atualizaPerfilDeAcesso.mockResolvedValue(usuarioAtualizado);
-    const service = new UserService(repository);
+beforeAll(async () => {
+  perfis = await garantirPerfis();
+});
 
-    // Act
-    const resultado = await service.atualizaPerfilDeAcesso('usuario-1', 'perfil-1');
+beforeEach(async () => {
+  const u = await criarUsuario({ email: EMAIL, perfilId: perfis.analista });
+  usuarioId = u.id;
+});
 
-    // Assert
-    expect(repository.checarExistenciaPerfil).toHaveBeenCalledWith('perfil-1');
-    expect(repository.atualizaPerfilDeAcesso).toHaveBeenCalledWith('usuario-1', 'perfil-1');
-    expect(resultado).toEqual(usuarioAtualizado);
+afterEach(async () => {
+  await removerUsuarioPorEmail(EMAIL);
+});
+
+afterAll(async () => {
+  await pool.end();
+});
+
+describe('UserService.atualizaPerfilDeAcesso (integração com banco real)', () => {
+  it('atualiza o perfil quando o perfil existe e persiste no banco', async () => {
+    const resultado = await service.atualizaPerfilDeAcesso(usuarioId, perfis.coordenador);
+
+    expect(resultado.perfil_acesso_id).toBe(perfis.coordenador);
+    const { rows } = await pool.query('SELECT perfil_acesso_id FROM usuarios WHERE id = $1', [usuarioId]);
+    expect(rows[0].perfil_acesso_id).toBe(perfis.coordenador);
   });
 
-  it('deve bloquear a atualizacao quando o perfil nao existe', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.checarExistenciaPerfil.mockResolvedValue(false);
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.atualizaPerfilDeAcesso('usuario-1', 'perfil-inexistente');
-
-    // Assert
-    await expect(acao).rejects.toThrow('Perfil nao encontrado');
-    expect(repository.atualizaPerfilDeAcesso).not.toHaveBeenCalled();
+  it('bloqueia a atualizacao quando o perfil nao existe', async () => {
+    await expect(
+      service.atualizaPerfilDeAcesso(usuarioId, ids.inexistente)
+    ).rejects.toThrow('Perfil nao encontrado');
   });
 
-  it('deve validar campos obrigatorios antes de consultar o repositorio', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.atualizaPerfilDeAcesso('usuario-1', '');
-
-    // Assert
-    await expect(acao).rejects.toThrow('Dados obrigatorios ausentes');
-    expect(repository.checarExistenciaPerfil).not.toHaveBeenCalled();
+  it('valida campos obrigatorios antes de consultar o banco', async () => {
+    await expect(service.atualizaPerfilDeAcesso(usuarioId, '')).rejects.toThrow('Dados obrigatorios ausentes');
   });
 
-  it('deve informar quando o usuario nao existe', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.checarExistenciaPerfil.mockResolvedValue(true);
-    repository.atualizaPerfilDeAcesso.mockResolvedValue(null);
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.atualizaPerfilDeAcesso('usuario-inexistente', 'perfil-1');
-
-    // Assert
-    await expect(acao).rejects.toThrow('Usuario nao encontrado');
+  it('informa quando o usuario nao existe', async () => {
+    await expect(
+      service.atualizaPerfilDeAcesso(ids.inexistente, perfis.coordenador)
+    ).rejects.toThrow('Usuario nao encontrado');
   });
 });

@@ -1,93 +1,62 @@
 import { UserRepository } from '../repositories/userRepository';
 import { UserService } from '../services/userService';
+import pool from '../config/connection';
+import { garantirPerfis, criarUsuario, removerUsuarioPorEmail, ids } from './helpers/usuarios';
 
-describe('UserService - atualizaUsuario', () => {
-  const usuarioAtual = {
-    id: 'usuario-1',
-    perfil_acesso_id: 'perfil-1',
-    nome: 'Usuario Atual',
-    email: 'atual@atvos.com',
-    senha_hash: null,
-    ativo: true,
-    criado_em: new Date('2026-05-29T00:00:00.000Z'),
-  };
+const service = new UserService(new UserRepository());
+const EMAIL = 'itg.svc.update@atvos.test';
 
-  const usuarioAtualizado = {
-    ...usuarioAtual,
-    nome: 'Usuario Editado',
-    email: 'editado@atvos.com',
-  };
+let perfis: Record<string, string>;
+let usuarioId: string;
 
-  const criarRepositoryMock = () =>
-    ({
-      buscarPorEmail: jest.fn(),
-      buscarPorId: jest.fn(),
-      checarExistenciaPerfil: jest.fn(),
-      listarPerfis: jest.fn(),
-      atualizaPerfilDeAcesso: jest.fn(),
-      atualizaUsuario: jest.fn(),
-    }) as unknown as jest.Mocked<UserRepository>;
+beforeAll(async () => {
+  perfis = await garantirPerfis();
+});
 
-  it('deve atualizar usuario quando dados forem validos e usuario existir', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.buscarPorId.mockResolvedValue(usuarioAtual);
-    repository.atualizaUsuario.mockResolvedValue(usuarioAtualizado);
-    const service = new UserService(repository);
+beforeEach(async () => {
+  const u = await criarUsuario({ email: EMAIL, perfilId: perfis.analista, nome: 'Usuario Atual' });
+  usuarioId = u.id;
+});
 
-    // Act
-    const resultado = await service.atualizaUsuario('usuario-1', {
+afterEach(async () => {
+  await removerUsuarioPorEmail(EMAIL);
+  await removerUsuarioPorEmail('itg.svc.update.editado@atvos.test');
+});
+
+afterAll(async () => {
+  await pool.end();
+});
+
+describe('UserService.atualizaUsuario (integração com banco real)', () => {
+  it('atualiza o usuario quando dados forem validos e usuario existir', async () => {
+    const resultado = await service.atualizaUsuario(usuarioId, {
       nome: 'Usuario Editado',
-      email: 'editado@atvos.com',
+      email: 'itg.svc.update.editado@atvos.test',
     });
 
-    // Assert
-    expect(repository.buscarPorId).toHaveBeenCalledWith('usuario-1');
-    expect(repository.atualizaUsuario).toHaveBeenCalledWith('usuario-1', {
-      nome: 'Usuario Editado',
-      email: 'editado@atvos.com',
-    });
-    expect(resultado).toEqual(usuarioAtualizado);
+    expect(resultado.nome).toBe('Usuario Editado');
+    expect(resultado.email).toBe('itg.svc.update.editado@atvos.test');
+
+    const { rows } = await pool.query('SELECT nome, email FROM usuarios WHERE id = $1', [usuarioId]);
+    expect(rows[0].nome).toBe('Usuario Editado');
+    expect(rows[0].email).toBe('itg.svc.update.editado@atvos.test');
   });
 
-  it('deve retornar erro quando payload estiver mal formatado', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.atualizaUsuario('usuario-1', { email: 'email-invalido' });
-
-    // Assert
-    await expect(acao).rejects.toThrow('Dados de entrada invalidos');
-    expect(repository.buscarPorId).not.toHaveBeenCalled();
+  it('rejeita payload mal formatado antes de tocar o banco', async () => {
+    await expect(
+      service.atualizaUsuario(usuarioId, { email: 'email-invalido' })
+    ).rejects.toThrow('Dados de entrada invalidos');
   });
 
-  it('deve retornar erro quando usuario nao existir', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.buscarPorId.mockResolvedValue(null);
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.atualizaUsuario('usuario-inexistente', { nome: 'Novo Nome' });
-
-    // Assert
-    await expect(acao).rejects.toThrow('Usuario nao localizado na base');
-    expect(repository.atualizaUsuario).not.toHaveBeenCalled();
+  it('rejeita quando o usuario nao existir', async () => {
+    await expect(
+      service.atualizaUsuario(ids.inexistente, { nome: 'Novo Nome' })
+    ).rejects.toThrow('Usuario nao localizado na base');
   });
 
-  it('deve validar perfil quando perfil_acesso_id for enviado', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.checarExistenciaPerfil.mockResolvedValue(false);
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.atualizaUsuario('usuario-1', { perfil_acesso_id: 'perfil-inexistente' });
-
-    // Assert
-    await expect(acao).rejects.toThrow('Perfil nao encontrado');
-    expect(repository.buscarPorId).not.toHaveBeenCalled();
+  it('valida o perfil quando perfil_acesso_id for enviado', async () => {
+    await expect(
+      service.atualizaUsuario(usuarioId, { perfil_acesso_id: ids.inexistente })
+    ).rejects.toThrow('Perfil nao encontrado');
   });
 });

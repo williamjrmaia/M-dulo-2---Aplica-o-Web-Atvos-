@@ -1,72 +1,45 @@
 import { UserRepository } from '../repositories/userRepository';
 import { UserService } from '../services/userService';
+import pool from '../config/connection';
+import { garantirPerfis, criarUsuario, removerUsuarioPorEmail, ids } from './helpers/usuarios';
 
-describe('UserService - inativarUsuario', () => {
-  const usuarioAtivo = {
-    id: 'usuario-1',
-    perfil_acesso_id: 'perfil-admin',
-    nome: 'Administrador',
-    email: 'admin@atvos.com',
-    senha_hash: null,
-    ativo: true,
-    criado_em: new Date('2026-05-29T00:00:00.000Z'),
-  };
+const service = new UserService(new UserRepository());
+const EMAIL = 'itg.svc.inativa@atvos.test';
 
-  const usuarioInativado = {
-    ...usuarioAtivo,
-    ativo: false,
-  };
+let perfis: Record<string, string>;
+let usuarioId: string;
 
-  const criarRepositoryMock = () =>
-    ({
-      buscarPorEmail: jest.fn(),
-      buscarPorId: jest.fn(),
-      checarExistenciaPerfil: jest.fn(),
-      listarPerfis: jest.fn(),
-      atualizaPerfilDeAcesso: jest.fn(),
-      inativarUsuario: jest.fn(),
-    }) as unknown as jest.Mocked<UserRepository>;
+beforeAll(async () => {
+  perfis = await garantirPerfis();
+});
 
-  it('deve inativar usuario quando ele existir', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.buscarPorId.mockResolvedValue(usuarioAtivo);
-    repository.inativarUsuario.mockResolvedValue(usuarioInativado);
-    const service = new UserService(repository);
+beforeEach(async () => {
+  const u = await criarUsuario({ email: EMAIL, perfilId: perfis.administrador, ativo: true });
+  usuarioId = u.id;
+});
 
-    // Act
-    const resultado = await service.inativarUsuario('usuario-1');
+afterEach(async () => {
+  await removerUsuarioPorEmail(EMAIL);
+});
 
-    // Assert
-    expect(repository.buscarPorId).toHaveBeenCalledWith('usuario-1');
-    expect(repository.inativarUsuario).toHaveBeenCalledWith('usuario-1');
+afterAll(async () => {
+  await pool.end();
+});
+
+describe('UserService.inativarUsuario (integração com banco real)', () => {
+  it('inativa o usuario quando ele existir e persiste ativo=false', async () => {
+    const resultado = await service.inativarUsuario(usuarioId);
+
     expect(resultado.ativo).toBe(false);
+    const { rows } = await pool.query('SELECT ativo FROM usuarios WHERE id = $1', [usuarioId]);
+    expect(rows[0].ativo).toBe(false);
   });
 
-  it('deve retornar erro quando id nao for informado', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.inativarUsuario('');
-
-    // Assert
-    await expect(acao).rejects.toThrow('Dados obrigatorios ausentes');
-    expect(repository.buscarPorId).not.toHaveBeenCalled();
+  it('rejeita quando o id nao for informado', async () => {
+    await expect(service.inativarUsuario('')).rejects.toThrow('Dados obrigatorios ausentes');
   });
 
-  it('deve retornar erro quando usuario nao existir', async () => {
-    // Arrange
-    const repository = criarRepositoryMock();
-    repository.buscarPorId.mockResolvedValue(null);
-    const service = new UserService(repository);
-
-    // Act
-    const acao = service.inativarUsuario('usuario-inexistente');
-
-    // Assert
-    await expect(acao).rejects.toThrow('Usuario nao encontrado');
-    expect(repository.inativarUsuario).not.toHaveBeenCalled();
+  it('rejeita quando o usuario nao existir', async () => {
+    await expect(service.inativarUsuario(ids.inexistente)).rejects.toThrow('Usuario nao encontrado');
   });
 });
