@@ -1,92 +1,68 @@
-import { Request, Response } from 'express';
-import { UserController } from '../controllers/userController';
-import { UserService } from '../services/userService';
+import request from 'supertest';
+import app from '../app';
+import pool from '../config/connection';
+import { garantirPerfis, criarUsuario, removerUsuarioPorEmail, lerUsuario, ids } from './helpers/usuarios';
 
-describe('UserController - PUT /usuarios/:id/perfil', () => {
-  const criarResponseMock = () => {
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis(),
-      render: jest.fn().mockReturnThis(),
-      redirect: jest.fn().mockReturnThis(),
-    };
+const EMAIL = 'itg.ctrl.perfil@atvos.test';
 
-    return res as unknown as jest.Mocked<Response>;
-  };
+let perfis: Record<string, string>;
+let usuarioId: string;
 
-  const criarServiceMock = () =>
-    ({
-      atualizaPerfilDeAcesso: jest.fn(),
-      buscarUsuario: jest.fn(),
-      listarPerfis: jest.fn(),
-    }) as unknown as jest.Mocked<UserService>;
+beforeAll(async () => {
+  perfis = await garantirPerfis();
+});
 
-  it('deve responder 200 quando o perfil for atualizado', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    service.atualizaPerfilDeAcesso.mockResolvedValue({
-      id: 'usuario-1',
-      perfil_acesso_id: 'perfil-1',
-      nome: 'Usuario Teste',
-      email: 'usuario@atvos.com',
-      senha_hash: null,
-      ativo: true,
-      criado_em: new Date('2026-05-27T00:00:00.000Z'),
-    });
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-1' },
-      body: { role_id: 'perfil-1' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+beforeEach(async () => {
+  const u = await criarUsuario({ email: EMAIL, perfilId: perfis.analista });
+  usuarioId = u.id;
+});
 
-    // Act
-    await controller.atualizaPerfilDeAcesso(req, res);
+afterEach(async () => {
+  await removerUsuarioPorEmail(EMAIL);
+});
 
-    // Assert
-    expect(service.atualizaPerfilDeAcesso).toHaveBeenCalledWith('usuario-1', 'perfil-1');
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({
-      success: 'Perfil de acesso atualizado',
-      usuario: expect.objectContaining({ id: 'usuario-1', perfil_acesso_id: 'perfil-1' }),
-    });
+afterAll(async () => {
+  await pool.end();
+});
+
+describe('PUT /usuarios/:id/perfil (integração com banco real)', () => {
+  it('responde 200 e persiste o novo perfil', async () => {
+    const res = await request(app)
+      .put(`/usuarios/${usuarioId}/perfil`)
+      .send({ role_id: perfis.coordenador });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe('Perfil de acesso atualizado');
+    expect(res.body.usuario.perfil_acesso_id).toBe(perfis.coordenador);
+
+    const salvo = await lerUsuario(usuarioId);
+    expect(salvo?.perfil_acesso_id).toBe(perfis.coordenador);
   });
 
-  it('deve responder 400 quando o perfil nao existir', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    service.atualizaPerfilDeAcesso.mockRejectedValue(new Error('Perfil nao encontrado'));
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-1' },
-      body: { role_id: 'perfil-inexistente' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+  it('responde 400 quando o perfil nao existir', async () => {
+    const res = await request(app)
+      .put(`/usuarios/${usuarioId}/perfil`)
+      .send({ role_id: ids.inexistente });
 
-    // Act
-    await controller.atualizaPerfilDeAcesso(req, res);
-
-    // Assert
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Perfil nao encontrado' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Perfil nao encontrado');
   });
 
-  it('deve responder 500 quando ocorrer erro inesperado no service', async () => {
-    // Arrange
-    const service = criarServiceMock();
-    service.atualizaPerfilDeAcesso.mockRejectedValue(new Error('Falha de banco'));
-    const controller = new UserController(service);
-    const req = {
-      params: { id: 'usuario-1' },
-      body: { role_id: 'perfil-1' },
-    } as unknown as Request;
-    const res = criarResponseMock();
+  it('responde 404 quando o usuario nao existir', async () => {
+    const res = await request(app)
+      .put(`/usuarios/${ids.inexistente}/perfil`)
+      .send({ role_id: perfis.coordenador });
 
-    // Act
-    await controller.atualizaPerfilDeAcesso(req, res);
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe('Usuario nao encontrado');
+  });
 
-    // Assert
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Erro interno do servidor' });
+  it('responde 500 quando ocorre erro inesperado de banco (uuid malformado)', async () => {
+    const res = await request(app)
+      .put(`/usuarios/${usuarioId}/perfil`)
+      .send({ role_id: ids.malformado });
+
+    expect(res.status).toBe(500);
+    expect(res.body.error).toBe('Erro interno do servidor');
   });
 });
