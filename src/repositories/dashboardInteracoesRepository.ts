@@ -4,22 +4,19 @@ import { DataAccessException } from '../errors/dashboardInteracoesErrors';
 
 export class DashboardRepository {
   async buscarEstatisticasInteracoes(): Promise<InteracoesListEntity[]> {
-    console.log('[REPOSITORY] buscarEstatisticasInteracoes');
-
     try {
       const result = await pool.query<InteracoesListEntity>(`
         SELECT
           tipo AS tipo_interacao,
-          'registrado' AS status,
+          status,
           COUNT(*) AS total
         FROM interacao
-        GROUP BY tipo
+        GROUP BY tipo, status
         ORDER BY total DESC
       `);
 
       return result.rows;
     } catch (err) {
-      console.error('[REPOSITORY] Erro na consulta:', err);
       throw new DataAccessException();
     }
   }

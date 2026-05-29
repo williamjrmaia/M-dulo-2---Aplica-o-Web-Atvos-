@@ -25,3 +25,14 @@ export interface CreateParceiroInput {
     criado_por: string;
 }
 
+export interface UpdateParceiroInput {
+    nome?: string;
+    apelido?: string;
+    tipo_pessoa?: 'fisica' | 'juridica';
+    cpf_cnpj?: string;
+    email?: string;
+    data_nascimento?: string;
+    nome_acompanhante?: string;
+    status?: string;
+    atualizado_por: string;
+}

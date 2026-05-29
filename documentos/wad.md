@@ -531,6 +531,8 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 | RN16 | Um registro do tipo rascunho/devolvido só transita para status pendente após ser concluído por um analista. | RF021 |
 | RN17 | Um registro do tipo pendente só transita para status ativo/devolvido após ser revisado por um coordenador. | RF022, RF023 |
 | RN18 | Registros com status ativo que não sofreram alterações por um período configurado geram notificações para os usuários do sistema (analistas, coordenadores e gerentes). | RF025 |
+| RN19 | Requisicoes de edicao de parceiro sem nenhum campo editavel no body devem ser rejeitadas com erro 400. | RF005 |
+| RN20 | Tentativas de edicao de parceiros inexistentes devem ser rejeitadas com erro 404. | RF005 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
@@ -557,7 +559,7 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 | RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
 | RF003 | US08 | RN03 | `/usuarios/:id/perfil` | PUT |
 | RF004 | US01, US02 | RN09, RN10 | `/parceiros` | POST |
-| RF005 | US05 | RN10, RN11, RN12 | `/parceiros/:id` | PUT |
+| RF005 | US05 | RN10, RN11, RN12, RN19, RN20 | `/parceiros/:id` | PATCH |
 | RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
 | RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET |
 | RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
@@ -1369,280 +1371,119 @@ A gestão de usuários e a inativação de contas devem ser tratadas como fluxos
 
 ### 3.6.1. Modelo Entidade-Relacionamento (ER) (sprint 2)
 
+
 ### Introdução
 
-O Modelo Entidade-Relacionamento Conceitual representa a base do sistema CRM da ATVOS: descreve quais entidades existem no domínio, quais informações cada uma carrega e como elas se relacionam. Esta seção está alinhada com o modelo físico (3.6.3) e o DER Lógico (3.6.2), que são as representações mais completas e servem como referência para as decisões aqui documentadas.
+O Modelo Entidade-Relacionamento Conceitual representa a **fundação lógica** do sistema CRM da ATVOS: descreve **quais entidades existem no domínio**, **quais informações cada uma carrega** e **como elas se relacionam**, sem comprometer-se ainda com decisões de implementação técnica.
 
-Esta seção tem como objetivo oferecer uma visão organizada do banco de dados para todos os envolvidos no projeto, incluindo equipe técnica, professor, time da ATVOS e demais stakeholders, mostrando como a realidade operacional da gestão de parceiros agrícolas foi traduzida em estrutura de dados. As decisões aqui documentadas derivam diretamente do modelo físico (3.6.3) e do DER Lógico (3.6.2), garantindo coerência ao longo de todo o projeto.
+Esta seção tem como objetivo oferecer uma visão abstrata e compreensível por todos os envolvidos no projeto, incluindo equipe técnica, professor, time da ATVOS e demais stakeholders, sobre **como a realidade operacional da gestão de parceiros agrícolas será traduzida em estrutura de dados**. As decisões aqui tomadas servem de base direta para o Diagrama de Classes (3.2.3), o DER Lógico (3.6.2) e o Modelo Físico (3.6.3), garantindo coerência ao longo de todo o projeto.
 
-A modelagem foi conduzida com base em dois pilares: (1) o minimundo descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os dados reais disponibilizados pela ATVOS, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi modelar o que tem evidência de uso: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
+A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **minimundo** descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os **dados reais** disponibilizados pela ATVOS, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi **modelar o que tem evidência de uso**: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
 
 
 ### Notação e visão geral
 
-A notação adotada é Chen, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas 14 entidades distribuídas em três grupos lógicos, conforme apresentado a seguir:
+A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas **14 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
 
-- Núcleo do parceiro externo: Parceiro, TelefoneParceiro, Interacao, VinculoComercial, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando a identidade da pessoa física ou jurídica do papel comercial que ela exerce (fornecedor de cana ou arrendador de terra). TelefoneParceiro armazena os telefones de cada parceiro de forma separada, permitindo múltiplos contatos por parceiro. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. VinculoComercial referencia a Terra associada ao vínculo. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+- **Núcleo do parceiro externo**: Parceiro, Interacao, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
 
-- Núcleo de operação interna: Usuario, PerfilAcesso e Unidade. Representa os colaboradores internos da ATVOS, seu nível de acesso ao sistema e as unidades industriais onde a operação acontece. PerfilAcesso unifica o papel organizacional do usuário (analista, coordenador, administrador) e a regra de aprovação associada a cada perfil.
+- **Núcleo de operação interna**: Usuario, Cargo e Unidade. Representa os colaboradores internos da ATVOS, sua estrutura organizacional e as unidades industriais onde a operação acontece.
 
-- Auditoria e associações: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade, UsuarioUnidade e TerraUnidade. Implementa o fluxo de aprovação de alterações (RN11, RN12), o histórico de coordenação entre parceiros e colaboradores, e os relacionamentos N:N entre as entidades dos outros dois grupos. RegistroAlteracao identifica a entidade auditada pelos campos entidade_afetada e entidade_id, centralizando toda a trilha de auditoria em uma única estrutura.
+- **Auditoria e associações**: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade e UsuarioUnidade. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros dois grupos. RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável, tornando todos os elos de rastreabilidade visíveis no próprio diagrama conceitual.
 
 
 ### Decisões estruturais relevantes
 
-Cinco decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
+Quatro decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
 
-1. Separação entre identidade e papel comercial. Uma mesma pessoa física ou jurídica pode atuar simultaneamente como fornecedor e arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, e-mail), enquanto VinculoComercial concretiza cada papel exercido por meio do campo tipo_parceiro ('arrendador' ou 'fornecedor'). Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
+1. **Separação entre identidade e papel comercial.** Uma mesma pessoa física ou jurídica pode atuar simultaneamente como Fornecedor e Arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, contatos), enquanto VinculoComercial concretiza cada papel exercido. Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
 
-2. Papel comercial e atributos específicos dentro de VinculoComercial. Os atributos específicos de cada tipo de vínculo, como modalidade_contrato para fornecedores, estão diretamente na entidade VinculoComercial. O campo tipo_parceiro identifica o papel exercido naquele vínculo. Esta abordagem simplifica a estrutura em relação a entidades especializadas separadas, mantendo todos os dados do vínculo em uma única tabela.
+2. **Especialização para vínculos com atributos próprios.** As entidades DadosFornecedor e DadosArrendador são especializações de VinculoComercial: existem apenas quando o vínculo é do tipo correspondente. DadosFornecedor concentra atributos específicos de fornecimento de cana (modalidade contratual, embaixador, guardião). DadosArrendador, neste momento, está modelada como entidade preparada para receber atributos próprios conforme retorno da ATVOS. A separação foi mantida por solicitação do cliente, prevendo divergência de atributos em iterações futuras.
 
-3. Auditoria via campos genéricos em RegistroAlteracao. A entidade RegistroAlteracao implementa o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. A entidade auditada é identificada pelos campos entidade_afetada (nome da tabela, como 'parceiros' ou 'terras') e entidade_id (UUID do registro auditado). Esta abordagem centraliza toda a auditoria em uma única estrutura sem necessidade de múltiplas chaves estrangeiras opcionais.
+3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Chen adotada. A implementação física desta restrição, via cinco chaves estrangeiras opcionais individuais para cada entidade auditável, está detalhada na seção 3.6.3.
 
-4. Histórico de interações como entidade independente. O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos: tipo (visita, ligação, WhatsApp, reunião), data, descricao e registrado_por (FK para Usuario). Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo".
+4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos mínimos identificados: `tipo` (visita, ligação, WhatsApp, reunião), `data`, `texto` e `nome_responsavel`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo". Os atributos definitivos de Interacao serão validados com a ATVOS e poderão incluir campos adicionais como resultado, próximo passo ou duração, dependendo das necessidades operacionais levantadas com o cliente.
 
-5. Telefones como entidade independente. O campo telefone foi extraído de Parceiro para a entidade TelefoneParceiro, permitindo que um parceiro tenha múltiplos números cadastrados com tipo (celular, fixo, whatsapp) e indicação de contato principal. Esta decisão atende à Primeira Forma Normal e evita campos multivalorados na entidade principal.
-
-Adicionalmente, a relação entre Parceiro e Terra foi modelada como N:N via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras. Da mesma forma, a relação entre Terra e Unidade também foi modelada como N:N via TerraUnidade, pois uma terra pode ser processada por mais de uma unidade industrial.
+Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
 
 ### Modelos Entidade Relacionamento (MER)
 
-O diagrama a seguir apresenta uma visão geral com todas as 14 entidades e seus relacionamentos, sem atributos. Em seguida, cada grupo é detalhado separadamente.
+**Grupo 1 — Núcleo do parceiro externo**
 
 ```mermaid
 flowchart TB
     classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
     classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
 
-    PERF[PERFIL ACESSO]:::entity
-    USUA[USUARIO]:::entity
-    UNID[UNIDADE]:::entity
-    PARC[PARCEIRO]:::entity
-    TELEF[TELEFONE PARCEIRO]:::entity
+    PARC[PARCEIROS]:::entity
     INTER[INTERACAO]:::entity
     VINC[VINCULO COMERCIAL]:::entity
-    TERR[TERRA]:::entity
+    TERR[TERRAS]:::entity
     PT[PARCEIRO TERRA]:::entity
+    UNID[UNIDADES]:::entity
     TU[TERRA UNIDADE]:::entity
-    RA[REGISTRO ALTERACAO]:::entity
-    PCOORD[PARCEIRO COORDENADOR]:::entity
-    PUNID[PARCEIRO UNIDADE]:::entity
-    UUNID[USUARIO UNIDADE]:::entity
-
-    Rclass{classifica}:::rel
-    Rtem{tem}:::rel
-    Rtelef{possui}:::rel
-    Rreg{registra}:::rel
-    Rexerce{exerce}:::rel
-    Rvt{referencia}:::rel
-    Rvinc{vincula-se a}:::rel
-    Rtunid{pertence a}:::rel
-    Rsol{solicita}:::rel
-    Rapr{aprova}:::rel
-    Rcoord{coordena}:::rel
-    Ropun{opera em}:::rel
-    Ratun{atua em}:::rel
-
-    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
-    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
-    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
-    PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
-    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
-    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
-    PARC -- "1,1" --- Rvinc
-    TERR -- "1,1" --- Rvinc
-    Rvinc --- PT
-    TERR -- "1,1" --- Rtunid
-    UNID -- "1,1" --- Rtunid
-    Rtunid --- TU
-    USUA -- "1,1" --- Rsol -- "0,N" --- RA
-    USUA -- "0,1" --- Rapr -- "0,N" --- RA
-    PARC -- "1,1" --- Rcoord
-    USUA -- "1,1" --- Rcoord
-    Rcoord --- PCOORD
-    PARC -- "1,1" --- Ropun
-    UNID -- "1,1" --- Ropun
-    Ropun --- PUNID
-    USUA -- "1,1" --- Ratun
-    UNID -- "1,1" --- Ratun
-    Ratun --- UUNID
-```
-
-Grupo 1 - Núcleo do parceiro externo
-
-```mermaid
-flowchart TB
-    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
-    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
-    classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
-
-    PARC[PARCEIRO]:::entity
-    TELEF[TELEFONE PARCEIRO]:::entity
-    INTER[INTERACAO]:::entity
-    USUA[USUARIO]:::entity
-    VINC[VINCULO COMERCIAL]:::entity
-    TERR[TERRA]:::entity
-    PT[PARCEIRO TERRA]:::entity
-
-    p1(cpf_cnpj):::attr
-    p2(nome):::attr
-    p3(tipo_pessoa):::attr
-    p4(email):::attr
-    p5(apelido):::attr
-    PARC --- p1
-    PARC --- p2
-    PARC --- p3
-    PARC --- p4
-    PARC --- p5
-
-    tel1(numero):::attr
-    tel2(tipo):::attr
-    tel3(principal):::attr
-    TELEF --- tel1
-    TELEF --- tel2
-    TELEF --- tel3
-
-    i1(tipo):::attr
-    i2(data):::attr
-    i3(descricao):::attr
-    INTER --- i1
-    INTER --- i2
-    INTER --- i3
-
-    v1(tipo_vinculo):::attr
-    v2(tipo_parceiro):::attr
-    v3(status):::attr
-    v4(modalidade_contrato):::attr
-    v5(data_inicio):::attr
-    VINC --- v1
-    VINC --- v2
-    VINC --- v3
-    VINC --- v4
-    VINC --- v5
-
-    t1(nome):::attr
-    t2(area_contratada_ha):::attr
-    t3(cidade):::attr
-    t4(estado):::attr
-    TERR --- t1
-    TERR --- t2
-    TERR --- t3
-    TERR --- t4
-
-    pt1(tipo_vinculo):::attr
-    PT --- pt1
+    TEL[TELEFONE PARCEIRO]:::entity
 
     Rtem{tem}:::rel
-    Rtelef{possui}:::rel
-    Rreg{registra}:::rel
+    Rtel{possui}:::rel
     Rexerce{exerce}:::rel
-    Rvt{referencia}:::rel
     Rvinc{vincula-se a}:::rel
-
-    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
-    INTER -- "0,N" --- Rreg -- "1,1" --- USUA
-    PARC -- "1,1" --- Rtelef -- "0,N" --- TELEF
-    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
-    VINC -- "0,N" --- Rvt -- "1,1" --- TERR
-    PARC -- "1,1" --- Rvinc
-    TERR -- "1,1" --- Rvinc
-    Rvinc --- PT
-```
-
-Grupo 2 - Núcleo de operação interna
-
-> UNIDADE é exibida aqui para apresentação de seus atributos; seus relacionamentos com TerraUnidade, ParceiroUnidade e UsuarioUnidade estão no Grupo 3.
-
-```mermaid
-flowchart TB
-    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
-    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
-    classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
-
-    USUA[USUARIO]:::entity
-    PERF[PERFIL ACESSO]:::entity
-    UNID[UNIDADE]:::entity
-
-    u1(nome):::attr
-    u2(email):::attr
-    u3(ativo):::attr
-    USUA --- u1
-    USUA --- u2
-    USUA --- u3
-
-    pf1(nome):::attr
-    pf2(requer_aprovacao):::attr
-    pf3(descricao):::attr
-    PERF --- pf1
-    PERF --- pf2
-    PERF --- pf3
-
-    un1(codigo):::attr
-    un2(nome):::attr
-    un3(ativo):::attr
-    UNID --- un1
-    UNID --- un2
-    UNID --- un3
-
-    Rclass{classifica}:::rel
-    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
-```
-
-Grupo 3 - Auditoria e associações
-
-```mermaid
-flowchart TB
-    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
-    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
-    classDef attr fill:#E1EB80,stroke:#96B400,color:#1a1a1a
-
-    PARC[PARCEIRO]:::entity
-    USUA[USUARIO]:::entity
-    UNID[UNIDADE]:::entity
-    TERR[TERRA]:::entity
-    RA[REGISTRO ALTERACAO]:::entity
-    PCOORD[PARCEIRO COORDENADOR]:::entity
-    PUNID[PARCEIRO UNIDADE]:::entity
-    UUNID[USUARIO UNIDADE]:::entity
-    TUNID[TERRA UNIDADE]:::entity
-
-    ra1(entidade_afetada):::attr
-    ra2(entidade_id):::attr
-    ra3(tipo_operacao):::attr
-    ra4(status):::attr
-    ra5(dados_anteriores):::attr
-    ra6(data_solicitacao):::attr
-    RA --- ra1
-    RA --- ra2
-    RA --- ra3
-    RA --- ra4
-    RA --- ra5
-    RA --- ra6
-
-    pc1(data_inicio):::attr
-    pc2(data_fim):::attr
-    PCOORD --- pc1
-    PCOORD --- pc2
-
-    pu1(data_associacao):::attr
-    PUNID --- pu1
-
-    uu1(data_associacao):::attr
-    UUNID --- uu1
-
-    tu1(data_associacao):::attr
-    TUNID --- tu1
-
-    Rsol{solicita}:::rel
-    Rapr{aprova}:::rel
-    Rcoord{coordena}:::rel
-    Ropun{opera em}:::rel
-    Ratun{atua em}:::rel
     Rpert{pertence a}:::rel
+    Rtu{pertence a}:::rel
+
+    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    PARC -- "1,1" --- Rtel -- "0,N" --- TEL
+    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "1,1" --- Rvinc -- "1,1" --- TERR
+    PARC -- "1,1" --- Rpert
+    TERR -- "1,1" --- Rpert
+    Rpert --- PT
+    TERR -- "1,1" --- Rtu
+    UNID -- "1,1" --- Rtu
+    Rtu --- TU
+```
+
+**Grupo 2 — Núcleo de operação interna**
+
+```mermaid
+flowchart TB
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+
+    USUA[USUARIOS]:::entity
+    PERF[PERFIL ACESSO]:::entity
+    UNID[UNIDADES]:::entity
+
+    Rclass{classifica}:::rel
+    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+```
+
+**Grupo 3 — Auditoria e associações**
+
+```mermaid
+flowchart TB
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+
+    PARC[PARCEIROS]:::entity
+    USUA[USUARIOS]:::entity
+    UNID[UNIDADES]:::entity
+    RA[REGISTRO ALTERACAO]:::entity
+    PCOORD[PARCEIRO COORDENADOR]:::entity
+    PUNID[PARCEIRO UNIDADE]:::entity
+    UUNID[USUARIO UNIDADE]:::entity
+
+    Rsol{solicita}:::rel
+    Rapr{aprova}:::rel
+    Raud{audita}:::rel
+    Rcoord{coordena}:::rel
+    Ropun{opera em}:::rel
+    Ratun{atua em}:::rel
 
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
+    RA -- "0,N" --- Raud -- "0,1" --- PARC
     PARC -- "1,1" --- Rcoord
     USUA -- "1,1" --- Rcoord
     Rcoord --- PCOORD
@@ -1652,68 +1493,129 @@ flowchart TB
     USUA -- "1,1" --- Ratun
     UNID -- "1,1" --- Ratun
     Ratun --- UUNID
+```
+
+**Grupo 4 — MER Completo**
+
+```mermaid
+flowchart TB
+    classDef entity fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef rel fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+
+    PARC[PARCEIROS]:::entity
+    INTER[INTERACAO]:::entity
+    VINC[VINCULO COMERCIAL]:::entity
+    TERR[TERRAS]:::entity
+    PT[PARCEIRO TERRA]:::entity
+    UNID[UNIDADES]:::entity
+    TU[TERRA UNIDADE]:::entity
+    TEL[TELEFONE PARCEIRO]:::entity
+    USUA[USUARIOS]:::entity
+    PERF[PERFIL ACESSO]:::entity
+    RA[REGISTRO ALTERACAO]:::entity
+    PCOORD[PARCEIRO COORDENADOR]:::entity
+    PUNID[PARCEIRO UNIDADE]:::entity
+    UUNID[USUARIO UNIDADE]:::entity
+
+    Rtem{tem}:::rel
+    Rtel{possui}:::rel
+    Rexerce{exerce}:::rel
+    Rvinc{vincula-se a}:::rel
+    Rpert{pertence a}:::rel
+    Rtu{pertence a}:::rel
+    Rclass{classifica}:::rel
+    Rsol{solicita}:::rel
+    Rapr{aprova}:::rel
+    Raud{audita}:::rel
+    Rcoord{coordena}:::rel
+    Ropun{opera em}:::rel
+    Ratun{atua em}:::rel
+
+    PARC -- "1,1" --- Rtem -- "0,N" --- INTER
+    PARC -- "1,1" --- Rtel -- "0,N" --- TEL
+    PARC -- "1,1" --- Rexerce -- "0,N" --- VINC
+    VINC -- "1,1" --- Rvinc -- "1,1" --- TERR
+    PARC -- "1,1" --- Rpert
     TERR -- "1,1" --- Rpert
-    UNID -- "1,1" --- Rpert
-    Rpert --- TUNID
+    Rpert --- PT
+    TERR -- "1,1" --- Rtu
+    UNID -- "1,1" --- Rtu
+    Rtu --- TU
+    PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    USUA -- "1,1" --- Rsol -- "0,N" --- RA
+    USUA -- "0,1" --- Rapr -- "0,N" --- RA
+    RA -- "0,N" --- Raud -- "0,1" --- PARC
+    PARC -- "1,1" --- Rcoord
+    USUA -- "1,1" --- Rcoord
+    Rcoord --- PCOORD
+    PARC -- "1,1" --- Ropun
+    UNID -- "1,1" --- Ropun
+    Ropun --- PUNID
+    USUA -- "1,1" --- Ratun
+    UNID -- "1,1" --- Ratun
+    Ratun --- UUNID
 ```
 
 
 
-> Nota: RegistroAlteracao não possui relacionamento explícito com entidades específicas no diagrama pois utiliza os campos entidade_afetada e entidade_id para identificar genericamente o registro auditado. Esta abordagem está detalhada na tabela de relacionamentos abaixo e implementada na seção 3.6.3.
+> **Nota sobre relacionamentos entre grupos:** Os relacionamentos entre Usuario e VinculoComercial (embaixador e guardião) vinculam entidades do Grupo 2 (Usuario) ao Grupo 1 (VinculoComercial). Por atravessarem dois grupos distintos, não são representados graficamente nos diagramas acima — estão detalhados na tabela a seguir e poderão ser implementados como chaves estrangeiras opcionais em VinculoComercial em iteração futura, conforme validação com a ATVOS.
 
 ### Resumo dos relacionamentos
 
 | # | Relacionamento | Cardinalidade | Descrição |
 |---|---|---|---|
-| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. |
-| 0b | Interacao / Usuario (registrado_por) | `[0..N] :: [1..1]` | Toda interação é registrada por exatamente um Usuario interno. Um Usuario pode ter registrado zero ou muitas interações. |
-| 1 | Parceiro / TelefoneParceiro | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitos telefones cadastrados. Cada telefone pertence a exatamente um Parceiro e indica o tipo (celular, fixo, whatsapp) e se é o contato principal. |
-| 2 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente (fornecedor, arrendador ou ambos), identificados pelo campo tipo_parceiro. Todo vínculo pertence a exatamente um Parceiro. |
-| 2b | VinculoComercial / Terra | `[0..N] :: [1..1]` | Cada vínculo comercial referencia exatamente uma Terra (campo terra_id NOT NULL). Uma Terra pode estar associada a zero ou muitos vínculos comerciais. |
-| 3a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
-| 3b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
-| 4 | Terra / Unidade via TerraUnidade | N:N | Uma terra pode ser processada por mais de uma unidade industrial e uma unidade pode processar cana de múltiplas terras. A entidade TerraUnidade resolve este relacionamento N:N com data_associacao. |
-| 5 | PerfilAcesso / Usuario | `[1..1] :: [0..N]` | Cada usuário possui exatamente um perfil de acesso (analista, coordenador ou administrador); cada perfil pode classificar vários usuários. O campo requer_aprovacao no perfil define se alterações feitas por usuarios com esse perfil precisam de aprovação. |
-| 6 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação de alteração possui um usuário solicitante obrigatório. |
-| 7 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional (NULL enquanto a solicitação está pendente). |
-| 8 | RegistroAlteracao / entidade auditada | genérico | RegistroAlteracao identifica a entidade auditada pelos campos entidade_afetada (nome da tabela, ex: 'parceiros') e entidade_id (UUID do registro). O campo tipo_operacao indica a ação realizada (criacao, edicao, envio, aprovacao, devolucao, exclusao). |
-| 9 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
-| 10 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
-| 11 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
+| 0 | Parceiro / Interacao | `[1..1] :: [0..N]` | Um Parceiro pode ter zero ou muitas interações registradas. Toda interação pertence a exatamente um Parceiro. Os atributos definitivos de Interacao serão validados com a ATVOS. |
+| 1 | Parceiro / VinculoComercial | `[1..1] :: [0..N]` | Um Parceiro pode exercer múltiplos vínculos comerciais simultaneamente. Todo vínculo pertence a exatamente um Parceiro. O campo `tipo_parceiro` define se o parceiro atua como arrendador ou fornecedor naquele vínculo específico. |
+| 2 | VinculoComercial / Terra | `[1..1] :: [1..1]` | Todo vínculo comercial está associado a exatamente uma terra. Uma terra pode ter múltiplos vínculos com parceiros diferentes. |
+| 3 | Parceiro / TelefoneParceiro | `[1..1] :: [0..N]` | Um parceiro pode ter zero ou muitos telefones cadastrados. Todo telefone pertence a exatamente um parceiro. |
+| 4a | Parceiro / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente um Parceiro; um Parceiro pode vincular-se a zero ou muitas terras. |
+| 4b | Terra / ParceiroTerra | `[1..1] :: [0..N]` | Cada registro de ParceiroTerra pertence a exatamente uma Terra; uma Terra pode ter zero ou muitos parceiros vinculados (herdeiros, meeiros, coproprietários). Reflete diretamente RN13, RN14 e RF015. |
+| 5a | Terra / TerraUnidade | `[1..1] :: [0..N]` | Cada registro de TerraUnidade pertence a exatamente uma Terra; uma Terra pode estar associada a zero ou muitas Unidades. |
+| 5b | Unidade / TerraUnidade | `[1..1] :: [0..N]` | Cada registro de TerraUnidade pertence a exatamente uma Unidade; uma Unidade pode ter zero ou muitas Terras vinculadas. |
+| 6 | PerfilAcesso / Usuario | `[1..1] :: [0..N]` | Cada usuário possui exatamente um perfil de acesso. Um perfil pode classificar zero ou muitos usuários. |
+| 7 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação possui um solicitante obrigatório. Um usuário pode solicitar zero ou muitas alterações. |
+| 8 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional — permanece NULL enquanto a solicitação está pendente. |
+| 9 | RegistroAlteracao / Parceiro | `[0..N] :: [0..1]` | Um RegistroAlteracao pode auditar zero ou um Parceiro; um Parceiro pode ter zero ou muitos registros de auditoria. |
+| 10 | RegistroAlteracao / VinculoComercial | `[0..N] :: [0..1]` | Idem para VinculoComercial. |
+| 11 | RegistroAlteracao / Terra | `[0..N] :: [0..1]` | Idem para Terra. |
+| ★ | Constraint 9 a 11 | exclusividade | Exatamente um dos três relacionamentos acima é não-nulo por registro de RegistroAlteracao. Validada em camada de aplicação (Service); os demais ficam NULL. |
+| 12 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
+| 13 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
+| 14 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
 
 
 ### Boas práticas aplicadas no modelo
 
-- Modelagem dirigida por evidência. Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, descricao e registrado_por) foram identificados com base no uso atual das planilhas.
+- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, descricao) foram identificados com base no uso atual das planilhas, e os atributos adicionais aguardam validação com a ATVOS antes de serem incorporados.
 
-- Normalização até a Terceira Forma Normal. O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. Da mesma forma, o campo telefone foi extraído de Parceiro para a entidade TelefoneParceiro, eliminando campos multivalorados e permitindo o cadastro de múltiplos contatos por parceiro. Ambas as entidades são referenciadas por chaves estrangeiras para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
+- **Normalização até a Terceira Forma Normal.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. A entidade é referenciada por uma chave estrangeira para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
 
-- Separação entre identidade e papel comercial. A divisão Parceiro / VinculoComercial elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis, pois os dados de identidade ficam em Parceiro enquanto cada papel comercial é representado por um registro em VinculoComercial com o campo tipo_parceiro. Alterar o telefone do parceiro em TelefoneParceiro afeta automaticamente todos os vínculos comerciais daquele parceiro.
+- **Separação clara entre identidade e papel comercial.** A divisão Parceiro / VinculoComercial elimina duplicação de identidade quando uma pessoa exerce múltiplos papéis — uma mesma empresa pode ser simultaneamente fornecedora de cana e arrendadora de terra. O campo `tipo_parceiro` em VinculoComercial controla o papel exercido em cada vínculo, garantindo consistência sem necessidade de entidades de especialização para o MVP. Caso a ATVOS confirme atributos específicos por tipo de vínculo em iterações futuras, a separação em entidades distintas pode ser introduzida sem refatoração do núcleo.
 
-- Perfil de acesso unificado em PerfilAcesso. A entidade PerfilAcesso concentra tanto o papel organizacional do usuário quanto a regra de aprovação associada a esse papel via campo requer_aprovacao. Os perfis possíveis são analista, coordenador e administrador. Esta abordagem permite que a ATVOS altere a política de aprovação no futuro sem necessidade de alteração no código da aplicação.
+- **Perfil de acesso como entidade.** A entidade PerfilAcesso define os três níveis de permissão do sistema: analista, coordenador e administrador. O campo `requer_aprovacao` determina se alterações feitas por usuários daquele perfil precisam de aprovação antes de se tornarem ativas, internalizando a regra de negócio no dado em vez de no código. Isso permite que a ATVOS altere a política de aprovação no futuro sem necessidade de redeploy.
 
-- Auditoria estrutural via RegistroAlteracao. O fluxo de aprovação obrigatório para alterações feitas por analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com uma única entidade, que serve simultaneamente como fila de aprovação e log de auditoria. A entidade auditada é identificada pelos campos entidade_afetada e entidade_id, e o campo status opera em dois modos: registros de analistas iniciam como pendente e aguardam aprovação; registros de coordenadores e administradores recebem aprovado diretamente.
+- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No modelo conceitual, RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável (Parceiro, VinculoComercial e Terra), com a constraint de que exatamente um desses vínculos é não-nulo por registro. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `pendente` e aguardam aprovação de Coordenador; registros originados de Administrador recebem `aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
 
-- Histórico modelado apenas onde tem valor de negócio. Optou-se por manter histórico (data_inicio / data_fim) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra e TerraUnidade) guardam apenas o momento de associação via data_associacao, evitando complexidade desnecessária.
+- **Histórico modelado apenas onde tem valor de negócio.** Optou-se por manter histórico (`data_inicio`/`data_fim`) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra) guardam apenas o estado atual ou o momento de associação, evitando complexidade desnecessária.
 
-- Soft delete como padrão. As entidades sujeitas a ciclo de vida operacional (Usuario, Unidade, TelefoneParceiro e Parceiro) possuem o campo ativo ou status, permitindo inativação lógica sem perda de histórico, alinhado à RN15 (US09) e à boa prática de preservação de dados auditáveis.
+- **Soft delete como padrão.** As entidades sujeitas a ciclo de vida operacional (Parceiro, Terra, Usuario, Unidade) possuem o campo `status` ou `ativo`, permitindo inativação lógica sem perda de histórico, alinhado à RN15 e à boa prática de preservação de dados auditáveis.
 
-- Documentação de pendências. Decisões que dependem de validação com a ATVOS (Top 15, Portal PMF, definições de áreas, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
+- **Documentação de pendências.** Decisões que dependem de validação com a ATVOS (Top 15, Portal PMF, definições de áreas, atributos específicos por tipo de vínculo, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
 
 
 ### Conclusão
 
-A modelagem ER Conceitual apresentada nesta seção está alinhada com o modelo físico (3.6.3) e o DER Lógico (3.6.2), servindo como referência conceitual das decisões de implementação adotadas. Cada estrutura aqui documentada responde a uma necessidade operacional identificada nas planilhas e regras de negócio da ATVOS.
+A modelagem ER Conceitual apresentada nesta seção não é apenas um artefato formal de documentação: é a **espinha dorsal técnica** que viabiliza concretamente os requisitos do sistema CRM da ATVOS. Cada decisão tomada aqui responde a uma necessidade operacional específica e mensurável.
 
-A separação entre Parceiro e VinculoComercial permite que uma mesma empresa cadastrada uma vez apareça simultaneamente como fornecedora de cana e arrendadora de terra, situação real observada em diversas linhas das planilhas. O campo tipo_parceiro em VinculoComercial identifica o papel exercido em cada vínculo, e os atributos específicos como modalidade_contrato estão diretamente nessa entidade, mantendo a estrutura simples e consultável.
+A separação entre Parceiro e VinculoComercial é o que permite que **uma mesma empresa cadastrada uma vez** apareça simultaneamente como fornecedora de cana e arrendadora de terra, situação real observada em diversas linhas das planilhas, e que sem esse cuidado de modelagem geraria duplicação cadastral e inconsistência de contato. O campo `tipo_parceiro` em VinculoComercial controla o papel exercido em cada vínculo de forma simples e direta, adequada ao escopo do MVP. A separação em entidades de especialização permanece documentada como evolução futura caso a ATVOS confirme atributos distintos por tipo de vínculo.
 
-A entidade ParceiroTerra, associativa N:N entre Parceiro e Terra, resolve diretamente as regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Da mesma forma, TerraUnidade resolve o relacionamento N:N entre Terra e Unidade, pois uma terra pode ser processada por mais de uma unidade industrial.
+A entidade ParceiroTerra, introduzida como associativa N:N entre Parceiro e Terra, resolve diretamente a contradição que existiria em um modelo 1:N diante das regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Ambos os sentidos do relacionamento precisam ser "muitos para muitos".
 
-A entidade RegistroAlteracao concretiza as regras RN11 (auditoria) e RN12 (versionamento) e o fluxo de aprovação obrigatória descrito nas conversas com a ATVOS: alterações de analistas vão para fila, são revisadas por coordenadores ou administradores, e o histórico é preservado para sempre. Os campos entidade_afetada e entidade_id permitem que uma única estrutura atenda todo o domínio auditável do sistema sem necessidade de chaves estrangeiras para cada entidade.
+A entidade RegistroAlteracao concretiza diretamente as regras RN11 (auditoria), RN12 (versionamento) e o fluxo de aprovação obrigatória: alterações de Analistas vão para fila, são revisadas por Coordenadores, e o histórico é preservado. Os relacionamentos explícitos e opcionais com cada entidade auditável, representados no diagrama conceitual com cardinalidade `[0..1]` em cada elo, permitem que **uma única estrutura** atenda todo o domínio auditável do sistema, sem multiplicação de entidades de auditoria.
 
-A entidade ParceiroCoordenador com histórico preserva a memória institucional de quem cuidou de quem e quando, informação valiosa em decisões futuras de relacionamento. As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
+A entidade ParceiroCoordenador com histórico responde ao caso, observado em campo, de coordenadores que se aposentam, mudam de função ou são realocados, preservando a memória institucional de "quem cuidou de quem e quando". As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
 
-O princípio de modelagem dirigida por evidência, com cada atributo justificado por planilha real ou regra de negócio explícita, garante que este modelo entregue exatamente o que a ATVOS precisa. As seções 3.6.2 e 3.6.3 apresentam a implementação completa desta estrutura em DER e SQL executável.
+Por fim, o princípio de **modelagem dirigida por evidência**, com cada atributo justificado por planilha real ou regra de negócio explícita, torna este modelo não apenas tecnicamente sólido, mas também **negocialmente honesto**: ele entrega exatamente o que a ATVOS precisa hoje, com pontos de extensão claramente sinalizados para o que ainda virá, e zero complexidade especulativa. As próximas seções (3.6.2 DER Lógico e 3.6.3 Modelo Físico) detalharão como esta estrutura conceitual será concretizada em chaves, constraints e SQL executável, mantendo total coerência com o que foi estabelecido aqui.
 
 
 ### 3.6.2. Diagrama Entidade-Relacionamento (DER) (sprint 2)
@@ -2153,11 +2055,11 @@ As consultas foram elaboradas com três ou quatro proposições para permitir a 
 
 
 Essa consulta representa a regra de cadastro de novos usuários no sistema. Em termos práticos, o sistema só permite criar um usuário quando duas condições forem verdadeiras ao mesmo tempo: o perfil informado precisa existir e o e-mail não pode já estar cadastrado.
-
+<br>
 A lógica proposicional $A \land B$ mostra exatamente isso: o cadastro somente acontece quando há simultaneamente um perfil válido e um e-mail disponível. Caso uma das condições falhe, o sistema bloqueia a operação para evitar inconsistências, como usuários associados a perfis inexistentes ou duplicidade de contas com o mesmo e-mail.
-
+<br>
 Na prática, essa consulta implementa uma validação de integridade e unicidade antes da criação do usuário.
-
+<br>
 
 #### Explicação da consulta SQL:
 
@@ -2168,9 +2070,9 @@ O comando INSERT insere novos registros correspondentes à um novo usuário do s
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F) \rightarrow A \land B = F$ : perfil válido mas e-mail já cadastrado implica em cadastro bloqueado, respeitando a RN01 que garante a unicidade do e-mail. 
-2- $(A=F, B=V) \rightarrow A \land B = F$ : e-mail disponível mas perfil inválido, ou seja, o cadastro é bloqueado, impedindo vínculos com perfis inexistentes. 
-3- $(A=V, B=V) \rightarrow A \land B = V$ : perfil válido e e-mail disponível implica em cadastro de novo usuário efetuado.
+1- $(A=V, B=F) \rightarrow A \land B = F$ : perfil válido mas e-mail já cadastrado implica em cadastro bloqueado, respeitando a RN01 que garante a unicidade do e-mail. <br>
+2- $(A=F, B=V) \rightarrow A \land B = F$ : e-mail disponível mas perfil inválido, ou seja, o cadastro é bloqueado, impedindo vínculos com perfis inexistentes. <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : perfil válido e e-mail disponível implica em cadastro de novo usuário efetuado.<br>
 
 ---
 
@@ -2189,11 +2091,11 @@ O comando INSERT insere novos registros correspondentes à um novo usuário do s
 
 
 Essa consulta representa a inativação lógica de usuários do sistema. Em vez de apagar o usuário do banco de dados, o sistema apenas altera seu status para inativo, preservando o histórico de auditoria e rastreabilidade.
-
+<br>
 A operação só acontece quando três condições forem verdadeiras simultaneamente: o usuário alvo precisa existir, ele deve estar ativo no momento da operação e não pode ser o próprio usuário logado.
-
+<br>
 A expressão lógica $A \land B \land C$ demonstra que qualquer falha em uma dessas verificações impede a execução da inativação. Isso evita problemas como tentar desativar usuários já inativos, usuários inexistentes ou permitir que um administrador se auto-inative acidentalmente.
-
+<br>
 
 
 
@@ -2206,10 +2108,10 @@ O comando UPDATE realiza a inativação lógica de um usuário, alterando o camp
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : usuário já está inativo, implicando em operação não executada. 
-2- $(A=F, B=V, C=F) \rightarrow A \land B \land C = F$ : usuário alvo é o próprio usuário logado mas a auto-inativação é proibida, portanto a operação não é executada.
-3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum usuário, portanto nenhuma linha é afetada. 
-4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : usuário existe, está ativo e não é o usuário logado, portanto a inativação é executada com sucesso. 
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : usuário já está inativo, implicando em operação não executada. <br>
+2- $(A=F, B=V, C=F) \rightarrow A \land B \land C = F$ : usuário alvo é o próprio usuário logado mas a auto-inativação é proibida, portanto a operação não é executada. <br>
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum usuário, portanto nenhuma linha é afetada. <br>
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : usuário existe, está ativo e não é o usuário logado, portanto a inativação é executada com sucesso. <br>
 
 ---
 
@@ -2228,11 +2130,11 @@ O comando UPDATE realiza a inativação lógica de um usuário, alterando o camp
 
 
 Essa consulta controla o cadastro inicial de parceiros no sistema. O parceiro é criado inicialmente com status de rascunho, permitindo que seus dados sejam posteriormente revisados e validados.
-
+<br>
 A lógica proposicional $A \land B$ determina que o cadastro só pode ocorrer quando o CPF/CNPJ ainda não estiver associado a outro parceiro ativo no sistema e quando o tipo de pessoa informado for válido.
-
+<br>
 Isso garante duas regras importantes: evitar duplicidade de parceiros e manter consistência entre os dados cadastrais. Assim, o sistema impede registros repetidos e também evita classificações inválidas entre pessoa física e pessoa jurídica.
-
+<br>
 
 #### Explicação da consulta SQL:
 
@@ -2243,9 +2145,9 @@ O comando INSERT cria um novo registro de parceiro com status rascunho, conforme
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=F, B=V) \rightarrow A \land B = F$ : CPF/CNPJ já cadastrado em algum parceiro ou ausente no preenchimento, resultando no bloqueio do cadastro, respeitando a RN09.
-2- $(A=V, B=F) \rightarrow A \land B = F$ : tipo de pessoa inválido ou nulo, o que implica no cadastro rejeitado, devido à constraint do banco.  
-3- $(A=V, B=V) \rightarrow A \land B = V$ : CPF/CNPJ disponível e tipo_pessoa válido, portanto, o parceiro é cadastrado como rascunho. 
+1- $(A=F, B=V) \rightarrow A \land B = F$ : CPF/CNPJ já cadastrado em algum parceiro ou ausente no preenchimento, resultando no bloqueio do cadastro, respeitando a RN09.<br>
+2- $(A=V, B=F) \rightarrow A \land B = F$ : tipo de pessoa inválido ou nulo, o que implica no cadastro rejeitado, devido à constraint do banco.  <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : CPF/CNPJ disponível e tipo_pessoa válido, portanto, o parceiro é cadastrado como rascunho. <br>
 
 ---
 
@@ -2264,11 +2166,11 @@ O comando INSERT cria um novo registro de parceiro com status rascunho, conforme
 
 
 Essa consulta representa a atualização cadastral de parceiros já existentes. O sistema permite editar apenas parceiros que estejam em estados considerados válidos para modificação, como rascunho, devolvido, ativo ou pendente.
-
+<br>
 A expressão lógica $A \land B \land C$ mostra que a edição só é realizada quando o parceiro existe, possui um status editável e os dados informados permanecem consistentes.
-
+<br>
 A terceira condição é especialmente importante porque impede incompatibilidades cadastrais, como registrar um parceiro do tipo pessoa física utilizando um documento característico de pessoa jurídica. Dessa forma, a consulta atua tanto na atualização das informações quanto na proteção da integridade dos dados.
-
+<br>
 
 #### Explicação da consulta SQL:
 
@@ -2279,10 +2181,10 @@ O comando UPDATE edita os dados cadastrais de um parceiro, registrando automatic
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : parceiro com status inativo, portanto, a edição é bloqueada conforme a RN05.  
-2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : tentativa de salvar pessoa física com CNPJ, gerando uma inconsistência de dados. Portanto, a operação não é executada. 
-3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum parceiro, portanto nada é afetado. 
-4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : parceiro editável com dados consistentes, logo, a edição é executada com sucesso.
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : parceiro com status inativo, portanto, a edição é bloqueada conforme a RN05.  <br>
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : tentativa de salvar pessoa física com CNPJ, gerando uma inconsistência de dados. Portanto, a operação não é executada. <br>
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum parceiro, portanto nada é afetado. <br>
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : parceiro editável com dados consistentes, logo, a edição é executada com sucesso. <br>
 
 ---
 
@@ -2301,11 +2203,11 @@ O comando UPDATE edita os dados cadastrais de um parceiro, registrando automatic
 
 
 Essa consulta recupera os dados detalhados de um parceiro específico para visualização no sistema. Além das informações do parceiro, também são exibidos dados relacionados ao perfil do usuário responsável pelo cadastro.
-
+<br>
 A lógica $A \land B$ estabelece que os dados somente serão exibidos se o parceiro procurado existir e estiver ativo. Isso impede que parceiros inativos ou inexistentes apareçam para consulta.
-
+<br>
 Na prática, essa regra garante que apenas parceiros válidos e atualmente ativos possam ser visualizados pelos usuários do sistema, respeitando as regras de disponibilidade das informações.
-
+<br>
 
 #### Explicação da consulta SQL:
 
@@ -2316,9 +2218,9 @@ A consulta retorna todos os dados de um parceiro específico acrescidos do perfi
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro encontrado mas com status diferente de ativo, portanto, não é exibido conforme RN08. . 
-2- $(A=F, B=V) \rightarrow A \land B = F$ : id não corresponde a nenhum parceiro, portanto nenhum dado é retornado.
-3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo encontrado, resultando no perfil exibido corretamente. 
+1- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro encontrado mas com status diferente de ativo, portanto, não é exibido conforme RN08.<br> 
+2- $(A=F, B=V) \rightarrow A \land B = F$ : id não corresponde a nenhum parceiro, portanto nenhum dado é retornado.<br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo encontrado, resultando no perfil exibido corretamente. <br>
 
 ---
 
@@ -2337,11 +2239,11 @@ A consulta retorna todos os dados de um parceiro específico acrescidos do perfi
 
 
 Essa consulta permite realizar buscas de parceiros utilizando filtros opcionais, como nome, tipo de pessoa e e-mail. O sistema adapta automaticamente a pesquisa conforme os filtros preenchidos pelo usuário.
-
+<br>
 A expressão lógica $A \land B \land C \land D$ mostra que um parceiro só aparece nos resultados quando está ativo e atende a todos os filtros informados. Quando algum filtro não é preenchido, ele é ignorado pela consulta.
-
+<br>
 Isso torna a busca flexível e dinâmica, permitindo desde pesquisas amplas sem filtros até buscas extremamente específicas. Mesmo assim, a condição de parceiro ativo permanece obrigatória, garantindo que registros inativos nunca sejam exibidos.
-
+<br>
 
 #### Explicação da consulta SQL:
 
@@ -2352,9 +2254,9 @@ A consulta implementa a busca filtrada de parceiros ativos com filtros opcionais
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F, C=V, D=V) \rightarrow A \land B \land C \land D = F$ : nenhum parceiro corresponde ao filtro de nome, o que implica em uma listagem vazia para esse critério.   
-2- $(A=V, B=V, C=V, D=V) \rightarrow A \land B \land C \land D = V$ : todos os filtros ativos ou ignorados são satisfeitos, retornando os parceiros presentes.  
-3- $(A=F, B=V, C=V, D=V) \rightarrow A \land B \land C \land D = F$ : independente dos filtros, parceiros inativos nunca devem ser retornados.
+1- $(A=V, B=F, C=V, D=V) \rightarrow A \land B \land C \land D = F$ : nenhum parceiro corresponde ao filtro de nome, o que implica em uma listagem vazia para esse critério.   <br>
+2- $(A=V, B=V, C=V, D=V) \rightarrow A \land B \land C \land D = V$ : todos os filtros ativos ou ignorados são satisfeitos, retornando os parceiros presentes.  <br>
+3- $(A=F, B=V, C=V, D=V) \rightarrow A \land B \land C \land D = F$ : independente dos filtros, parceiros inativos nunca devem ser retornados.<br>
 
 
 ---
@@ -2374,11 +2276,11 @@ A consulta implementa a busca filtrada de parceiros ativos com filtros opcionais
 
 
 Essa consulta alimenta o painel estatístico de interações com parceiros, permitindo visualizar a quantidade de contatos realizados ao longo do tempo. O objetivo é gerar indicadores para acompanhamento comercial e análise de relacionamento.
-
+<br>
 A lógica proposicional $A \land B \land C$ define que apenas interações válidas entram nos cálculos do painel. Isso significa que a interação precisa estar associada a um parceiro ativo, ter ocorrido dentro do período analisado e possuir um tipo reconhecido pelo sistema.
-
+<br>
 Dessa forma, o dashboard exclui registros inválidos, antigos ou inconsistentes, garantindo que os indicadores apresentados representem apenas dados confiáveis e relevantes para análise gerencial.
-
+<br>
 
 #### Explicação da consulta SQL:
 
@@ -2389,10 +2291,10 @@ A consulta alimenta o dashboard de interações, retornando a contagem de intera
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : interação de parceiro ativo com tipo válido, mas fora do período de 18 meses, logo, é muito antiga para ser contabilizada no painel.
-2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : interação recente de parceiro ativo, mas com tipo não reconhecido pelo sistema (possivelmente por erro de preenchimento), logo, é excluída da agregação. 
-3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : interação válida no período correto, mas de parceiro inativo, portanto, é excluída do painel, conforme a RN08.  
-4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : interação válida, recente e de parceiro ativo. É contabilizada no painel por tipo e mês.
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : interação de parceiro ativo com tipo válido, mas fora do período de 18 meses, logo, é muito antiga para ser contabilizada no painel.<br>
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : interação recente de parceiro ativo, mas com tipo não reconhecido pelo sistema (possivelmente por erro de preenchimento), logo, é excluída da agregação. <br>
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : interação válida no período correto, mas de parceiro inativo, portanto, é excluída do painel, conforme a RN08.  <br>
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : interação válida, recente e de parceiro ativo. É contabilizada no painel por tipo e mês.<br>
 
 ---
 
@@ -2411,9 +2313,11 @@ A consulta alimenta o dashboard de interações, retornando a contagem de intera
 
 
 Essa consulta prepara os dados de parceiros para exportação em formatos externos, como CSV ou XLSX. O objetivo é permitir compartilhamento e análise das informações fora do sistema.
+<br>
 A expressão lógica $A \land B$ indica que apenas parceiros ativos e compatíveis com o filtro de tipo informado podem ser exportados. Caso o filtro não seja preenchido, ele é ignorado e todos os parceiros ativos são considerados.
+<br>
 A consulta também busca informações complementares, como telefone principal e vínculo comercial, mas sem impedir a exportação caso esses dados não existam. Assim, o sistema garante uma exportação flexível, segura e limitada apenas a registros válidos para uso externo.
-
+<br>
 
 #### Explicação da consulta SQL:
 
@@ -2424,27 +2328,28 @@ A consulta gera a lista de dados para exportação em CSV ou XLSX conforme o RF0
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro ativo mas de tipo diferente do filtro informado, fazendo com que seja excluído da possibilidade de exportação.
-2- $(A=F, B=V) \rightarrow A \land B = F$ :parceiro inativo com tipo correspondente, portanto, nunca é exportado (preservando a RN08).  
-3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo que satisfaz o filtro de tipo. Dessa forma, é incluído na exportação com telefone e vínculo quando disponíveis. 
+1- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro ativo mas de tipo diferente do filtro informado, fazendo com que seja excluído da possibilidade de exportação.<br>
+2- $(A=F, B=V) \rightarrow A \land B = F$ :parceiro inativo com tipo correspondente, portanto, nunca é exportado (preservando a RN08).  <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo que satisfaz o filtro de tipo. Dessa forma, é incluído na exportação com telefone e vínculo quando disponíveis. <br>
 
 ---
 
 ### Síntese de validação lógica
 
 As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Cada consulta introduz uma estrutura proposicional distinta, refletindo diferentes padrões de filtragem e controle utilizados pelo back-end.
-
+<br>
 As consultas 01 e 03, ambas do tipo `INSERT`, utilizam a estrutura $A \land B$, isto é, a conjunção simples de duas proposições obrigatóriamente verdadeiras. Em 01, as duas condições verificam perfil válido e unicidade de e-mail antes de inserir o usuário. Em 03, verificam ausência de CPF/CNPJ duplicado e tipo de pessoa válido antes de inserir o parceiro como rascunho. Nas duas situações, a falha em qualquer uma das condições impede completamente a inserção.
-
+<br>
 As consultas 02 e 04, do tipo `UPDATE`, também utilizam $A \land B \land C$, a conjunção pura de três proposições obrigatóriamente verdadeiras. Em 02, as três condições garantem que o usuário existe, está ativo e não é o próprio usuário logado antes de executar a inativação lógica. Em 04, garantem que o parceiro existe, está em status editável e não apresenta inconsistência entre tipo de pessoa e documento. Em ambos os casos, a tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução do `UPDATE`.
-
+<br>
 As consultas 05 e 08, do tipo `SELECT`, utilizam a mesma estrutura $A \land B$. Em 05, as condições verificam identidade e status ativo do parceiro antes de exibir seu perfil detalhado. Em 08, verificam status ativo e correspondência com o filtro de tipo de pessoa antes de incluir o parceiro na exportação. O padrão `OR :param IS NULL` em 08 torna o filtro opcional sem alterar a estrutura proposicional, pois a proposição $B$ já encapsula essa lógica.
-
+<br>
 A consulta 06 apresenta a estrutura $A \land B \land C \land D$, a de maior número de proposições de toda a seção. As quatro condições são obrigatórias e independentes, mas três delas ($B$, $C$ e $D$) utilizam internamente o padrão `OR :param IS NULL`, tornando cada filtro opcionalmente ignorável. Isso produz uma consulta que se comporta como busca ampla quando nenhum filtro é informado e como busca precisa quando todos são preenchidos, mantendo sempre a obrigatoriedade da condição de status ativo em $A$.
-
+<br>
 A consulta 07 apresenta $A \land B \land C$ aplicada a uma agregação com `GROUP BY`. Diferente das demais consultas `SELECT` desta seção, ela não retorna registros individuais — retorna contagens agrupadas por tipo de interação e mês. As três condições controlam quais interações entram nos cálculos: parceiro ativo, período válido e tipo reconhecido pelo sistema. A ausência de qualquer uma das três exclui a interação da agregação, garantindo que os indicadores do dashboard representem apenas dados confiáveis.
-
+<br>
 As oito consultas apresentadas atendem ao objetivo da seção ao relacionar operações reais do back-end com lógica proposicional formal, cobrindo os principais fluxos do sistema CRM da ATVOS - do cadastro à exportação - e demonstrando, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
+<br>
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 

@@ -2,11 +2,10 @@
   "name": "atvos-crm",
   "version": "1.0.0",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "dev": "ts-node src/server.ts",
     "migrate": "ts-node src/db/migrate.ts",
     "seed": "ts-node src/db/seed.ts",
-    "test": "jest --runInBand --forceExit"
+"test": "jest --runInBand --forceExit",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
