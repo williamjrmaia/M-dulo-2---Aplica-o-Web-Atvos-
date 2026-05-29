@@ -77,3 +77,8 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
   );
   return result.rows[0] ?? null;
 }
+
+export async function listarParceiros(): Promise<Parceiro[]> {
+  const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE status != 'inativo'`);
+  return rows;
+}

@@ -2,8 +2,10 @@ import { Router } from 'express';
 import {
   createParceiro,
   editarParceiro,
+  listarParceiros,
   renderFormCadastro,
   processarCadastro,
+  renderListaParceiros,
   renderFormEdicao,
   processarEdicao,
 } from '../controllers/parceiroController';
@@ -13,11 +15,13 @@ export const apiRouter = Router();
 
 apiRouter.post('/', createParceiro);
 apiRouter.patch('/:id', editarParceiro);
+apiRouter.get('/', listarParceiros);
 
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
 export const viewRouter = Router();
 
 viewRouter.get('/novo', renderFormCadastro);
 viewRouter.post('/', processarCadastro);
+viewRouter.get('/', renderListaParceiros);
 viewRouter.get('/:id/editar', renderFormEdicao);
 viewRouter.post('/:id/editar', processarEdicao);

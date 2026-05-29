@@ -3,6 +3,7 @@ import asyncHandler from '../helpers/asyncHandler';
 import {
   cadastrarParceiro,
   editarParceiro as editarParceiroService,
+  obterParceiros,
 } from '../services/parceiroService';
 import { AppError, ValidationError } from '../errors/AppError';
 
@@ -71,6 +72,11 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
   res.status(200).json(parceiro);
 });
 
+export const listarParceiros = asyncHandler(async (_req: Request, res: Response) => {
+  const parceiros = await obterParceiros();
+  res.status(200).json(parceiros);
+});
+
 // ─── Views HTML ──────────────────────────────────────────────────────────────
 
 export const renderFormCadastro = asyncHandler(async (_req: Request, res: Response) => {
@@ -107,6 +113,11 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
       dados: req.body,
     });
   }
+});
+
+export const renderListaParceiros = asyncHandler(async (_req: Request, res: Response) => {
+  const parceiros = await obterParceiros();
+  res.render('parceiros/index', { parceiros });
 });
 
 export const renderFormEdicao = asyncHandler(async (req: Request, res: Response) => {

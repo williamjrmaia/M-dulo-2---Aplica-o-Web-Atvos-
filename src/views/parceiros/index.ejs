@@ -1,0 +1,46 @@
+<%- include('../partials/header', { title: 'Parceiros Cadastrados' }) %>
+
+<section aria-labelledby="titulo-lista">
+  <h1 id="titulo-lista">Parceiros Cadastrados</h1>
+  <p class="subtitle">Listagem de parceiros agrícolas (fornecedores de cana e proprietários cedentes) da ATVOS</p>
+
+  <div class="actions">
+    <a href="/parceiros/novo" class="btn">+ Novo Parceiro</a>
+  </div>
+
+  <% if (parceiros.length === 0) { %>
+    <p class="empty">Nenhum parceiro cadastrado ainda.</p>
+  <% } else { %>
+    <table aria-label="Lista de parceiros cadastrados">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">CPF/CNPJ</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Status</th>
+          <th scope="col">Cadastrado em</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% parceiros.forEach(function(p) { %>
+          <tr>
+            <td>
+              <strong><%= p.nome %></strong>
+              <% if (p.apelido) { %>
+                <div class="tipo"><%= p.apelido %></div>
+              <% } %>
+            </td>
+            <td><span class="tipo"><%= p.tipo_pessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' %></span></td>
+            <td><%= p.cpf_cnpj %></td>
+            <td><%= p.email || '—' %></td>
+            <td><span class="badge badge-<%= p.status %>"><%= p.status %></span></td>
+            <td><%= new Date(p.criado_em).toLocaleDateString('pt-BR') %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>
