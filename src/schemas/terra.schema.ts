@@ -7,7 +7,12 @@ export const createTerraSchema = z.object({
     .positive('area_contratada_ha deve ser maior que zero'),
   cidade: z.string().min(1, 'cidade é obrigatória'),
   estado: z.string().length(2, 'estado deve ter 2 caracteres'),
-  criado_por: z.string().uuid('criado_por deve ser um UUID válido'),
+  criado_por: z
+    .string()
+    .regex(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+      'criado_por deve ser um UUID válido'
+    ),
   status: z
     .enum(['rascunho', 'pendente', 'ativo', 'devolvido', 'inativo'])
     .optional(),
