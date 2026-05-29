@@ -4,7 +4,7 @@
   "scripts": {
     "migrate": "ts-node src/db/migrate.ts",
     "seed": "ts-node src/db/seed.ts",
-"test": "jest --runInBand --forceExit",
+    "test": "jest --runInBand --forceExit",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "dependencies": {
@@ -13,7 +13,8 @@
     "ejs": "^5.0.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.21.0"
+    "pg": "^8.21.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

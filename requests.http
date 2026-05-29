@@ -1,0 +1,37 @@
+@host = http://localhost:3000
+@seedUser = 00000000-0000-0000-0000-000000000001
+
+### Terras — criar (RF010) → 201 + Location
+POST {{host}}/api/terras
+Content-Type: application/json
+
+{
+  "nome": "Fazenda Santa Maria",
+  "area_contratada_ha": 150.5,
+  "cidade": "Ribeirão Preto",
+  "estado": "SP",
+  "criado_por": "{{seedUser}}"
+}
+
+### Terras — nome ausente → 400
+POST {{host}}/api/terras
+Content-Type: application/json
+
+{
+  "area_contratada_ha": 150.5,
+  "cidade": "Ribeirão Preto",
+  "estado": "SP",
+  "criado_por": "{{seedUser}}"
+}
+
+### Terras — criado_por inexistente → 422
+POST {{host}}/api/terras
+Content-Type: application/json
+
+{
+  "nome": "Fazenda Sem Dono",
+  "area_contratada_ha": 10,
+  "cidade": "Sertãozinho",
+  "estado": "SP",
+  "criado_por": "00000000-0000-0000-0000-0000000000ff"
+}
