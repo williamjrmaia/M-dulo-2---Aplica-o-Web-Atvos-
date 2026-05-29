@@ -13,9 +13,8 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "moduleResolution": "node",
     "ignoreDeprecations": "5.0",
-    "typeRoots": ["./src/node_modules/@types", "./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types"],
     "types": ["jest", "node"]
   },
   "include": ["src/**/*.ts"],
