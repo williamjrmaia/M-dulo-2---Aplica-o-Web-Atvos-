@@ -121,6 +121,11 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
   }
 });
 
+export const renderListaParceiros = asyncHandler(async (_req: Request, res: Response) => {
+  const parceiros = await obterParceiros();
+  res.render('parceiros/index', { parceiros });
+});
+
 export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
 

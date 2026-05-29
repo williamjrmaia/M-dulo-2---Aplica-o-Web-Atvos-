@@ -6,6 +6,7 @@ import {
   obterParceiroPorId,
   renderFormCadastro,
   processarCadastro,
+  renderListaParceiros,
   renderDetalheParceiro,
   renderFormEdicao,
   processarEdicao,
@@ -24,6 +25,7 @@ export const viewRouter = Router();
 
 viewRouter.get('/novo', renderFormCadastro);
 viewRouter.post('/', processarCadastro);
+viewRouter.get('/', renderListaParceiros);
 viewRouter.get('/:id/editar', renderFormEdicao);
 viewRouter.post('/:id/editar', processarEdicao);
 viewRouter.get('/:id', renderDetalheParceiro);
