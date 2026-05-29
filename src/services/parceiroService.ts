@@ -1,4 +1,4 @@
-import { createParceiro, updateParceiro, listarParceiros } from '../repositories/parceiroRepository';
+import { createParceiro, updateParceiro, listarParceiros, getParceiroById } from '../repositories/parceiroRepository';
 import { CreateParceiroInput, Parceiro, UpdateParceiroInput } from '../models/parceiro';
 import { ConflictError, NotFoundError } from '../errors/AppError';
 
@@ -31,4 +31,19 @@ export async function editarParceiro(id: string, data: UpdateParceiroInput): Pro
 
 export async function obterParceiros(): Promise<Parceiro[]> {
   return await listarParceiros();
+}
+
+export async function obterParceiroPorId(id: string): Promise<Parceiro> {
+  try {
+    const parceiro = await getParceiroById(id);
+    if (!parceiro) {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    return parceiro;
+  } catch (err: any) {
+    if (err.code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    throw err;
+  }
 }

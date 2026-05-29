@@ -4,8 +4,9 @@ import {
   cadastrarParceiro,
   editarParceiro as editarParceiroService,
   obterParceiros,
+  obterParceiroPorId as obterParceiroPorIdService,
 } from '../services/parceiroService';
-import { AppError, ValidationError } from '../errors/AppError';
+import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -77,6 +78,11 @@ export const listarParceiros = asyncHandler(async (_req: Request, res: Response)
   res.status(200).json(parceiros);
 });
 
+export const obterParceiroPorId = asyncHandler(async (req: Request, res: Response) => {
+  const parceiro = await obterParceiroPorIdService(req.params.id as string);
+  res.status(200).json(parceiro);
+});
+
 // ─── Views HTML ──────────────────────────────────────────────────────────────
 
 export const renderFormCadastro = asyncHandler(async (_req: Request, res: Response) => {
@@ -118,6 +124,21 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
 export const renderListaParceiros = asyncHandler(async (_req: Request, res: Response) => {
   const parceiros = await obterParceiros();
   res.render('parceiros/index', { parceiros });
+});
+
+export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+
+  try {
+    const parceiro = await obterParceiroPorIdService(id);
+    res.render('parceiros/show', { parceiro, naoEncontrado: false });
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      res.status(404).render('parceiros/show', { parceiro: null, naoEncontrado: true });
+      return;
+    }
+    throw err;
+  }
 });
 
 export const renderFormEdicao = asyncHandler(async (req: Request, res: Response) => {

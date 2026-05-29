@@ -82,3 +82,8 @@ export async function listarParceiros(): Promise<Parceiro[]> {
   const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE status != 'inativo'`);
   return rows;
 }
+
+export async function getParceiroById(id: string): Promise<Parceiro | null> {
+  const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE id = $1`, [id]);
+  return rows[0] ?? null;
+}
