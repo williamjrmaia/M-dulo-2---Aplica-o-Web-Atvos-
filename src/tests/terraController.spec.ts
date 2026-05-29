@@ -1,29 +1,34 @@
+import { randomUUID } from 'crypto';
 import request from 'supertest';
 import app from '../app';
 import pool from '../config/connection';
 
-const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 const UUID_INEXISTENTE = '00000000-0000-0000-0000-0000000000ff';
+let testUserId: string;
 
 const terraValida = () => ({
   nome: 'Fazenda Santa Maria',
   area_contratada_ha: 150.5,
   cidade: 'Ribeirão Preto',
   estado: 'SP',
-  criado_por: SEED_USER_ID,
+  criado_por: testUserId,
 });
 
 beforeEach(async () => {
-  await pool.query('DELETE FROM terras');
-  await pool.query('DELETE FROM usuarios WHERE id = $1', [SEED_USER_ID]);
+  testUserId = randomUUID();
   await pool.query(
     `INSERT INTO perfil_acesso (nome, requer_aprovacao) VALUES ('analista', false) ON CONFLICT (nome) DO NOTHING`
   );
   const { rows } = await pool.query(`SELECT id FROM perfil_acesso WHERE nome = 'analista'`);
   await pool.query(
-    `INSERT INTO usuarios (id, perfil_acesso_id, nome, email, ativo) VALUES ($1, $2, 'Admin', 'admin@test.com', true)`,
-    [SEED_USER_ID, rows[0].id]
+    `INSERT INTO usuarios (id, perfil_acesso_id, nome, email, ativo) VALUES ($1, $2, $3, $4, true)`,
+    [testUserId, rows[0].id, 'Usuario Teste Terras', `terras_${testUserId}@atvos.test`]
   );
+});
+
+afterEach(async () => {
+  await pool.query('DELETE FROM terras WHERE criado_por = $1 OR atualizado_por = $1', [testUserId]);
+  await pool.query('DELETE FROM usuarios WHERE id = $1', [testUserId]);
 });
 
 afterAll(async () => {
@@ -85,6 +90,99 @@ describe('POST /api/terras', () => {
     expect(rows[0].nome).toBe('Fazenda Santa Maria');
     expect(rows[0].cidade).toBe('Ribeirão Preto');
     expect(rows[0].estado).toBe('SP');
-    expect(rows[0].criado_por).toBe(SEED_USER_ID);
+    expect(rows[0].criado_por).toBe(testUserId);
+  });
+});
+
+describe('PUT /api/terras/:id', () => {
+  const criarTerra = async () => {
+    const res = await request(app).post('/api/terras').send(terraValida());
+    expect(res.status).toBe(201);
+    return res.body;
+  };
+
+  it('Caso 1 — atualiza campos válidos → 200 e retorna terra atualizada', async () => {
+    const terra = await criarTerra();
+
+    const res = await request(app).put(`/api/terras/${terra.id}`).send({
+      nome: 'Fazenda Santa Maria Editada',
+      area_contratada_ha: 200.75,
+      cidade: 'Sertãozinho',
+      estado: 'SP',
+      status: 'ativo',
+      atualizado_por: testUserId,
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body.id).toBe(terra.id);
+    expect(res.body.nome).toBe('Fazenda Santa Maria Editada');
+    expect(Number(res.body.area_contratada_ha)).toBe(200.75);
+    expect(res.body.cidade).toBe('Sertãozinho');
+    expect(res.body.status).toBe('ativo');
+    expect(res.body.atualizado_por).toBe(testUserId);
+    expect(res.body.atualizado_em).toBeDefined();
+  });
+
+  it('Caso 2 — body sem campo editável → 400', async () => {
+    const terra = await criarTerra();
+
+    const res = await request(app).put(`/api/terras/${terra.id}`).send({
+      atualizado_por: testUserId,
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/campo editável/);
+  });
+
+  it('Caso 3 — terra inexistente → 404', async () => {
+    const res = await request(app).put(`/api/terras/${UUID_INEXISTENTE}`).send({
+      nome: 'Fazenda Inexistente',
+      atualizado_por: testUserId,
+    });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toMatch(/Terra não encontrada/);
+  });
+
+  it('Caso 4 — atualizado_por ausente → 400', async () => {
+    const terra = await criarTerra();
+
+    const res = await request(app).put(`/api/terras/${terra.id}`).send({
+      nome: 'Fazenda Sem Auditoria',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/atualizado_por/);
+  });
+
+  it('Caso 5 — atualizado_por inexistente (FK) → 422', async () => {
+    const terra = await criarTerra();
+
+    const res = await request(app).put(`/api/terras/${terra.id}`).send({
+      nome: 'Fazenda Sem Usuario Valido',
+      atualizado_por: UUID_INEXISTENTE,
+    });
+
+    expect(res.status).toBe(422);
+    expect(res.body.error).toMatch(/atualizado_por/);
+  });
+
+  it('Caso 6 — persistência: dados editados conferem com o banco', async () => {
+    const terra = await criarTerra();
+
+    const res = await request(app).put(`/api/terras/${terra.id}`).send({
+      nome: 'Fazenda Persistida',
+      estado: 'MG',
+      atualizado_por: testUserId,
+    });
+
+    expect(res.status).toBe(200);
+
+    const { rows } = await pool.query('SELECT * FROM terras WHERE id = $1', [terra.id]);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].nome).toBe('Fazenda Persistida');
+    expect(rows[0].estado).toBe('MG');
+    expect(rows[0].atualizado_por).toBe(testUserId);
+    expect(rows[0].atualizado_em).toBeDefined();
   });
 });

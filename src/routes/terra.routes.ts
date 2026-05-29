@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { createTerra } from '../controllers/terraController';
+import { createTerra, updateTerra } from '../controllers/terraController';
 
 // ─── API JSON (montado em /api/terras) ───────────────────────────────────────
 export const apiRouter = Router();
 
 apiRouter.post('/', createTerra);
+apiRouter.put('/:id', updateTerra);
