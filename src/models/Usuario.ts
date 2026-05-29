@@ -16,3 +16,6 @@ export interface UsuarioComPerfil extends Usuario {
 
 export type CriarUsuarioDTO = Omit<Usuario, 'id' | 'criado_em'>;
 export type AtualizarPerfilUsuarioDTO = Pick<Usuario, 'perfil_acesso_id'>;
+export type AtualizarUsuarioDTO = Partial<
+  Pick<Usuario, 'nome' | 'email' | 'ativo' | 'perfil_acesso_id'>
+>;
