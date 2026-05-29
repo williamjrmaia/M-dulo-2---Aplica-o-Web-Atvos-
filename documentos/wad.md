@@ -1245,252 +1245,282 @@ https://excalidraw.com/#json=5HLRZVY2n7lELvcKSG7r3,M0e1IsL3CvTZeFLNSC1-ww
 
 ## 3.4. Guia de estilos (sprint 3)
 
-Este guia de estilos apresenta orientações gerais para a utilização dos elementos visuais e comunicacionais da solução, com o objetivo de garantir consistência e padronização em todas as aplicações da marca. Nele, são definidos aspectos como paleta de cores, tipografia, iconografia e demais componentes visuais, assegurando que o desenvolvimento de interfaces e materiais mantenha uma identidade coesa e alinhada aos valores do projeto. Além disso, o guia contribui para facilitar a aplicação correta desses elementos, promovendo uma comunicação mais clara, organizada e reconhecível pelo público-alvo.
+O guia de estilos consolida os padrões visuais do **Safra Control**, sistema voltado à gestão de fornecedores, proprietários de terra, usuários internos e histórico de relacionamento agrícola. Ele serve como referência direta para o protótipo de alta fidelidade apresentado na seção 3.5, garantindo que as telas mantenham consistência visual, previsibilidade de interação e alinhamento com a identidade institucional da **ATVOS**.
+
+Este guia padroniza cores, tipografia, espaçamentos, grid, radius, sombras, componentes, ícones, estados visuais e exemplos de aplicação. A proposta não é apenas registrar a aparência da interface, mas também explicar **onde cada elemento deve ser usado** e **por que aquela escolha visual foi feita** no contexto do **Safra Control**. A identidade visual estruturada pelo grupo **Atwatts** foi alinhada ao contexto operacional da **ATVOS**, preservando a leitura corporativa necessária para uma plataforma de relacionamento agrícola.
 
 ### 3.4.1. Cores
 
-A definição da paleta de cores do projeto foi baseada na identidade visual da Atvos, seguindo os princípios estabelecidos em seu guia de marca. As cores escolhidas têm como objetivo transmitir os valores da empresa, como inovação, sustentabilidade, energia, confiança e transformação, reforçando visualmente a proposta da plataforma web desenvolvida para o gerenciamento de parceiros e fornecedores de cana.
-
-De acordo com Farina et al. (2011), as cores possuem influência direta na percepção emocional e sensorial dos usuários, sendo capazes de despertar sentimentos e fortalecer a comunicação visual de um produto digital. Pensando nisso, a paleta adotada busca criar uma experiência visual moderna, acessível e alinhada ao posicionamento da Atvos como uma empresa voltada à produção de energia limpa e inovação sustentável.
-
-Os tons de laranja e amarelo, presentes na identidade da Atvos, foram selecionados para representar energia, dinamismo, inovação e proximidade. Essas cores reforçam o conceito de movimento e transformação presentes no propósito da marca. Já o azul institucional transmite estabilidade, confiança e profissionalismo, contribuindo para a credibilidade da plataforma e para uma navegação mais equilibrada visualmente.
-
----
-
-<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+A paleta visual do **Safra Control** foi definida a partir da identidade institucional da **ATVOS**. Ela combina laranjas, amarelo e azul institucional para diferenciar ações, navegação, estados e informações de apoio. Essa separação ajuda o usuário a identificar rapidamente o que é ação principal, o que é estrutura da interface e o que representa atenção, validação ou status.
 
 <div align="center">
-
-<div style="width:140px;height:140px;background:#FF681A;border-radius:14px;"></div>
-
-**Laranja Escuro**  
-HEX: `#FF681A`  
-RGB: `rgb(255, 104, 26)`  
-RGBA: `rgba(255, 104, 26, 1)`
-
+  <sub>Figura 3.4.1 - Paleta visual derivada da identidade da ATVOS</sub><br>
+  <img src="./assets/guia_de_estilos/guia_cores_institucionais.png" width="100%" alt="Paleta visual do Safra Control derivada da identidade institucional da ATVOS"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
+
+O **laranja escuro `#FF681A`** é usado em CTAs, botões primários e ações de destaque, como "Entrar", "Novo Fornecedor" e "Salvar Fornecedor". Ele foi escolhido por remeter à energia, movimento e identidade institucional da **ATVOS**, além de orientar a ação prioritária do usuário. O **laranja médio `#FF8100`** aparece em estados de hover e variações de destaque, indicando interatividade sem romper a consistência da ação principal. O **laranja claro `#FFA500`** é usado em highlights e indicadores visuais secundários, principalmente quando é necessário destacar uma informação sem transformá-la em CTA.
+
+O **amarelo ATVOS `#FFCD00`** é utilizado com moderação em estados de atenção, indicadores e badges informativos. Sua função é chamar atenção para pendências, prazos ou avisos sem competir com o botão primário. O **azul ATVOS `#3F5B70`** aparece em navbar, botões secundários, avatar, textos de apoio e componentes corporativos, pois transmite confiança, estabilidade e clareza operacional.
 
 <div align="center">
-
-<div style="width:140px;height:140px;background:#FF8100;border-radius:14px;"></div>
-
-**Laranja Médio**  
-HEX: `#FF8100`  
-RGB: `rgb(255, 129, 0)`  
-RGBA: `rgba(255, 129, 0, 1)`
-
+  <sub>Figura 3.4.2 - Cores neutras, semânticas e status</sub><br>
+  <img src="./assets/guia_de_estilos/guia_cores_neutras_semanticas.png" width="100%" alt="Cores neutras, semânticas e status do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
-<div align="center">
+As cores neutras estruturam a interface. O fundo principal `#F7F8FA` separa a área da página dos cards brancos `#FFFFFF`; as bordas `#D9DEE3` delimitam inputs, tabelas e cards; os divisores `#E5E7EB` separam linhas e grupos de conteúdo; e os textos `#1F2933`, `#5C6670` e `#9CA3AF` criam hierarquia entre informação principal, apoio e conteúdo desabilitado.
 
-<div style="width:140px;height:140px;background:#FFA500;border-radius:14px;"></div>
+As cores semânticas indicam feedbacks do sistema. Sucesso usa `#16803C` com fundo `#DCFCE7`; erro usa `#D92D20` com fundo `#FEF2F2`; alerta usa `#F59E0B` com fundo `#FEF9C3`; informação usa `#2563EB` com fundo `#DBEAFE`. Em todos os casos, a cor deve aparecer acompanhada de texto e, quando possível, ícone, evitando que o usuário dependa apenas da cor para compreender a mensagem.
 
-**Laranja Claro**  
-HEX: `#FFA500`  
-RGB: `rgb(255, 165, 0)`  
-RGBA: `rgba(255, 165, 0, 1)`
-
-</div>
-
-<div align="center">
-
-<div style="width:140px;height:140px;background:#FFCD00;border-radius:14px;"></div>
-
-**Amarelo Atvos**  
-HEX: `#FFCD00`  
-RGB: `rgb(255, 205, 0)`  
-RGBA: `rgba(255, 205, 0, 1)`
-
-</div>
-
-<div align="center">
-
-<div style="width:140px;height:140px;background:#3F5B70;border-radius:14px;"></div>
-
-**Azul Atvos**  
-HEX: `#3F5B70`  
-RGB: `rgb(63, 91, 112)`  
-RGBA: `rgba(63, 91, 112, 1)`
-
-</div>
-
-</div>
-
----
-
-Dessa forma, a paleta de cores estabelece uma conexão estratégica entre a identidade visual da Atvos e a experiência do usuário dentro da plataforma, fortalecendo a consistência visual, o reconhecimento da marca e a proposta tecnológica e sustentável do projeto.
+| Grupo | Cor | Código | Uso na interface | Justificativa |
+|---|---|---|---|---|
+| Institucional | Laranja escuro | `#FF681A` | Botões primários e CTAs | Reforça ação principal e identidade da ATVOS |
+| Institucional | Laranja médio | `#FF8100` | Hover de botões primários e destaques | Comunica interatividade mantendo a paleta institucional |
+| Institucional | Laranja claro | `#FFA500` | Highlights e indicadores secundários | Destaca informações sem competir com o CTA |
+| Institucional | Amarelo ATVOS | `#FFCD00` | Atenção, métricas e badges informativos | Chama atenção para pendências e prazos |
+| Institucional | Azul ATVOS | `#3F5B70` | Navbar, botões secundários e elementos estruturais | Transmite confiança e estabilidade |
+| Neutra | Background | `#F7F8FA` | Fundo geral das telas | Diferencia a página dos cards e formulários |
+| Neutra | Surface | `#FFFFFF` | Cards, modais e painéis | Garante leitura limpa do conteúdo |
+| Neutra | Border | `#D9DEE3` | Inputs, cards, tabelas e divisórias | Organiza blocos sem excesso visual |
+| Neutra | Divisor | `#E5E7EB` | Linhas de tabela e separadores internos | Separa informações sem criar peso visual excessivo |
+| Neutra | Texto principal | `#1F2933` | Títulos, rótulos e dados importantes | Prioriza informações essenciais |
+| Neutra | Texto secundário | `#5C6670` | Descrições, metadados e textos de apoio | Mantém contexto sem competir com o conteúdo principal |
+| Neutra | Texto desabilitado | `#9CA3AF` | Placeholders, campos bloqueados e ações indisponíveis | Comunica limitação de uso sem parecer erro |
+| Semântica | Sucesso | `#16803C` / `#DCFCE7` | Confirmações e status ativo | Indica conclusão positiva |
+| Semântica | Erro | `#D92D20` / `#FEF2F2` | Validações e falhas | Indica necessidade de correção |
+| Semântica | Alerta | `#F59E0B` / `#FEF9C3` | Pendências, prazos e documentação incompleta | Sinaliza atenção sem indicar erro crítico |
+| Semântica | Informação | `#2563EB` / `#DBEAFE` | Avisos gerais e atualizações | Comunica orientação ou novidade do sistema |
+| Status | Rascunho | `#F3F4F6` / `#5C6670` | Cadastros iniciados e não enviados | Indica estado temporário e neutro |
+| Status | Pendente | `#FEF9C3` / `#A16207` | Cadastros aguardando validação | Sinaliza atenção sem indicar falha |
+| Status | Ativo | `#DCFCE7` / `#16803C` | Registros aprovados e disponíveis | Comunica normalidade operacional |
+| Status | Devolvido | `#FFF4ED` / `#C05111` | Registros retornados para correção | Indica retrabalho necessário |
+| Status | Inativo | `#E5E7EB` / `#374151` | Usuários ou registros desabilitados | Comunica indisponibilidade |
 
 ### 3.4.2. Tipografia
 
-A tipografia da solução foi definida com base no guia de identidade visual da Atvos, buscando manter alinhamento com a comunicação institucional da empresa e fortalecer a consistência visual da plataforma. A escolha tipográfica possui papel fundamental na experiência do usuário, influenciando diretamente a legibilidade, a organização das informações e a percepção visual da interface.
-
-De acordo com o guia de marca da Atvos, a fonte institucional utilizada é a **Tahoma**, adotada por sua simplicidade, clareza visual e ampla compatibilidade entre diferentes sistemas e dispositivos. Essas características tornam a tipografia adequada para aplicações digitais, garantindo boa leitura em diferentes resoluções e contextos de uso.
-
-A família tipográfica **Tahoma** será utilizada em toda a plataforma web, contribuindo para uma interface limpa, moderna e padronizada. Além disso, diferentes pesos tipográficos serão aplicados para estabelecer hierarquia visual entre títulos, subtítulos, textos corridos e elementos interativos da interface.
+A fonte principal do Safra Control é **Tahoma**, adotada por sua alta legibilidade, boa compatibilidade em ambientes web, aparência limpa e adequação a sistemas com formulários, tabelas e grande volume de informação. A escolha favorece a leitura contínua em telas operacionais e mantém coerência com a identidade visual definida para o projeto.
 
 <div align="center">
-  <sub>Imagem 3.4.2.: Tipografia utilizada na plataforma</sub><br>
-  <img src="./assets/tipografia/tipografia_do_sistema_web.png" alt="Tipografia da plataforma"><br>
-  <sup>Fonte: Material produzido pelos autores (2026).</sup>
+  <sub>Figura 3.4.3 - Escala tipográfica do Safra Control</sub><br>
+  <img src="./assets/guia_de_estilos/guia_tipografia.png" width="100%" alt="Tipografia do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
-A utilização da fonte Tahoma proporciona uma leitura clara e objetiva, favorecendo a usabilidade e a acessibilidade da plataforma. Sua estrutura simples e limpa contribui para uma comunicação visual mais organizada, reduzindo ruídos visuais e melhorando a experiência do usuário durante a navegação.
+| Estilo | Tamanho | Peso | Aplicação | Justificativa |
+|---|---:|---|---|---|
+| Display | `32px` | Bold `700` | Títulos principais do design system e telas de apresentação | Cria destaque máximo sem uso excessivo na interface |
+| Título de página | `24px` | Bold `700` | Cabeçalhos de telas como Fornecedores, Proprietários e Usuários | Garante hierarquia visual clara |
+| Subtítulo de seção | `18px` | Bold `700` | Blocos como Dados Cadastrais, Dados Agrícolas e Histórico | Facilita varredura da tela |
+| Corpo | `16px` | Regular `400` | Descrições, instruções e textos corridos | Garante leitura contínua |
+| Corpo menor | `14px` | Regular `400` | Células, formulários e detalhes cadastrais | Permite densidade sem perder legibilidade |
+| Label | `14px` | Medium `600` | Rótulos de inputs, selects e filtros | Ajuda a identificar campos |
+| Botão | `14px` | Bold `700` | Ações clicáveis | Reforça interatividade |
+| Texto auxiliar | `12px` | Regular `400` | Hints, metadados, datas e mensagens de apoio | Reduz ruído visual |
+| Erro | `12px` | Medium `600` | Validação de campos | Destaca necessidade de correção |
+| Status/Chip | `12px` | Medium `600` | Chips de status e badges de perfil | Mantém estados legíveis em espaços reduzidos |
+| Texto de tabela/listagem | `13px` | Regular `400` | Células de tabelas, listagens e resultados de busca | Permite comparação de registros com boa densidade |
 
-Além disso, a padronização tipográfica fortalece a identidade visual do projeto, mantendo coerência com os materiais institucionais e com a identidade corporativa da Atvos.
+A tipografia aparece no login, nas listagens de parceiros, nos formulários de cadastro, nos detalhes do parceiro, no histórico de interações, na gestão de usuários e nos modais. O uso consistente dos tamanhos evita que telas densas pareçam desorganizadas e permite que o usuário diferencie rapidamente título, dado cadastral, metadado e mensagem de erro.
 
+A aplicação tipográfica também foi definida para manter contraste em diferentes fundos. Em fundo claro `#F7F8FA`, títulos e dados principais usam `#1F2933`; em fundo institucional ou escuro, o texto deve usar branco ou neutro muito claro para preservar leitura; em cards brancos, labels e valores mantêm hierarquia por peso e tamanho; em botões primários, o texto branco em bold reforça a ação clicável; em alertas de erro, o texto vermelho acompanha borda e fundo sem depender apenas da cor; em chips de status, pesos médios e textos curtos garantem legibilidade mesmo em áreas reduzidas.
 
+### 3.4.3. Espaçamento, grid, radius e sombras
 
-### 3.4.3. Iconografia e imagens
-A identidade visual da plataforma **safra control** foi desenvolvida para representar a união entre o agronegócio, a gestão de parceiros agrícolas e a transformação digital. A proposta visual combina elementos associados à cana-de-açúcar, à energia renovável, à tecnologia e à organização de dados em um sistema CRM corporativo.
-
-A linguagem gráfica adotada segue um estilo **minimalista, geométrico e vetorial**, alinhado à identidade da ATVOS. O uso de formas simples, traços limpos, cores institucionais e composição equilibrada reforça a percepção de uma plataforma moderna, confiável e adequada ao contexto do agronegócio.
-
----
+O design system utiliza uma estrutura baseada em múltiplos de 4px, com uso recorrente de múltiplos de 8px para compor espaçamentos de interface. Essa escolha melhora alinhamento, consistência e organização visual, especialmente em telas com muitos campos e registros. O grid desktop possui largura de referência de `1440px`, 12 colunas, gutter de `24px` e margem horizontal de `80px`.
 
 <div align="center">
-  <sub>Imagem 3.4.3.1.: Opções de cores - Fundo claro e escuro</sub><br>
-  <img src="./assets/iconografia_e_imagens/logo_modo_claro_e_escuro.png" alt="Logos"><br>
-  <sup>Fonte: Material produzido pelos autores (2026).</sup>
+  <sub>Figura 3.4.4 - Espaçamento, radius, sombras e grid</sub><br>
+  <img src="./assets/guia_de_estilos/guia_espacamento_grid.png" width="100%" alt="Espaçamento, grid, radius e sombras do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
-## Logo safra control
+O espaçamento pequeno é usado entre ícones, labels e elementos próximos; o médio organiza campos de formulário, botões e linhas internas de cards; e o grande separa seções, como filtros, tabelas, dados cadastrais e histórico de interações. O radius de `8px` aparece em inputs e botões; o de `12px` em cards e painéis; e valores maiores são reservados para modais e elementos circulares, como avatares e chips.
 
-A logo da **safra control** foi criada a partir de uma composição abstrata que combina referências visuais ao campo e à tecnologia. O símbolo principal utiliza formas geométricas para sugerir, ao mesmo tempo, **talos de cana-de-açúcar**, **linhas de energia** e **conexões digitais**.
+As sombras são leves e funcionais. Elas não têm papel decorativo principal, mas ajudam a separar camadas, como cards, dropdowns, modais e estados de foco. Isso mantém a interface clara para uso corporativo e evita excesso visual em telas de consulta.
 
-### Elementos da logo
+| Token visual | Aplicação | Justificativa |
+|---|---|---|
+| Espaçamento pequeno | Ícones, labels e elementos próximos | Mantém compactação sem poluir |
+| Espaçamento médio | Campos de formulário e botões | Melhora leitura e área de clique |
+| Espaçamento grande | Separação entre seções | Cria hierarquia visual |
+| Grid 12 colunas | Listagens, formulários e páginas internas | Mantém alinhamento entre módulos |
+| Radius 8px | Inputs e botões | Mantém aparência moderna e clara |
+| Radius 12px | Cards e modais | Diferencia blocos de conteúdo |
+| Sombra leve | Cards, dropdowns e modais | Cria profundidade sem excesso decorativo |
 
-#### Canas-de-açúcar
-As formas verticais em tons de laranja e amarelo representam os **talos da cana-de-açúcar**, principal referência agrícola da marca. A divisão em segmentos remete à estrutura natural da cana, enquanto a construção geométrica reforça o caráter digital e sistematizado da plataforma.
+### 3.4.4. Botões
 
-Esses elementos comunicam:
+Os botões foram padronizados para diferenciar ações principais, secundárias, exportação e ações críticas. Essa distinção é importante porque o **Safra Control** possui fluxos com consequências diferentes, como salvar um fornecedor, cancelar um cadastro, exportar CSV ou inativar um usuário.
 
-- origem agrícola da plataforma;
-- vínculo com fornecedores e parceiros do campo;
-- produtividade;
-- energia renovável;
-- crescimento sustentável.
+<div align="center">
+  <sub>Figura 3.4.5 - Botões e estados de interação</sub><br>
+  <img src="./assets/guia_de_estilos/guia_botoes.png" width="100%" alt="Botões do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
 
-#### Folha lateral
-
-A forma curva localizada ao lado dos talos representa uma **folha ou broto agrícola**. Esse elemento reforça a conexão com o campo, com a sustentabilidade e com o ciclo produtivo da cana-de-açúcar.
-
-A folha também contribui para suavizar a composição, equilibrando os elementos técnicos com uma referência orgânica.
-
-#### Elemento tecnológico lateral
-
-O elemento em azul aço, posicionado ao lado das canas, representa a dimensão tecnológica da plataforma. Sua forma inclinada contribui para a construção visual da letra **“A”**, inicial de **Atvos**, enquanto as linhas paralelas e os pontos circulares remetem a **circuitos eletrônicos, conexões digitais e fluxo de dados**.
-
-Esse componente simboliza:
-
-- automação de processos;
-- inteligência de dados;
-- integração entre áreas;
-- gestão digital de parceiros;
-- inovação aplicada ao agronegócio.
-
-#### Composição em formato de “A”
-
-A junção entre as canas, a folha, o arco inferior e o elemento tecnológico forma uma composição que sugere a letra **“A”**. Essa construção reforça a identidade nominal da plataforma e cria um símbolo proprietário, reconhecível e alinhado ao nome da **Atvos**.
-
-### Cores da logo
-
-A paleta da logo utiliza cores associadas à identidade ATVOS:
-
-| Cor | Código | Aplicação | Significado |
+| Componente | Uso | Exemplo no sistema | Justificativa |
 |---|---|---|---|
-| Laranja institucional | `#FF681A` | Elementos de energia e destaque | Energia, movimento e inovação |
-| Laranja de apoio | `#FF8100` | Acentos e variações quentes | Dinamismo e produtividade |
-| Amarelo dourado | `#FFCD00` | Canas, folhas e detalhes agrícolas | Luz, crescimento e sustentabilidade |
-| Azul aço profundo | `#3F5B70` | Elemento tecnológico e wordmark | Confiança, gestão e tecnologia |
-| Azul claro para modo escuro | `#6B8FA8` | Versão dark mode | Legibilidade e contraste |
+| Button/Primary | Ações principais | Entrar, Salvar alterações, Novo Fornecedor, Enviar para validação | Direciona a ação prioritária do usuário |
+| Button/Secondary | Ações auxiliares | Voltar, Cancelar, Limpar filtros | Evita competição com o CTA principal |
+| Button/Export | Exportação de dados | Exportar CSV | Diferencia ação de download das demais ações |
+| Button/Danger | Ações críticas | Inativar usuário, Confirmar inativação | Sinaliza impacto e necessidade de cautela |
+| Button/Disabled | Ações indisponíveis | Formulário incompleto ou operação bloqueada | Evita erro de uso |
 
-### Versões da logo
+Os estados documentados são **default**, **hover**, **pressed**, **disabled**, **loading** e **success**. O estado loading deve aparecer em ações assíncronas, como salvar cadastro ou gerar CSV. O estado success é usado quando uma operação é concluída, por exemplo, quando a exportação está pronta para download. A padronização dos estados reduz dúvida durante operações críticas e melhora a percepção de resposta do sistema.
 
-A identidade contempla diferentes versões de aplicação:
+### 3.4.5. Formulários, inputs e filtros
 
-#### Versão principal
-
-A versão principal utiliza fundo branco ou claro, com elementos em laranja, amarelo e azul aço. Essa versão deve ser priorizada em telas institucionais, apresentações, documentação e ambientes com fundo claro.
-
-#### Versão monocromática formal
-
-A versão monocromática utiliza tons escuros de azul aço e azul-marinho sobre fundo branco ou off-white. Essa aplicação é recomendada para contextos mais formais, materiais técnicos, documentos institucionais ou situações em que o uso de múltiplas cores não seja adequado.
-
----
+Os formulários foram desenhados para suportar cadastros longos de fornecedores, proprietários e usuários, mantendo legibilidade e validação clara. Como o Safra Control depende de dados cadastrais confiáveis, os campos precisam orientar o preenchimento e indicar erros sem ambiguidade.
 
 <div align="center">
-  <sub>Imagem 3.4.3.2.: Icones utilizados no protótipo de alta fidelidade</sub><br>
-  <img src="./assets/iconografia_e_imagens/iconografia.png" alt="Iconografia"><br>
-  <sup>Fonte: Material produzido pelos autores (2026).</sup>
+  <sub>Figura 3.4.6 - Inputs, filtros, searchbar e textarea</sub><br>
+  <img src="./assets/guia_de_estilos/guia_formularios.png" width="100%" alt="Formulários, inputs e filtros do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
-A iconografia da plataforma **safra control** foi desenvolvida para apoiar a navegação e a compreensão das principais funcionalidades do CRM. Os ícones representam ações, estados e entidades comuns ao contexto de gestão de parceiros agrícolas e fornecedores de cana-de-açúcar.
+| Componente | Uso no Safra Control | Exemplo | Justificativa |
+|---|---|---|---|
+| Input/Text | Dados cadastrais | Nome, CPF/CNPJ, e-mail, telefone | Padroniza entrada de dados |
+| Input/Password | Autenticação | Senha no login | Mantém segurança visual do acesso |
+| Select/Filter | Filtros e seleção de perfil | Estado, região, tipo de parceiro, perfil de acesso | Reduz erro de digitação |
+| SearchBar | Busca em listagens | Buscar fornecedores ou proprietários | Facilita localização rápida |
+| TextArea | Campos livres | Observações e descrição da interação | Permite contexto textual maior |
+| Input/Error | Validação | CPF duplicado, e-mail inválido, campo obrigatório | Indica correção necessária |
 
-O conjunto segue uma linguagem visual consistente com a logo: formas simples, traços arredondados, composição geométrica e uso controlado das cores institucionais.
+Os estados previstos são **default**, **focus**, **filled**, **error** e **disabled**. O foco usa destaque laranja para indicar edição ativa. O erro usa borda e mensagem em vermelho para orientar correção imediata. Campos desabilitados aparecem em cinza para indicar que a informação não pode ser editada naquele momento, como dados bloqueados por permissão ou status de validação.
 
-### Estilo visual dos ícones
+### 3.4.6. Navegação e cards
 
-Os ícones utilizam estilo **flat vector outline**, com traço aproximado de **2px**, cantos arredondados e baixa complexidade visual. A estrutura principal é desenhada em branco ou off-white, enquanto detalhes funcionais recebem acentos em laranja e amarelo.
+A navegação principal organiza os módulos centrais do **Safra Control**: **Fornecedores**, **Proprietários**, **Usuários**, além da área de perfil e saída. A navbar aparece nas telas internas para manter o usuário orientado durante consulta, cadastro, edição e gestão de acesso.
 
-Essa abordagem garante:
+<div align="center">
+  <sub>Figura 3.4.7 - Navbar e cards de informação</sub><br>
+  <img src="./assets/guia_de_estilos/guia_navbar_cards.png" width="100%" alt="Navbar e cards do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
 
-- leitura rápida em dashboards;
-- consistência entre diferentes telas;
-- boa adaptação a interfaces web;
-- aparência corporativa e moderna;
-- associação direta com a identidade ATVOS.
+O item ativo da navbar usa laranja e linha inferior para indicar localização atual. Essa escolha é relevante porque fornecedores e proprietários possuem telas parecidas; o estado ativo reduz risco de navegação equivocada. O hover indica interatividade, e a área de perfil mostra nome, papel e ação de sair, reforçando controle de sessão.
 
-### Paleta aplicada à iconografia
+Os cards organizam informações em blocos reconhecíveis. O **Card/Partner** resume dados essenciais de fornecedores e proprietários; o **Card/User** mostra dados de usuários, permissões e status; e o **Card/Info** agrupa informações cadastrais na tela de detalhe do parceiro.
 
-| Cor | Código | Uso nos ícones |
+| Componente | Uso | Onde aparece | Justificativa |
+|---|---|---|---|
+| Navigation/Header | Navegação global | Todas as telas internas | Mantém orientação do usuário |
+| Card/Partner | Listagem resumida de parceiros | Fornecedores e proprietários | Resume dados essenciais para consulta |
+| Card/User | Gestão de usuários | Tela de usuários | Exibe permissões, status e ações |
+| Card/Info | Detalhes do parceiro | Perfil detalhado | Agrupa informações por categoria |
+| Card/Metric | Indicadores quantitativos | Dashboards e resumos | Facilita leitura rápida de números relevantes |
+
+### 3.4.7. Tabelas, listagens e status
+
+Tabelas e listagens são usadas para leitura comparativa de dados, validação de registros, gestão de usuários e acompanhamento de parceiros. Elas aparecem em fluxos nos quais o usuário precisa comparar muitos registros, aplicar filtros e executar ações por linha.
+
+<div align="center">
+  <sub>Figura 3.4.8 - Tabelas, listagens e chips de status</sub><br>
+  <img src="./assets/guia_de_estilos/guia_tabelas_status.png" width="100%" alt="Tabelas, listagens e status do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+As tabelas utilizam cabeçalhos em caixa alta, células compactas e divisórias claras, favorecendo varredura visual. Os chips de status aparecem em cards, tabelas e telas de detalhe para sintetizar o estado do registro sem exigir leitura de campos longos.
+
+| Status | Uso | Significado | Justificativa visual |
+|---|---|---|---|
+| Rascunho | Cadastros incompletos | Registro salvo, mas não enviado | Cor neutra indica estado temporário |
+| Pendente | Fila de validação | Aguardando análise ou documentação | Cor de atenção indica ação necessária |
+| Ativo | Registro aprovado | Disponível nas consultas e operações | Cor positiva indica normalidade |
+| Devolvido | Correção necessária | Retornado pelo coordenador | Cor de alerta indica retrabalho |
+| Inativo | Usuário ou registro desabilitado | Acesso ou uso bloqueado | Cor neutra escura indica indisponibilidade |
+
+### 3.4.8. Histórico de interações
+
+O histórico de interações é um componente essencial do Safra Control, pois responde diretamente à dor de perda de histórico entre analistas, coordenadores e gestores. Ele transforma contatos, visitas, reuniões e observações em memória institucional consultável.
+
+<div align="center">
+  <sub>Figura 3.4.9 - Histórico de interações em timeline</sub><br>
+  <img src="./assets/guia_de_estilos/guia_historico_interacoes.png" width="100%" alt="Histórico de interações do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+O componente **Timeline/InteractionItem** apresenta data, tipo de interação, responsável, descrição, ícone e ordem cronológica. As interações mais recentes ficam no topo para facilitar consulta antes de reuniões, negociações ou atualizações cadastrais.
+
+Esse componente deve ser usado na tela de detalhes do fornecedor, na tela de detalhes do proprietário e em qualquer fluxo de acompanhamento de relacionamento. A timeline torna o histórico mais rastreável, legível e institucional, reduzindo dependência de conhecimento individual ou registros dispersos em planilhas e mensagens.
+
+### 3.4.9. Modais, alertas e estados vazios
+
+Modais, alertas e empty states são usados para feedback de ações importantes. Eles ajudam o usuário a entender se uma operação foi concluída, se houve erro, se existe pendência ou se uma lista não possui resultados.
+
+<div align="center">
+  <sub>Figura 3.4.10 - Modais, alertas e estado vazio</sub><br>
+  <img src="./assets/guia_de_estilos/guia_modais_alertas.png" width="100%" alt="Modais, alertas e estados vazios do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+| Componente | Uso | Exemplo | Justificativa |
+|---|---|---|---|
+| Modal/ExportCSV | Confirmação de exportação | Arquivo CSV gerado | Dá retorno claro ao usuário |
+| Modal/ConfirmInactiveUser | Ação crítica | Inativar usuário | Evita ações acidentais |
+| Alert/Success | Confirmação | Cadastro salvo | Reforça conclusão da tarefa |
+| Alert/Error | Falha ou validação | Campo obrigatório ou erro ao salvar | Direciona correção |
+| Alert/Warning | Atenção operacional | Documentação pendente | Sinaliza necessidade de acompanhamento |
+| Alert/Info | Informação geral | Nova versão disponível | Comunica orientação sem bloquear fluxo |
+| EmptyState | Lista vazia | Nenhum parceiro encontrado | Evita tela sem contexto |
+
+Modais devem ser usados apenas quando a ação exige confirmação ou atenção concentrada, como exportar dados ou inativar usuários. Alertas aparecem após ações ou em situações de validação. Empty states devem explicar o motivo da ausência de dados e oferecer uma ação de recuperação, como limpar filtros.
+
+### 3.4.10. Iconografia e imagens
+
+A iconografia usa estilo uniforme, preferencialmente outline/linear, com traço regular, proporção consistente e cor padronizada. O design system adota a família Lucide React, com ícones vetoriais de aparência leve, espessura aproximada de `1.5px` a `2px` e aplicação em botões, inputs, cards, tabelas, modais e timeline. A cor base segue o azul institucional ou tons neutros; cores semânticas são reservadas para sucesso, erro, alerta e informação.
+
+<div align="center">
+  <sub>Figura 3.4.11 - Biblioteca de ícones do Safra Control</sub><br>
+  <img src="./assets/guia_de_estilos/guia_iconografia.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+| Ícone | Função | Onde usar | Justificativa |
+|---|---|---|---|
+| Busca | Pesquisar registros | SearchBar | Ícone reconhecido universalmente |
+| Filtro | Refinar listagem | Filtros de parceiros e usuários | Representa seleção de critérios |
+| Download/Exportação | Exportar dados | Exportar CSV | Associação direta com baixar arquivo |
+| Editar | Alterar dados | Detalhes, cards e formulários | Indica modificação |
+| Histórico | Ver interações | Perfil do parceiro | Relaciona-se à linha do tempo |
+| Alerta | Problemas ou atenção | Erros, warnings e pendências | Comunica risco ou pendência |
+| Sucesso | Confirmação positiva | Alertas e status ativo | Reforça conclusão da ação |
+| Usuário | Representar conta interna | Navbar, gestão de usuários e avatar | Identifica perfil logado e permissões |
+| Parceiro | Representar grupo ou parceiro | Módulos de fornecedores e proprietários | Comunica entidade principal do Safra Control |
+| Calendário | Representar data | Histórico e atualização | Facilita leitura temporal |
+| Status | Indicador visual | Chips e tabelas | Reforça estado do registro |
+| Inativar | Bloquear usuário | Gestão de usuários | Sinaliza ação administrativa crítica |
+| Sair | Encerrar sessão | Navbar | Comunica logout |
+| Voltar | Retornar tela | Formulários e detalhes | Facilita navegação reversa |
+| Salvar | Confirmar formulário | Cadastro e edição | Comunica persistência de dados |
+
+A uniformidade dos ícones reduz ruído visual e ajuda o usuário a reconhecer ações recorrentes. Ícones podem aparecer sozinhos apenas em ações frequentes e de baixo risco, desde que haja contexto visual suficiente. Em ações sensíveis, como inativar usuário, exportar dados, salvar alterações ou sair do sistema, o ícone deve aparecer acompanhado de label textual, pois a clareza da ação é mais importante do que a economia de espaço.
+
+### 3.4.11. Exemplos de aplicação no protótipo
+
+Os componentes do guia foram aplicados no protótipo de alta fidelidade da seção 3.5. Esses exemplos mostram como cores, tipografia, espaçamento, botões, formulários, cards, tabelas, timeline, modais e ícones se combinam em telas reais do **Safra Control**.
+
+<div align="center">
+  <sub>Figura 3.4.12 - Exemplos de aplicação no protótipo</sub><br>
+  <img src="./assets/guia_de_estilos/guia_exemplos_aplicacao.png" width="100%" alt="Exemplos de aplicação do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+A tela de login aplica inputs, botão primário, identidade visual e validação. As listagens de parceiros usam searchbar, filtros, tabela e chips de status para organizar consulta. Os formulários de cadastro usam inputs, selects e botões para padronizar entrada de dados. As telas de detalhes combinam cards de informação e timeline para apoiar consulta e tomada de decisão. A gestão de usuários usa cards ou tabelas com status e ações administrativas. A exportação CSV usa botão específico e modal de feedback; a inativação de usuário usa modal de confirmação para reduzir risco de ação acidental.
+
+| Tela do protótipo | Componentes aplicados | Relação com o guia |
 |---|---|---|
-| Azul aço profundo | `#3F5B70` | Fundo do painel e base institucional |
-| Branco / off-white | `#FFFFFF` / `#F5F5F5` | Traço principal dos ícones |
-| Laranja | `#FF8100` | Acentos de ação, destaque e interação |
-| Laranja institucional | `#FF681A` | Detalhes de energia e movimento |
-| Amarelo dourado | `#FFCD00` | Estados positivos, validação e elementos agrícolas |
+| Login | Input, Button/Primary, Alert/Error | Aplica identidade, tipografia e validação |
+| Listagem de parceiros | SearchBar, Select/Filter, tabela, StatusChip | Organiza consulta, filtros e comparação |
+| Cadastro | Input, Select, Button/Primary, Button/Secondary | Padroniza entrada de dados |
+| Detalhes | Card/Info, Timeline, Button/Secondary | Facilita consulta de informações e histórico |
+| Gestão de usuários | Card/User, tabela, StatusChip, Button/Danger | Apoia governança de acesso |
+| Exportação CSV | Button/Export, Modal/ExportCSV | Dá feedback à ação de download |
+| Inativação de usuário | Button/Danger, Modal/ConfirmInactiveUser, Alert/Success | Reduz risco em ação crítica |
 
-### Ícones do sistema
-
-O conjunto iconográfico contempla ícones associados às principais áreas e ações da plataforma:
-
-| Ícone | Uso principal | Função na interface |
-|---|---|---|
-| Perfil do Parceiro | Cadastro e detalhe de parceiro agrícola | Acessar informações do parceiro |
-| Lista de Registros | Listagens e tabelas | Visualizar registros organizados |
-| Editar | Formulários e detalhes | Alterar informações cadastradas |
-| Buscar | Busca global e tabelas | Pesquisar parceiros, contratos ou documentos |
-| Filtrar | Listagens e relatórios | Refinar resultados exibidos |
-| Aprovação | Validação cadastral | Confirmar ou aprovar informações |
-| Histórico de Interações | Timeline do parceiro | Consultar contatos, visitas e registros anteriores |
-| Upload / Exportação | Documentos e planilhas | Enviar ou exportar arquivos |
-| Notificações | Topbar e central de alertas | Acessar avisos e pendências |
-| Área Agrícola | Propriedades e talhões | Visualizar informações de campo |
-| Vínculo Comercial | Contratos e relacionamento | Consultar acordos e parcerias |
-| Menu | Navegação principal | Expandir ou recolher menu |
-| Seta à Esquerda | Paginação e navegação | Voltar para item anterior |
-| Seta à Direita | Paginação e navegação | Avançar para próximo item |
-| Alternância de Status | Status ativo/inativo | Ativar ou desativar parceiro ou registro |
-| Voltar | Telas internas | Retornar à tela anterior |
-| Equipe | Gestão de responsáveis | Visualizar ou atribuir usuários |
-| Documento com Checklist | Conformidade documental | Consultar requisitos e pendências |
-| Download em Nuvem | Relatórios e arquivos | Baixar documentos ou exportações |
-
-### Relação entre logo e iconografia
-
-A logo e a iconografia compartilham os mesmos princípios visuais. Ambas utilizam uma linguagem geométrica, limpa e corporativa, com equilíbrio entre elementos agrícolas e digitais.
-
-A logo apresenta essa relação de forma simbólica, combinando cana-de-açúcar, energia e circuitos digitais. Já os ícones aplicam essa mesma lógica ao uso funcional da interface, representando ações como cadastro, busca, validação, histórico, documentos, equipe e gestão de áreas agrícolas.
-
-Essa continuidade visual cria uma experiência mais coesa para o usuário, pois os elementos gráficos da marca e os elementos funcionais da interface seguem o mesmo sistema de cores, proporções e estilo.
-
-## Consistência com a identidade ATVOS
-
-A identidade visual da safra control mantém coerência com a marca ATVOS por meio do uso das cores institucionais e de uma linguagem visual associada à energia, sustentabilidade e inovação.
-
-Os tons de laranja e amarelo reforçam a relação com energia renovável, produtividade e cana-de-açúcar. O azul aço transmite confiança, controle, tecnologia e maturidade corporativa. A combinação dessas cores permite que a plataforma seja percebida como uma solução digital ligada diretamente ao agronegócio, mas com aparência moderna e profissional.
-
-A ausência de sombras, texturas e elementos realistas reforça a proposta de uma interface limpa, escalável e adequada para uso em dashboards web.
+Com essa estrutura, a seção 3.4 passa a funcionar como guia prático de aplicação visual do Safra Control, conectando o design system aos fluxos que serão demonstrados no protótipo de alta fidelidade.
 
 ## 3.5. Protótipo de alta fidelidade (sprint 3)
 
