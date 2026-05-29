@@ -6,9 +6,6 @@ export class ExportaService {
   constructor(private readonly exportaRepository: ExportaRepository) {}
 
   async processarExportacaoParceiros(): Promise<Buffer> {
-    console.log('[SERVICE] processarExportacaoParceiros');
-
-    // RN01 — buscar dados do banco (pode lançar DataAccessException)
     let parceiros: ParceiroExportacao[];
     try {
       parceiros = await this.exportaRepository.buscarTodosDadosParceiros();
@@ -17,21 +14,26 @@ export class ExportaService {
       throw new DataAccessException();
     }
 
-    // RN02 — lista vazia
     if (!parceiros || parceiros.length === 0) {
       throw new EmptyDataException();
     }
 
-    // RN03 — converter para formato de exportação
+    // RN03 — converter para formato de exportação (CSV/XLSX)
     try {
-      console.log('[SERVICE] converterParaFormatoExportacao...');
       const buffer = this.converterParaFormatoExportacao(parceiros);
-      console.log('[SERVICE] Exportação concluída');
       return buffer;
     } catch (err) {
-      console.error('[SERVICE] Falha na geração do arquivo:', err);
       throw new InternalError();
     }
+  }
+
+  private escaparCampoCSV(valor: string | null | undefined): string {
+    if (valor === null || valor === undefined) return '';
+    const str = String(valor);
+    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+      return `"${str.replace(/"/g, '""')}"`;
+    }
+    return str;
   }
 
   private converterParaFormatoExportacao(parceiros: ParceiroExportacao[]): Buffer {
@@ -39,11 +41,11 @@ export class ExportaService {
     const linhas = parceiros.map((p) =>
       [
         p.id,
-        `"${p.nome}"`,
-        p.tipo_pessoa,
-        p.cpf_cnpj,
-        p.email ?? '',
-        `"${p.status}"`,
+        this.escaparCampoCSV(p.nome),
+        this.escaparCampoCSV(p.tipo_pessoa),
+        this.escaparCampoCSV(p.cpf_cnpj),
+        this.escaparCampoCSV(p.email),
+        this.escaparCampoCSV(p.status),
         p.criado_em,
       ].join(',')
     );
