@@ -553,31 +553,55 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
-| RF    | US relacionada | RN associadas    | Endpoint                                             | Método      |
-|-------|----------------|------------------|------------------------------------------------------|-------------|
-| RF001 | US08 | RN01, RN03 | `/usuarios` | POST |
-| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
-| RF003 | US08 | RN03 | `/usuarios/:id/perfil` | PUT |
-| RF004 | US01, US02 | RN09, RN10 | `/parceiros` | POST |
-| RF005 | US05 | RN10, RN11, RN12, RN19, RN20 | `/parceiros/:id` | PATCH |
-| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET |
+| RF | US relacionada | RN associadas | Endpoint visto nos diagramas | Método |
+|---|---|---|---|---|
+| RF001 | US08 | RN01, RN03 | `/api/usuarios` | POST |
+| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | PUT | 
+| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id/inativar` | PUT | 
+| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | PUT | 
+| RF004 | US01, US02 | RN09, RN10, RN11 | `/parceiros` | POST |
+| RF005 | US05 | RN10, RN11, RN12, RN19, RN20 | `/parceiros/:id` | PUT |
+| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST | 
+| RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET | 
 | RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
-| RF009 | US01, US02, US08 | RN09 | `/usuarios`, `/parceiros` | POST, PUT |
-| RF010 | US01, US02, US08 | RN10 | `/usuarios`, `/parceiros`, `/terras` | POST, PUT |
-| RF011 | US08, US09 | RN01, RN02 | `/auth/login` | POST |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros`, `/terras` | GET |
-| RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | PUT (A exclusão é lógica) |
-| RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` e `/terras/:id/parceiros` | GET, POST |
-| RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
+| RF009 | US01, US02, US08 | RN09 | `/api/usuarios` | POST | 
+| RF009 | US01, US02, US08 | RN09 | `/parceiros` | POST | 
+| RF010 | US01, US02, US08 | RN10 | `/api/usuarios` | POST | 
+| RF010 | US01, US02, US08 | RN10 | `/parceiros` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/parceiros/:id` | PUT |
+| RF010 | US01, US02, US08 | RN10 | `/terras` | POST | 
+| RF010 | US01, US02, US08 | RN10 | `/terras/:id` | PUT | 
+| RF011 | US08, US09 | RN02 | `/login` | POST | 
+| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros` | GET | 
+| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET | 
+| RF012 | US04, US06, US07 | RN07, RN08 | `/terras` | GET | 
+| RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET | 
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/usuarios/:id/inativar` | PUT | 
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/parceiros/:id` | PUT |
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/terras/:id` | PUT | 
+| RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` | GET, POST |
+| RF015 | US01, US02 | RN13, RN14 | `/terras/:id/parceiros` | GET, POST | 
+| RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET | 
 | RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF020 | US09 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
-| RF021 | US01, US02 | RN16 | `/parceiros/:id/validacao` | PUT |
-| RF022 | US11 | RN17 | `/parceiros/:id/aprovar` | PUT |
-| RF023 | US11 | RN17 | `/parceiros/:id/devolver` | PUT |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros` | POST | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id` | PUT | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras` | POST | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras/:id` | PUT | 
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros` | POST | 
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id` | PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras` | POST | 
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras/:id` | PUT | 
+| RF020 | US09 | RN15 | `/usuarios/:id/inativar` | PUT | 
+| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT | 
+| RF021 | US01, US02 | RN16 | `/parceiros/:id/validacao` | PUT | 
+| RF022 | US11 | RN17 | `/parceiros/:id/aprovar` | PUT | 
+| RF023 | US11 | RN17 | `/parceiros/:id/devolver` | PUT | 
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
