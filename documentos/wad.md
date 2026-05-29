@@ -601,7 +601,137 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.2.1. Diagrama de Arquitetura (sprints 3 e 4)
 
-*Posicione aqui o diagrama de arquitetura da solução, indicando as camadas principais (Controller, Service, Repository, Model) e suas responsabilidades. Atualize sempre que necessário.*
+
+A arquitetura da aplicação web desenvolvida para a ATVOS segue o padrão de Arquitetura em Camadas, organizada no estilo User-Controller-Service-Repository, que é usualmente adotado em aplicações back-end com Node.js por promover separação clara de responsabilidades, facilidade de manutenção e testabilidade independente de cada camada.
+<br>
+Nesse padrão, cada camada possui um papel bem definido e se comunica exclusivamente com outras camadas definidas. A camada Controller é responsável por receber as requisições HTTP, validar os dados de entrada e delegar o processamento ao Service. A camada Service é a que possui todas as regras de negócio do sistema, sendo responsável por operações entre múltiplos repositórios quando necessário e lançando exceções de domínio em caso de violação de regras. A camada de Repository abstrai o acesso ao banco de dados, isolando as queries SQL do restante da aplicação e retornando entidades mapeadas para o Service. A camada Model representa as entidades do domínio, correspondendo diretamente às tabelas do banco de dados PostgreSQL hospedado no Supabase. Adicionalmente, funções auxiliares agrupadas como Helpers oferecem utilitários transversais reutilizáveis pelos Services, como validação de e-mail, validação de CPF/CNPJ e formatação de datas.
+<br>
+O diagrama a seguir representa visualmente essa organização, evidenciando os componentes de cada camada e os relacionamentos entre eles.
+
+---
+
+```mermaid
+flowchart TB
+    classDef client fill:#AED6F1,stroke:#2E86C1,color:#1a1a1a,font-weight:bold
+    classDef controller fill:#2E75B6,stroke:#1F4E79,color:#fff,font-weight:bold
+    classDef service fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+    classDef repository fill:#70AD47,stroke:#4a7a2e,color:#1a1a1a,font-weight:bold
+    classDef model fill:#E1EB80,stroke:#96B400,color:#1a1a1a,font-weight:bold
+    classDef helper fill:#D5D8DC,stroke:#717D7E,color:#1a1a1a,font-style:italic
+    classDef banco fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef layer fill:#F2F3F4,stroke:#BDC3C7,color:#1a1a1a,font-weight:bold
+
+    %% Cliente
+    USER(["👤 Usuário\nNavegador / Cliente HTTP"]):::client
+
+    %% Helpers
+    subgraph HELPERS["🔧 Helpers (Auxiliar)"]
+        direction LR
+        H1["formatarData"]:::helper
+        H2["validarEmail"]:::helper
+        H3["validarCpfCnpj"]:::helper
+        H4["gerarLogAuditoria"]:::helper
+        H5["paginador"]:::helper
+    end
+
+    %% Camada 1 - Controllers
+    subgraph LAYER1["1. Controller"]
+        direction LR
+        C1["AprovacaoController"]:::controller
+        C2["VinculoController"]:::controller
+        C3["UsuarioController"]:::controller
+        C4["InteracaoController"]:::controller
+        C5["ParceirosController"]:::controller
+        C6["ImportacaoController"]:::controller
+        C7["AuditoriaController"]:::controller
+    end
+
+    %% Camada 2 - Services
+    subgraph LAYER2["2. Service"]
+        direction LR
+        S1["AprovacaoService"]:::service
+        S2["VinculoService"]:::service
+        S3["UsuarioService"]:::service
+        S4["InteracaoService"]:::service
+        S5["ParceirosService"]:::service
+        S6["ImportacaoService"]:::service
+        S7["AuditoriaService"]:::service
+    end
+
+    %% Camada 3 - Repositories
+    subgraph LAYER3["3. Repository"]
+        direction LR
+        R1["SolicitacaoAprovacaoRepository"]:::repository
+        R2["VinculoRepository"]:::repository
+        R3["UsuarioRepository"]:::repository
+        R4["InteracaoRepository"]:::repository
+        R5["ParceirosRepository"]:::repository
+        R6["AuditoriaRepository"]:::repository
+        R7["DestinoAgricolaRepository"]:::repository
+        R8["ComentarioRepository"]:::repository
+    end
+
+    %% Camada 4 - Models
+    subgraph LAYER4["4. Model"]
+        direction LR
+        M1["SolicitacoesAprovacao"]:::model
+        M2["VinculoUnidade"]:::model
+        M3["Interacoes"]:::model
+        M4["Usuario"]:::model
+        M5["Parceiro"]:::model
+        M6["LogsAuditoria"]:::model
+        M7["DestinoAgricola"]:::model
+        M8["Comentarios"]:::model
+    end
+
+    %% Banco
+    DB[("🐘 Banco de Dados\nPostgreSQL")]:::banco
+
+    %% Fluxo principal top-down
+    USER -->|"HTTP Request"| LAYER1
+
+    C1 --> S1
+    C2 --> S2
+    C3 --> S3
+    C4 --> S4
+    C5 --> S5
+    C6 --> S6
+    C7 --> S7
+
+    S1 --> R1
+    S2 --> R2
+    S3 --> R3
+    S4 --> R4
+    S5 --> R5
+    S6 --> R5
+    S7 --> R6
+
+    R1 --> M1
+    R2 --> M2
+    R3 --> M4
+    R4 --> M3
+    R5 --> M5
+    R6 --> M6
+    R7 --> M7
+    R8 --> M8
+
+    LAYER4 --> DB
+
+    %% Helpers usados pelos Services
+    S3 -.->|"usa"| H2
+    S5 -.->|"usa"| H3
+    S7 -.->|"usa"| H4
+    S1 -.->|"usa"| H4
+    S5 -.->|"usa"| H1
+    S3 -.->|"usa"| H5
+```
+
+---
+
+A adoção da Arquitetura em Camadas é importante pois garante que alterações em uma camada não propaguem impactos desnecessários às demais. Por exemplo, uma mudança na lógica de validação de parceiros afeta apenas o `ParceirosService`, sem exigir alterações no `ParceirosController` ou no `ParceirosRepository`. Da mesma forma, uma eventual migração de banco de dados impactaria exclusivamente a camada de Repository, preservando intactas as regras de negócio e os contratos de interface da API.
+<br>
+Essa separação também viabiliza a escrita de testes automatizados por camada de forma isolada, permitindo que Services sejam testados e que Controllers sejam validados independentemente da lógica de negócio. A inclusão dos Helpers como módulos auxiliares reforça o princípio de responsabilidade única, evitando duplicação de código entre Services distintos e centralizando lógicas de uso transversal em um único ponto de manutenção.
+<br>
 
 ### 3.2.2. Diagrama de Casos de Uso (Sprint 1)
 
@@ -855,6 +985,25 @@ As dependências foram usadas para indicar o uso de enumerações por determinad
 A herança não foi aplicada no diagrama porque os diferentes papéis comerciais de um parceiro não representam subclasses fixas de `Parceiro`. No domínio do sistema, um parceiro pode atuar como fornecedor de cana, arrendador de terra ou exercer mais de um papel ao mesmo tempo. Se fossem criadas subclasses como `Fornecedor` e `Arrendador`, haveria risco de duplicar a identidade do parceiro ou restringir indevidamente sua atuação.
 
 Por esse motivo, a modelagem utiliza a classe `VinculoComercial` para representar o papel exercido pelo parceiro em cada relação. Essa abordagem é mais flexível, evita generalizações artificiais e permite que os tipos de vínculo sejam evoluídos sem alterar a identidade principal do parceiro. Assim, a ausência de herança é uma decisão de modelagem intencional, alinhada ao funcionamento real do domínio.
+
+#### 3.2.3.1. Diagrama de Classes Arquitetural (sprint 3)
+
+
+Esta seção apresenta o Diagrama de Classes Arquitetural do backend da solução. Enquanto o diagrama de domínio tem como foco representar as principais entidades de negócio e seus relacionamentos, o diagrama arquitetural evidencia a organização interna da aplicação e a separação de responsabilidades entre as camadas que compõem a WebAPI.
+<br>
+O diagrama contempla os componentes centrais das camadas Controller, Service, Repository e Model, seguindo o padrão arquitetural adotado no projeto. A camada Controller é responsável por receber as requisições HTTP e encaminhá-las para os serviços correspondentes. A camada Service concentra as regras de negócio e a orquestração dos fluxos da aplicação. A camada Repository encapsula o acesso aos dados e a comunicação com o banco PostgreSQL/Supabase. Por fim, a camada Model representa as entidades e estruturas de dados utilizadas pelo sistema.
+<br>
+Dessa forma, o diagrama permite visualizar como os principais fluxos identificados nos diagramas de sequência, como cadastro de usuários, login, gestão de parceiros, terras, interações, dashboards e exportação de dados, são organizados dentro da arquitetura do backend.
+<br>
+
+<div align="center">
+  <sub>Figura 3.2.3.1.1 - Diagrama de Classes Arquitetural</sub><br>
+  <img src="/documentos/assets/diagrama_de_classes_arquitetural.png" width="100%" alt="Diagrama de Classes Arquitetural"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+
+Portanto, o Diagrama de Classes Arquitetural complementa o Diagrama de Classes do Domínio ao demonstrar a estrutura interna do backend e a comunicação entre as camadas Controller, Service, Repository e Model. Essa representação evidencia a organização modular da WebAPI e reforça a separação de responsabilidades adotada no projeto, facilitando a manutenção, os testes e a evolução dos fluxos principais do sistema.
 
 ### 3.2.4. Diagrama de Sequência UML (sprint 3)
 

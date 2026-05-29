@@ -179,3 +179,4 @@ CREATE INDEX IF NOT EXISTS idx_registro_entidade ON registro_alteracao(entidade_
 CREATE INDEX IF NOT EXISTS idx_registro_usuario ON registro_alteracao(usuario_id);
 CREATE INDEX IF NOT EXISTS idx_registro_status ON registro_alteracao(status);
 CREATE INDEX IF NOT EXISTS idx_registro_operacao ON registro_alteracao(tipo_operacao);
+ALTER TABLE interacao ADD COLUMN IF NOT EXISTS status VARCHAR NOT NULL DEFAULT 'registrado';

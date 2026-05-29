@@ -6,8 +6,6 @@ export { ParceiroExportacao };
 
 export class ExportaRepository {
   async buscarTodosDadosParceiros(): Promise<ParceiroExportacao[]> {
-    console.log('[REPOSITORY] buscarTodosDadosParceiros');
-
     try {
       const result = await pool.query<ParceiroExportacao>(`
         SELECT
@@ -19,12 +17,12 @@ export class ExportaRepository {
           p.status,
           p.criado_em
         FROM parceiros p
+        WHERE p.status = 'ativo'
         ORDER BY p.criado_em DESC
       `);
 
       return result.rows;
     } catch (err) {
-      console.error('[REPOSITORY] Erro na consulta:', err);
       throw new DataAccessException();
     }
   }
