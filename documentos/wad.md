@@ -2582,28 +2582,32 @@ As oito consultas apresentadas atendem ao objetivo da seção ao relacionar oper
 
 *A RTM consolida a rastreabilidade completa do sistema. Um elo quebrado invalida toda a cadeia — mantenha-a atualizada a cada sprint. A partir da sprint 3 não deve haver lacunas nos fluxos centrais.*
 
-| Persona                            | RF    | RN               | Endpoint                          | Tela                          | Teste | Evidência        |
-|------------------------------------|-------|------------------|-----------------------------------|-------------------------------|-------|------------------|
-| Gerente de coordenadores           | RF001 | RN03             | POST /usuarios                  | Cadastro de Usuário           | ---   | ---  |
-| Gerente de coordenadores           | RF003 | RN03             | PUT /usuarios/:id/perfil        | Cadastro de Usuário           | ---   | ---  |
-| Gerente de coordenadores           | RF011 | RN01, RN02       | POST /auth/login                | Login                         | ---   | ---  |
-| Gerente de coordenadores           | RF020 | RN15             | PUT /usuarios/:id/inativar      | Listagem de Usuários          | ---   | ---  |
-| Gerente de coordenadores           | RF013 | RN12             | GET /parceiros/:id/historico | Auditoria / Histórico | --- | --- |
-| Gerente de coordenadores           | RF002 | RN01, RN06       | GET /usuarios; PUT /usuarios/:id | Gestão de Usuários            | ---   | ---  |
-| Gerente de coordenadores           | RF014 | RN06, RN07       | PUT /parceiros/:id; PUT /terras/:id | Gestão de Parceiros      | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF004 | RN09, RN10       | POST /parceiros                 | Cadastro de Parceiro          | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF010 | RN10             | POST/PUT /usuarios; POST/PUT /parceiros; POST/PUT /terras | Cadastro / Edição de Parceiro | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF009 | RN09             | POST/PUT /usuarios; POST/PUT /parceiros | Cadastro de Usuário / Parceiro | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF005 | RN10, RN11, RN12 | PUT /parceiros/:id              | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF018 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF019 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF006 | RN11             | POST /parceiros/:id/interacoes | Perfil do Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF015 | RN13, RN14       | GET/POST /parceiros/:id/terras; GET/POST /terras/:id/parceiros | Cadastro de Parceiro | --- | --- |
-| Coordenador de Estratégia de Terras| RF007 | RN04, RN08       | GET /parceiros                  | Listagem de Parceiros         | ---   | ---  |
-| Coordenador de Estratégia de Terras| RF008 | RN04, RN08       | GET /parceiros/:id              | Perfil do Parceiro            | ---   | ---  |
-| Coordenador de Estratégia de Terras | RF016 | RN04, RN08 | GET /parceiros?nome=&regiao=&area=&tipo= | Listagem de Parceiros | --- | --- |
-| Coordenador de Estratégia de Terras | RF017 | RN04 | GET /parceiros/exportar | Exportação de Lista | --- | --- |
-| Todos                              | RF012 | RN07, RN08       | GET /parceiros; GET /terras       | ---                           | ---   | ---  |
+| Persona | RF | RN | Endpoint | Tela | Teste | Evidência |
+|---|---|---|---|---|---|---|
+| Gerente de coordenadores | RF001 | RN01, RN03 | POST /api/usuarios | Cadastro de Usuário | Pendente | Diagrama de sequência: Cadastro de usuários |
+| Gerente de coordenadores | RF002 | RN01, RN06 | PUT /usuarios/:id | Gestão de Usuários | Pendente | Diagrama de sequência: Atualização de usuários |
+| Gerente de coordenadores | RF003 | RN03, RN06 | PUT /usuarios/:id/perfil | Cadastro / Gestão de Usuário | src/tests/userController.spec.ts; src/tests/userService.spec.ts | Testes de atualização de perfil: sucesso, perfil inexistente, campos obrigatórios e usuário inexistente |
+| Gerente de coordenadores | RF011 | RN02 | POST /login | Login | src/tests/auth.test.ts | Testes de login: credenciais válidas, senha incorreta, e-mail inexistente, campos ausentes e senha hasheada |
+| Gerente de coordenadores | RF020 | RN15 | PUT /usuarios/:id/inativar | Listagem / Gestão de Usuários | src/tests/userInactivateController.spec.ts; src/tests/userInactivateService.spec.ts | Testes de inativação: sucesso, 401 sem token, 403 sem perfil administrador, 404 usuário inexistente e 500 falha técnica |
+| Gerente de coordenadores | RF013 | RN12 | GET /parceiros/:id/historico | Auditoria / Histórico | Pendente | Diagrama de sequência: Consulta histórico de parceiros |
+| Gerente de coordenadores | RF014 | RN06, RN07, RN08 | PATCH /api/parceiros/:id; PUT /terras/:id | Gestão de Parceiros e Terras | Cobertura parcial: src/test/parceiroController.patch.spec.ts | Edição lógica de parceiro coberta por PATCH; fluxo de terras pendente |
+| Analista de Negócios Agrícolas | RF004 | RN09, RN10, RN11 | POST /api/parceiros | Cadastro de Parceiro | src/test/parceiroController.spec.ts | Testes de cadastro: 201 com rascunho, 409 CPF/CNPJ duplicado, 400 tipo_pessoa inválido e persistência no banco |
+| Analista de Negócios Agrícolas | RF005 | RN09, RN11, RN19, RN20 | PATCH /api/parceiros/:id | Edição de Parceiro | src/test/parceiroController.patch.spec.ts | Testes de edição: 200 com registro atualizado, 409 CPF/CNPJ duplicado, 400 sem campos editáveis e persistência no banco |
+| Analista de Negócios Agrícolas | RF006 | RN11 | POST /parceiros/:id/interacoes | Perfil do Parceiro | src/tests/interacao.test.ts | Testes de interação: 201 com dados válidos, 400 campos ausentes, 404 parceiro inexistente e persistência no banco |
+| Analista de Negócios Agrícolas | RF009 | RN09 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id | Cadastro de Usuário / Cadastro e Edição de Parceiro | Cobertura parcial: src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts | Unicidade de CPF/CNPJ coberta no cadastro e edição de parceiro; unicidade de usuário pendente |
+| Analista de Negócios Agrícolas | RF010 | RN10 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id; POST /terras; PUT /terras/:id | Cadastro / Edição de Usuário, Parceiro e Terra | Cobertura parcial: src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts | Validação de contrato coberta para parceiro; usuários e terras pendentes |
+| Analista de Negócios Agrícolas | RF015 | RN13, RN14 | GET /parceiros/:id/terras; POST /parceiros/:id/terras; GET /terras/:id/parceiros; POST /terras/:id/parceiros | Cadastro de Parceiro / Cadastro de Terras | Pendente | Endpoint previsto na matriz RF → RN → Endpoint |
+| Analista de Negócios Agrícolas | RF018 | RN11 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /terras; PUT /terras/:id | Cadastro / Edição de registros | Cobertura parcial: src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts | Data de criação/atualização e persistência cobertas nos fluxos de parceiro e interações |
+| Analista de Negócios Agrícolas | RF019 | RN11 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /terras; PUT /terras/:id | Cadastro / Edição de registros | Cobertura parcial: src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts | Usuário responsável coberto em cadastro/edição de parceiro e registro de interações |
+| Coordenador de Estratégia de Terras | RF007 | RN04, RN08 | GET /parceiros | Listagem de Parceiros | Pendente | Diagrama de sequência: Visualização dos dados dos parceiros |
+| Coordenador de Estratégia de Terras | RF008 | RN04, RN08 | GET /parceiros/:id | Perfil do Parceiro | Pendente | Endpoint previsto na matriz RF → RN → Endpoint |
+| Coordenador de Estratégia de Terras | RF012 | RN07, RN08 | GET /parceiros; GET /parceiros?nome=&regiao=&area=&tipo=; GET /terras | Listagem de Parceiros / Terras | Pendente | Diagramas de sequência: Visualização de parceiros e visualização por filtros |
+| Coordenador de Estratégia de Terras | RF016 | RN04, RN08 | GET /parceiros?nome=&regiao=&area=&tipo= | Listagem de Parceiros | Pendente | Diagrama de sequência: Visualização dos parceiros por filtros |
+| Coordenador de Estratégia de Terras | RF017 | RN04 | GET /parceiros/exportar | Exportação de Lista | src/tests/exporta.test.ts | Testes de exportação: 200 com CSV, 404 sem parceiros, dados corretos e múltiplos parceiros no arquivo |
+| Coordenador de Estratégia de Terras | RF021 | RN16 | PUT /parceiros/:id/validacao | Validação de Parceiros | Pendente | Endpoint previsto na matriz RF → RN → Endpoint |
+| Coordenador de Estratégia de Terras | RF022 | RN17 | PUT /parceiros/:id/aprovar | Fila de Validação | Pendente | Endpoint previsto na matriz RF → RN → Endpoint |
+| Coordenador de Estratégia de Terras | RF023 | RN17 | PUT /parceiros/:id/devolver | Fila de Validação | Pendente | Endpoint previsto na matriz RF → RN → Endpoint |
+| Todos | RF012 | RN07, RN08 | GET /parceiros; GET /terras | Consultas gerais do sistema | Pendente | Diagramas de sequência: consultas de parceiros e terras |
 
 # <a name="c4"></a>4. Desenvolvimento da Aplicação Web
 
