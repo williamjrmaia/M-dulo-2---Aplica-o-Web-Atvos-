@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inativar usuario</title>
+  </head>
+  <body>
+    <main>
+      <h1>Inativar usuario</h1>
+
+      <% if (error) { %>
+        <p><%= error %></p>
+      <% } %>
+
+      <% if (usuario) { %>
+        <p>Confirme a inativacao do usuario <strong><%= usuario.nome || usuario.id %></strong>.</p>
+        <form method="POST" action="/usuarios/<%= usuario.id %>/inativar">
+          <button type="submit">Inativar e revogar acesso</button>
+        </form>
+      <% } %>
+    </main>
+  </body>
+</html>

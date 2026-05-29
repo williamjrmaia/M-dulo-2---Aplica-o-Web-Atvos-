@@ -64,4 +64,16 @@ export class UserRepository {
     );
     return result.rows[0] ?? null;
   }
+
+  async inativarUsuario(id: string): Promise<UsuarioComPerfil | null> {
+    console.log(`[REPOSITORY] inativarUsuario: ${id}`);
+    const result = await pool.query<UsuarioComPerfil>(
+      `UPDATE usuarios
+          SET ativo = FALSE
+        WHERE id = $1
+        RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
+      [id],
+    );
+    return result.rows[0] ?? null;
+  }
 }
