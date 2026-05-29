@@ -1522,30 +1522,6 @@ A iconografia usa estilo uniforme, preferencialmente outline/linear, com traço 
 
 A uniformidade dos ícones reduz ruído visual e ajuda o usuário a reconhecer ações recorrentes. Ícones podem aparecer sozinhos apenas em ações frequentes e de baixo risco, desde que haja contexto visual suficiente. Em ações sensíveis, como inativar usuário, exportar dados, salvar alterações ou sair do sistema, o ícone deve aparecer acompanhado de label textual, pois a clareza da ação é mais importante do que a economia de espaço.
 
-### 3.4.11. Exemplos de aplicação no protótipo
-
-Os componentes do guia foram aplicados no protótipo de alta fidelidade da seção 3.5. Esses exemplos mostram como cores, tipografia, espaçamento, botões, formulários, cards, tabelas, timeline, modais e ícones se combinam em telas reais do **Safra Control**.
-
-<div align="center">
-  <sub>Figura 3.4.12 - Exemplos de aplicação no protótipo</sub><br>
-  <img src="./assets/guia_de_estilos/guia_exemplos_aplicacao.png" width="100%" alt="Exemplos de aplicação do design system Safra Control"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div>
-
-A tela de login aplica inputs, botão primário, identidade visual e validação. As listagens de parceiros usam searchbar, filtros, tabela e chips de status para organizar consulta. Os formulários de cadastro usam inputs, selects e botões para padronizar entrada de dados. As telas de detalhes combinam cards de informação e timeline para apoiar consulta e tomada de decisão. A gestão de usuários usa cards ou tabelas com status e ações administrativas. A exportação CSV usa botão específico e modal de feedback; a inativação de usuário usa modal de confirmação para reduzir risco de ação acidental.
-
-| Tela do protótipo | Componentes aplicados | Relação com o guia |
-|---|---|---|
-| Login | Input, Button/Primary, Alert/Error | Aplica identidade, tipografia e validação |
-| Listagem de parceiros | SearchBar, Select/Filter, tabela, StatusChip | Organiza consulta, filtros e comparação |
-| Cadastro | Input, Select, Button/Primary, Button/Secondary | Padroniza entrada de dados |
-| Detalhes | Card/Info, Timeline, Button/Secondary | Facilita consulta de informações e histórico |
-| Gestão de usuários | Card/User, tabela, StatusChip, Button/Danger | Apoia governança de acesso |
-| Exportação CSV | Button/Export, Modal/ExportCSV | Dá feedback à ação de download |
-| Inativação de usuário | Button/Danger, Modal/ConfirmInactiveUser, Alert/Success | Reduz risco em ação crítica |
-
-Com essa estrutura, a seção 3.4 passa a funcionar como guia prático de aplicação visual do Safra Control, conectando o design system aos fluxos que serão demonstrados no protótipo de alta fidelidade.
-
 ## 3.5. Protótipo de alta fidelidade (sprint 3)
 
 O mapeamento dos fluxos apresentados na seção 3.3 tem como objetivo definir quais wireframes devem ser evoluídos para o protótipo de alta fidelidade da aplicação web CRM da ATVOS. Essa seleção considera o escopo do MVP, as User Stories priorizadas, os requisitos funcionais relacionados e a relevância de cada fluxo para a gestão de parceiros agrícolas, especialmente fornecedores de cana e proprietários cedentes/proprietários de terra.
