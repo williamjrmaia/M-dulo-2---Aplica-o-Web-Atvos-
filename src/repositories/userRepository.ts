@@ -1,6 +1,6 @@
 import pool from '../config/connection';
 import { PerfilAcesso } from '../models/PerfilAcesso';
-import { UsuarioComPerfil } from '../models/Usuario';
+import { AtualizarUsuarioDTO, UsuarioComPerfil } from '../models/Usuario';
 
 export interface Usuario {
   id: string;
@@ -62,6 +62,46 @@ export class UserRepository {
         RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
       [role_id, id],
     );
+    return result.rows[0] ?? null;
+  }
+
+  async atualizaUsuario(id: string, dados: AtualizarUsuarioDTO): Promise<UsuarioComPerfil | null> {
+    console.log(`[REPOSITORY] atualizaUsuario: ${id}`);
+
+    const campos: string[] = [];
+    const valores: unknown[] = [];
+    let contador = 1;
+
+    if (dados.nome !== undefined) {
+      campos.push(`nome = $${contador++}`);
+      valores.push(dados.nome);
+    }
+
+    if (dados.email !== undefined) {
+      campos.push(`email = $${contador++}`);
+      valores.push(dados.email);
+    }
+
+    if (dados.ativo !== undefined) {
+      campos.push(`ativo = $${contador++}`);
+      valores.push(dados.ativo);
+    }
+
+    if (dados.perfil_acesso_id !== undefined) {
+      campos.push(`perfil_acesso_id = $${contador++}`);
+      valores.push(dados.perfil_acesso_id);
+    }
+
+    valores.push(id);
+
+    const result = await pool.query<UsuarioComPerfil>(
+      `UPDATE usuarios
+          SET ${campos.join(', ')}
+        WHERE id = $${contador}
+        RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
+      valores,
+    );
+
     return result.rows[0] ?? null;
   }
 }

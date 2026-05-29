@@ -9,6 +9,21 @@ const repository = new UserRepository();
 const service = new UserService(repository);
 const controller = new UserController(service);
 
+router.get('/usuarios/:id/editar', (req, res) => {
+  console.log(`[ROUTE] GET /usuarios/${req.params.id}/editar recebida`);
+  return controller.editarUsuario(req, res);
+});
+
+router.put('/usuarios/:id', (req, res) => {
+  console.log(`[ROUTE] PUT /usuarios/${req.params.id} recebida`);
+  return controller.atualizaUsuario(req, res);
+});
+
+router.post('/usuarios/:id', (req, res) => {
+  console.log(`[ROUTE] POST /usuarios/${req.params.id} recebida`);
+  return controller.atualizaUsuarioViaFormulario(req, res);
+});
+
 router.get('/usuarios/:id/perfil', (req, res) => {
   console.log(`[ROUTE] GET /usuarios/${req.params.id}/perfil recebida`);
   return controller.editarPerfil(req, res);
