@@ -4,8 +4,8 @@ import {
   apiRouter as parceiroApiRoutes,
   viewRouter as parceiroViewRoutes,
 } from './routes/parceiroRoutes';
-import routes from './routes';
 import { errorHandler } from './middlewares/errorHandler';
+import routes from './routes/index';
 
 const app = express();
 
@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 app.use('/api/parceiros', parceiroApiRoutes);
 app.use('/parceiros', parceiroViewRoutes);
+app.use(routes);
 
 app.use(errorHandler);
 
