@@ -34,7 +34,13 @@ const criarParceiro = async (usuario_id: string): Promise<string> => {
     `INSERT INTO parceiros (nome, tipo_pessoa, cpf_cnpj, status, criado_por)
      VALUES ($1, $2, $3, $4, $5)
      RETURNING id`,
-    ['Parceiro Teste', 'fisica', `${Date.now()}`, 'ativo', usuario_id],
+    [
+      'Parceiro Teste',
+      'fisica',
+      `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`, // 👈 aqui
+      'ativo',
+      usuario_id,
+    ],
   );
 
   const id = result.rows[0].id;
