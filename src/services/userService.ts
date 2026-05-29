@@ -82,4 +82,25 @@ export class UserService {
     console.log('[SERVICE] Usuario atualizado com sucesso');
     return usuarioAtualizado;
   }
+
+  async inativarUsuario(id: string): Promise<UsuarioComPerfil> {
+    console.log(`[SERVICE] inativarUsuario: ${id}`);
+
+    if (!id) {
+      throw new Error('Dados obrigatorios ausentes');
+    }
+
+    const usuarioExistente = await this.userRepository.buscarPorId(id);
+    if (!usuarioExistente) {
+      throw new Error('Usuario nao encontrado');
+    }
+
+    const usuarioInativado = await this.userRepository.inativarUsuario(id);
+    if (!usuarioInativado) {
+      throw new Error('Usuario nao encontrado');
+    }
+
+    console.log('[SERVICE] Usuario inativado com sucesso');
+    return usuarioInativado;
+  }
 }

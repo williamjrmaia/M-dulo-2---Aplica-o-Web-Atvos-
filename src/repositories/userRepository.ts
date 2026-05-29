@@ -18,9 +18,7 @@ export class UserRepository {
       'SELECT id, nome, email, senha_hash, ativo, perfil_acesso_id FROM usuarios WHERE email = $1',
       [email],
     );
-    const usuario = result.rows[0] ?? null;
-    console.log('[REPOSITORY] buscarPorEmail retornou:', usuario ? 'usuário encontrado' : 'null');
-    return usuario;
+    return result.rows[0] ?? null;
   }
 
   async checarExistenciaPerfil(role_id: string): Promise<boolean> {
@@ -101,7 +99,18 @@ export class UserRepository {
         RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
       valores,
     );
+    return result.rows[0] ?? null;
+  }
 
+  async inativarUsuario(id: string): Promise<UsuarioComPerfil | null> {
+    console.log(`[REPOSITORY] inativarUsuario: ${id}`);
+    const result = await pool.query<UsuarioComPerfil>(
+      `UPDATE usuarios
+          SET ativo = FALSE
+        WHERE id = $1
+        RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
+      [id],
+    );
     return result.rows[0] ?? null;
   }
 }
