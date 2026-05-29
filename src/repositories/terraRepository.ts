@@ -17,3 +17,13 @@ export async function createTerra(data: CreateTerraInput): Promise<Terra> {
   );
   return rows[0];
 }
+
+export async function listarTerras(): Promise<Terra[]> {
+  const { rows } = await pool.query<Terra>(
+    `SELECT *
+       FROM terras
+      WHERE status != 'inativo'
+      ORDER BY criado_em DESC`
+  );
+  return rows;
+}
