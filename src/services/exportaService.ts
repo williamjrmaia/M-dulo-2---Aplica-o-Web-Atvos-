@@ -18,6 +18,7 @@ export class ExportaService {
       throw new EmptyDataException();
     }
 
+    // RN03 — converter para formato de exportação (CSV/XLSX)
     try {
       const buffer = this.converterParaFormatoExportacao(parceiros);
       return buffer;

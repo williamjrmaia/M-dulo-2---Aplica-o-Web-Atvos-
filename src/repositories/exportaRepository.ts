@@ -17,6 +17,7 @@ export class ExportaRepository {
           p.status,
           p.criado_em
         FROM parceiros p
+        WHERE p.status = 'ativo'
         ORDER BY p.criado_em DESC
       `);
 
