@@ -1611,6 +1611,8 @@ O protótipo inicia pela autenticação do usuário e conduz para a listagem pri
 
 Assim, o protótipo de alta fidelidade consolida o percurso principal do CRM da ATVOS em uma interface mais próxima da experiência final de uso. As telas representam tanto os fluxos prioritários de parceiros agrícolas quanto os pontos de apoio administrativo necessários para governança, rastreabilidade e controle de acesso, mantendo alinhamento com os requisitos funcionais, as User Stories priorizadas e o guia visual definido para o produto.
 
+Para acesso ao caminho de telas do protótipo de alta fidelidade, utilize o link a seguir: [Protótipo de alta fidelidade](https://www.figma.com/design/MgdDm59N5bybkU1zABfx6w/Prot%C3%B3tipo-de-alta-fidelidade?node-id=127-91&t=tSRinjXp2u4CddDl-1).
+
 
 ## 3.6. Modelagem do banco de dados (sprints 2 e 4)
 
