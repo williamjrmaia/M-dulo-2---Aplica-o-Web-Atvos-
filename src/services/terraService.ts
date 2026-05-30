@@ -1,6 +1,6 @@
-import { createTerra, listarTerras } from '../repositories/terraRepository';
-import { CreateTerraInput, Terra } from '../models/terra';
-import { UnprocessableEntityError } from '../errors/AppError';
+import { createTerra, listarTerras, updateTerra } from '../repositories/terraRepository';
+import { CreateTerraInput, Terra, UpdateTerraInput } from '../models/terra';
+import { NotFoundError, UnprocessableEntityError } from '../errors/AppError';
 
 export async function cadastrarTerra(data: CreateTerraInput): Promise<Terra> {
   try {
@@ -16,4 +16,23 @@ export async function cadastrarTerra(data: CreateTerraInput): Promise<Terra> {
 
 export async function obterTerras(): Promise<Terra[]> {
   return listarTerras();
+}
+
+export async function editarTerra(id: string, data: UpdateTerraInput): Promise<Terra> {
+  try {
+    const terra = await updateTerra(id, data);
+    if (!terra) {
+      throw new NotFoundError('Terra não encontrada');
+    }
+    return terra;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError) {
+      throw err;
+    }
+    // 23503 = foreign_key_violation: atualizado_por não existe em usuarios
+    if ((err as { code?: string }).code === '23503') {
+      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
+    }
+    throw err;
+  }
 }

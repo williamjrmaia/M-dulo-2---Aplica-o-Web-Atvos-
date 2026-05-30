@@ -19,3 +19,12 @@ export interface CreateTerraInput {
   criado_por: string;
   status?: string;
 }
+
+export interface UpdateTerraInput {
+  nome?: string;
+  area_contratada_ha?: number;
+  cidade?: string;
+  estado?: string;
+  status?: string;
+  atualizado_por: string;
+}
