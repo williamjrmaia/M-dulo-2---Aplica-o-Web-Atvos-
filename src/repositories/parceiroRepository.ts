@@ -151,7 +151,7 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
 }
 
 export async function getParceiroById(id: string): Promise<Parceiro | null> {
-  const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE id = $1`, [id]);
+  const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE id = $1 AND status != 'inativo'`, [id]);
   return rows[0] ?? null;
 }
 
