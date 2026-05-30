@@ -16,6 +16,27 @@ export class UserController {
     return 'autorizado';
   }
 
+  criaUsuario = async (req: Request, res: Response) => {
+    const { nome, email, perfil_acesso_id } = req.body;
+    console.log(`[CONTROLLER] Cadastro de usuario recebido: ${email}`);
+    try {
+      const usuario = await this.userService.cadastraUsuario({ nome, email, perfil_acesso_id });
+      return res.status(201).location(`/api/usuarios/${usuario.id}`).json(usuario);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+      if (message === 'Dados de entrada invalidos') {
+        return res.status(400).json({ error: message });
+      }
+      if (message === 'Perfil nao encontrado') {
+        return res.status(422).json({ error: message });
+      }
+      if (message === 'Email ja cadastrado') {
+        return res.status(409).json({ error: message });
+      }
+      return res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  };
+
   editarUsuario = async (req: Request, res: Response) => {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     console.log(`[CONTROLLER] Renderizando formulario de edicao do usuario: ${id}`);

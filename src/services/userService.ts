@@ -1,5 +1,5 @@
 import { PerfilAcesso } from '../models/PerfilAcesso';
-import { AtualizarUsuarioDTO, UsuarioComPerfil } from '../models/Usuario';
+import { AtualizarUsuarioDTO, CriarUsuarioInput, UsuarioComPerfil } from '../models/Usuario';
 import { UserRepository } from '../repositories/userRepository';
 
 export class UserService {
@@ -13,6 +13,31 @@ export class UserService {
   async buscarUsuario(id: string): Promise<UsuarioComPerfil | null> {
     console.log(`[SERVICE] buscarUsuario: ${id}`);
     return this.userRepository.buscarPorId(id);
+  }
+
+  async cadastraUsuario(data: CriarUsuarioInput): Promise<UsuarioComPerfil> {
+    console.log(`[SERVICE] cadastraUsuario: ${data?.email}`);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data || !data.nome?.trim() || !emailRegex.test(data.email ?? '') || !data.perfil_acesso_id) {
+      throw new Error('Dados de entrada invalidos');
+    }
+
+    const perfilExiste = await this.userRepository.checarExistenciaPerfil(data.perfil_acesso_id);
+    if (!perfilExiste) {
+      throw new Error('Perfil nao encontrado');
+    }
+
+    const emailExistente = await this.userRepository.buscarPorEmail(data.email.toLowerCase());
+    if (emailExistente) {
+      throw new Error('Email ja cadastrado');
+    }
+
+    return this.userRepository.criaUsuario({
+      nome: data.nome.trim(),
+      email: data.email.toLowerCase(),
+      perfil_acesso_id: data.perfil_acesso_id,
+    });
   }
 
   async atualizaPerfilDeAcesso(id: string, role_id: string): Promise<UsuarioComPerfil> {
