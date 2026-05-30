@@ -1,20 +1,42 @@
-import 'dotenv/config';
-import { Client } from 'pg';
 import fs from 'fs';
 import path from 'path';
+import pool, { getConnectionErrorHint } from '../config/connection';
 
-async function migrate(): Promise<void> {
-  const client = new Client({ connectionString: process.env.DATABASE_URL });
-  await client.connect();
+const getMigrationFiles = (): string[] => {
+  const baseMigration = path.join(__dirname, 'migration.sql');
+  const migrationsDir = path.join(__dirname, 'migrations');
+  const orderedMigrations = fs.existsSync(migrationsDir)
+    ? fs
+        .readdirSync(migrationsDir)
+        .filter((file) => file.endsWith('.sql'))
+        .sort()
+        .map((file) => path.join(migrationsDir, file))
+    : [];
 
-  const sql = fs.readFileSync(path.join(__dirname, 'migration.sql'), 'utf8');
-  await client.query(sql);
+  return [baseMigration, ...orderedMigrations].filter((filePath) =>
+    fs.existsSync(filePath),
+  );
+};
 
-  await client.end();
-  console.log('Migration concluída com sucesso.');
-}
+const runMigrations = async (): Promise<void> => {
+  console.log('[MIGRATE] Iniciando migrations...');
 
-migrate().catch(err => {
-  console.error('Erro na migration:', (err as Error).message);
-  process.exit(1);
-});
+  try {
+    const migrationFiles = getMigrationFiles();
+
+    for (const filePath of migrationFiles) {
+      console.log(`[MIGRATE] Aplicando ${path.basename(filePath)}...`);
+      const sql = fs.readFileSync(filePath, 'utf-8');
+      await pool.query(sql);
+    }
+
+    console.log('[MIGRATE] Migrations concluidas com sucesso!');
+  } catch (error) {
+    console.error('[MIGRATE] Erro ao rodar migrations:', getConnectionErrorHint(error as Error));
+    process.exit(1);
+  } finally {
+    await pool.end();
+  }
+};
+
+runMigrations();

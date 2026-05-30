@@ -531,6 +531,8 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 | RN16 | Um registro do tipo rascunho/devolvido só transita para status pendente após ser concluído por um analista. | RF021 |
 | RN17 | Um registro do tipo pendente só transita para status ativo/devolvido após ser revisado por um coordenador. | RF022, RF023 |
 | RN18 | Registros com status ativo que não sofreram alterações por um período configurado geram notificações para os usuários do sistema (analistas, coordenadores e gerentes). | RF025 |
+| RN19 | Requisicoes de edicao de parceiro sem nenhum campo editavel no body devem ser rejeitadas com erro 400. | RF005 |
+| RN20 | Tentativas de edicao de parceiros inexistentes devem ser rejeitadas com erro 404. | RF005 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
@@ -551,31 +553,55 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
-| RF    | US relacionada | RN associadas    | Endpoint                                             | Método      |
-|-------|----------------|------------------|------------------------------------------------------|-------------|
-| RF001 | US08 | RN01, RN03 | `/usuarios` | POST |
-| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | GET, PUT |
-| RF003 | US08 | RN03 | `/usuarios/:id/perfil` | PUT |
-| RF004 | US01, US02 | RN09, RN10 | `/parceiros` | POST |
-| RF005 | US05 | RN10, RN11, RN12 | `/parceiros/:id` | PUT |
-| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET |
+| RF | US relacionada | RN associadas | Endpoint visto nos diagramas | Método |
+|---|---|---|---|---|
+| RF001 | US08 | RN01, RN03 | `/api/usuarios` | POST |
+| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | PUT | 
+| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id/inativar` | PUT | 
+| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | PUT | 
+| RF004 | US01, US02 | RN09, RN10, RN11 | `/parceiros` | POST |
+| RF005 | US05 | RN10, RN11, RN12, RN19, RN20 | `/parceiros/:id` | PUT |
+| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST | 
+| RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET | 
 | RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
-| RF009 | US01, US02, US08 | RN09 | `/usuarios`, `/parceiros` | POST, PUT |
-| RF010 | US01, US02, US08 | RN10 | `/usuarios`, `/parceiros`, `/terras` | POST, PUT |
-| RF011 | US08, US09 | RN01, RN02 | `/auth/login` | POST |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros`, `/terras` | GET |
-| RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07 | `/parceiros/:id` e `/terras/:id` | PUT (A exclusão é lógica) |
-| RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` e `/terras/:id/parceiros` | GET, POST |
-| RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET |
+| RF009 | US01, US02, US08 | RN09 | `/api/usuarios` | POST | 
+| RF009 | US01, US02, US08 | RN09 | `/parceiros` | POST | 
+| RF010 | US01, US02, US08 | RN10 | `/api/usuarios` | POST | 
+| RF010 | US01, US02, US08 | RN10 | `/parceiros` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/parceiros/:id` | PUT |
+| RF010 | US01, US02, US08 | RN10 | `/terras` | POST | 
+| RF010 | US01, US02, US08 | RN10 | `/terras/:id` | PUT | 
+| RF011 | US08, US09 | RN02 | `/login` | POST | 
+| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros` | GET | 
+| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET | 
+| RF012 | US04, US06, US07 | RN07, RN08 | `/terras` | GET | 
+| RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET | 
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/usuarios/:id/inativar` | PUT | 
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/parceiros/:id` | PUT |
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/terras/:id` | PUT | 
+| RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` | GET, POST |
+| RF015 | US01, US02 | RN13, RN14 | `/terras/:id/parceiros` | GET, POST | 
+| RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET | 
 | RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios`, `/parceiros`, `/parceiros/:id/interacoes` | POST, PUT |
-| RF020 | US09 | RN15 | `/usuarios/:id/inativar`; `/auth/sessoes/:id` | PUT (Novamente, a exclusão é lógica) |
-| RF021 | US01, US02 | RN16 | `/parceiros/:id/validacao` | PUT |
-| RF022 | US11 | RN17 | `/parceiros/:id/aprovar` | PUT |
-| RF023 | US11 | RN17 | `/parceiros/:id/devolver` | PUT |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros` | POST | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id` | PUT | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras` | POST | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras/:id` | PUT | 
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros` | POST | 
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id` | PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras` | POST | 
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras/:id` | PUT | 
+| RF020 | US09 | RN15 | `/usuarios/:id/inativar` | PUT | 
+| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT | 
+| RF021 | US01, US02 | RN16 | `/parceiros/:id/validacao` | PUT | 
+| RF022 | US11 | RN17 | `/parceiros/:id/aprovar` | PUT | 
+| RF023 | US11 | RN17 | `/parceiros/:id/devolver` | PUT | 
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
@@ -599,7 +625,137 @@ Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funci
 
 ### 3.2.1. Diagrama de Arquitetura (sprints 3 e 4)
 
-*Posicione aqui o diagrama de arquitetura da solução, indicando as camadas principais (Controller, Service, Repository, Model) e suas responsabilidades. Atualize sempre que necessário.*
+
+A arquitetura da aplicação web desenvolvida para a ATVOS segue o padrão de Arquitetura em Camadas, organizada no estilo User-Controller-Service-Repository, que é usualmente adotado em aplicações back-end com Node.js por promover separação clara de responsabilidades, facilidade de manutenção e testabilidade independente de cada camada.
+<br>
+Nesse padrão, cada camada possui um papel bem definido e se comunica exclusivamente com outras camadas definidas. A camada Controller é responsável por receber as requisições HTTP, validar os dados de entrada e delegar o processamento ao Service. A camada Service é a que possui todas as regras de negócio do sistema, sendo responsável por operações entre múltiplos repositórios quando necessário e lançando exceções de domínio em caso de violação de regras. A camada de Repository abstrai o acesso ao banco de dados, isolando as queries SQL do restante da aplicação e retornando entidades mapeadas para o Service. A camada Model representa as entidades do domínio, correspondendo diretamente às tabelas do banco de dados PostgreSQL hospedado no Supabase. Adicionalmente, funções auxiliares agrupadas como Helpers oferecem utilitários transversais reutilizáveis pelos Services, como validação de e-mail, validação de CPF/CNPJ e formatação de datas.
+<br>
+O diagrama a seguir representa visualmente essa organização, evidenciando os componentes de cada camada e os relacionamentos entre eles.
+
+---
+
+```mermaid
+flowchart TB
+    classDef client fill:#AED6F1,stroke:#2E86C1,color:#1a1a1a,font-weight:bold
+    classDef controller fill:#2E75B6,stroke:#1F4E79,color:#fff,font-weight:bold
+    classDef service fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+    classDef repository fill:#70AD47,stroke:#4a7a2e,color:#1a1a1a,font-weight:bold
+    classDef model fill:#E1EB80,stroke:#96B400,color:#1a1a1a,font-weight:bold
+    classDef helper fill:#D5D8DC,stroke:#717D7E,color:#1a1a1a,font-style:italic
+    classDef banco fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef layer fill:#F2F3F4,stroke:#BDC3C7,color:#1a1a1a,font-weight:bold
+
+    %% Cliente
+    USER(["👤 Usuário\nNavegador / Cliente HTTP"]):::client
+
+    %% Helpers
+    subgraph HELPERS["🔧 Helpers (Auxiliar)"]
+        direction LR
+        H1["formatarData"]:::helper
+        H2["validarEmail"]:::helper
+        H3["validarCpfCnpj"]:::helper
+        H4["gerarLogAuditoria"]:::helper
+        H5["paginador"]:::helper
+    end
+
+    %% Camada 1 - Controllers
+    subgraph LAYER1["1. Controller"]
+        direction LR
+        C1["AprovacaoController"]:::controller
+        C2["VinculoController"]:::controller
+        C3["UsuarioController"]:::controller
+        C4["InteracaoController"]:::controller
+        C5["ParceirosController"]:::controller
+        C6["ImportacaoController"]:::controller
+        C7["AuditoriaController"]:::controller
+    end
+
+    %% Camada 2 - Services
+    subgraph LAYER2["2. Service"]
+        direction LR
+        S1["AprovacaoService"]:::service
+        S2["VinculoService"]:::service
+        S3["UsuarioService"]:::service
+        S4["InteracaoService"]:::service
+        S5["ParceirosService"]:::service
+        S6["ImportacaoService"]:::service
+        S7["AuditoriaService"]:::service
+    end
+
+    %% Camada 3 - Repositories
+    subgraph LAYER3["3. Repository"]
+        direction LR
+        R1["SolicitacaoAprovacaoRepository"]:::repository
+        R2["VinculoRepository"]:::repository
+        R3["UsuarioRepository"]:::repository
+        R4["InteracaoRepository"]:::repository
+        R5["ParceirosRepository"]:::repository
+        R6["AuditoriaRepository"]:::repository
+        R7["DestinoAgricolaRepository"]:::repository
+        R8["ComentarioRepository"]:::repository
+    end
+
+    %% Camada 4 - Models
+    subgraph LAYER4["4. Model"]
+        direction LR
+        M1["SolicitacoesAprovacao"]:::model
+        M2["VinculoUnidade"]:::model
+        M3["Interacoes"]:::model
+        M4["Usuario"]:::model
+        M5["Parceiro"]:::model
+        M6["LogsAuditoria"]:::model
+        M7["DestinoAgricola"]:::model
+        M8["Comentarios"]:::model
+    end
+
+    %% Banco
+    DB[("🐘 Banco de Dados\nPostgreSQL")]:::banco
+
+    %% Fluxo principal top-down
+    USER -->|"HTTP Request"| LAYER1
+
+    C1 --> S1
+    C2 --> S2
+    C3 --> S3
+    C4 --> S4
+    C5 --> S5
+    C6 --> S6
+    C7 --> S7
+
+    S1 --> R1
+    S2 --> R2
+    S3 --> R3
+    S4 --> R4
+    S5 --> R5
+    S6 --> R5
+    S7 --> R6
+
+    R1 --> M1
+    R2 --> M2
+    R3 --> M4
+    R4 --> M3
+    R5 --> M5
+    R6 --> M6
+    R7 --> M7
+    R8 --> M8
+
+    LAYER4 --> DB
+
+    %% Helpers usados pelos Services
+    S3 -.->|"usa"| H2
+    S5 -.->|"usa"| H3
+    S7 -.->|"usa"| H4
+    S1 -.->|"usa"| H4
+    S5 -.->|"usa"| H1
+    S3 -.->|"usa"| H5
+```
+
+---
+
+A adoção da Arquitetura em Camadas é importante pois garante que alterações em uma camada não propaguem impactos desnecessários às demais. Por exemplo, uma mudança na lógica de validação de parceiros afeta apenas o `ParceirosService`, sem exigir alterações no `ParceirosController` ou no `ParceirosRepository`. Da mesma forma, uma eventual migração de banco de dados impactaria exclusivamente a camada de Repository, preservando intactas as regras de negócio e os contratos de interface da API.
+<br>
+Essa separação também viabiliza a escrita de testes automatizados por camada de forma isolada, permitindo que Services sejam testados e que Controllers sejam validados independentemente da lógica de negócio. A inclusão dos Helpers como módulos auxiliares reforça o princípio de responsabilidade única, evitando duplicação de código entre Services distintos e centralizando lógicas de uso transversal em um único ponto de manutenção.
+<br>
 
 ### 3.2.2. Diagrama de Casos de Uso (Sprint 1)
 
@@ -854,6 +1010,25 @@ A herança não foi aplicada no diagrama porque os diferentes papéis comerciais
 
 Por esse motivo, a modelagem utiliza a classe `VinculoComercial` para representar o papel exercido pelo parceiro em cada relação. Essa abordagem é mais flexível, evita generalizações artificiais e permite que os tipos de vínculo sejam evoluídos sem alterar a identidade principal do parceiro. Assim, a ausência de herança é uma decisão de modelagem intencional, alinhada ao funcionamento real do domínio.
 
+#### 3.2.3.1. Diagrama de Classes Arquitetural (sprint 3)
+
+
+Esta seção apresenta o Diagrama de Classes Arquitetural do backend da solução. Enquanto o diagrama de domínio tem como foco representar as principais entidades de negócio e seus relacionamentos, o diagrama arquitetural evidencia a organização interna da aplicação e a separação de responsabilidades entre as camadas que compõem a WebAPI.
+<br>
+O diagrama contempla os componentes centrais das camadas Controller, Service, Repository e Model, seguindo o padrão arquitetural adotado no projeto. A camada Controller é responsável por receber as requisições HTTP e encaminhá-las para os serviços correspondentes. A camada Service concentra as regras de negócio e a orquestração dos fluxos da aplicação. A camada Repository encapsula o acesso aos dados e a comunicação com o banco PostgreSQL/Supabase. Por fim, a camada Model representa as entidades e estruturas de dados utilizadas pelo sistema.
+<br>
+Dessa forma, o diagrama permite visualizar como os principais fluxos identificados nos diagramas de sequência, como cadastro de usuários, login, gestão de parceiros, terras, interações, dashboards e exportação de dados, são organizados dentro da arquitetura do backend.
+<br>
+
+<div align="center">
+  <sub>Figura 3.2.3.1.1 - Diagrama de Classes Arquitetural</sub><br>
+  <img src="/documentos/assets/diagrama_de_classes_arquitetural.png" width="100%" alt="Diagrama de Classes Arquitetural"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+
+Portanto, o Diagrama de Classes Arquitetural complementa o Diagrama de Classes do Domínio ao demonstrar a estrutura interna do backend e a comunicação entre as camadas Controller, Service, Repository e Model. Essa representação evidencia a organização modular da WebAPI e reforça a separação de responsabilidades adotada no projeto, facilitando a manutenção, os testes e a evolução dos fluxos principais do sistema.
+
 ### 3.2.4. Diagrama de Sequência UML (sprint 3)
 
 Os diagramas de sequência servem para detalhar o fluxo de dados e a governança das informações, sendo essenciais para visualizar a interação entre os objetos a cada ação e para garantir a integridade dos dados. Neste sistema, é adotada uma arquitetura de sistemas em camadas onde temos:
@@ -1020,7 +1195,29 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
-*Documente os design patterns utilizados (Repository, Strategy, Factory, DTO etc.) e quais princípios SOLID se aplicam. Justifique a adoção de cada padrão com base em uma necessidade real do projeto.*
+No desenvolvimento do backend, foram adotados padrões de projeto voltados à separação de responsabilidades, organização da regra de negócio e redução de acoplamento entre a API, o banco de dados e os fluxos de validação. A escolha desses padrões ocorreu a partir de necessidades reais do projeto, principalmente a complexidade do domínio de parceiros agrícolas, terras, usuários, interações e histórico de alterações.
+
+No contexto da ATVOS, o problema central envolve a substituição de controles dispersos em planilhas, e-mails e registros manuais por uma base única, auditável e confiável para consulta e manutenção de dados de parceiros agrícolas. Por isso, o backend precisava ser organizado de forma que novas regras de governança, validação, rastreabilidade e autorização por perfil pudessem ser adicionadas sem comprometer os fluxos já existentes. Os padrões abaixo foram aplicados para responder diretamente a essa necessidade de padronização, controle e evolução gradual do sistema.
+
+| Padrão aplicado | Onde aparece no backend | Justificativa de adoção |
+| --- | --- | --- |
+| **Repository** | `src/repositories`, como `userRepository.ts`, `parceiroRepository.ts`, `terraRepository.ts`, `interacaoRepository.ts`, `exportaRepository.ts` e `dashboardInteracoesRepository.ts`. | O sistema depende de várias consultas e operações SQL sobre entidades diferentes. O Repository foi usado para concentrar o acesso ao PostgreSQL/Supabase e evitar que controllers e services manipulassem SQL diretamente. No problema da ATVOS, isso é importante porque os dados de parceiros, terras, vínculos e interações precisam formar uma base única e consistente, substituindo consultas manuais em fontes espalhadas. |
+| **Service Layer** | `src/services`, como `userService.ts`, `parceiroService.ts`, `terraService.ts`, `authService.ts` e `interacaoService.ts`. | As regras de negócio não ficam nas rotas. Validações como existência de perfil, usuário inexistente, duplicidade, vínculo entre parceiro e terra, inativação lógica e tratamento de erros de banco são coordenadas nos services. Essa camada reflete a necessidade da ATVOS de aplicar governança sobre cadastros e alterações, garantindo que operações críticas não dependam apenas da interface ou de decisões manuais do usuário. |
+| **Controller** | `src/controllers`, como `userController.ts`, `parceiroController.ts`, `terraController.ts`, `authController.ts` e `dashboardInteracoesController.ts`. | Os controllers foram usados para receber requisições HTTP, chamar os services e devolver respostas com status codes adequados. Essa separação evita misturar regra de negócio com detalhes de Express, como `Request`, `Response`, headers e renderização. |
+| **DTO / Schema de Validação** | `src/schemas`, com schemas Zod como `terra.schema.ts`, `parceiroFiltros.schema.ts`, `parceiroTerra.schema.ts` e `terraParceiro.schema.ts`; também nos tipos de entrada em `src/models`. | O backend recebe dados de cadastro, edição, filtros e vínculos. Os schemas funcionam como contratos de entrada, validando campos obrigatórios, enums, UUIDs e formatos antes de acessar o banco. Isso reduz inconsistência nos dados, uma dor relevante para a ATVOS, já que informações cadastrais divergentes prejudicam a análise de parceiros e a tomada de decisão operacional. |
+| **Middleware de Tratamento de Erros** | `src/middlewares/errorHandler.ts` e `src/errors/AppError.ts`. | Como a API possui muitos cenários de falha (`400`, `404`, `409`, `422` e `500`), foi criado um tratamento centralizado para converter erros da aplicação em respostas HTTP consistentes. Em um sistema de uso interno e recorrente, isso ajuda a tornar falhas de cadastro, consulta e permissão mais previsíveis para os usuários e mais rastreáveis pela equipe técnica. |
+| **Wrapper para handlers assíncronos** | `src/helpers/asyncHandler.ts`, usado em controllers como `terraController.ts`. | Rotas assíncronas podem lançar exceções durante validações, consultas ou persistência. O helper evita blocos repetitivos de `try/catch` e encaminha erros para o middleware central, simplificando os controllers. |
+| **Composição de dependências** | Instanciação de repository, service e controller nas rotas, como em `user.routes.ts`, `auth.routes.ts`, `interacao.routes.ts`, `exporta.routes.ts` e `dashboardInteracoes.routes.ts`. | Cada rota monta explicitamente a cadeia necessária para executar seu módulo. Isso deixa claro o fluxo `Route -> Controller -> Service -> Repository` e reduz dependências globais escondidas. |
+
+Esses padrões também apoiam princípios SOLID no backend:
+
+| Princípio | Aplicação no projeto |
+| --- | --- |
+| **SRP - Single Responsibility Principle** | Rotas definem endpoints, controllers lidam com HTTP, services concentram regras de negócio, repositories acessam o banco e schemas validam entradas. |
+| **OCP - Open/Closed Principle** | Novos módulos podem ser adicionados seguindo a mesma estrutura de camadas sem reescrever os módulos já existentes. Por exemplo, os fluxos de dashboard e exportação seguem a organização já usada em usuários e interações. |
+| **DIP - Dependency Inversion Principle** | Services recebem repositories por construtor em módulos como usuários, autenticação e interações, reduzindo o acoplamento direto entre regra de negócio e implementação de persistência. |
+
+Com isso, a arquitetura do backend ficou preparada para evolução nas próximas sprints, principalmente para integração com o frontend, ampliação dos testes automatizados e refinamento das regras de autorização por perfil.
 
 ## 3.3. Wireframes (sprint 2)
 
@@ -1079,127 +1276,365 @@ A versão equivalente para proprietários cedentes atende às mesmas US03 e US04
 </div>
 
 #### Exportação de lista de contatos em CSV
-Este fluxo atende à US08, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
+Este fluxo atende à US07, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
 
 <div align="center">
-  <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US08)</sub><br>
+  <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US07)</sub><br>
   <img src="./assets/wireframe/exportando_CSV.png" width="100%" alt="Wireframe do fluxo de exportação de lista de contatos em CSV"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
-Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS, US01, US02, US03, US04, US05 e US08, e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários, filtros combinados na listagem (US06) e gestão de usuários internos (US09 e US10), que serão prototipados nas próximas sprints.
+Os wireframes apresentados cobrem os fluxos de maior prioridade do CRM da ATVOS, US01, US02, US03, US04, US05 e US07, e traduzem em interface as decisões de modelagem registradas nas seções 3.2.3 (Diagrama de Classes) e 3.2.4 (Diagramas de Sequência). A separação entre cadastro, edição e consulta para cada tipo de parceiro foi desenhada para refletir o trabalho que hoje é feito em planilhas distintas pelos coordenadores, evitando confusão entre fornecedores de cana e proprietários cedentes mesmo quando o mesmo parceiro exerce os dois papéis. Cada alteração realizada pelo usuário é registrada com data, hora e identificação do responsável, garantindo a rastreabilidade exigida pelo time de Negócios Agrícolas e preparando o terreno para os fluxos secundários, filtros combinados na listagem (US06) e gestão de usuários internos (US09 e US10), que serão prototipados nas próximas sprints.
 
 A seguir, o link dos wireframes:
 https://excalidraw.com/#json=5HLRZVY2n7lELvcKSG7r3,M0e1IsL3CvTZeFLNSC1-ww
 
 ## 3.4. Guia de estilos (sprint 3)
 
-Este guia de estilos apresenta orientações gerais para a utilização dos elementos visuais e comunicacionais da solução, com o objetivo de garantir consistência e padronização em todas as aplicações da marca. Nele, são definidos aspectos como paleta de cores, tipografia, iconografia e demais componentes visuais, assegurando que o desenvolvimento de interfaces e materiais mantenha uma identidade coesa e alinhada aos valores do projeto. Além disso, o guia contribui para facilitar a aplicação correta desses elementos, promovendo uma comunicação mais clara, organizada e reconhecível pelo público-alvo.
+O guia de estilos consolida os padrões visuais do **Safra Control**, sistema voltado à gestão de fornecedores, proprietários de terra, usuários internos e histórico de relacionamento agrícola. Ele serve como referência direta para o protótipo de alta fidelidade apresentado na seção 3.5, garantindo que as telas mantenham consistência visual, previsibilidade de interação e alinhamento com a identidade institucional da **ATVOS**.
+
+Este guia padroniza cores, tipografia, espaçamentos, grid, radius, sombras, componentes, ícones, estados visuais e exemplos de aplicação. A proposta não é apenas registrar a aparência da interface, mas também explicar **onde cada elemento deve ser usado** e **por que aquela escolha visual foi feita** no contexto do **Safra Control**. A identidade visual estruturada pelo grupo **Atwatts** foi alinhada ao contexto operacional da **ATVOS**, preservando a leitura corporativa necessária para uma plataforma de relacionamento agrícola.
 
 ### 3.4.1. Cores
 
-A definição da paleta de cores do projeto foi baseada na identidade visual da Atvos, seguindo os princípios estabelecidos em seu guia de marca. As cores escolhidas têm como objetivo transmitir os valores da empresa, como inovação, sustentabilidade, energia, confiança e transformação, reforçando visualmente a proposta da plataforma web desenvolvida para o gerenciamento de parceiros e fornecedores de cana.
-
-De acordo com Farina et al. (2011), as cores possuem influência direta na percepção emocional e sensorial dos usuários, sendo capazes de despertar sentimentos e fortalecer a comunicação visual de um produto digital. Pensando nisso, a paleta adotada busca criar uma experiência visual moderna, acessível e alinhada ao posicionamento da Atvos como uma empresa voltada à produção de energia limpa e inovação sustentável.
-
-Os tons de laranja e amarelo, presentes na identidade da Atvos, foram selecionados para representar energia, dinamismo, inovação e proximidade. Essas cores reforçam o conceito de movimento e transformação presentes no propósito da marca. Já o azul institucional transmite estabilidade, confiança e profissionalismo, contribuindo para a credibilidade da plataforma e para uma navegação mais equilibrada visualmente.
-
----
-
-<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+A paleta visual do **Safra Control** foi definida a partir da identidade institucional da **ATVOS**. Ela combina laranjas, amarelo e azul institucional para diferenciar ações, navegação, estados e informações de apoio. Essa separação ajuda o usuário a identificar rapidamente o que é ação principal, o que é estrutura da interface e o que representa atenção, validação ou status.
 
 <div align="center">
-
-<div style="width:140px;height:140px;background:#FF681A;border-radius:14px;"></div>
-
-**Laranja Escuro**  
-HEX: `#FF681A`  
-RGB: `rgb(255, 104, 26)`  
-RGBA: `rgba(255, 104, 26, 1)`
-
+  <sub>Figura 3.4.1 - Paleta visual derivada da identidade da ATVOS</sub><br>
+  <img src="./assets/guia_de_estilos/guia_cores_institucionais.png" width="100%" alt="Paleta visual do Safra Control derivada da identidade institucional da ATVOS"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
+
+O **laranja escuro `#FF681A`** é usado em CTAs, botões primários e ações de destaque, como "Entrar", "Novo Fornecedor" e "Salvar Fornecedor". Ele foi escolhido por remeter à energia, movimento e identidade institucional da **ATVOS**, além de orientar a ação prioritária do usuário. O **laranja médio `#FF8100`** aparece em estados de hover e variações de destaque, indicando interatividade sem romper a consistência da ação principal. O **laranja claro `#FFA500`** é usado em highlights e indicadores visuais secundários, principalmente quando é necessário destacar uma informação sem transformá-la em CTA.
+
+O **amarelo ATVOS `#FFCD00`** é utilizado com moderação em estados de atenção, indicadores e badges informativos. Sua função é chamar atenção para pendências, prazos ou avisos sem competir com o botão primário. O **azul ATVOS `#3F5B70`** aparece em navbar, botões secundários, avatar, textos de apoio e componentes corporativos, pois transmite confiança, estabilidade e clareza operacional.
 
 <div align="center">
-
-<div style="width:140px;height:140px;background:#FF8100;border-radius:14px;"></div>
-
-**Laranja Médio**  
-HEX: `#FF8100`  
-RGB: `rgb(255, 129, 0)`  
-RGBA: `rgba(255, 129, 0, 1)`
-
+  <sub>Figura 3.4.2 - Cores neutras, semânticas e status</sub><br>
+  <img src="./assets/guia_de_estilos/guia_cores_neutras_semanticas.png" width="100%" alt="Cores neutras, semânticas e status do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
-<div align="center">
+As cores neutras estruturam a interface. O fundo principal `#F7F8FA` separa a área da página dos cards brancos `#FFFFFF`; as bordas `#D9DEE3` delimitam inputs, tabelas e cards; os divisores `#E5E7EB` separam linhas e grupos de conteúdo; e os textos `#1F2933`, `#5C6670` e `#9CA3AF` criam hierarquia entre informação principal, apoio e conteúdo desabilitado.
 
-<div style="width:140px;height:140px;background:#FFA500;border-radius:14px;"></div>
+As cores semânticas indicam feedbacks do sistema. Sucesso usa `#16803C` com fundo `#DCFCE7`; erro usa `#D92D20` com fundo `#FEF2F2`; alerta usa `#F59E0B` com fundo `#FEF9C3`; informação usa `#2563EB` com fundo `#DBEAFE`. Em todos os casos, a cor deve aparecer acompanhada de texto e, quando possível, ícone, evitando que o usuário dependa apenas da cor para compreender a mensagem.
 
-**Laranja Claro**  
-HEX: `#FFA500`  
-RGB: `rgb(255, 165, 0)`  
-RGBA: `rgba(255, 165, 0, 1)`
-
-</div>
-
-<div align="center">
-
-<div style="width:140px;height:140px;background:#FFCD00;border-radius:14px;"></div>
-
-**Amarelo Atvos**  
-HEX: `#FFCD00`  
-RGB: `rgb(255, 205, 0)`  
-RGBA: `rgba(255, 205, 0, 1)`
-
-</div>
-
-<div align="center">
-
-<div style="width:140px;height:140px;background:#3F5B70;border-radius:14px;"></div>
-
-**Azul Atvos**  
-HEX: `#3F5B70`  
-RGB: `rgb(63, 91, 112)`  
-RGBA: `rgba(63, 91, 112, 1)`
-
-</div>
-
-</div>
-
----
-
-Dessa forma, a paleta de cores estabelece uma conexão estratégica entre a identidade visual da Atvos e a experiência do usuário dentro da plataforma, fortalecendo a consistência visual, o reconhecimento da marca e a proposta tecnológica e sustentável do projeto.
+| Grupo | Cor | Código | Uso na interface | Justificativa |
+|---|---|---|---|---|
+| Institucional | Laranja escuro | `#FF681A` | Botões primários e CTAs | Reforça ação principal e identidade da ATVOS |
+| Institucional | Laranja médio | `#FF8100` | Hover de botões primários e destaques | Comunica interatividade mantendo a paleta institucional |
+| Institucional | Laranja claro | `#FFA500` | Highlights e indicadores secundários | Destaca informações sem competir com o CTA |
+| Institucional | Amarelo ATVOS | `#FFCD00` | Atenção, métricas e badges informativos | Chama atenção para pendências e prazos |
+| Institucional | Azul ATVOS | `#3F5B70` | Navbar, botões secundários e elementos estruturais | Transmite confiança e estabilidade |
+| Neutra | Background | `#F7F8FA` | Fundo geral das telas | Diferencia a página dos cards e formulários |
+| Neutra | Surface | `#FFFFFF` | Cards, modais e painéis | Garante leitura limpa do conteúdo |
+| Neutra | Border | `#D9DEE3` | Inputs, cards, tabelas e divisórias | Organiza blocos sem excesso visual |
+| Neutra | Divisor | `#E5E7EB` | Linhas de tabela e separadores internos | Separa informações sem criar peso visual excessivo |
+| Neutra | Texto principal | `#1F2933` | Títulos, rótulos e dados importantes | Prioriza informações essenciais |
+| Neutra | Texto secundário | `#5C6670` | Descrições, metadados e textos de apoio | Mantém contexto sem competir com o conteúdo principal |
+| Neutra | Texto desabilitado | `#9CA3AF` | Placeholders, campos bloqueados e ações indisponíveis | Comunica limitação de uso sem parecer erro |
+| Semântica | Sucesso | `#16803C` / `#DCFCE7` | Confirmações e status ativo | Indica conclusão positiva |
+| Semântica | Erro | `#D92D20` / `#FEF2F2` | Validações e falhas | Indica necessidade de correção |
+| Semântica | Alerta | `#F59E0B` / `#FEF9C3` | Pendências, prazos e documentação incompleta | Sinaliza atenção sem indicar erro crítico |
+| Semântica | Informação | `#2563EB` / `#DBEAFE` | Avisos gerais e atualizações | Comunica orientação ou novidade do sistema |
+| Status | Rascunho | `#F3F4F6` / `#5C6670` | Cadastros iniciados e não enviados | Indica estado temporário e neutro |
+| Status | Pendente | `#FEF9C3` / `#A16207` | Cadastros aguardando validação | Sinaliza atenção sem indicar falha |
+| Status | Ativo | `#DCFCE7` / `#16803C` | Registros aprovados e disponíveis | Comunica normalidade operacional |
+| Status | Devolvido | `#FFF4ED` / `#C05111` | Registros retornados para correção | Indica retrabalho necessário |
+| Status | Inativo | `#E5E7EB` / `#374151` | Usuários ou registros desabilitados | Comunica indisponibilidade |
 
 ### 3.4.2. Tipografia
 
-A tipografia da solução foi definida com base no guia de identidade visual da Atvos, buscando manter alinhamento com a comunicação institucional da empresa e fortalecer a consistência visual da plataforma. A escolha tipográfica possui papel fundamental na experiência do usuário, influenciando diretamente a legibilidade, a organização das informações e a percepção visual da interface.
-
-De acordo com o guia de marca da Atvos, a fonte institucional utilizada é a **Tahoma**, adotada por sua simplicidade, clareza visual e ampla compatibilidade entre diferentes sistemas e dispositivos. Essas características tornam a tipografia adequada para aplicações digitais, garantindo boa leitura em diferentes resoluções e contextos de uso.
-
-A família tipográfica **Tahoma** será utilizada em toda a plataforma web, contribuindo para uma interface limpa, moderna e padronizada. Além disso, diferentes pesos tipográficos serão aplicados para estabelecer hierarquia visual entre títulos, subtítulos, textos corridos e elementos interativos da interface.
+A fonte principal do Safra Control é **Tahoma**, adotada por sua alta legibilidade, boa compatibilidade em ambientes web, aparência limpa e adequação a sistemas com formulários, tabelas e grande volume de informação. A escolha favorece a leitura contínua em telas operacionais e mantém coerência com a identidade visual definida para o projeto.
 
 <div align="center">
-
-**Imagem 3.4.2.: Tipografia utilizada na plataforma**
-<img src="./assets/tipografia/tipografia_do_sistema_web.png" alt="Tipografia da plataforma" width="800"/>
-**Fonte:** Elaborado pelos autores (2026).
-
+  <sub>Figura 3.4.3 - Escala tipográfica do Safra Control</sub><br>
+  <img src="./assets/guia_de_estilos/guia_tipografia.png" width="100%" alt="Tipografia do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
-A utilização da fonte Tahoma proporciona uma leitura clara e objetiva, favorecendo a usabilidade e a acessibilidade da plataforma. Sua estrutura simples e limpa contribui para uma comunicação visual mais organizada, reduzindo ruídos visuais e melhorando a experiência do usuário durante a navegação.
+| Estilo | Tamanho | Peso | Aplicação | Justificativa |
+|---|---:|---|---|---|
+| Display | `32px` | Bold `700` | Títulos principais do design system e telas de apresentação | Cria destaque máximo sem uso excessivo na interface |
+| Título de página | `24px` | Bold `700` | Cabeçalhos de telas como Fornecedores, Proprietários e Usuários | Garante hierarquia visual clara |
+| Subtítulo de seção | `18px` | Bold `700` | Blocos como Dados Cadastrais, Dados Agrícolas e Histórico | Facilita varredura da tela |
+| Corpo | `16px` | Regular `400` | Descrições, instruções e textos corridos | Garante leitura contínua |
+| Corpo menor | `14px` | Regular `400` | Células, formulários e detalhes cadastrais | Permite densidade sem perder legibilidade |
+| Label | `14px` | Medium `600` | Rótulos de inputs, selects e filtros | Ajuda a identificar campos |
+| Botão | `14px` | Bold `700` | Ações clicáveis | Reforça interatividade |
+| Texto auxiliar | `12px` | Regular `400` | Hints, metadados, datas e mensagens de apoio | Reduz ruído visual |
+| Erro | `12px` | Medium `600` | Validação de campos | Destaca necessidade de correção |
+| Status/Chip | `12px` | Medium `600` | Chips de status e badges de perfil | Mantém estados legíveis em espaços reduzidos |
+| Texto de tabela/listagem | `13px` | Regular `400` | Células de tabelas, listagens e resultados de busca | Permite comparação de registros com boa densidade |
 
-Além disso, a padronização tipográfica fortalece a identidade visual do projeto, mantendo coerência com os materiais institucionais e com a identidade corporativa da Atvos.
+A tipografia aparece no login, nas listagens de parceiros, nos formulários de cadastro, nos detalhes do parceiro, no histórico de interações, na gestão de usuários e nos modais. O uso consistente dos tamanhos evita que telas densas pareçam desorganizadas e permite que o usuário diferencie rapidamente título, dado cadastral, metadado e mensagem de erro.
 
+A aplicação tipográfica também foi definida para manter contraste em diferentes fundos. Em fundo claro `#F7F8FA`, títulos e dados principais usam `#1F2933`; em fundo institucional ou escuro, o texto deve usar branco ou neutro muito claro para preservar leitura; em cards brancos, labels e valores mantêm hierarquia por peso e tamanho; em botões primários, o texto branco em bold reforça a ação clicável; em alertas de erro, o texto vermelho acompanha borda e fundo sem depender apenas da cor; em chips de status, pesos médios e textos curtos garantem legibilidade mesmo em áreas reduzidas.
 
+### 3.4.3. Espaçamento, grid, radius e sombras
 
-### 3.4.3. Iconografia e imagens
+O design system utiliza uma estrutura baseada em múltiplos de 4px, com uso recorrente de múltiplos de 8px para compor espaçamentos de interface. Essa escolha melhora alinhamento, consistência e organização visual, especialmente em telas com muitos campos e registros. O grid desktop possui largura de referência de `1440px`, 12 colunas, gutter de `24px` e margem horizontal de `80px`.
 
-*(esta subseção é opcional, caso não existam ícones e imagens, apague esta subseção)*
+<div align="center">
+  <sub>Figura 3.4.4 - Espaçamento, radius, sombras e grid</sub><br>
+  <img src="./assets/guia_de_estilos/guia_espacamento_grid.png" width="100%" alt="Espaçamento, grid, radius e sombras do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
 
-*posicione aqui imagens e textos contendo exemplos padronizados de ícones e imagens, com seus respectivos atributos de aplicação, utilizadas na solução*
+O espaçamento pequeno é usado entre ícones, labels e elementos próximos; o médio organiza campos de formulário, botões e linhas internas de cards; e o grande separa seções, como filtros, tabelas, dados cadastrais e histórico de interações. O radius de `8px` aparece em inputs e botões; o de `12px` em cards e painéis; e valores maiores são reservados para modais e elementos circulares, como avatares e chips.
+
+As sombras são leves e funcionais. Elas não têm papel decorativo principal, mas ajudam a separar camadas, como cards, dropdowns, modais e estados de foco. Isso mantém a interface clara para uso corporativo e evita excesso visual em telas de consulta.
+
+| Token visual | Aplicação | Justificativa |
+|---|---|---|
+| Espaçamento pequeno | Ícones, labels e elementos próximos | Mantém compactação sem poluir |
+| Espaçamento médio | Campos de formulário e botões | Melhora leitura e área de clique |
+| Espaçamento grande | Separação entre seções | Cria hierarquia visual |
+| Grid 12 colunas | Listagens, formulários e páginas internas | Mantém alinhamento entre módulos |
+| Radius 8px | Inputs e botões | Mantém aparência moderna e clara |
+| Radius 12px | Cards e modais | Diferencia blocos de conteúdo |
+| Sombra leve | Cards, dropdowns e modais | Cria profundidade sem excesso decorativo |
+
+### 3.4.4. Botões
+
+Os botões foram padronizados para diferenciar ações principais, secundárias, exportação e ações críticas. Essa distinção é importante porque o **Safra Control** possui fluxos com consequências diferentes, como salvar um fornecedor, cancelar um cadastro, exportar CSV ou inativar um usuário.
+
+<div align="center">
+  <sub>Figura 3.4.5 - Botões e estados de interação</sub><br>
+  <img src="./assets/guia_de_estilos/guia_botoes.png" width="100%" alt="Botões do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+| Componente | Uso | Exemplo no sistema | Justificativa |
+|---|---|---|---|
+| Button/Primary | Ações principais | Entrar, Salvar alterações, Novo Fornecedor, Enviar para validação | Direciona a ação prioritária do usuário |
+| Button/Secondary | Ações auxiliares | Voltar, Cancelar, Limpar filtros | Evita competição com o CTA principal |
+| Button/Export | Exportação de dados | Exportar CSV | Diferencia ação de download das demais ações |
+| Button/Danger | Ações críticas | Inativar usuário, Confirmar inativação | Sinaliza impacto e necessidade de cautela |
+| Button/Disabled | Ações indisponíveis | Formulário incompleto ou operação bloqueada | Evita erro de uso |
+
+Os estados documentados são **default**, **hover**, **pressed**, **disabled**, **loading** e **success**. O estado loading deve aparecer em ações assíncronas, como salvar cadastro ou gerar CSV. O estado success é usado quando uma operação é concluída, por exemplo, quando a exportação está pronta para download. A padronização dos estados reduz dúvida durante operações críticas e melhora a percepção de resposta do sistema.
+
+### 3.4.5. Formulários, inputs e filtros
+
+Os formulários foram desenhados para suportar cadastros longos de fornecedores, proprietários e usuários, mantendo legibilidade e validação clara. Como o Safra Control depende de dados cadastrais confiáveis, os campos precisam orientar o preenchimento e indicar erros sem ambiguidade.
+
+<div align="center">
+  <sub>Figura 3.4.6 - Inputs, filtros, searchbar e textarea</sub><br>
+  <img src="./assets/guia_de_estilos/guia_formularios.png" width="100%" alt="Formulários, inputs e filtros do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+| Componente | Uso no Safra Control | Exemplo | Justificativa |
+|---|---|---|---|
+| Input/Text | Dados cadastrais | Nome, CPF/CNPJ, e-mail, telefone | Padroniza entrada de dados |
+| Input/Password | Autenticação | Senha no login | Mantém segurança visual do acesso |
+| Select/Filter | Filtros e seleção de perfil | Estado, região, tipo de parceiro, perfil de acesso | Reduz erro de digitação |
+| SearchBar | Busca em listagens | Buscar fornecedores ou proprietários | Facilita localização rápida |
+| TextArea | Campos livres | Observações e descrição da interação | Permite contexto textual maior |
+| Input/Error | Validação | CPF duplicado, e-mail inválido, campo obrigatório | Indica correção necessária |
+
+Os estados previstos são **default**, **focus**, **filled**, **error** e **disabled**. O foco usa destaque laranja para indicar edição ativa. O erro usa borda e mensagem em vermelho para orientar correção imediata. Campos desabilitados aparecem em cinza para indicar que a informação não pode ser editada naquele momento, como dados bloqueados por permissão ou status de validação.
+
+### 3.4.6. Navegação e cards
+
+A navegação principal organiza os módulos centrais do **Safra Control**: **Fornecedores**, **Proprietários**, **Usuários**, além da área de perfil e saída. A navbar aparece nas telas internas para manter o usuário orientado durante consulta, cadastro, edição e gestão de acesso.
+
+<div align="center">
+  <sub>Figura 3.4.7 - Navbar e cards de informação</sub><br>
+  <img src="./assets/guia_de_estilos/guia_navbar_cards.png" width="100%" alt="Navbar e cards do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+O item ativo da navbar usa laranja e linha inferior para indicar localização atual. Essa escolha é relevante porque fornecedores e proprietários possuem telas parecidas; o estado ativo reduz risco de navegação equivocada. O hover indica interatividade, e a área de perfil mostra nome, papel e ação de sair, reforçando controle de sessão.
+
+Os cards organizam informações em blocos reconhecíveis. O **Card/Partner** resume dados essenciais de fornecedores e proprietários; o **Card/User** mostra dados de usuários, permissões e status; e o **Card/Info** agrupa informações cadastrais na tela de detalhe do parceiro.
+
+| Componente | Uso | Onde aparece | Justificativa |
+|---|---|---|---|
+| Navigation/Header | Navegação global | Todas as telas internas | Mantém orientação do usuário |
+| Card/Partner | Listagem resumida de parceiros | Fornecedores e proprietários | Resume dados essenciais para consulta |
+| Card/User | Gestão de usuários | Tela de usuários | Exibe permissões, status e ações |
+| Card/Info | Detalhes do parceiro | Perfil detalhado | Agrupa informações por categoria |
+| Card/Metric | Indicadores quantitativos | Dashboards e resumos | Facilita leitura rápida de números relevantes |
+
+### 3.4.7. Tabelas, listagens e status
+
+Tabelas e listagens são usadas para leitura comparativa de dados, validação de registros, gestão de usuários e acompanhamento de parceiros. Elas aparecem em fluxos nos quais o usuário precisa comparar muitos registros, aplicar filtros e executar ações por linha.
+
+<div align="center">
+  <sub>Figura 3.4.8 - Tabelas, listagens e chips de status</sub><br>
+  <img src="./assets/guia_de_estilos/guia_tabelas_status.png" width="100%" alt="Tabelas, listagens e status do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+As tabelas utilizam cabeçalhos em caixa alta, células compactas e divisórias claras, favorecendo varredura visual. Os chips de status aparecem em cards, tabelas e telas de detalhe para sintetizar o estado do registro sem exigir leitura de campos longos.
+
+| Status | Uso | Significado | Justificativa visual |
+|---|---|---|---|
+| Rascunho | Cadastros incompletos | Registro salvo, mas não enviado | Cor neutra indica estado temporário |
+| Pendente | Fila de validação | Aguardando análise ou documentação | Cor de atenção indica ação necessária |
+| Ativo | Registro aprovado | Disponível nas consultas e operações | Cor positiva indica normalidade |
+| Devolvido | Correção necessária | Retornado pelo coordenador | Cor de alerta indica retrabalho |
+| Inativo | Usuário ou registro desabilitado | Acesso ou uso bloqueado | Cor neutra escura indica indisponibilidade |
+
+### 3.4.8. Histórico de interações
+
+O histórico de interações é um componente essencial do Safra Control, pois responde diretamente à dor de perda de histórico entre analistas, coordenadores e gestores. Ele transforma contatos, visitas, reuniões e observações em memória institucional consultável.
+
+<div align="center">
+  <sub>Figura 3.4.9 - Histórico de interações em timeline</sub><br>
+  <img src="./assets/guia_de_estilos/guia_historico_interacoes.png" width="100%" alt="Histórico de interações do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+O componente **Timeline/InteractionItem** apresenta data, tipo de interação, responsável, descrição, ícone e ordem cronológica. As interações mais recentes ficam no topo para facilitar consulta antes de reuniões, negociações ou atualizações cadastrais.
+
+Esse componente deve ser usado na tela de detalhes do fornecedor, na tela de detalhes do proprietário e em qualquer fluxo de acompanhamento de relacionamento. A timeline torna o histórico mais rastreável, legível e institucional, reduzindo dependência de conhecimento individual ou registros dispersos em planilhas e mensagens.
+
+### 3.4.9. Modais, alertas e estados vazios
+
+Modais, alertas e empty states são usados para feedback de ações importantes. Eles ajudam o usuário a entender se uma operação foi concluída, se houve erro, se existe pendência ou se uma lista não possui resultados.
+
+<div align="center">
+  <sub>Figura 3.4.10 - Modais, alertas e estado vazio</sub><br>
+  <img src="./assets/guia_de_estilos/guia_modais_alertas.png" width="100%" alt="Modais, alertas e estados vazios do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+| Componente | Uso | Exemplo | Justificativa |
+|---|---|---|---|
+| Modal/ExportCSV | Confirmação de exportação | Arquivo CSV gerado | Dá retorno claro ao usuário |
+| Modal/ConfirmInactiveUser | Ação crítica | Inativar usuário | Evita ações acidentais |
+| Alert/Success | Confirmação | Cadastro salvo | Reforça conclusão da tarefa |
+| Alert/Error | Falha ou validação | Campo obrigatório ou erro ao salvar | Direciona correção |
+| Alert/Warning | Atenção operacional | Documentação pendente | Sinaliza necessidade de acompanhamento |
+| Alert/Info | Informação geral | Nova versão disponível | Comunica orientação sem bloquear fluxo |
+| EmptyState | Lista vazia | Nenhum parceiro encontrado | Evita tela sem contexto |
+
+Modais devem ser usados apenas quando a ação exige confirmação ou atenção concentrada, como exportar dados ou inativar usuários. Alertas aparecem após ações ou em situações de validação. Empty states devem explicar o motivo da ausência de dados e oferecer uma ação de recuperação, como limpar filtros.
+
+### 3.4.10. Iconografia e imagens
+
+A iconografia usa estilo uniforme, preferencialmente outline/linear, com traço regular, proporção consistente e cor padronizada. O design system adota a família Lucide React, com ícones vetoriais de aparência leve, espessura aproximada de `1.5px` a `2px` e aplicação em botões, inputs, cards, tabelas, modais e timeline. A cor base segue o azul institucional ou tons neutros; cores semânticas são reservadas para sucesso, erro, alerta e informação.
+
+<div align="center">
+  <sub>Figura 3.4.11 - Biblioteca de ícones do Safra Control</sub><br>
+  <img src="./assets/guia_de_estilos/guia_iconografia.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+| Ícone | Função | Onde usar | Justificativa |
+|---|---|---|---|
+| Busca | Pesquisar registros | SearchBar | Ícone reconhecido universalmente |
+| Filtro | Refinar listagem | Filtros de parceiros e usuários | Representa seleção de critérios |
+| Download/Exportação | Exportar dados | Exportar CSV | Associação direta com baixar arquivo |
+| Editar | Alterar dados | Detalhes, cards e formulários | Indica modificação |
+| Histórico | Ver interações | Perfil do parceiro | Relaciona-se à linha do tempo |
+| Alerta | Problemas ou atenção | Erros, warnings e pendências | Comunica risco ou pendência |
+| Sucesso | Confirmação positiva | Alertas e status ativo | Reforça conclusão da ação |
+| Usuário | Representar conta interna | Navbar, gestão de usuários e avatar | Identifica perfil logado e permissões |
+| Parceiro | Representar grupo ou parceiro | Módulos de fornecedores e proprietários | Comunica entidade principal do Safra Control |
+| Calendário | Representar data | Histórico e atualização | Facilita leitura temporal |
+| Status | Indicador visual | Chips e tabelas | Reforça estado do registro |
+| Inativar | Bloquear usuário | Gestão de usuários | Sinaliza ação administrativa crítica |
+| Sair | Encerrar sessão | Navbar | Comunica logout |
+| Voltar | Retornar tela | Formulários e detalhes | Facilita navegação reversa |
+| Salvar | Confirmar formulário | Cadastro e edição | Comunica persistência de dados |
+
+A uniformidade dos ícones reduz ruído visual e ajuda o usuário a reconhecer ações recorrentes. Ícones podem aparecer sozinhos apenas em ações frequentes e de baixo risco, desde que haja contexto visual suficiente. Em ações sensíveis, como inativar usuário, exportar dados, salvar alterações ou sair do sistema, o ícone deve aparecer acompanhado de label textual, pois a clareza da ação é mais importante do que a economia de espaço.
 
 ## 3.5. Protótipo de alta fidelidade (sprint 3)
 
-*posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização)*
+O mapeamento dos fluxos apresentados na seção 3.3 tem como objetivo definir quais wireframes devem ser evoluídos para o protótipo de alta fidelidade da aplicação web CRM da ATVOS. Essa seleção considera o escopo do MVP, as User Stories priorizadas, os requisitos funcionais relacionados e a relevância de cada fluxo para a gestão de parceiros agrícolas, especialmente fornecedores de cana e proprietários cedentes/proprietários de terra.
+
+Dessa forma, o protótipo de alta fidelidade deve representar, com maior nível de detalhamento visual e interativo, os fluxos centrais do sistema: cadastro, consulta, atualização, histórico de interações, listagem, filtragem e exportação de informações de parceiros ativos. Fluxos relacionados à gestão de usuários, embora relevantes para a administração do sistema, são tratados como secundários nesta etapa, pois não compõem o núcleo funcional principal do CRM agrícola.
+
+| Nome do fluxo | User Story relacionada | Tipo de usuário/persona | Prioridade | Entra no protótipo de alta fidelidade? | Justificativa |
+|---|---|---|---|---|---|
+| Cadastro de fornecedores de cana | US01 | Usuário interno responsável pelo relacionamento com parceiros agrícolas | Alta | Sim | Representa um dos fluxos centrais do MVP, relacionado ao RF004, pois permite o cadastro centralizado de fornecedores de cana no CRM. |
+| Cadastro de proprietários cedentes/proprietários de terra | US02 | Usuário interno responsável pelo relacionamento com parceiros agrícolas | Alta | Sim | É essencial para contemplar o segundo tipo principal de parceiro agrícola do sistema, atendendo ao RF004 e ao objetivo de centralização cadastral. |
+| Atualização de fornecedores de cana | US05 | Usuário interno responsável pela manutenção cadastral | Alta | Sim | Está diretamente associado ao RF005 e permite manter os dados cadastrais dos fornecedores atualizados, garantindo confiabilidade às informações do CRM. |
+| Atualização de proprietários cedentes/proprietários de terra | US05 | Usuário interno responsável pela manutenção cadastral | Alta | Sim | Complementa o fluxo de edição cadastral dos parceiros agrícolas, assegurando que proprietários de terra também possam ter seus dados atualizados no sistema. |
+| Visualização de detalhes e histórico de interações dos fornecedores | US03 e US04 | Usuário interno responsável pelo acompanhamento do relacionamento | Alta | Sim | Reúne informações detalhadas do parceiro e seu histórico de interações, atendendo aos RF006 e RF008, pilares fundamentais para a gestão do relacionamento. |
+| Visualização de detalhes e histórico de interações dos proprietários cedentes | US03 e US04 | Usuário interno responsável pelo acompanhamento do relacionamento | Alta | Sim | Permite consultar o perfil detalhado e as interações registradas com proprietários de terra, reforçando o controle e a rastreabilidade do relacionamento. |
+| Listagem e filtros de parceiros ativos | US06 | Usuário interno que consulta e acompanha a base de parceiros | Alta | Sim | Está relacionado aos RF007 e RF016, sendo necessário para localizar parceiros ativos, consultar informações e aplicar filtros de forma eficiente. |
+| Exportação de lista de contatos em CSV | US07 | Usuário interno que utiliza dados de parceiros para consulta, análise ou comunicação | Média | Sim | Atende ao RF017 e permite exportar informações de contatos e parceiros ativos, apoiando atividades operacionais e de acompanhamento fora do sistema. |
+| Gestão de usuários | US08 | Administrador do sistema | Baixa | Opcional | Embora relevante para a administração da aplicação, não faz parte do núcleo funcional do MVP voltado à gestão de parceiros agrícolas. Pode ser prototipado apenas se houver tempo disponível. |
+| Inativação de contas de usuários | US09 | Administrador do sistema | Baixa | Opcional | Trata-se de um fluxo administrativo secundário. Sua inclusão no protótipo de alta fidelidade não deve ter prioridade sobre os fluxos ligados a parceiros agrícolas. |
+
+Com base nesse mapeamento, os fluxos que devem ser priorizados no protótipo de alta fidelidade são aqueles relacionados diretamente à gestão de parceiros agrícolas: cadastro, atualização, listagem, filtragem, visualização de detalhes, histórico de interações e exportação de contatos. Esses fluxos correspondem aos principais pilares do MVP, pois viabilizam o cadastro centralizado de parceiros, o acompanhamento do relacionamento e a consulta estruturada das informações.
+
+A gestão de usuários e a inativação de contas devem ser tratadas como fluxos secundários ou opcionais nesta etapa. Apesar de contribuírem para a administração da aplicação, elas não representam o valor principal do CRM para a ATVOS no contexto do MVP, cujo foco está na melhoria da gestão de fornecedores de cana e proprietários cedentes/proprietários de terra.
+
+Na evolução para alta fidelidade, os fluxos foram organizados em uma experiência única e coerente, partindo do acesso ao sistema, passando pela gestão de parceiros agrícolas e chegando aos processos administrativos de validação, exportação e controle de usuários. As telas utilizam a identidade visual definida no guia de estilos, com predominância das cores institucionais, componentes padronizados, hierarquia visual clara e organização voltada à consulta rápida de dados operacionais.
+
+O protótipo inicia pela autenticação do usuário e conduz para a listagem principal de parceiros, que funciona como ponto de entrada para cadastro, consulta, filtragem e exportação. A partir dela, o usuário pode registrar novos fornecedores de cana ou proprietários cedentes, acompanhar solicitações pendentes de validação e revisar registros antes da aprovação. Embora a gestão de usuários tenha sido classificada como fluxo secundário no mapeamento, suas telas também foram prototipadas em alta fidelidade para demonstrar como o administrador mantém o controle de acesso, cria novos usuários e edita dados de colaboradores internos.
+
+<div align="center">
+  <sub>Figura 3.5.1 - Tela de login do protótipo de alta fidelidade</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/login_af.png" width="100%" alt="Tela de login do protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.2 - Listagem de parceiros do protótipo de alta fidelidade</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/parceiros_af.png" width="100%" alt="Tela de listagem de parceiros do protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.3 - Cadastro de novo fornecedor de cana</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/novo_fornecedor_af.png" width="100%" alt="Tela de cadastro de novo fornecedor de cana no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.4 - Cadastro de novo proprietário cedente</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/novo_proprietario_af.png" width="100%" alt="Tela de cadastro de novo proprietário cedente no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.5 - Validação de registros pendentes</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/validacao_de_registros_af.png" width="100%" alt="Tela de validação de registros pendentes no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.6 - Revisão de registro antes da aprovação</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/revisar_registro_af.png" width="100%" alt="Tela de revisão de registro antes da aprovação no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.7 - Exportação de dados em CSV</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/exportar_csv_af.png" width="100%" alt="Tela de exportação de dados em CSV no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.8 - Gestão de usuários do sistema</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/gestao_de_usuario_af.png" width="100%" alt="Tela de gestão de usuários do sistema no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.9 - Cadastro de novo usuário</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/novo_usuario_af.png" width="100%" alt="Tela de cadastro de novo usuário no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.5.10 - Edição de usuário existente</sub><br>
+  <img src="./assets/wireframe/alta_fidelidade/editar_usuario_af.png" width="100%" alt="Tela de edição de usuário existente no protótipo de alta fidelidade"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+Assim, o protótipo de alta fidelidade consolida o percurso principal do CRM da ATVOS em uma interface mais próxima da experiência final de uso. As telas representam tanto os fluxos prioritários de parceiros agrícolas quanto os pontos de apoio administrativo necessários para governança, rastreabilidade e controle de acesso, mantendo alinhamento com os requisitos funcionais, as User Stories priorizadas e o guia visual definido para o produto.
+
+Para acesso ao caminho de telas do protótipo de alta fidelidade, utilize o link a seguir: [Protótipo de alta fidelidade](https://www.figma.com/design/MgdDm59N5bybkU1zABfx6w/Prot%C3%B3tipo-de-alta-fidelidade?node-id=127-91&t=tSRinjXp2u4CddDl-1).
+
 
 ## 3.6. Modelagem do banco de dados (sprints 2 e 4)
 
@@ -1832,206 +2267,362 @@ CREATE INDEX idx_registro_operacao    ON registro_alteracao(tipo_operacao);
 
 ## 3.6.4. Consultas SQL e lógica proposicional
 
-Esta seção apresenta consultas SQL compostas realizadas pelo back-end da aplicação web, acompanhadas de sua respectiva tradução para lógica proposicional. As consultas foram elaboradas a partir das entidades modeladas no Diagrama de Classes do Domínio, especialmente `Parceiro`, `VinculoComercial`, `Terra`, `Unidade`, `Usuario`, `PerfilAcesso` e `RegistroAlteracao`.
+Esta seção apresenta consultas SQL compostas realizadas pelo back-end da aplicação web, acompanhadas de sua respectiva lógica proposicional. As consultas foram elaboradas a partir das entidades modeladas no banco de dados, em especial, `parceiros`, `usuarios`, `perfil_acesso`, `interacao`, `telefone_parceiro` e `vinculo_comercial`.
 
-Cada consulta possui uma cláusula `WHERE` composta, com condições combinadas por operadores lógicos como `AND` e `OR`.
+As consultas cobrem operações de diferentes tipos — `INSERT`, `UPDATE` e `SELECT` — e representam fluxos reais do sistema, como cadastro de usuários e parceiros, inativação lógica, edição de dados cadastrais, visualização de perfis, listagem com filtros, geração de dashboards e exportação de dados.
 
-Para formalizar essas regras, cada condição booleana foi transformada em uma proposição lógica, como $A$, $B$, $C$ ou $D$. Em seguida, a estrutura da cláusula `WHERE` foi convertida para uma expressão lógica proposicional equivalente, utilizando os conectivos $\land$ para conjunção e $\lor$ para disjunção. Por fim, cada expressão foi validada por meio de tabela verdade.
+Cada consulta possui uma cláusula `WHERE` composta, com condições combinadas por operadores lógicos como `AND`, `OR`, `NOT`, `LIKE`, `IN` e `IS NULL`. Para formalizar essas regras, cada condição booleana foi transformada em uma proposição lógica identificada por letras como $A$, $B$, $C$ ou $D$. Em seguida, a estrutura da cláusula `WHERE` foi convertida para uma expressão lógica proposicional equivalente, utilizando os conectivos $\land$ para conjunção, $\lor$ para disjunção e $\lnot$ para negação. Por fim, cada expressão foi validada por meio de tabela verdade.
 
-As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no domínio, mas não foram tratadas como proposições principais. Isso ocorre porque o objetivo da lógica proposicional nesta seção é representar as condições booleanas da cláusula `WHERE`, isto é, as regras de filtragem efetivamente avaliadas pelo back-end.
+As cláusulas `JOIN` e `LEFT JOIN` foram utilizadas para combinar entidades relacionadas no domínio, mas não foram tratadas como proposições principais. Isso ocorre porque o objetivo da lógica proposicional nesta seção é representar exclusivamente as condições booleanas da cláusula `WHERE`, isto é, as regras de filtragem e controle efetivamente avaliadas pelo back-end em cada operação.
+
 
 ### Rastreabilidade das consultas
 
 | Consulta | Tipo | Tabelas envolvidas | Finalidade no back-end |
 |---|---|---|---|
-| 01 | SELECT | `parceiros`, `vinculo_comercial` | Listar parceiros ativos cujo nome corresponde a um termo de busca ou que possuem vínculo ativo. |
-| 02 | | `Terra`, `Unidade` | Identificar terras com oportunidade relevante em unidades ativas. |
-| 03 | | `Usuario`, `PerfilAcesso` | Listar usuários ativos com perfil operacional. |
-| 04 | SELECT | `RegistroAlteracao` | Recuperar registros auditáveis de atualização ou exclusão. |
-| 05 | UPDATE | `parceiros`, `vinculo_comercial` | Inativar logicamente um parceiro ativo do tipo pessoa física que não possua vínculos comerciais ativos. |
-| 06 | UPDATE | `parceiros`, `usuarios`, `perfil_acesso` | Aprovar o registro de um parceiro com status pendente, verificando se o aprovador está ativo e possui perfil autorizado. |
-| 07 | SELECT | `interacao`, `parceiros`, `usuarios` | Listar interações de parceiros ativos filtrando por tipo presencial ou por período de data, desde que registradas por usuário ativo. |
+| 01 | INSERT | `usuarios`, `perfil_acesso` | Cadastrar novo usuário com perfil válido, garantindo unicidade de e-mail. |
+| 02 | UPDATE | `usuarios` | Inativar logicamente um usuário ativo sem remover seu histórico do banco. |
+| 03 | INSERT | `parceiros` | Cadastrar novo parceiro como rascunho, verificando duplicidade de CPF/CNPJ. |
+| 04 | UPDATE | `parceiros` | Editar dados cadastrais de um parceiro em status editável, com validação de consistência. |
+| 05 | SELECT | `parceiros`, `usuarios`, `perfil_acesso` | Exibir perfil detalhado de um parceiro ativo com informações do usuário criador. |
+| 06 | SELECT | `parceiros` | Listar parceiros ativos com filtros opcionais de nome, tipo de pessoa e e-mail. |
+| 07 | SELECT | `interacao`, `parceiros` | Agregar interações por tipo e mês para exibição no dashboard dos últimos 6 meses. |
+| 08 | SELECT | `parceiros`, `telefone_parceiro`, `vinculo_comercial` | Gerar lista de parceiros ativos com telefone principal e vínculo para exportação. |
+
 
 ### Regras de negócio representadas pelas consultas
 
 | Consulta | Regra representada | Regras de Negócio associadas |
 |---|---|---|
-| 01 | Parceiros ativos ou com vínculo comercial ativo devem poder ser recuperados para consulta operacional, com suporte a busca por nome. | RN04, RN08 |
-| 02 | Terras relevantes para análise devem estar associadas a unidades ativas e possuir oportunidade ou área potencial significativa. |
-| 03 | Apenas usuários ativos com perfil operacional devem aparecer em determinadas listagens internas. |
-| 04 | Alterações sensíveis devem conter dados anteriores e novos dados para garantir rastreabilidade. |
-| 05 | Parceiros ativos do tipo pessoa física só podem ser inativados logicamente quando não possuem vínculo comercial ativo. | RN08, RF012 |
-| 06 | A aprovação de um registro pendente só pode ser realizada por usuários ativos com perfil de coordenador ou administrador. | RN04, RN09, RF010 |
-| 07 | Interações de parceiros ativos são listadas por tipo presencial ou dentro do período informado, desde que registradas por usuário ativo. | RN08, RF006, RF007 |
+| 01 | Usuários só podem ser cadastrados com perfil existente no sistema e e-mail único, iniciando sem senha até o primeiro acesso. | RN01, RN03 |
+| 02 | A inativação de usuários é lógica — o registro é preservado, o acesso é revogado imediatamente e o usuário logado não pode se auto-inativar. | RN07, RN15 |
+| 03 | Novos parceiros são criados com status rascunho e têm o CPF/CNPJ validado contra duplicatas de registros não inativos. | RN09, RN16 |
+| 04 | A edição de parceiros é permitida apenas para registros com status rascunho, devolvido ou ativo, com validação de consistência entre tipo de pessoa e documento. | RN05, RN11, RN12 |
+| 05 | A visualização do perfil detalhado de um parceiro exige que ele esteja ativo e que o usuário criador também esteja ativo no sistema. | RN04, RN08 |
+| 06 | A listagem de parceiros exibe apenas registros ativos, com suporte a filtros opcionais que não comprometem o retorno quando não informados. | RN04, RN08 |
+| 07 | O dashboard de interações agrega apenas interações de parceiros ativos dentro dos últimos 6 meses, segmentadas por tipo e mês. | RN04, RN05, RN08 |
+| 08 | A exportação de dados inclui apenas parceiros ativos com filtro opcional de tipo de pessoa, omitindo dados sensíveis de auditoria. | RN04, RN08, RF017 |
+
+
 
 As consultas foram elaboradas com três ou quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
 ---
 
-### 01 — Consulta de parceiros com vínculo comercial ativo ou fornecedor de cana
+### 01 — Cadastro de um novo usuário
+
 
 | 01 | --- |
 |---|---|
-| **Expressão SQL** | ```SQL SELECT p.* FROM parceiros p LEFT JOIN vinculo_comercial vc ON vc.parceiro_id = p.id WHERE p.status = 'ativo' AND (p.nome LIKE '%termo%' OR vc.status = 'ativo');``` |
-| **Proposições lógicas** | $A$: O parceiro possui status ativo (p.status = 'ativo') <br> $B$: O nome do parceiro contém o termo buscado (p.nome LIKE '%termo%') <br> $C$: O vínculo comercial está ativo (vc.status = 'ativo') |
-| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td></tr><tr><td>V</td><td>V</td><td>F</td><td>V</td><td>V</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
+| **Expressão SQL** | ```SQL INSERT INTO usuarios (id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em) SELECT gen_random_uuid(), pa.id, :nome, :email, NULL, TRUE, NOW() FROM perfil_acesso pa WHERE pa.nome = :perfil AND NOT EXISTS (SELECT 1 FROM usuarios u WHERE u.email = :email); ``` |
+| **Proposições lógicas** | $A$ : O perfil informado existe na tabela perfil_acesso (pa.nome = :perfil) <br> $B$ : O e-mail ainda não está cadastrado no sistema (NOT EXISTS (SELECT 1 FROM usuarios u WHERE u.email = :email)) |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta 01 possui utilidade para o fluxo de listagem de parceiros (RF007 e RF016). A proposição A é obrigatória para a listagem, isto é, o parceiro deve estar com o status ativo para que ele apareça na listagem normal (Para admins, esse fluxo de listagem é diferente, já que A deixa de ser obrigatório), estando de acordo com a RN08. Dentre esses, a consulta deve retornar aqueles cujo o nome contém o termo buscado (Proposição B) ou aqueles que possuem ao menos um vínculo comercial ativo (Proposição C)
 
-#### Combinações relevantes da tabela verdade:
+#### Explicação do que significa essa consulta:
 
-1- $(A=V, B=F, C=F) \rightarrow A \land (B \lor C) = F$ : parceiro está ativo mas não atende nenhum critério de busca, ou seja, não é retornado.
-2- $(A=V, B=V, C=F) \rightarrow A \land (B \lor C) = V$ : parceiro ativo cujo nome corresponde ao termo buscado, mas sem vínculo ativo. Possui retorno.
-3- $(A=V, B=F, C=V) \rightarrow A \land (B \lor C) = V$ : sem correspondência ao nome, são retornados os parceiros com vínculo ativo.
-4- $(A=F, B=V, C=V) \rightarrow A \land (B \lor C) = F$ : parceiro inativo nunca é retornado, independentemente dos demais critérios (Para consultas normais).
---- 
 
-### #2 — Consulta de terras com oportunidade relevante em unidades ativas
+Essa consulta representa a regra de cadastro de novos usuários no sistema. Em termos práticos, o sistema só permite criar um usuário quando duas condições forem verdadeiras ao mesmo tempo: o perfil informado precisa existir e o e-mail não pode já estar cadastrado.
+<br>
+A lógica proposicional $A \land B$ mostra exatamente isso: o cadastro somente acontece quando há simultaneamente um perfil válido e um e-mail disponível. Caso uma das condições falhe, o sistema bloqueia a operação para evitar inconsistências, como usuários associados a perfis inexistentes ou duplicidade de contas com o mesmo e-mail.
+<br>
+Na prática, essa consulta implementa uma validação de integridade e unicidade antes da criação do usuário.
+<br>
 
-| #2 | --- |
-|---|---|
-| **Expressão SQL** | `SELECT t.* FROM terra t JOIN unidade u ON u.id = t.unidade_id WHERE u.ativo = TRUE AND (t.oportunidade_ha > 0 OR t.area_potencial_ha >= 100);` |
-| **Proposições lógicas** | $A$: A unidade está ativa (`u.ativo = TRUE`) <br> $B$: A terra possui oportunidade em hectares maior que zero (`t.oportunidade_ha > 0`) <br> $C$: A terra possui área potencial maior ou igual a 100 hectares (`t.area_potencial_ha >= 100`) |
-| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
+#### Explicação da consulta SQL:
 
-A consulta #2 é utilizada para listar terras associadas a unidades ativas que possuam oportunidade operacional ou área potencial relevante. A proposição $A$ é obrigatória, pois a unidade precisa estar ativa. Já as proposições $B$ e $C$ são alternativas: basta que a terra tenha oportunidade maior que zero ou área potencial maior ou igual a 100 hectares.
 
----
+O comando INSERT insere novos registros correspondentes à um novo usuário do sistema. O id é gerado automaticamente via gen_random_uuid(). O campo senha_hash recebe NULL pois o usuário ainda não realizou o primeiro acesso (a senha será definida no fluxo UC11). O campo ativo inicia como TRUE e criado_em recebe o timestamp atual. O INSERT é condicionado por um SELECT que verifica duas condições via WHERE: o perfil informado deve existir em perfil_acesso e o e-mail não pode já estar cadastrado (NOT EXISTS). Se qualquer uma das condições falhar, nenhuma linha é inserida. 
 
-### #3 — Consulta de usuários ativos com perfil operacional
-
-| #3 | --- |
-|---|---|
-| **Expressão SQL** | `SELECT u.* FROM usuario u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE u.ativo = TRUE AND (pa.nome = 'ANALISTA' OR pa.nome = 'COORDENADOR');` |
-| **Proposições lógicas** | $A$: O usuário está ativo (`u.ativo = TRUE`) <br> $B$: O perfil de acesso do usuário é analista (`pa.nome = 'ANALISTA'`) <br> $C$: O perfil de acesso do usuário é coordenador (`pa.nome = 'COORDENADOR'`) |
-| **Expressão lógica proposicional** | $A \land (B \lor C)$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C)$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
-
-A consulta #3 é utilizada para listar usuários internos ativos com perfil operacional. O usuário precisa estar ativo e possuir perfil de analista ou coordenador. Assim, $A$ precisa ser verdadeiro, enquanto $B$ e $C$ representam perfis alternativos aceitos pela regra.
-
----
-
-### #4 — Consulta de registros de alteração com dados auditáveis
-
-| #4 | --- |
-|---|---|
-| **Expressão SQL** | `SELECT ra.* FROM registro_alteracao ra WHERE (ra.tipo_operacao = 'ATUALIZACAO' OR ra.tipo_operacao = 'EXCLUSAO') AND ra.dados_anteriores IS NOT NULL AND ra.dados_novos IS NOT NULL;` |
-| **Proposições lógicas** | $A$: O tipo de operação é atualização (`ra.tipo_operacao = 'ATUALIZACAO'`) <br> $B$: O tipo de operação é exclusão (`ra.tipo_operacao = 'EXCLUSAO'`) <br> $C$: Os dados anteriores estão preenchidos (`ra.dados_anteriores IS NOT NULL`) <br> $D$: Os novos dados estão preenchidos (`ra.dados_novos IS NOT NULL`) |
-| **Expressão lógica proposicional** | $(A \lor B) \land C \land D$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(A \lor B)$</th> <th>$(A \lor B) \land C \land D$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>F</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table> |
-
-A consulta #4 é utilizada para recuperar registros relevantes para auditoria. A operação deve ser atualização ou exclusão, e o registro precisa conter tanto os dados anteriores quanto os novos dados. Dessa forma, a expressão exige que $(A \lor B)$ seja verdadeiro e, ao mesmo tempo, que $C$ e $D$ também sejam verdadeiros.
-
----
-
-### #5 — Inativação lógica de parceiro
-
-| #5 | --- |
-|---|---|
-| **Expressão SQL** | `UPDATE parceiros SET status = 'inativo', atualizado_em = NOW(), atualizado_por = :usuario_id WHERE id = :id AND status = 'ativo' AND tipo_pessoa NOT IN ('juridica') AND id NOT IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo');` |
-| **Proposições lógicas** | $A$: O parceiro está com status ativo (`status = 'ativo'`) <br> $B$: O parceiro é pessoa jurídica (`tipo_pessoa = 'juridica'`) — o `NOT IN ('juridica')` no SQL expressa $\lnot B$ <br> $C$: O parceiro possui ao menos um vínculo comercial ativo (`id IN (SELECT parceiro_id FROM vinculo_comercial WHERE status = 'ativo')`) — o `NOT IN (SELECT ...)` expressa $\lnot C$ |
-| **Expressão lógica proposicional** | $A \land \lnot B \land \lnot C$, equivalente por De Morgan a $A \land \lnot(B \lor C)$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(B \lor C)$</th> <th>$\lnot(B \lor C)$</th> <th>$A \land \lnot(B \lor C)$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> </tbody> </table> |
-
-A consulta #5 implementa a inativação lógica de um parceiro — a exclusão sem remoção física do registro (RF012, RN08). O UPDATE altera o campo `status` de `'ativo'` para `'inativo'` e registra o momento e o responsável pela operação. Nenhuma linha é deletada: o histórico permanece íntegro para auditoria.
-
-A condição A é mandatória: apenas parceiros com status `'ativo'` passam por esse fluxo. Parceiros em `'rascunho'`, `'pendente'` ou `'devolvido'` possuem outros caminhos de transição de status. As proposições B e C representam salvaguardas que bloqueiam a inativação. O operador `NOT IN` aparece duas vezes no SQL — uma vez para excluir o tipo `'juridica'` (¬B) e outra vez como subconsulta para verificar a ausência de vínculos ativos (¬C). Pessoas jurídicas exigem um fluxo específico de encerramento com documentação contratual; por isso, esse endpoint é restrito a pessoas físicas. A subconsulta impede que um parceiro ainda vinculado a um contrato ativo seja inativado, evitando inconsistência entre o status do parceiro e seus contratos em vigor.
-
-A equivalência $A \land \lnot B \land \lnot C = A \land \lnot(B \lor C)$ pela lei de De Morgan revela que a inativação é bloqueada sempre que pelo menos uma das condições B ou C for verdadeira — mesmo que a outra seja falsa. Isso diferencia a estrutura desta consulta das anteriores: enquanto as consultas #1, #2 e #3 ampliam o resultado via disjunção interna $(B \lor C)$, aqui a disjunção atua como gatilho de bloqueio pela negação externa.
 
 #### Combinações relevantes da tabela verdade:
 
-1- $(A=F, B=F, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro não está com status ativo; UPDATE não é executado independentemente das demais condições.
 
-2- $(A=V, B=F, C=F) \rightarrow A \land \lnot(B \lor C) = V$ : parceiro ativo, do tipo pessoa física e sem vínculo comercial ativo — **inativação executada**. Única combinação que satisfaz todas as condições.
-
-3- $(A=V, B=V, C=F) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa jurídica; UPDATE bloqueado — a inativação de pessoas jurídicas exige fluxo específico com documentação contratual.
-
-4- $(A=V, B=F, C=V) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro ativo é pessoa física, mas ainda possui vínculo comercial ativo; UPDATE bloqueado para preservar a integridade do contrato vigente.
-
-5- $(A=V, B=V, C=V) \rightarrow A \land \lnot(B \lor C) = F$ : parceiro é pessoa jurídica com vínculo ativo; ambas as salvaguardas estão ativas e o UPDATE não é executado.
+1- $(A=V, B=F) \rightarrow A \land B = F$ : perfil válido mas e-mail já cadastrado implica em cadastro bloqueado, respeitando a RN01 que garante a unicidade do e-mail. <br>
+2- $(A=F, B=V) \rightarrow A \land B = F$ : e-mail disponível mas perfil inválido, ou seja, o cadastro é bloqueado, impedindo vínculos com perfis inexistentes. <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : perfil válido e e-mail disponível implica em cadastro de novo usuário efetuado.<br>
 
 ---
 
-### #6 — Aprovação de registro pendente por coordenador
+### 02 — Inativação de usuários 
 
-| #6 | --- |
+
+| 02 | --- |
 |---|---|
-| **Expressão SQL** | `UPDATE parceiros p SET status = 'ativo', atualizado_em = NOW(), atualizado_por = :usuario_id FROM usuarios u JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE p.id = :parceiro_id AND p.status = 'pendente' AND u.id = :usuario_id AND u.ativo = TRUE AND pa.nome IN ('coordenador', 'administrador');` |
-| **Proposições lógicas** | $A$: O registro do parceiro está com status pendente (`p.status = 'pendente'`) <br> $B$: O usuário aprovador está ativo (`u.ativo = TRUE`) <br> $C$: O perfil do aprovador é coordenador ou administrador (`pa.nome IN ('coordenador', 'administrador')`) |
+| **Expressão SQL** | ```SQL UPDATE usuarios SET ativo = FALSE, atualizado_em = NOW() WHERE id = :usuario_id AND ativo = TRUE AND id != :usuario_logado_id; ``` |
+| **Proposições lógicas** | $A$ : O id corresponde ao usuário alvo (id = :usuario_id) <br> $B$ : O usuário está ativo (ativo = TRUE) <br> $C$ : O usuário alvo não é o próprio usuário logado (id != :usuario_logado_id) |
 | **Expressão lógica proposicional** | $A \land B \land C$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$A \land B$</th> <th>$A \land B \land C$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> </tbody> </table> |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $A \land B \land C$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #6 implementa a aprovação de um registro pendente por um coordenador ou administrador. O UPDATE utiliza a cláusula FROM para cruzar `parceiros` com `usuarios` e `perfil_acesso` na mesma instrução, eliminando a necessidade de uma consulta de verificação separada antes da alteração. Ao executar, o sistema transita o status do parceiro de `'pendente'` para `'ativo'`, tornando o registro visível nas consultas e listagens normais do sistema (RN08).
 
-A proposição A restringe o fluxo ao status `'pendente'`: registros em `'rascunho'`, `'devolvido'`, `'ativo'` ou `'inativo'` não passam por esse UPDATE. A proposição B garante que contas de usuário inativadas administrativamente não executam aprovações, mesmo que mantenham o perfil de coordenador. A proposição C verifica o perfil via `IN ('coordenador', 'administrador')`, permitindo que administradores também realizem aprovações diretas quando necessário, sem depender de um coordenador disponível.
+#### Explicação do que significa essa consulta:
 
-A estrutura $A \land B \land C$ é uma conjunção pura de três guardas obrigatórias — nenhuma substitui a outra. Isso contrasta com as consultas #1, #2 e #3, onde a disjunção interna permite que um critério compense a ausência do outro, e com a consulta #5, onde a disjunção age como bloqueio por negação. Aqui não há alternativas: o UPDATE só é executado quando as três proposições são verdadeiras ao mesmo tempo.
+
+Essa consulta representa a inativação lógica de usuários do sistema. Em vez de apagar o usuário do banco de dados, o sistema apenas altera seu status para inativo, preservando o histórico de auditoria e rastreabilidade.
+<br>
+A operação só acontece quando três condições forem verdadeiras simultaneamente: o usuário alvo precisa existir, ele deve estar ativo no momento da operação e não pode ser o próprio usuário logado.
+<br>
+A expressão lógica $A \land B \land C$ demonstra que qualquer falha em uma dessas verificações impede a execução da inativação. Isso evita problemas como tentar desativar usuários já inativos, usuários inexistentes ou permitir que um administrador se auto-inative acidentalmente.
+<br>
+
+
+
+#### Explicação da consulta SQL:
+
+
+O comando UPDATE realiza a inativação lógica de um usuário, alterando o campo ativo para FALSE e registrando o timestamp da operação em atualizado_em. O comando WHERE aplica três condições de segurança: o id deve corresponder ao usuário alvo, o usuário deve estar ativo no momento da operação e o usuário alvo não pode ser o próprio usuário logado, o que impede a inativação acidental de si mesmo. O registro não é removido do banco, preservando o histórico conforme a RN07 e a RN15.  
+
 
 #### Combinações relevantes da tabela verdade:
 
-1- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : aprovador ativo com perfil válido, mas o registro não está pendente; a aprovação não é executada.
 
-2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : registro pendente e aprovador ativo, mas o perfil é analista; UPDATE bloqueado — analistas não possuem permissão de aprovação.
-
-3- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : registro pendente e perfil de coordenador válido, mas a conta do aprovador está inativa; UPDATE bloqueado independentemente do perfil.
-
-4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : registro pendente, aprovador ativo e com perfil autorizado — **aprovação executada**, status transita para `'ativo'`.
-
-5- $(A=V, B=F, C=F) \rightarrow A \land B \land C = F$ : registro pendente, mas aprovador inativo e sem perfil correto; bloqueio duplo — nenhuma condição isolada é suficiente para liberar o UPDATE.
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : usuário já está inativo, implicando em operação não executada. <br>
+2- $(A=F, B=V, C=F) \rightarrow A \land B \land C = F$ : usuário alvo é o próprio usuário logado mas a auto-inativação é proibida, portanto a operação não é executada. <br>
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum usuário, portanto nenhuma linha é afetada. <br>
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : usuário existe, está ativo e não é o usuário logado, portanto a inativação é executada com sucesso. <br>
 
 ---
 
-### #7 — Busca de interações por tipo e período em parceiros ativos
+### 03 — Cadastro de parceiros
 
-| #7 | --- |
+
+| 03 | --- |
 |---|---|
-| **Expressão SQL** | `SELECT i.*, p.nome AS nome_parceiro FROM interacao i JOIN parceiros p ON p.id = i.parceiro_id JOIN usuarios u ON u.id = i.registrado_por WHERE p.status = 'ativo' AND (i.tipo IN ('visita', 'reuniao') OR i.data BETWEEN :data_inicio AND :data_fim) AND u.ativo = TRUE;` |
-| **Proposições lógicas** | $A$: O parceiro está ativo (`p.status = 'ativo'`) <br> $B$: O tipo da interação é presencial (`i.tipo IN ('visita', 'reuniao')`) <br> $C$: A data da interação está dentro do período buscado (`i.data BETWEEN :data_inicio AND :data_fim`) <br> $D$: O usuário que registrou a interação está ativo (`u.ativo = TRUE`) |
-| **Expressão lógica proposicional** | $A \land (B \lor C) \land D$ |
-| **Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$D$</th> <th>$(B \lor C)$</th> <th>$A \land (B \lor C) \land D$</th> </tr> </thead> <tbody> <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>F</td><td>V</td><td>V</td><td>V</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr> <tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr> </tbody> </table> |
+| **Expressão SQL** | ```SQL INSERT INTO parceiros (id, nome, apelido, tipo_pessoa, cpf_cnpj, email, status, criado_em, criado_por) VALUES (gen_random_uuid(), :nome, :apelido, :tipo_pessoa, :cpf_cnpj, :email, 'rascunho', NOW(), :usuario_id) WHERE NOT EXISTS (SELECT 1 FROM parceiros p WHERE p.cpf_cnpj = :cpf_cnpj AND p.status != 'inativo'); ``` |
+| **Proposições lógicas** | $A$ : : O CPF ou CNPJ informado não está cadastrado em nenhum parceiro ativo, pendente, rascunho ou devolvido (NOT EXISTS ... AND p.status != 'inativo') <br> $B$ : O tipo de pessoa informado é válido (tipo_pessoa IN ('fisica', 'juridica')) |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
-A consulta #7 recupera o histórico de interações de parceiros ativos com base em dois critérios alternativos de filtragem: o tipo da interação (presencial ou remota) e o período em que ocorreu. O SELECT cruza três tabelas — `interacao`, `parceiros` e `usuarios` — para garantir que os dados retornados correspondam a parceiros ativos e a registros inseridos por usuários cujas contas ainda estão ativas.
 
-A proposição A é o filtro de contexto: o parceiro precisa estar ativo para que suas interações apareçam nas listagens normais do sistema (RN08). A proposição D funciona como guarda de integridade: interações registradas por usuários cujas contas foram inativadas não são suprimidas do banco, mas o JOIN com `u.ativo = TRUE` as exclui da listagem, sinalizando implicitamente uma situação de auditoria. As proposições B e C são critérios alternativos conectados por disjunção: o sistema retorna a interação se ela for presencial (`IN ('visita', 'reuniao')`) independentemente da data, OU se sua data estiver dentro do período informado (`BETWEEN`), independentemente do tipo. Isso permite que o coordenador filtre por tipo de contato ou por janela temporal sem precisar combinar ambos obrigatoriamente.
+#### Explicação do que significa essa consulta:
 
-A estrutura $A \land (B \lor C) \land D$ difere de $A \land (B \lor C)$ das consultas #1 a #3 pela adição de uma quarta guarda obrigatória que envolve a disjunção, e difere de $(A \lor B) \land C \land D$ da consulta #4 porque a disjunção está no meio da expressão, não na primeira posição. Das 16 combinações possíveis, apenas três resultam em retorno: $(A=V, B=F, C=V, D=V)$, $(A=V, B=V, C=F, D=V)$ e $(A=V, B=V, C=V, D=V)$.
+
+Essa consulta controla o cadastro inicial de parceiros no sistema. O parceiro é criado inicialmente com status de rascunho, permitindo que seus dados sejam posteriormente revisados e validados.
+<br>
+A lógica proposicional $A \land B$ determina que o cadastro só pode ocorrer quando o CPF/CNPJ ainda não estiver associado a outro parceiro ativo no sistema e quando o tipo de pessoa informado for válido.
+<br>
+Isso garante duas regras importantes: evitar duplicidade de parceiros e manter consistência entre os dados cadastrais. Assim, o sistema impede registros repetidos e também evita classificações inválidas entre pessoa física e pessoa jurídica.
+<br>
+
+#### Explicação da consulta SQL:
+
+
+O comando INSERT cria um novo registro de parceiro com status rascunho, conforme o fluxo de validação definido na RN16. O id é gerado automaticamente, criado_em recebe o timestamp atual e criado_por registra o usuário responsável pelo cadastro. O NOT EXISTS verifica se já existe algum parceiro não inativo com o mesmo CPF/CNPJ, implementando a RN09 que rejeita duplicatas. O CHECK implícito em tipo_pessoa garante que apenas os valores fisica ou juridica sejam aceitos.
+
 
 #### Combinações relevantes da tabela verdade:
 
-1- $(A=V, B=V, C=F, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação presencial de parceiro ativo registrada por usuário ativo — retornada mesmo que esteja fora do período informado.
 
-2- $(A=V, B=F, C=V, D=V) \rightarrow A \land (B \lor C) \land D = V$ : interação dentro do período, parceiro e registrador ativos — retornada mesmo que o tipo não seja presencial.
+1- $(A=F, B=V) \rightarrow A \land B = F$ : CPF/CNPJ já cadastrado em algum parceiro ou ausente no preenchimento, resultando no bloqueio do cadastro, respeitando a RN09.<br>
+2- $(A=V, B=F) \rightarrow A \land B = F$ : tipo de pessoa inválido ou nulo, o que implica no cadastro rejeitado, devido à constraint do banco.  <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : CPF/CNPJ disponível e tipo_pessoa válido, portanto, o parceiro é cadastrado como rascunho. <br>
 
-3- $(A=V, B=F, C=F, D=V) \rightarrow A \land (B \lor C) \land D = F$ : parceiro ativo, registrador ativo, mas a interação não é presencial e está fora do período; não é retornada.
+---
 
-4- $(A=F, B=V, C=V, D=V) \rightarrow A \land (B \lor C) \land D = F$ : tipo e período correspondem, registrador ativo, mas o parceiro está inativo; interação não aparece na listagem normal (RN08).
+### 04 — Edição dos dados dos parceiros
 
-5- $(A=V, B=V, C=V, D=F) \rightarrow A \land (B \lor C) \land D = F$ : todos os critérios de busca satisfeitos, mas o usuário registrador está inativo; registro excluído da listagem como guarda de integridade.
+
+| 04 | --- |
+|---|---|
+| **Expressão SQL** | ```SQL UPDATE parceiros SET nome = :nome, email = :email, atualizado_em = NOW(), atualizado_por = :usuario_id WHERE id = :parceiro_id AND status IN ('rascunho', 'devolvido', 'ativo', 'pendente' ) AND NOT (tipo_pessoa = 'fisica' AND cpf_cnpj LIKE '%/%'); ``` |
+| **Proposições lógicas** | $A$ : id corresponde ao parceiro alvo (id = :parceiro_id) <br> $B$ : O status do parceiro permite edição (status IN ('rascunho', 'devolvido', 'ativo', ’pendente’)) <br> $C$ : A combinação tipo pessoa física com CNPJ é inválida (NOT (tipo_pessoa = 'fisica' AND cpf_cnpj LIKE '%/%')) |
+| **Expressão lógica proposicional** | $A \land B \land C$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $A \land B \land C$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
+
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta representa a atualização cadastral de parceiros já existentes. O sistema permite editar apenas parceiros que estejam em estados considerados válidos para modificação, como rascunho, devolvido, ativo ou pendente.
+<br>
+A expressão lógica $A \land B \land C$ mostra que a edição só é realizada quando o parceiro existe, possui um status editável e os dados informados permanecem consistentes.
+<br>
+A terceira condição é especialmente importante porque impede incompatibilidades cadastrais, como registrar um parceiro do tipo pessoa física utilizando um documento característico de pessoa jurídica. Dessa forma, a consulta atua tanto na atualização das informações quanto na proteção da integridade dos dados.
+<br>
+
+#### Explicação da consulta SQL:
+
+
+O comando UPDATE edita os dados cadastrais de um parceiro, registrando automaticamente a data e o responsável pela alteração nos campos atualizado_em e atualizado_por. A cláusula WHERE aplica três condições: o id deve corresponder ao parceiro alvo, o status deve estar dentro dos valores editáveis via IN, bloqueando edições nos parceiros com status inativo, e a combinação de pessoa física com documento contendo / (característica de CNPJ) é bloqueada via NOT com LIKE.   
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : parceiro com status inativo, portanto, a edição é bloqueada conforme a RN05.  <br>
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : tentativa de salvar pessoa física com CNPJ, gerando uma inconsistência de dados. Portanto, a operação não é executada. <br>
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum parceiro, portanto nada é afetado. <br>
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : parceiro editável com dados consistentes, logo, a edição é executada com sucesso. <br>
+
+---
+
+### 05 — Visualização dos dados de um parceiro
+
+
+| 05 | --- |
+|---|---|
+| **Expressão SQL** | ```SQL SELECT p.*, pa.nome AS perfil_criador FROM parceiros p JOIN usuarios u ON u.id = p.criado_por JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id WHERE p.id = :parceiro_id AND p.status = 'ativo' ``` |
+| **Proposições lógicas** | $A$ : O id corresponde ao parceiro buscado (p.id = :parceiro_id) <br> $B$ : O parceiro possui status ativo (p.status = 'ativo')  |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
+
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta recupera os dados detalhados de um parceiro específico para visualização no sistema. Além das informações do parceiro, também são exibidos dados relacionados ao perfil do usuário responsável pelo cadastro.
+<br>
+A lógica $A \land B$ estabelece que os dados somente serão exibidos se o parceiro procurado existir e estiver ativo. Isso impede que parceiros inativos ou inexistentes apareçam para consulta.
+<br>
+Na prática, essa regra garante que apenas parceiros válidos e atualmente ativos possam ser visualizados pelos usuários do sistema, respeitando as regras de disponibilidade das informações.
+<br>
+
+#### Explicação da consulta SQL:
+
+
+A consulta retorna todos os dados de um parceiro específico acrescidos do perfil do usuário que o criou. Dois JOIN são encadeados: o primeiro conecta parceiros com usuarios pelo campo criado_por, e o segundo conecta usuarios com perfil_acesso para recuperar o nome do perfil. A cláusula WHERE exige que o id corresponda ao parceiro buscado e que o parceiro esteja ativo. 
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro encontrado mas com status diferente de ativo, portanto, não é exibido conforme RN08.<br> 
+2- $(A=F, B=V) \rightarrow A \land B = F$ : id não corresponde a nenhum parceiro, portanto nenhum dado é retornado.<br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo encontrado, resultando no perfil exibido corretamente. <br>
+
+---
+
+### 06 — Visualização dos parceiros por filtros 
+
+
+| 06 | --- |
+|---|---|
+| **Expressão SQL** | ```SQL USELECT p.* FROM parceiros p WHERE p.status = 'ativo' AND (p.nome LIKE '%:nome%' OR :nome IS NULL) AND (p.tipo_pessoa = :tipo_pessoa OR :tipo_pessoa IS NULL) AND (p.email LIKE '%:email%' OR :email IS NULL); ``` |
+| **Proposições lógicas** | $A$ : O parceiro está ativo (p.status = 'ativo') <br> $B$ : O nome corresponde ao filtro ou o filtro de nome não foi informado (p.nome LIKE '%:nome%' OR :nome IS NULL) <br> $C$ : O tipo de pessoa corresponde ao filtro ou o filtro de tipo não foi informado (p.tipo_pessoa = :tipo_pessoa OR :tipo_pessoa IS NULL) <br> $D$ : O e-mail corresponde ao filtro ou o filtro de e-mail não foi informado (p.email LIKE '%:email%' OR :email IS NULL) |
+| **Expressão lógica proposicional** | $A \land B \land C \land D$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $D$ </th><th> $A \land B \land C \land D$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table>  |
+
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta permite realizar buscas de parceiros utilizando filtros opcionais, como nome, tipo de pessoa e e-mail. O sistema adapta automaticamente a pesquisa conforme os filtros preenchidos pelo usuário.
+<br>
+A expressão lógica $A \land B \land C \land D$ mostra que um parceiro só aparece nos resultados quando está ativo e atende a todos os filtros informados. Quando algum filtro não é preenchido, ele é ignorado pela consulta.
+<br>
+Isso torna a busca flexível e dinâmica, permitindo desde pesquisas amplas sem filtros até buscas extremamente específicas. Mesmo assim, a condição de parceiro ativo permanece obrigatória, garantindo que registros inativos nunca sejam exibidos.
+<br>
+
+#### Explicação da consulta SQL:
+
+
+A consulta implementa a busca filtrada de parceiros ativos com filtros opcionais. O padrão valor LIKE '%:param%' OR :param IS NULL torna cada filtro opcional — quando o parâmetro não é informado (IS NULL), a condição sempre retorna verdadeiro e o filtro é ignorado. Isso permite que a mesma consulta funcione tanto para busca sem filtros quanto com qualquer combinação de filtros ativos. A condição p.status = 'ativo' é sempre obrigatória, garantindo conformidade com a RN08.    
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=V, B=F, C=V, D=V) \rightarrow A \land B \land C \land D = F$ : nenhum parceiro corresponde ao filtro de nome, o que implica em uma listagem vazia para esse critério.   <br>
+2- $(A=V, B=V, C=V, D=V) \rightarrow A \land B \land C \land D = V$ : todos os filtros ativos ou ignorados são satisfeitos, retornando os parceiros presentes.  <br>
+3- $(A=F, B=V, C=V, D=V) \rightarrow A \land B \land C \land D = F$ : independente dos filtros, parceiros inativos nunca devem ser retornados.<br>
+
+
+---
+
+### 07 — Visualização do painel de dados das interações com os parceiros 
+
+
+| 07 | --- |
+|---|---|
+| **Expressão SQL** | ```SQL SELECT i.tipo, COUNT(*) AS total, DATE_TRUNC('month', i.data) AS mes FROM interacao i JOIN parceiros p ON p.id = i.parceiro_id WHERE p.status = 'ativo' AND i.data >= NOW() - INTERVAL '6 months' AND i.tipo IN ('visita', 'reuniao', 'ligacao', 'whatsapp') GROUP BY i.tipo, DATE_TRUNC('month', i.data) ORDER BY mes DESC, total DESC;  ``` |
+| **Proposições lógicas** | $A$ : O parceiro da interação está ativo (p.status = 'ativo') <br> $B$ : A interação ocorreu nos últimos 18 meses (i.data >= NOW() - INTERVAL '18 months')  <br> $C$ : O tipo da interação está dentro dos tipos válidos do sistema (i.tipo IN ('visita', 'reuniao', 'ligacao', 'whatsapp')) |
+| **Expressão lógica proposicional** | $A \land B \land C$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $A \land B \land C$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
+
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta alimenta o painel estatístico de interações com parceiros, permitindo visualizar a quantidade de contatos realizados ao longo do tempo. O objetivo é gerar indicadores para acompanhamento comercial e análise de relacionamento.
+<br>
+A lógica proposicional $A \land B \land C$ define que apenas interações válidas entram nos cálculos do painel. Isso significa que a interação precisa estar associada a um parceiro ativo, ter ocorrido dentro do período analisado e possuir um tipo reconhecido pelo sistema.
+<br>
+Dessa forma, o dashboard exclui registros inválidos, antigos ou inconsistentes, garantindo que os indicadores apresentados representem apenas dados confiáveis e relevantes para análise gerencial.
+<br>
+
+#### Explicação da consulta SQL:
+
+
+A consulta alimenta o dashboard de interações, retornando a contagem de interações agrupadas por tipo e mês nos últimos 18 meses. Um JOIN conecta interacao com parceiros para filtrar apenas interações de parceiros ativos. A função DATE_TRUNC('month', i.data) trunca a data ao início do mês, permitindo agrupamento mensal. O GROUP BY agrega os resultados por tipo e mês, COUNT(*) contabiliza cada grupo e ORDER BY organiza os resultados do mais recente para o mais antigo, com os tipos mais frequentes no topo de cada mês.   
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : interação de parceiro ativo com tipo válido, mas fora do período de 18 meses, logo, é muito antiga para ser contabilizada no painel.<br>
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : interação recente de parceiro ativo, mas com tipo não reconhecido pelo sistema (possivelmente por erro de preenchimento), logo, é excluída da agregação. <br>
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : interação válida no período correto, mas de parceiro inativo, portanto, é excluída do painel, conforme a RN08.  <br>
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : interação válida, recente e de parceiro ativo. É contabilizada no painel por tipo e mês.<br>
+
+---
+
+### 08 — Exportação de dados
+
+
+| 08 | --- |
+|---|---|
+| **Expressão SQL** | ```SQL SELECT p.nome, p.cpf_cnpj, p.email, p.tipo_pessoa, t.numero AS telefone_principal, vc.tipo_parceiro FROM parceiros p LEFT JOIN telefone_parceiro t ON t.parceiro_id = p.id AND t.principal = TRUE AND t.ativo = TRUE LEFT JOIN vinculo_comercial vc ON vc.parceiro_id = p.id AND vc.status = 'ativo' WHERE p.status = 'ativo' AND (p.tipo_pessoa = :tipo_pessoa OR :tipo_pessoa IS NULL); ``` |
+| **Proposições lógicas** | $A$ : O parceiro está ativo (p.status = 'ativo')  <br> $B$ : O tipo de pessoa corresponde ao filtro ou o filtro não foi informado (p.tipo_pessoa = :tipo_pessoa OR :tipo_pessoa IS NULL   |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
+
+
+#### Explicação do que significa essa consulta:
+
+
+Essa consulta prepara os dados de parceiros para exportação em formatos externos, como CSV ou XLSX. O objetivo é permitir compartilhamento e análise das informações fora do sistema.
+<br>
+A expressão lógica $A \land B$ indica que apenas parceiros ativos e compatíveis com o filtro de tipo informado podem ser exportados. Caso o filtro não seja preenchido, ele é ignorado e todos os parceiros ativos são considerados.
+<br>
+A consulta também busca informações complementares, como telefone principal e vínculo comercial, mas sem impedir a exportação caso esses dados não existam. Assim, o sistema garante uma exportação flexível, segura e limitada apenas a registros válidos para uso externo.
+<br>
+
+#### Explicação da consulta SQL:
+
+
+A consulta gera a lista de dados para exportação em CSV ou XLSX conforme o RF017. Dois LEFT JOIN são utilizados: o primeiro busca o telefone principal e ativo do parceiro — caso não exista, o campo retorna NULL sem excluir o parceiro da exportação; o segundo busca o vínculo comercial ativo — igualmente opcional. A cláusula WHERE restringe a exportação a parceiros ativos e aplica um filtro opcional de tipo de pessoa com o padrão OR :tipo_pessoa IS NULL, tornando o filtro ignorável quando não informado. Apenas os campos relevantes para compartilhamento externo são selecionados, omitindo dados sensíveis de auditoria.  
+
+
+#### Combinações relevantes da tabela verdade:
+
+
+1- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro ativo mas de tipo diferente do filtro informado, fazendo com que seja excluído da possibilidade de exportação.<br>
+2- $(A=F, B=V) \rightarrow A \land B = F$ :parceiro inativo com tipo correspondente, portanto, nunca é exportado (preservando a RN08).  <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo que satisfaz o filtro de tipo. Dessa forma, é incluído na exportação com telefone e vínculo quando disponíveis. <br>
 
 ---
 
 ### Síntese de validação lógica
 
-As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Nas consultas #1, #2 e #3, o uso de parênteses é essencial para manter a precedência correta entre conjunção e disjunção. Na consulta #1, a condição de pessoa jurídica com vínculo ativo é agrupada antes da alternativa de fornecedor de cana. Nas consultas #2 e #3, a primeira condição é obrigatória, enquanto as duas condições internas funcionam como alternativas.
-
-Na consulta #4, a expressão exige simultaneamente que a operação seja de atualização ou exclusão e que os dados anteriores e novos estejam preenchidos. Essa estrutura reforça a finalidade de auditoria da consulta, pois impede que registros incompletos sejam considerados válidos para análise de alteração.
-
-A consulta #5 introduz um padrão distinto: $A \land \lnot(B \lor C)$. Aqui, a disjunção interna não amplia o resultado — ela opera como gatilho de bloqueio invertido pela negação. O UPDATE só é executado quando nenhuma das condições B ou C é verdadeira, ou seja, quando $\lnot(B \lor C) = V$. Esse comportamento contrasta diretamente com as consultas #1, #2 e #3, nas quais a disjunção interna $(B \lor C)$ expande os registros retornados. A equivalência com $A \land \lnot B \land \lnot C$ pela lei de De Morgan reforça que basta uma das salvaguardas estar ativa para bloquear a operação. A tabela verdade confirma que apenas a combinação $(A=V, B=F, C=F)$ resulta em execução do UPDATE.
-
-A consulta #6 apresenta a estrutura $A \land B \land C$, conjunção pura de três guardas obrigatórias. Diferente das consultas com disjunção interna, aqui não há critérios alternativos: o UPDATE só executa quando os três fatores — status do registro, atividade do aprovador e perfil de acesso — são todos verdadeiros ao mesmo tempo. A tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução.
-
-A consulta #7 fecha o conjunto com $A \land (B \lor C) \land D$, estrutura que combina dois fatores mandatórios externos com uma disjunção interna. Isso a diferencia de $A \land (B \lor C)$ das consultas #1 a #3 (sem quarta guarda) e de $(A \lor B) \land C \land D$ da consulta #4 (disjunção na posição inicial). A disjunção $(B \lor C)$ permite que o sistema retorne interações presenciais independentemente do período, ou interações dentro do período independentemente do tipo — enquanto as proposições A e D permanecem obrigatórias em qualquer caso.
-
-Portanto, as sete consultas apresentadas atendem ao objetivo da seção ao relacionar regras reais do back-end com lógica proposicional formal. Cada uma introduz uma estrutura proposicional distinta — $A \land (B \lor C)$, $(A \lor B) \land C \land D$, $A \land \lnot(B \lor C)$, $A \land B \land C$ e $A \land (B \lor C) \land D$ — permitindo verificar, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
+As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Cada consulta introduz uma estrutura proposicional distinta, refletindo diferentes padrões de filtragem e controle utilizados pelo back-end.
+<br>
+As consultas 01 e 03, ambas do tipo `INSERT`, utilizam a estrutura $A \land B$, isto é, a conjunção simples de duas proposições obrigatóriamente verdadeiras. Em 01, as duas condições verificam perfil válido e unicidade de e-mail antes de inserir o usuário. Em 03, verificam ausência de CPF/CNPJ duplicado e tipo de pessoa válido antes de inserir o parceiro como rascunho. Nas duas situações, a falha em qualquer uma das condições impede completamente a inserção.
+<br>
+As consultas 02 e 04, do tipo `UPDATE`, também utilizam $A \land B \land C$, a conjunção pura de três proposições obrigatóriamente verdadeiras. Em 02, as três condições garantem que o usuário existe, está ativo e não é o próprio usuário logado antes de executar a inativação lógica. Em 04, garantem que o parceiro existe, está em status editável e não apresenta inconsistência entre tipo de pessoa e documento. Em ambos os casos, a tabela verdade confirma que apenas a combinação $(A=V, B=V, C=V)$ resulta em execução do `UPDATE`.
+<br>
+As consultas 05 e 08, do tipo `SELECT`, utilizam a mesma estrutura $A \land B$. Em 05, as condições verificam identidade e status ativo do parceiro antes de exibir seu perfil detalhado. Em 08, verificam status ativo e correspondência com o filtro de tipo de pessoa antes de incluir o parceiro na exportação. O padrão `OR :param IS NULL` em 08 torna o filtro opcional sem alterar a estrutura proposicional, pois a proposição $B$ já encapsula essa lógica.
+<br>
+A consulta 06 apresenta a estrutura $A \land B \land C \land D$, a de maior número de proposições de toda a seção. As quatro condições são obrigatórias e independentes, mas três delas ($B$, $C$ e $D$) utilizam internamente o padrão `OR :param IS NULL`, tornando cada filtro opcionalmente ignorável. Isso produz uma consulta que se comporta como busca ampla quando nenhum filtro é informado e como busca precisa quando todos são preenchidos, mantendo sempre a obrigatoriedade da condição de status ativo em $A$.
+<br>
+A consulta 07 apresenta $A \land B \land C$ aplicada a uma agregação com `GROUP BY`. Diferente das demais consultas `SELECT` desta seção, ela não retorna registros individuais — retorna contagens agrupadas por tipo de interação e mês. As três condições controlam quais interações entram nos cálculos: parceiro ativo, período válido e tipo reconhecido pelo sistema. A ausência de qualquer uma das três exclui a interação da agregação, garantindo que os indicadores do dashboard representem apenas dados confiáveis.
+<br>
+As oito consultas apresentadas atendem ao objetivo da seção ao relacionar operações reais do back-end com lógica proposicional formal, cobrindo os principais fluxos do sistema CRM da ATVOS - do cadastro à exportação - e demonstrando, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
+<br>
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.* 
-
-*Cada endpoint deve conter endereço, método (GET, POST, PUT, PATCH, DELETE), header, body, formatos de response e os status codes possíveis (200, 201, 204, 400, 401, 403, 404, 409, 422, 500).*
+A documentação completa da WebAPI, incluindo endereços, métodos HTTP, headers, bodies, formatos de resposta e status codes, está disponível em: [`public/docs/index.html`](../public/docs/index.html).
 
 ## 3.8. Autenticação, Autorização e Resiliência (sprint 5)
 
@@ -2055,34 +2646,105 @@ Portanto, as sete consultas apresentadas atendem ao objetivo da seção ao relac
 
 *A RTM consolida a rastreabilidade completa do sistema. Um elo quebrado invalida toda a cadeia — mantenha-a atualizada a cada sprint. A partir da sprint 3 não deve haver lacunas nos fluxos centrais.*
 
-| Persona                            | RF    | RN               | Endpoint                          | Tela                          | Teste | Evidência        |
-|------------------------------------|-------|------------------|-----------------------------------|-------------------------------|-------|------------------|
-| Gerente de coordenadores           | RF001 | RN03             | POST /usuarios                  | Cadastro de Usuário           | ---   | ---  |
-| Gerente de coordenadores           | RF003 | RN03             | PUT /usuarios/:id/perfil        | Cadastro de Usuário           | ---   | ---  |
-| Gerente de coordenadores           | RF011 | RN01, RN02       | POST /auth/login                | Login                         | ---   | ---  |
-| Gerente de coordenadores           | RF020 | RN15             | PUT /usuarios/:id/inativar      | Listagem de Usuários          | ---   | ---  |
-| Gerente de coordenadores           | RF013 | RN12             | GET /parceiros/:id/historico | Auditoria / Histórico | --- | --- |
-| Gerente de coordenadores           | RF002 | RN01, RN06       | GET /usuarios; PUT /usuarios/:id | Gestão de Usuários            | ---   | ---  |
-| Gerente de coordenadores           | RF014 | RN06, RN07       | PUT /parceiros/:id; PUT /terras/:id | Gestão de Parceiros      | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF004 | RN09, RN10       | POST /parceiros                 | Cadastro de Parceiro          | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF010 | RN10             | POST/PUT /usuarios; POST/PUT /parceiros; POST/PUT /terras | Cadastro / Edição de Parceiro | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF009 | RN09             | POST/PUT /usuarios; POST/PUT /parceiros | Cadastro de Usuário / Parceiro | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF005 | RN10, RN11, RN12 | PUT /parceiros/:id              | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF018 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF019 | RN11             | POST/PUT /usuarios; POST/PUT /parceiros; POST /parceiros/:id/interacoes | Edição de Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF006 | RN11             | POST /parceiros/:id/interacoes | Perfil do Parceiro            | ---   | ---  |
-| Analista de Negócios Agrícolas     | RF015 | RN13, RN14       | GET/POST /parceiros/:id/terras; GET/POST /terras/:id/parceiros | Cadastro de Parceiro | --- | --- |
-| Coordenador de Estratégia de Terras| RF007 | RN04, RN08       | GET /parceiros                  | Listagem de Parceiros         | ---   | ---  |
-| Coordenador de Estratégia de Terras| RF008 | RN04, RN08       | GET /parceiros/:id              | Perfil do Parceiro            | ---   | ---  |
-| Coordenador de Estratégia de Terras | RF016 | RN04, RN08 | GET /parceiros?nome=&regiao=&area=&tipo= | Listagem de Parceiros | --- | --- |
-| Coordenador de Estratégia de Terras | RF017 | RN04 | GET /parceiros/exportar | Exportação de Lista | --- | --- |
-| Todos                              | RF012 | RN07, RN08       | GET /parceiros; GET /terras       | ---                           | ---   | ---  |
+| Persona | RF | RN | Endpoint | Tela | Teste | Evidência |
+|---|---|---|---|---|---|---|
+| Gerente de coordenadores | RF001 | RN01, RN03 | POST /api/usuarios | Cadastro de Usuário | src/tests/userCreateController.spec.ts | Testes de criação de usuário: 201 com usuário ativo sem senha, 409 para e-mail duplicado, 400 para payload inválido, 422 para perfil inexistente e persistência no banco |
+| Gerente de coordenadores | RF002 | RN01, RN06 | PUT /usuarios/:id | Gestão de Usuários | src/tests/userUpdateController.spec.ts; src/tests/userUpdateService.spec.ts | Testes de atualização de usuário: 200 com persistência, 400 para payload inválido, 404 para usuário inexistente, validação de perfil e falha técnica controlada |
+| Gerente de coordenadores | RF003 | RN03, RN06 | PUT /usuarios/:id/perfil | Cadastro / Gestão de Usuário | src/tests/userController.spec.ts; src/tests/userService.spec.ts | Testes de atualização de perfil: sucesso com persistência, perfil inexistente, campos obrigatórios e usuário inexistente |
+| Gerente de coordenadores | RF011 | RN02 | POST /login | Login | src/tests/auth.test.ts | Testes de login: credenciais válidas, senha incorreta, e-mail inexistente, campos ausentes e senha hasheada |
+| Gerente de coordenadores | RF020 | RN15 | PUT /usuarios/:id/inativar | Listagem / Gestão de Usuários | src/tests/userInactivateController.spec.ts; src/tests/userInactivateService.spec.ts | Testes de inativação: sucesso, 401 sem token, 403 sem perfil administrador, 404 usuário inexistente e 500 falha técnica |
+| Gerente de coordenadores | RF013 | RN12 | GET /api/parceiros/:id/historico | Auditoria / Histórico | src/tests/parceiroHistoricoController.spec.ts | Testes de histórico: retorno em ordem cronológica decrescente, isolamento por entidade, parceiro sem histórico com array vazio e 404 para parceiro inexistente ou ID inválido |
+| Gerente de coordenadores | RF014 | RN06, RN07, RN08 | PATCH /api/parceiros/:id; PUT /api/terras/:id | Gestão de Parceiros e Terras | src/test/parceiroController.patch.spec.ts; src/tests/terraController.spec.ts | Testes de edição: parceiro atualizado com persistência, CPF/CNPJ duplicado, payload sem campos editáveis, edição de terra válida, terra inexistente e validações de responsável |
+| Analista de Negócios Agrícolas | RF004 | RN09, RN10, RN11 | POST /api/parceiros | Cadastro de Parceiro | src/test/parceiroController.spec.ts | Testes de cadastro: 201 com rascunho, 409 CPF/CNPJ duplicado, 400 tipo_pessoa inválido e persistência no banco |
+| Analista de Negócios Agrícolas | RF005 | RN09, RN11, RN19, RN20 | PATCH /api/parceiros/:id | Edição de Parceiro | src/test/parceiroController.patch.spec.ts | Testes de edição: 200 com registro atualizado, 409 CPF/CNPJ duplicado, 400 sem campos editáveis e persistência no banco |
+| Analista de Negócios Agrícolas | RF006 | RN11 | POST /parceiros/:id/interacoes | Perfil do Parceiro | src/tests/interacao.test.ts | Testes de interação: 201 com dados válidos, 400 campos ausentes, 404 parceiro inexistente e persistência no banco |
+| Analista de Negócios Agrícolas | RF009 | RN09 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id | Cadastro de Usuário / Cadastro e Edição de Parceiro | src/tests/userCreateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts | Testes de unicidade: e-mail duplicado em usuário e CPF/CNPJ duplicado no cadastro e edição de parceiro |
+| Analista de Negócios Agrícolas | RF010 | RN10 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id; POST /api/terras; PUT /api/terras/:id | Cadastro / Edição de Usuário, Parceiro e Terra | src/tests/userCreateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/terraController.spec.ts | Testes de validação contratual: campos obrigatórios, enums inválidos, ausência de campos editáveis, área positiva, UF com dois caracteres e responsáveis válidos |
+| Analista de Negócios Agrícolas | RF015 | RN13, RN14 | GET /api/parceiros/:id/terras; POST /api/parceiros/:id/terras; GET /api/terras/:id/parceiros; POST /api/terras/:id/parceiros | Cadastro de Parceiro / Cadastro de Terras | src/tests/parceiroTerraController.spec.ts; src/tests/terraParceiroController.spec.ts | Testes de vínculo bidirecional: criação de vínculo, payload ausente, entidade inexistente, vínculo duplicado, listagem, ocultação de registros inativos e persistência no banco |
+| Analista de Negócios Agrícolas | RF018 | RN11 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /api/terras; PUT /api/terras/:id | Cadastro / Edição de registros | src/tests/userCreateController.spec.ts; src/tests/userUpdateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts; src/tests/terraController.spec.ts | Testes de auditoria e persistência: criação/edição com dados gravados, timestamps de criação/atualização, persistência de interações e conferência direta no banco |
+| Analista de Negócios Agrícolas | RF019 | RN11 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /api/terras; PUT /api/terras/:id | Cadastro / Edição de registros | src/tests/userCreateController.spec.ts; src/tests/userUpdateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts; src/tests/terraController.spec.ts | Testes de autoria: criado_por/atualizado_por válidos, rejeição de responsáveis inexistentes e persistência do usuário responsável nas operações cobertas |
+| Coordenador de Estratégia de Terras | RF007 | RN04, RN08 | GET /api/parceiros | Listagem de Parceiros | src/test/parceiroController.get.spec.ts | Testes de listagem: retorno de parceiros ativos, array vazio, exclusão de inativos e conferência com dados persistidos |
+| Coordenador de Estratégia de Terras | RF008 | RN04, RN08 | GET /api/parceiros/:id | Perfil do Parceiro | src/tests/parceiroDetalheController.spec.ts; src/test/parceiroController.get.spec.ts | Testes de detalhe: retorno por ID, 404 para inexistente, 404 para UUID inválido, ocultação de parceiro inativo e persistência após cadastro |
+| Coordenador de Estratégia de Terras | RF012 | RN07, RN08 | GET /api/parceiros; GET /api/parceiros?nome=&regiao=&area=&tipo=; GET /api/terras | Listagem de Parceiros / Terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroFiltrosController.spec.ts; src/tests/terraController.spec.ts | Testes de consulta: listagem de parceiros e terras, ocultação de inativos, filtros combinados por nome/região/área/tipo e conferência com o banco |
+| Coordenador de Estratégia de Terras | RF016 | RN04, RN08 | GET /api/parceiros?nome=&regiao=&area=&tipo= | Listagem de Parceiros | src/tests/parceiroFiltrosController.spec.ts | Testes de filtros: sem filtros, nome parcial case-insensitive, combinação de região e área mínima, tipo de parceiro comercial e exclusão de inativos |
+| Coordenador de Estratégia de Terras | RF017 | RN04 | GET /parceiros/exportar | Exportação de Lista | src/tests/exporta.test.ts | Testes de exportação: 200 com CSV, 404 sem parceiros, dados corretos e múltiplos parceiros no arquivo |
+| Coordenador de Estratégia de Terras | RF021 | RN16 | PUT /api/parceiros/:id/validacao | Validação de Parceiros | src/tests/parceiroValidacaoController.spec.ts | Testes de validação: rascunho para pendente, devolvido para pendente, bloqueio de ativo/pendente, payload inválido, parceiro inexistente e usuário inexistente |
+| Coordenador de Estratégia de Terras | RF022 | RN17 | PUT /api/parceiros/:id/aprovar | Fila de Validação | src/tests/parceiroAprovacaoController.spec.ts | Testes de aprovação: pendente para ativo, aprovação sem registro prévio, bloqueio de status inválidos, payload inválido, parceiro inexistente e usuário inexistente |
+| Coordenador de Estratégia de Terras | RF023 | RN17 | PUT /api/parceiros/:id/devolver | Fila de Validação | src/tests/parceiroDevolucaoController.spec.ts | Testes de devolução: pendente para devolvido, devolução sem registro prévio, bloqueio de status inválidos, payload inválido, parceiro inexistente e usuário inexistente |
+| Todos | RF012 | RN07, RN08 | GET /api/parceiros; GET /api/terras | Consultas gerais do sistema | src/test/parceiroController.get.spec.ts; src/tests/terraController.spec.ts | Testes de consultas gerais: listagem de parceiros e terras, retorno de arrays, ocultação de registros inativos e conferência de dados persistidos |
 
 # <a name="c4"></a>4. Desenvolvimento da Aplicação Web
 
 ## 4.1. Primeira versão da aplicação web (sprint 3)
 
-*Descreva e ilustre aqui o desenvolvimento da primeira versão do sistema web. Utilize prints de tela para ilustrar. Indique obrigatoriamente: (a) o que foi implementado, (b) o que não foi concluído, (c) dificuldades técnicas enfrentadas e próximos passos.*
+O desenvolvimento da primeira versão da aplicação web concentrou-se na construção do backend do CRM da ATVOS. O foco principal foi transformar os requisitos e fluxos definidos nas etapas anteriores em endpoints, regras de negócio, acesso ao banco de dados e testes automatizados, deixando a aplicação preparada para receber a interface na sprint seguinte. A camada de frontend ainda não foi implementada como experiência final do usuário; portanto, os resultados desta sprint devem ser avaliados principalmente pela API, pela estrutura do servidor e pela integração com o banco.
+
+### 4.1.1. O que foi implementado
+
+Foi estruturada uma aplicação Node.js com Express e TypeScript, organizada em camadas de rotas, controllers, services, repositories, schemas e models. Essa separação permitiu isolar responsabilidades: as rotas recebem as requisições, os controllers tratam o fluxo HTTP, os services concentram as regras de negócio e os repositories fazem a comunicação com o banco PostgreSQL (SupaBase).
+
+Foram implementados endpoints para os principais módulos do backend:
+
+| Módulo | Funcionalidades implementadas no backend |
+| --- | --- |
+| Autenticação | Login de usuário, validação de credenciais e encerramento de sessão. |
+| Usuários | Criação, edição, alteração de perfil de acesso e inativação lógica. |
+| Parceiros | Cadastro, listagem, consulta por ID, edição, envio para validação, aprovação, devolução e histórico. |
+| Terras | Cadastro, listagem, edição e relacionamento com parceiros. |
+| Vínculos parceiro-terra | Associação de terras a parceiros e de parceiros a terras, com tratamento de duplicidade e validação de existência. |
+| Interações | Registro de interações vinculadas a parceiros. |
+| Exportação | Geração de CSV com dados de parceiros. |
+| Dashboard de interações | Consulta de métricas consolidadas sobre interações registradas. |
+
+Também foram criados schemas de validação para padronizar os dados recebidos pela API, reduzindo o risco de registros inconsistentes. Além disso, o backend passou a contar com tratamento centralizado de erros, configuração de conexão com banco de dados via variáveis de ambiente e scripts de migração/seed para apoiar a preparação da base.
+
+Os testes automatizados com Jest e Supertest foram desenvolvidos para validar fluxos de integração dos endpoints e regras de negócio dos services. Eles cobrem cenários de sucesso, validações de campos obrigatórios, registros inexistentes, conflitos de duplicidade, persistência no banco e respostas HTTP esperadas.
+
+<div align="center">
+  <sub>Figura 4.1.1.1</sub><br>
+  <img src="documentos/assets/estrutura_de_pastas_back.png" width="100%" alt="Estrutura de Pastas do Backend"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+<div align="center">
+  <sub>Figura 4.1.1.1</sub><br>
+  <img src="documentos/assets/testes_passando_backend.png" width="100%" alt="Testes do Backend no terminal"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+### 4.1.2. O que não foi concluído
+
+A interface final do sistema ainda não foi implementada nesta sprint. Embora existam estruturas auxiliares de views no projeto, a entrega da sprint 3 deve ser considerada como uma primeira versão funcional do backend, não como a aplicação web completa do ponto de vista visual e de experiência do usuário.
+
+Também permaneceram pontos de consolidação para as próximas etapas, como ajustes finos na integração entre todos os fluxos, revisão final dos retornos de erro, padronização completa das mensagens da API e validação dos endpoints em conjunto com as telas que serão construídas posteriormente.
+
+Além disso, parte dos testes depende diretamente da correta configuração do ambiente local e da conexão com o banco. Por isso, a estabilidade da suíte automatizada ainda exige atenção à padronização das variáveis de ambiente, da base de teste e da organização dos arquivos de teste.
+
+### 4.1.3. Dificuldades técnicas enfrentadas
+
+Uma das principais dificuldades foi alinhar a modelagem do banco de dados com os fluxos reais do sistema, especialmente nos relacionamentos entre parceiros, terras, vínculos comerciais, usuários responsáveis e histórico de alterações. Como o domínio possui regras de validação e rastreabilidade, foi necessário organizar o backend para evitar duplicação de lógica entre controllers, services e repositories.
+
+Outro desafio foi lidar com a integração dos testes automatizados com banco real. Os testes de integração precisam preparar dados, executar requisições, validar persistência e limpar registros criados, o que aumenta a complexidade em comparação com testes unitários isolados.
+
+Também houve dificuldade na padronização dos contratos da API, principalmente em endpoints com múltiplos cenários de erro, como cadastro, edição, vinculação de entidades e autenticação. Esses fluxos exigiram tratamento cuidadoso para retornar status HTTP coerentes, como `400`, `401`, `403`, `404`, `409` e `422`.
+
+
+### 4.1.4. Próximos passos
+
+O principal próximo passo para a próxima versão é implementar o frontend da aplicação, conectando as telas aos endpoints já construídos no backend. Essa etapa deve transformar os fluxos disponíveis via API em uma experiência navegável para os perfis de usuário definidos no projeto.
+
+Também devem ser priorizados os seguintes pontos:
+
+| Próximo passo | Objetivo |
+| --- | --- |
+| Implementar as telas principais do sistema | Criar a interface para login, gestão de usuários, cadastro/listagem/edição de parceiros, terras, interações, exportação e dashboard. |
+| Integrar frontend e backend | Consumir os endpoints implementados e validar o fluxo completo da aplicação. |
+| Revisar autenticação e autorização nas rotas | Garantir que cada perfil acesse apenas as funcionalidades permitidas. |
+| Padronizar feedbacks de erro e sucesso | Exibir mensagens claras para validações, conflitos e ações concluídas. |
+| Consolidar a suíte de testes | Garantir que todos os testes esperados sejam descobertos e executados no ambiente local e no ambiente dos demais integrantes. |
+| Refinar documentação técnica | Atualizar endpoints, exemplos de uso e evidências de execução conforme a evolução da aplicação. |
+
+Com isso, a primeira versão entrega a base técnica do sistema: banco integrado, API estruturada, regras de negócio implementadas e testes automatizados iniciados. As próximas versões deverão se concentrar principalmente na implementação da interface e na integração completa entre frontend e backend.
 
 ## 4.2. Segunda versão da aplicação web (sprint 4)
 
