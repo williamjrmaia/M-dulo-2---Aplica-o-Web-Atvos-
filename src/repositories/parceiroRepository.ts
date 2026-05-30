@@ -2,6 +2,7 @@ import pool from '../config/connection';
 import {
   Parceiro,
   CreateParceiroInput,
+  ListarParceirosFiltros,
   ParceiroTerra,
   TerraDoParceiro,
   UpdateParceiroInput,
@@ -85,8 +86,67 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
   return result.rows[0] ?? null;
 }
 
-export async function listarParceiros(): Promise<Parceiro[]> {
-  const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE status != 'inativo'`);
+export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
+  const where: string[] = [`p.status != 'inativo'`];
+  const valores: unknown[] = [];
+
+  if (filtros.nome !== undefined) {
+    valores.push(`%${filtros.nome}%`);
+    where.push(`(p.nome ILIKE $${valores.length} OR p.apelido ILIKE $${valores.length})`);
+  }
+
+  if (filtros.regiao !== undefined) {
+    valores.push(`%${filtros.regiao}%`);
+    where.push(
+      `EXISTS (
+        SELECT 1
+          FROM parceiro_terra pt
+          JOIN terras t ON t.id = pt.terra_id
+         WHERE pt.parceiro_id = p.id
+           AND t.status != 'inativo'
+           AND (t.cidade ILIKE $${valores.length} OR t.estado ILIKE $${valores.length})
+      )`
+    );
+  }
+
+  if (filtros.area !== undefined) {
+    valores.push(filtros.area);
+    where.push(
+      `EXISTS (
+        SELECT 1
+          FROM parceiro_terra pt
+          JOIN terras t ON t.id = pt.terra_id
+         WHERE pt.parceiro_id = p.id
+           AND t.status != 'inativo'
+           AND t.area_contratada_ha >= $${valores.length}
+      )`
+    );
+  }
+
+  if (filtros.tipo !== undefined) {
+    valores.push(filtros.tipo);
+    if (['fisica', 'juridica'].includes(filtros.tipo)) {
+      where.push(`p.tipo_pessoa = $${valores.length}`);
+    } else {
+      where.push(
+        `EXISTS (
+          SELECT 1
+            FROM vinculo_comercial vc
+           WHERE vc.parceiro_id = p.id
+             AND vc.status = 'ativo'
+             AND vc.tipo_parceiro = $${valores.length}
+        )`
+      );
+    }
+  }
+
+  const { rows } = await pool.query<Parceiro>(
+    `SELECT p.*
+       FROM parceiros p
+      WHERE ${where.join(' AND ')}
+      ORDER BY p.criado_em DESC`,
+    valores
+  );
   return rows;
 }
 

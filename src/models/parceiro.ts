@@ -59,3 +59,10 @@ export interface VincularTerraAoParceiroInput {
     terra_id: string;
     tipo_vinculo?: string;
 }
+
+export interface ListarParceirosFiltros {
+    nome?: string;
+    regiao?: string;
+    area?: number;
+    tipo?: 'fisica' | 'juridica' | 'arrendador' | 'fornecedor';
+}

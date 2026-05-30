@@ -9,6 +9,7 @@ import {
   vincularTerraAoParceiro as vincularTerraAoParceiroService,
 } from '../services/parceiroService';
 import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
+import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
@@ -76,8 +77,16 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
   res.status(200).json(parceiro);
 });
 
-export const listarParceiros = asyncHandler(async (_req: Request, res: Response) => {
-  const parceiros = await obterParceiros();
+export const listarParceiros = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = listarParceirosFiltrosSchema.safeParse(req.query);
+  if (!parsed.success) {
+    const detalhes = parsed.error.issues
+      .map((i) => `${i.path.join('.') || 'query'}: ${i.message}`)
+      .join('; ');
+    throw new ValidationError(detalhes);
+  }
+
+  const parceiros = await obterParceiros(parsed.data);
   res.status(200).json(parceiros);
 });
 
