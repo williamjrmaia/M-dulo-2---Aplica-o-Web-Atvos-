@@ -1,5 +1,12 @@
 import pool from '../config/connection';
-import { Terra, CreateTerraInput, UpdateTerraInput } from '../models/terra';
+import {
+  Terra,
+  CreateTerraInput,
+  ParceiroDaTerra,
+  TerraParceiro,
+  UpdateTerraInput,
+  VincularParceiroATerraInput,
+} from '../models/terra';
 
 export async function createTerra(data: CreateTerraInput): Promise<Terra> {
   const { rows } = await pool.query<Terra>(
@@ -73,4 +80,64 @@ export async function updateTerra(id: string, data: UpdateTerraInput): Promise<T
   );
 
   return rows[0] ?? null;
+}
+
+export async function listarParceirosDaTerra(terraId: string): Promise<ParceiroDaTerra[] | null> {
+  const terra = await pool.query<{ id: string }>('SELECT id FROM terras WHERE id = $1', [terraId]);
+  if (terra.rows.length === 0) {
+    return null;
+  }
+
+  const { rows } = await pool.query<ParceiroDaTerra>(
+    `SELECT
+        p.id,
+        p.nome,
+        p.apelido,
+        p.tipo_pessoa,
+        p.cpf_cnpj,
+        p.email,
+        p.status,
+        p.criado_em,
+        pt.tipo_vinculo
+       FROM parceiro_terra pt
+       JOIN parceiros p ON p.id = pt.parceiro_id
+      WHERE pt.terra_id = $1
+        AND p.status != 'inativo'
+      ORDER BY p.criado_em DESC`,
+    [terraId]
+  );
+
+  return rows;
+}
+
+export async function createTerraParceiro(
+  terraId: string,
+  data: VincularParceiroATerraInput
+): Promise<TerraParceiro | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const terra = await client.query<{ id: string }>('SELECT id FROM terras WHERE id = $1', [terraId]);
+    if (terra.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    const { rows } = await client.query<TerraParceiro>(
+      `INSERT INTO parceiro_terra (terra_id, parceiro_id, tipo_vinculo)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [terraId, data.parceiro_id, data.tipo_vinculo ?? null]
+    );
+
+    await client.query('COMMIT');
+    return rows[0];
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }

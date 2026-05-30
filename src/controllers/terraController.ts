@@ -1,7 +1,14 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../helpers/asyncHandler';
-import { cadastrarTerra, editarTerra, obterTerras } from '../services/terraService';
+import {
+  cadastrarTerra,
+  editarTerra,
+  obterParceirosDaTerra,
+  obterTerras,
+  vincularParceiroATerra as vincularParceiroATerraService,
+} from '../services/terraService';
 import { createTerraSchema, updateTerraSchema } from '../schemas/terra.schema';
+import { vincularParceiroATerraSchema } from '../schemas/terraParceiro.schema';
 import { ValidationError } from '../errors/AppError';
 
 export const createTerra = asyncHandler(async (req: Request, res: Response) => {
@@ -36,4 +43,25 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
   const terra = await editarTerra(id, parsed.data);
 
   res.status(200).json(terra);
+});
+
+export const listarParceirosDaTerra = asyncHandler(async (req: Request, res: Response) => {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const parceiros = await obterParceirosDaTerra(id);
+  res.status(200).json(parceiros);
+});
+
+export const vincularParceiroATerra = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = vincularParceiroATerraSchema.safeParse(req.body);
+  if (!parsed.success) {
+    const detalhes = parsed.error.issues
+      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
+      .join('; ');
+    throw new ValidationError(detalhes);
+  }
+
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const vinculo = await vincularParceiroATerraService(id, parsed.data);
+
+  res.status(201).location(`/api/terras/${id}/parceiros/${vinculo.parceiro_id}`).json(vinculo);
 });
