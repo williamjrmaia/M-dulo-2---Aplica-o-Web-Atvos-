@@ -87,3 +87,8 @@ export interface EnviarParceiroValidacaoInput {
     atualizado_por: string;
     comentario?: string;
 }
+
+export interface AprovarParceiroInput {
+    aprovado_por: string;
+    comentario?: string;
+}

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../helpers/asyncHandler';
 import {
+  aprovarParceiro as aprovarParceiroService,
   cadastrarParceiro,
   editarParceiro as editarParceiroService,
   enviarParceiroParaValidacao as enviarParceiroParaValidacaoService,
@@ -13,6 +14,7 @@ import {
 import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
+import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
@@ -115,6 +117,21 @@ export const enviarParceiroParaValidacao = asyncHandler(async (req: Request, res
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const parceiro = await enviarParceiroParaValidacaoService(id, parsed.data);
+
+  res.status(200).json(parceiro);
+});
+
+export const aprovarParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = aprovarParceiroSchema.safeParse(req.body);
+  if (!parsed.success) {
+    const detalhes = parsed.error.issues
+      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
+      .join('; ');
+    throw new ValidationError(detalhes);
+  }
+
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const parceiro = await aprovarParceiroService(id, parsed.data);
 
   res.status(200).json(parceiro);
 });
