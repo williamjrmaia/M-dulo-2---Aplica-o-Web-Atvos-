@@ -18,4 +18,9 @@ router.post('/login', (req, res) => {
   return controller.login(req, res);
 });
 
+router.put('/auth/sessoes/:id', (req, res) => {
+  console.log(`[ROUTE] PUT /auth/sessoes/${req.params.id} recebida`);
+  return controller.encerrarSessao(req, res);
+});
+
 export default router;

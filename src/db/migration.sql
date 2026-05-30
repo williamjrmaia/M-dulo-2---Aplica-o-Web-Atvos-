@@ -26,6 +26,20 @@ CREATE TABLE IF NOT EXISTS usuarios (
 CREATE INDEX IF NOT EXISTS idx_usuario_perfil ON usuarios(perfil_acesso_id);
 CREATE INDEX IF NOT EXISTS idx_usuario_nome ON usuarios(nome);
 
+CREATE TABLE IF NOT EXISTS auth_sessoes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  token TEXT NOT NULL,
+  ativa BOOLEAN NOT NULL DEFAULT TRUE,
+  criada_em TIMESTAMP NOT NULL DEFAULT NOW(),
+  expira_em TIMESTAMP NOT NULL,
+  revogada_em TIMESTAMP,
+  revogada_por UUID REFERENCES usuarios(id) ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_auth_sessoes_usuario ON auth_sessoes(usuario_id);
+CREATE INDEX IF NOT EXISTS idx_auth_sessoes_ativa ON auth_sessoes(ativa);
+
 CREATE TABLE IF NOT EXISTS unidades (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   codigo VARCHAR NOT NULL UNIQUE,
