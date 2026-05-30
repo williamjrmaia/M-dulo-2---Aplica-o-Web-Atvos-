@@ -14,7 +14,7 @@ O **Controller** (`obterParceiroPorId`) extrai o `id` de `req.params.id` e deleg
 
 O **Service** (`obterParceiroPorId`) chama o repository e aplica duas regras: se o resultado for `null` (ID nao encontrado), lanca `NotFoundError`; se o banco retornar erro de formato UUID invalido (codigo PostgreSQL `22P02`), tambem lanca `NotFoundError`. Essa traducao centraliza o tratamento de erro no lugar certo, sem vazar detalhes do banco para o cliente.
 
-O **Repository** (`getParceiroById`) executa `SELECT * FROM parceiros WHERE id = $1` com query parametrizada, eliminando risco de SQL injection. Retorna o primeiro resultado ou `null` se nenhuma linha for encontrada.
+O **Repository** (`getParceiroById`) executa `SELECT * FROM parceiros WHERE id = $1 AND status != 'inativo'` com query parametrizada, eliminando risco de SQL injection. Retorna o primeiro resultado ou `null` se nenhuma linha for encontrada ou se o parceiro estiver inativo.
 
 O **banco** executa a busca pelo UUID informado e retorna a linha completa ou conjunto vazio. Se o valor nao for UUID valido, o PostgreSQL lanca erro com codigo `22P02`, que o service intercepta.
 
@@ -36,7 +36,7 @@ Prova que os dados retornados pelo GET /:id conferem com o que esta salvo no ban
 
 | RF    | RN    | Caso de Teste                                                                                              | Arquivo                                        | Evidencia      |
 |-------|-------|------------------------------------------------------------------------------------------------------------|------------------------------------------------|----------------|
-| RF008 | RN08  | deve retornar os dados do parceiro correspondente ao ID informado                                         | src/test/parceiroController.get.spec.ts        | ✓              |
-| RF008 | RN08  | deve retornar 404 quando nenhum parceiro corresponde ao ID informado                                      | src/test/parceiroController.get.spec.ts        | ✓              |
-| RF008 | RN08  | deve retornar 404 quando o ID informado nao tem formato de UUID valido                                    | src/test/parceiroController.get.spec.ts        | ✓              |
-| RF008 | RN08  | deve persistir os dados corretamente no banco apos cadastro e retorna-los na busca por ID                 | src/test/parceiroController.get.spec.ts        | ✓              |
+| RF008 | RN08  | deve retornar os dados do parceiro correspondente ao ID informado                                         | src/tests/parceiroDetalheController.spec.ts    | ✓              |
+| RF008 | RN08  | deve retornar 404 quando nenhum parceiro corresponde ao ID informado                                      | src/tests/parceiroDetalheController.spec.ts    | ✓              |
+| RF008 | RN08  | deve retornar 404 quando o ID informado nao tem formato de UUID valido                                    | src/tests/parceiroDetalheController.spec.ts    | ✓              |
+| RF008 | RN08  | deve retornar 404 quando o parceiro esta inativo                                                         | src/tests/parceiroDetalheController.spec.ts    | ✓              |
