@@ -215,4 +215,13 @@ describe('GET /api/parceiros/:id/terras', () => {
     expect(res.body.map((terra: { id: string }) => terra.id)).toContain(terraAtiva.id);
     expect(res.body.map((terra: { id: string }) => terra.id)).not.toContain(terraInativa.id);
   });
+
+  it('Caso 4 — parceiro existente sem vínculos → 200 com array vazio', async () => {
+    const parceiro = await criarParceiro();
+
+    const res = await request(app).get(`/api/parceiros/${parceiro.id}/terras`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([]);
+  });
 });

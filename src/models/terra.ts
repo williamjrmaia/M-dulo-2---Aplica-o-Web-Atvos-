@@ -28,3 +28,27 @@ export interface UpdateTerraInput {
   status?: string;
   atualizado_por: string;
 }
+
+export interface TerraParceiro {
+  id: string;
+  parceiro_id: string;
+  terra_id: string;
+  tipo_vinculo?: string | null;
+}
+
+export interface ParceiroDaTerra {
+  id: string;
+  nome: string;
+  apelido?: string | null;
+  tipo_pessoa: string;
+  cpf_cnpj: string;
+  email?: string | null;
+  status: string;
+  criado_em: Date;
+  tipo_vinculo?: string | null;
+}
+
+export interface VincularParceiroATerraInput {
+  parceiro_id: string;
+  tipo_vinculo?: string;
+}
