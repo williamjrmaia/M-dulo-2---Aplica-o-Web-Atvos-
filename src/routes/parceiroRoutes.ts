@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   aprovarParceiro,
   createParceiro,
+  devolverParceiro,
   editarParceiro,
   enviarParceiroParaValidacao,
   listarHistoricoParceiro,
@@ -24,6 +25,7 @@ apiRouter.post('/', createParceiro);
 apiRouter.patch('/:id', editarParceiro);
 apiRouter.get('/', listarParceiros);
 apiRouter.put('/:id/aprovar', aprovarParceiro);
+apiRouter.put('/:id/devolver', devolverParceiro);
 apiRouter.put('/:id/validacao', enviarParceiroParaValidacao);
 apiRouter.get('/:id/historico', listarHistoricoParceiro);
 apiRouter.get('/:id/terras', listarTerrasDoParceiro);

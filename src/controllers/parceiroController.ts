@@ -3,6 +3,7 @@ import asyncHandler from '../helpers/asyncHandler';
 import {
   aprovarParceiro as aprovarParceiroService,
   cadastrarParceiro,
+  devolverParceiro as devolverParceiroService,
   editarParceiro as editarParceiroService,
   enviarParceiroParaValidacao as enviarParceiroParaValidacaoService,
   obterHistoricoParceiro,
@@ -15,6 +16,7 @@ import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
+import { devolverParceiroSchema } from '../schemas/parceiroDevolucao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
@@ -132,6 +134,21 @@ export const aprovarParceiro = asyncHandler(async (req: Request, res: Response) 
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const parceiro = await aprovarParceiroService(id, parsed.data);
+
+  res.status(200).json(parceiro);
+});
+
+export const devolverParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = devolverParceiroSchema.safeParse(req.body);
+  if (!parsed.success) {
+    const detalhes = parsed.error.issues
+      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
+      .join('; ');
+    throw new ValidationError(detalhes);
+  }
+
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const parceiro = await devolverParceiroService(id, parsed.data);
 
   res.status(200).json(parceiro);
 });

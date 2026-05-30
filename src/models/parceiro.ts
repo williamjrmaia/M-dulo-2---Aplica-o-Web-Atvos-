@@ -92,3 +92,8 @@ export interface AprovarParceiroInput {
     aprovado_por: string;
     comentario?: string;
 }
+
+export interface DevolverParceiroInput {
+    devolvido_por: string;
+    comentario?: string;
+}

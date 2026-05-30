@@ -3,6 +3,7 @@ import {
   AprovarParceiroInput,
   Parceiro,
   CreateParceiroInput,
+  DevolverParceiroInput,
   EnviarParceiroValidacaoInput,
   HistoricoParceiro,
   ListarParceirosFiltros,
@@ -283,6 +284,65 @@ export async function approveParceiro(
        VALUES ($1, $1, 'parceiro', $2, 'aprovacao', $3::jsonb, $4::jsonb, 'aprovado', $5, NOW())`,
       [
         data.aprovado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(parceiro),
+        data.comentario ?? null,
+      ]
+    );
+
+    await client.query('COMMIT');
+    return parceiro;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function returnParceiroForAdjustment(
+  id: string,
+  data: DevolverParceiroInput,
+  dadosAnteriores: Parceiro
+): Promise<Parceiro | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query<Parceiro>(
+      `UPDATE parceiros
+          SET status = 'devolvido',
+              atualizado_por = $1,
+              atualizado_em = NOW()
+        WHERE id = $2
+          AND status = 'pendente'
+        RETURNING *`,
+      [data.devolvido_por, id]
+    );
+
+    const parceiro = rows[0] ?? null;
+    if (!parceiro) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    await client.query(
+      `UPDATE registro_alteracao
+          SET status = 'devolvido'
+        WHERE entidade_id = $1
+          AND LOWER(entidade_afetada) IN ('parceiro', 'parceiros')
+          AND status = 'pendente'`,
+      [id]
+    );
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'devolucao', $3::jsonb, $4::jsonb, 'devolvido', $5)`,
+      [
+        data.devolvido_por,
         id,
         JSON.stringify(dadosAnteriores),
         JSON.stringify(parceiro),
