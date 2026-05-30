@@ -1,6 +1,6 @@
 import pool from '../config/connection';
 import { PerfilAcesso } from '../models/PerfilAcesso';
-import { AtualizarUsuarioDTO, UsuarioComPerfil } from '../models/Usuario';
+import { AtualizarUsuarioDTO, CriarUsuarioInput, UsuarioComPerfil } from '../models/Usuario';
 
 export interface Usuario {
   id: string;
@@ -49,6 +49,17 @@ export class UserRepository {
       'SELECT id, nome, requer_aprovacao, descricao FROM perfil_acesso ORDER BY nome',
     );
     return result.rows;
+  }
+
+  async criaUsuario(data: CriarUsuarioInput): Promise<UsuarioComPerfil> {
+    console.log(`[REPOSITORY] criaUsuario: ${data.email}`);
+    const result = await pool.query<UsuarioComPerfil>(
+      `INSERT INTO usuarios (perfil_acesso_id, nome, email, senha_hash, ativo)
+       VALUES ($1, $2, LOWER($3), NULL, TRUE)
+       RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
+      [data.perfil_acesso_id, data.nome, data.email],
+    );
+    return result.rows[0];
   }
 
   async atualizaPerfilDeAcesso(id: string, role_id: string): Promise<UsuarioComPerfil | null> {

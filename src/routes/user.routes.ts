@@ -9,6 +9,11 @@ const repository = new UserRepository();
 const service = new UserService(repository);
 const controller = new UserController(service);
 
+router.post('/api/usuarios', (req, res) => {
+  console.log('[ROUTE] POST /api/usuarios recebida');
+  return controller.criaUsuario(req, res);
+});
+
 router.get('/usuarios/:id/editar', (req, res) => {
   console.log(`[ROUTE] GET /usuarios/${req.params.id}/editar recebida`);
   return controller.editarUsuario(req, res);
