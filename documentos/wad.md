@@ -538,18 +538,18 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 #### Justificativa, derivação e mensuração dos RNFs
 
-Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema da ATVOS: substituir controles dispersos por uma base única, rastreável e segura para parceiros, terras, usuários e interações. Nesta sprint, esses RNFs evoluíram para decisões técnicas concretas no backend, alinhadas aos 8 eixos da ISO/IEC 25010.
+Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema da ATVOS: substituir controles dispersos por uma base única, rastreável e segura para parceiros, terras, usuários e interações. Nesta sprint, os mesmos RNFs foram atualizados com decisões técnicas concretas do backend, preservando os eixos já mapeados e relacionando-os à ISO/IEC 25010.
 
-| Eixo ISO/IEC 25010 | RNF do projeto | Evolução técnica nesta sprint | Conexão com RF/RN | Critério de verificação |
+| Eixo | Derivação a partir do contexto da ATVOS | Forma de mensuração | Conexão com RF/RN | Critério de aceite conceitual |
 |---|---|---|---|---|
-| **Adequação funcional** | O backend deve implementar os fluxos centrais do CRM conforme RFs e RNs priorizados. | Foram criados endpoints e camadas para autenticação, usuários, parceiros, terras, vínculos, interações, dashboard, histórico e exportação. | RF001 a RF023; RN01 a RN17. | Rotas documentadas e cobertas por testes de controller/service para cenários de sucesso e erro. |
-| **Eficiência de desempenho** | Consultas operacionais devem responder em tempo adequado ao uso interno. | Repositories usam consultas SQL objetivas, filtros no banco, `ORDER BY`, `EXISTS` para vínculos e seleção apenas dos campos necessários na exportação/dashboard. | RF007, RF008, RF016, RF017. | Consultas principais devem manter resposta aceitável em base de teste, sem processamento pesado fora do banco. |
-| **Compatibilidade** | A solução deve operar como aplicação web/API sem depender de integrações corporativas externas no MVP. | O backend foi implementado em Express, com rotas HTTP, JSON, EJS auxiliar e documentação em `public/docs/index.html`, sem integração automática com ERP, SharePoint ou APIs externas. | Todos os RFs; restrição de escopo do MVP. | Fluxos executáveis via navegador/cliente HTTP e ambiente Node/PostgreSQL configurado por `.env`. |
-| **Usabilidade** | A API deve apoiar uma navegação simples para consulta e operação dos dados. | Foram disponibilizados endpoints de listagem, detalhe, filtros, histórico e exportação, reduzindo a necessidade de busca manual em planilhas. | RF007, RF008, RF012, RF016, RF017; RN04, RN08. | Frontend da Sprint 4 deve consumir esses endpoints para permitir acesso rápido aos perfis e consultas. |
-| **Confiabilidade** | Dados persistidos devem respeitar integridade, validação e rastreabilidade. | Foram adotados schemas Zod, validações em services, constraints do banco, tratamento de duplicidade, status não inativo, autoria (`criado_por`/`atualizado_por`) e testes de persistência. | RF009, RF010, RF018, RF019; RN09, RN10, RN11. | Testes devem confirmar rejeição de payload inválido, duplicidade, FK inexistente e persistência correta. |
-| **Segurança** | Acesso e operações sensíveis devem ser controlados por autenticação e perfil. | O backend implementou login com hash/JWT, encerramento de sessão, inativação lógica e validações de permissão em rotas sensíveis como inativação de usuários. | RF003, RF011, RF020; RN02, RN03, RN06, RN15. | Testes devem cobrir credenciais inválidas, token ausente, perfil sem permissão e usuário inativo. |
-| **Manutenibilidade** | O backend deve permitir evolução sem concentrar regras em um único arquivo. | A arquitetura foi organizada em `routes`, `controllers`, `services`, `repositories`, `schemas`, `models`, `errors` e `middlewares`, com tratamento centralizado de erros. | Transversal aos RF004 a RF023; RN11, RN12. | Novos fluxos devem seguir a separação Controller-Service-Repository e possuir testes próprios. |
-| **Portabilidade** | O sistema deve ser executável em ambientes de desenvolvimento equivalentes. | Configuração por `.env`, conexão PostgreSQL/Supabase, scripts `migrate`/`seed`, TypeScript e Jest permitem reproduzir o ambiente sem dependência de máquina específica. | Todos os RFs; restrições organizacionais do MVP. | Projeto deve subir com Node, dependências instaladas e variáveis de ambiente corretas. |
+| **USAB — Usabilidade** | A necessidade de reduzir busca manual em planilhas evoluiu para endpoints de listagem, detalhe, filtros, histórico e exportação, que darão suporte direto às telas da Sprint 4. | Verificar se o frontend consome esses endpoints e permite acessar listagem, perfil e histórico sem navegação excessiva. | RF007, RF008, RF012, RF016, RF017; RN04, RN08. | Usuários internos devem conseguir localizar e consultar um parceiro a partir da listagem e dos filtros, com dados vindos da API. |
+| **CONF — Confiabilidade** | A exigência de uma base única e consistente evoluiu para validações com Zod, regras em services, constraints no banco, tratamento de duplicidade e testes de persistência. | Testes automatizados devem confirmar rejeição de payload inválido, CPF/CNPJ/e-mail duplicado, FK inexistente e persistência correta. | RF009, RF010, RF018, RF019; RN09, RN10, RN11. | O sistema deve impedir registros inconsistentes e preservar dados auditáveis como `criado_por`, `atualizado_por` e timestamps. |
+| **DES — Desempenho** | A necessidade de consulta operacional rápida evoluiu para repositories com filtros no banco, `EXISTS` para vínculos, `ORDER BY` e seleção apenas dos campos necessários. | Verificar tempo de resposta dos endpoints de listagem, filtros, detalhe, dashboard e exportação em base de teste. | RF007, RF008, RF016, RF017. | Consultas prioritárias devem responder sem processamento pesado fora do banco e permanecer adequadas ao uso interno. |
+| **SUP — Suportabilidade** | A necessidade de evolução contínua do CRM evoluiu para arquitetura em camadas: `routes`, `controllers`, `services`, `repositories`, `schemas`, `models`, `errors` e `middlewares`. | Verificar se novos fluxos mantêm separação Controller-Service-Repository e possuem testes próprios. | RF004 a RF023; RN11, RN12. | Funcionalidades devem ser mantidas sem concentrar regra de negócio em rotas, views ou acesso direto ao banco. |
+| **SEG — Segurança** | A necessidade de proteger dados estratégicos evoluiu para login com hash/JWT, encerramento de sessão, inativação lógica e validações de perfil em operações sensíveis. | Testes devem cobrir credenciais inválidas, token ausente, perfil sem permissão, usuário inexistente e usuário inativo. | RF003, RF011, RF020; RN02, RN03, RN06, RN15. | Usuários sem autenticação ou permissão não devem executar operações protegidas, como gestão e inativação de usuários. |
+| **CAP — Capacidade** | O uso interno por múltiplos colaboradores evoluiu para uma API stateless em Express, com conexão PostgreSQL/Supabase e queries centralizadas nos repositories. | Validar cenários básicos de concorrência em consultas, cadastros e edições durante a integração frontend-backend. | RF004, RF005, RF006, RF007, RF008, RF016. | O sistema deve suportar uso interno simultâneo sem indisponibilidade nos fluxos prioritários. |
+| **REST — Restrições de Design** | A restrição de aplicação web sem app móvel ou integração corporativa automática foi mantida e materializada em rotas HTTP, JSON, EJS auxiliar e documentação em `public/docs/index.html`. | Verificar que os fluxos priorizados são executáveis por navegador ou cliente HTTP, sem dependência de ERP, SharePoint ou APIs externas. | Todos os RFs; restrição de escopo do MVP. | O MVP deve permanecer como aplicação web/API executável em ambiente Node/PostgreSQL. |
+| **ORG — Organizacionais** | O recorte acordado com a ATVOS evoluiu para backend focado nos módulos planejados: usuários, parceiros, terras, vínculos, interações, histórico, dashboard e exportação. | Conferir se a RTM e a documentação de endpoints permanecem limitadas ao escopo aprovado. | RF001 a RF023; regras de negócio associadas ao MVP. | O projeto não deve implementar integrações ou módulos fora do escopo definido para a entrega acadêmica. |
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
@@ -2304,13 +2304,13 @@ CREATE INDEX idx_registro_operacao    ON registro_alteracao(tipo_operacao);
 
 ## 3.6.4. Consultas SQL e lógica proposicional
 
-Esta seção apresenta consultas SQL compostas realizadas pelo back-end da aplicação web, acompanhadas de sua respectiva lógica proposicional. As consultas foram elaboradas a partir das entidades modeladas no banco de dados, em especial, `parceiros`, `usuarios`, `perfil_acesso`, `interacao`, `terras`, `parceiro_terra` e `vinculo_comercial`.
+Esta seção apresenta consultas SQL compostas realizadas pelo back-end da aplicação web, acompanhadas de sua respectiva lógica proposicional. As consultas foram elaboradas a partir das entidades modeladas no banco de dados, em especial, `parceiros`, `usuarios`, `perfil_acesso`, `terras`, `parceiro_terra`, `vinculo_comercial` e `registro_alteracao`.
 
-As consultas cobrem operações de diferentes tipos — `INSERT`, `UPDATE` e `SELECT` — e representam fluxos reais do sistema, como cadastro de usuários e parceiros, inativação lógica, edição de dados cadastrais, visualização de perfis, listagem com filtros, geração de dashboards e exportação de dados.
+As consultas cobrem operações de diferentes tipos — `INSERT`, `UPDATE` e `SELECT` — e representam fluxos reais do sistema, como cadastro de usuários e parceiros, inativação lógica, edição de dados cadastrais, visualização de perfis, listagem com filtros, envio para validação e exportação de dados.
 
-Cada consulta possui condições de controle ou filtragem, combinadas por operadores lógicos como `AND`, `OR`, `NOT`, `LIKE`, `IN` e `IS NULL` quando aplicável. Para formalizar essas regras, cada condição booleana foi transformada em uma proposição lógica identificada por letras como $A$, $B$, $C$ ou $D$. Em seguida, a estrutura de controle da consulta foi convertida para uma expressão lógica proposicional equivalente, utilizando os conectivos $\land$ para conjunção, $\lor$ para disjunção e $\lnot$ para negação. Por fim, cada expressão foi validada por meio de tabela verdade.
+Cada fluxo possui condições de controle ou filtragem, combinadas por operadores lógicos como `AND`, `OR`, `NOT`, `LIKE`/`ILIKE` e `IN` quando aplicável. Para formalizar essas regras, cada condição booleana foi transformada em uma proposição lógica identificada por letras como $A$, $B$, $C$ ou $D$. Em seguida, a estrutura de controle da consulta foi convertida para uma expressão lógica proposicional equivalente, utilizando os conectivos $\land$ para conjunção, $\lor$ para disjunção e $\lnot$ para negação. Por fim, cada expressão foi validada por meio de tabela verdade.
 
-As cláusulas `JOIN` e `LEFT JOIN` foram utilizadas para combinar entidades relacionadas no domínio, mas não foram tratadas como proposições principais. Isso ocorre porque o objetivo da lógica proposicional nesta seção é representar as condições booleanas de filtragem, controle ou agregação efetivamente avaliadas pelo back-end em cada operação.
+As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no domínio, mas não foram tratadas como proposições principais. Isso ocorre porque o objetivo da lógica proposicional nesta seção é representar as condições booleanas de filtragem, controle ou validação de retorno efetivamente avaliadas pelo back-end em cada operação.
 
 
 ### Rastreabilidade das consultas
@@ -2323,7 +2323,7 @@ As cláusulas `JOIN` e `LEFT JOIN` foram utilizadas para combinar entidades rela
 | 04 | UPDATE | `parceiros` | Editar dados cadastrais de um parceiro com payload válido e autoria da alteração. |
 | 05 | SELECT | `parceiros` | Exibir perfil detalhado de um parceiro não inativo. |
 | 06 | SELECT | `parceiros`, `parceiro_terra`, `terras`, `vinculo_comercial` | Listar parceiros não inativos com filtros opcionais de nome, região e tipo. |
-| 07 | SELECT | `interacao` | Agregar interações por tipo e status para exibição no dashboard. |
+| 07 | UPDATE | `parceiros`, `registro_alteracao` | Enviar parceiro para validação quando estiver em status permitido. |
 | 08 | SELECT | `parceiros` | Gerar lista de parceiros ativos para exportação em CSV. |
 
 
@@ -2333,11 +2333,11 @@ As cláusulas `JOIN` e `LEFT JOIN` foram utilizadas para combinar entidades rela
 |---|---|---|
 | 01 | Usuários só podem ser cadastrados com perfil existente no sistema e e-mail único, iniciando sem senha até o primeiro acesso. | RN01, RN03 |
 | 02 | A inativação de usuários é lógica — o registro é preservado e o acesso é revogado imediatamente. | RN07, RN15 |
-| 03 | Novos parceiros são criados com status rascunho e têm o CPF/CNPJ validado contra duplicatas de registros não inativos. | RN09, RN16 |
+| 03 | Novos parceiros são criados com status rascunho e têm o CPF/CNPJ validado contra duplicatas. | RN09, RN16 |
 | 04 | A edição de parceiros exige registro existente, ao menos um campo editável e identificação do usuário responsável pela alteração. | RN05, RN11, RN12 |
 | 05 | A visualização do perfil detalhado de um parceiro exige que ele exista e não esteja inativo. | RN04, RN08 |
 | 06 | A listagem de parceiros exibe apenas registros não inativos, com suporte a filtros opcionais que não comprometem o retorno quando não informados. | RN04, RN08 |
-| 07 | O dashboard de interações agrega os registros por tipo e status, permitindo visualizar a distribuição das interações cadastradas. | RN04, RN05, RN08 |
+| 07 | Parceiros só podem ser enviados para validação quando existem e estão em rascunho ou devolvidos. | RN16, RN17 |
 | 08 | A exportação de dados inclui apenas parceiros ativos, omitindo dados sensíveis de auditoria. | RN04, RN08, RF017 |
 
 
@@ -2351,8 +2351,8 @@ As consultas foram elaboradas com duas a quatro proposições para permitir a co
 
 | 01 | --- |
 |---|---|
-| **Expressão SQL** | ```SQL INSERT INTO usuarios (id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em) SELECT gen_random_uuid(), pa.id, :nome, :email, NULL, TRUE, NOW() FROM perfil_acesso pa WHERE pa.nome = :perfil AND NOT EXISTS (SELECT 1 FROM usuarios u WHERE u.email = :email); ``` |
-| **Proposições lógicas** | $A$ : O perfil informado existe na tabela perfil_acesso (pa.nome = :perfil) <br> $B$ : O e-mail ainda não está cadastrado no sistema (NOT EXISTS (SELECT 1 FROM usuarios u WHERE u.email = :email)) |
+| **Expressão SQL** | ```SQL SELECT id FROM perfil_acesso WHERE id = :perfil_acesso_id; SELECT id, nome, email, senha_hash, ativo, perfil_acesso_id FROM usuarios WHERE email = LOWER(:email); INSERT INTO usuarios (perfil_acesso_id, nome, email, senha_hash, ativo) VALUES (:perfil_acesso_id, :nome, LOWER(:email), NULL, TRUE) RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em; ``` |
+| **Proposições lógicas** | $A$ : O perfil informado existe na tabela perfil_acesso (SELECT de perfil retorna linha) <br> $B$ : O e-mail ainda não está cadastrado no sistema (SELECT por e-mail não retorna linha) |
 | **Expressão lógica proposicional** | $A \land B$ |
 | **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
@@ -2370,7 +2370,7 @@ Na prática, essa consulta implementa uma validação de integridade e unicidade
 #### Explicação da consulta SQL:
 
 
-O comando INSERT insere novos registros correspondentes à um novo usuário do sistema. O id é gerado automaticamente via gen_random_uuid(). O campo senha_hash recebe NULL pois o usuário ainda não realizou o primeiro acesso (a senha será definida no fluxo UC11). O campo ativo inicia como TRUE e criado_em recebe o timestamp atual. O INSERT é condicionado por um SELECT que verifica duas condições via WHERE: o perfil informado deve existir em perfil_acesso e o e-mail não pode já estar cadastrado (NOT EXISTS). Se qualquer uma das condições falhar, nenhuma linha é inserida. 
+O backend executa duas consultas de validação antes do INSERT: uma para confirmar se o perfil informado existe e outra para verificar se o e-mail normalizado com LOWER já está cadastrado. Se qualquer uma dessas condições falhar, o service bloqueia a operação antes da persistência. Quando ambas são verdadeiras, o repository executa o INSERT real, criando o usuário ativo, com senha_hash NULL e retornando os dados persistidos. 
 
 
 #### Combinações relevantes da tabela verdade:
@@ -2425,8 +2425,8 @@ O comando UPDATE realiza a inativação lógica de um usuário, alterando o camp
 
 | 03 | --- |
 |---|---|
-| **Expressão SQL** | ```SQL INSERT INTO parceiros (nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, criado_por) SELECT :nome, :apelido, :tipo_pessoa, :cpf_cnpj, :email, :data_nascimento, :nome_acompanhante, :usuario_id WHERE NOT EXISTS (SELECT 1 FROM parceiros p WHERE p.cpf_cnpj = :cpf_cnpj AND p.status != 'inativo') AND :tipo_pessoa IN ('fisica', 'juridica') RETURNING *; ``` |
-| **Proposições lógicas** | $A$ : O CPF ou CNPJ informado não está cadastrado em nenhum parceiro ativo, pendente, rascunho ou devolvido (NOT EXISTS ... AND p.status != 'inativo') <br> $B$ : O tipo de pessoa informado é válido (:tipo_pessoa IN ('fisica', 'juridica')) |
+| **Expressão SQL** | ```SQL INSERT INTO parceiros (nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, criado_por) VALUES (:nome, :apelido, :tipo_pessoa, :cpf_cnpj, :email, :data_nascimento, :nome_acompanhante, :usuario_id) RETURNING *; ``` |
+| **Proposições lógicas** | $A$ : O CPF/CNPJ não viola a unicidade do banco (erro 23505 não ocorre) <br> $B$ : O tipo de pessoa informado respeita os valores aceitos pelo modelo (`fisica` ou `juridica`) |
 | **Expressão lógica proposicional** | $A \land B$ |
 | **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
@@ -2436,7 +2436,7 @@ O comando UPDATE realiza a inativação lógica de um usuário, alterando o camp
 
 Essa consulta controla o cadastro inicial de parceiros no sistema. O parceiro é criado inicialmente com status de rascunho, permitindo que seus dados sejam posteriormente revisados e validados.
 <br>
-A lógica proposicional $A \land B$ determina que o cadastro só pode ocorrer quando o CPF/CNPJ ainda não estiver associado a outro parceiro não inativo no sistema e quando o tipo de pessoa informado for válido.
+A lógica proposicional $A \land B$ determina que o cadastro só é concluído quando o CPF/CNPJ não viola a regra de unicidade e quando o tipo de pessoa informado é aceito pelo contrato de entrada do backend.
 <br>
 Isso garante duas regras importantes: evitar duplicidade de parceiros e manter consistência entre os dados cadastrais. Assim, o sistema impede registros repetidos e também evita classificações inválidas entre pessoa física e pessoa jurídica.
 <br>
@@ -2444,13 +2444,13 @@ Isso garante duas regras importantes: evitar duplicidade de parceiros e manter c
 #### Explicação da consulta SQL:
 
 
-O comando INSERT cria um novo registro de parceiro, que recebe os valores padrão definidos no banco para campos como status e data de criação. A estrutura `INSERT INTO ... SELECT ... WHERE` permite condicionar a inserção à ausência de CPF/CNPJ duplicado entre parceiros não inativos. A validação de tipo_pessoa restringe a criação aos valores fisica ou juridica, mantendo a consistência cadastral.
+O comando INSERT utilizado no repository cria o parceiro e retorna o registro persistido. Campos como status e data de criação seguem os padrões definidos no banco. A duplicidade de CPF/CNPJ é tratada pelo backend a partir da violação de unicidade do PostgreSQL (`23505`), convertida pelo service em erro de conflito, enquanto o tipo de pessoa é validado pelo contrato de entrada antes da persistência.
 
 
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=F, B=V) \rightarrow A \land B = F$ : CPF/CNPJ já cadastrado em algum parceiro ou ausente no preenchimento, resultando no bloqueio do cadastro, respeitando a RN09.<br>
+1- $(A=F, B=V) \rightarrow A \land B = F$ : CPF/CNPJ já cadastrado gera conflito de unicidade, resultando no bloqueio do cadastro, respeitando a RN09.<br>
 2- $(A=V, B=F) \rightarrow A \land B = F$ : tipo de pessoa inválido ou nulo, o que implica no cadastro rejeitado, devido à constraint do banco.  <br>
 3- $(A=V, B=V) \rightarrow A \land B = V$ : CPF/CNPJ disponível e tipo_pessoa válido, portanto, o parceiro é cadastrado como rascunho. <br>
 
@@ -2534,8 +2534,8 @@ A consulta retorna os dados de um parceiro específico. A cláusula WHERE exige 
 
 | 06 | --- |
 |---|---|
-| **Expressão SQL** | ```SQL SELECT p.* FROM parceiros p WHERE p.status != 'inativo' AND (:nome IS NULL OR p.nome ILIKE '%' || :nome || '%' OR p.apelido ILIKE '%' || :nome || '%') AND (:regiao IS NULL OR EXISTS (SELECT 1 FROM parceiro_terra pt JOIN terras t ON t.id = pt.terra_id WHERE pt.parceiro_id = p.id AND t.status != 'inativo' AND (t.cidade ILIKE '%' || :regiao || '%' OR t.estado ILIKE '%' || :regiao || '%'))) AND (:tipo IS NULL OR p.tipo_pessoa = :tipo OR EXISTS (SELECT 1 FROM vinculo_comercial vc WHERE vc.parceiro_id = p.id AND vc.status = 'ativo' AND vc.tipo_parceiro = :tipo)) ORDER BY p.criado_em DESC; ``` |
-| **Proposições lógicas** | $A$ : O parceiro não está inativo (p.status != 'inativo') <br> $B$ : O nome/apelido corresponde ao filtro ou o filtro de nome não foi informado <br> $C$ : A região corresponde a uma terra vinculada não inativa ou o filtro de região não foi informado <br> $D$ : O tipo corresponde ao tipo de pessoa ou ao vínculo comercial, ou o filtro de tipo não foi informado |
+| **Expressão SQL** | ```SQL SELECT p.* FROM parceiros p WHERE p.status != 'inativo' AND (p.nome ILIKE :nome OR p.apelido ILIKE :nome) AND EXISTS (SELECT 1 FROM parceiro_terra pt JOIN terras t ON t.id = pt.terra_id WHERE pt.parceiro_id = p.id AND t.status != 'inativo' AND (t.cidade ILIKE :regiao OR t.estado ILIKE :regiao)) AND EXISTS (SELECT 1 FROM vinculo_comercial vc WHERE vc.parceiro_id = p.id AND vc.status = 'ativo' AND vc.tipo_parceiro = :tipo) ORDER BY p.criado_em DESC; ``` |
+| **Proposições lógicas** | $A$ : O parceiro não está inativo (p.status != 'inativo') <br> $B$ : O nome ou apelido corresponde ao filtro informado <br> $C$ : A região corresponde a uma terra vinculada não inativa <br> $D$ : O parceiro possui vínculo comercial ativo do tipo informado |
 | **Expressão lógica proposicional** | $A \land B \land C \land D$ |
 | **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $D$ </th><th> $A \land B \land C \land D$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table>  |
 
@@ -2545,15 +2545,15 @@ A consulta retorna os dados de um parceiro específico. A cláusula WHERE exige 
 
 Essa consulta permite realizar buscas de parceiros utilizando filtros opcionais, como nome, região e tipo. O sistema adapta automaticamente a pesquisa conforme os filtros preenchidos pelo usuário.
 <br>
-A expressão lógica $A \land B \land C \land D$ mostra que um parceiro só aparece nos resultados quando não está inativo e atende a todos os filtros informados. Quando algum filtro não é preenchido, ele é ignorado pela consulta.
+A expressão lógica $A \land B \land C \land D$ representa o caso em que todos esses filtros foram informados. Um parceiro só aparece nos resultados quando não está inativo e atende simultaneamente aos filtros aplicados.
 <br>
-Isso torna a busca flexível e dinâmica, permitindo desde pesquisas amplas sem filtros até buscas extremamente específicas. Mesmo assim, a condição de parceiro não inativo permanece obrigatória, garantindo que registros inativos nunca sejam exibidos.
+Isso torna a busca flexível e dinâmica, permitindo desde pesquisas amplas sem filtros até buscas específicas. Mesmo assim, a condição de parceiro não inativo permanece obrigatória, garantindo que registros inativos nunca sejam exibidos.
 <br>
 
 #### Explicação da consulta SQL:
 
 
-A consulta implementa a busca filtrada de parceiros não inativos com filtros opcionais. O filtro de nome compara nome e apelido com `ILIKE`; o filtro de região usa `EXISTS` sobre terras vinculadas não inativas; e o filtro de tipo aceita tanto tipo de pessoa quanto tipo de vínculo comercial ativo. Quando um parâmetro não é informado, sua condição é ignorada. A condição p.status != 'inativo' é sempre obrigatória, garantindo conformidade com a RN08.    
+A consulta implementa a busca filtrada de parceiros não inativos. O filtro de nome compara nome e apelido com `ILIKE`; o filtro de região usa `EXISTS` sobre terras vinculadas não inativas; e o filtro de tipo pode consultar o vínculo comercial ativo quando o tipo informado representa a relação comercial do parceiro. Quando um parâmetro não é informado, o repository simplesmente não adiciona aquela condição ao WHERE. A condição p.status != 'inativo' é sempre obrigatória, garantindo conformidade com a RN08.    
 
 
 #### Combinações relevantes da tabela verdade:
@@ -2566,13 +2566,13 @@ A consulta implementa a busca filtrada de parceiros não inativos com filtros op
 
 ---
 
-### 07 — Visualização do painel de dados das interações com os parceiros 
+### 07 — Envio de parceiro para validação 
 
 
 | 07 | --- |
 |---|---|
-| **Expressão SQL** | ```SQL SELECT tipo AS tipo_interacao, status, COUNT(*) AS total FROM interacao GROUP BY tipo, status ORDER BY total DESC;  ``` |
-| **Proposições lógicas** | $A$ : A interação possui tipo agrupável (tipo participa do GROUP BY) <br> $B$ : A interação possui status agrupável (status participa do GROUP BY)  <br> $C$ : O agrupamento possui ao menos um registro contabilizado (COUNT(*) > 0) |
+| **Expressão SQL** | ```SQL UPDATE parceiros SET status = 'pendente', atualizado_por = :usuario_id, atualizado_em = NOW() WHERE id = :parceiro_id AND status IN ('rascunho', 'devolvido') RETURNING *; ``` |
+| **Proposições lógicas** | $A$ : O id corresponde ao parceiro alvo (id = :parceiro_id) <br> $B$ : O parceiro está em status rascunho ou devolvido (status IN ('rascunho', 'devolvido')) <br> $C$ : O responsável pela atualização foi informado (atualizado_por não é nulo) |
 | **Expressão lógica proposicional** | $A \land B \land C$ |
 | **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $C$ </th><th> $A \land B \land C$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>F</td><td>V</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td><td>F</td></tr><tr><td>V</td><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
@@ -2580,26 +2580,26 @@ A consulta implementa a busca filtrada de parceiros não inativos com filtros op
 #### Explicação do que significa essa consulta:
 
 
-Essa consulta alimenta o painel estatístico de interações com parceiros, permitindo visualizar a quantidade de registros por tipo de interação e por status. O objetivo é gerar indicadores para acompanhamento comercial e análise de relacionamento.
+Essa consulta representa o envio de um parceiro para validação. Ela é usada quando o cadastro ainda está em rascunho ou foi devolvido para correção e precisa entrar novamente no fluxo de análise.
 <br>
-A lógica proposicional $A \land B \land C$ define que o grupo exibido no painel precisa possuir tipo, status e ao menos um registro contabilizado. Isso representa a regra de agregação usada pelo dashboard atual.
+A lógica proposicional $A \land B \land C$ define que a alteração só é válida quando o parceiro existe, está em um status permitido para envio e possui responsável pela atualização.
 <br>
-Dessa forma, o dashboard consolida os registros de interação existentes em grupos comparáveis, garantindo que os indicadores apresentados representem a distribuição real das interações cadastradas.
+Dessa forma, o backend impede que parceiros ativos, pendentes ou inativos sejam reenviados indevidamente para validação, mantendo o fluxo de governança cadastral da ATVOS.
 <br>
 
 #### Explicação da consulta SQL:
 
 
-A consulta alimenta o dashboard de interações, retornando a contagem de interações agrupadas por tipo e status. O GROUP BY agrega os resultados por essas duas dimensões, COUNT(*) contabiliza cada grupo e ORDER BY organiza os grupos mais frequentes no topo.   
+A consulta atualiza o status do parceiro para pendente e registra o usuário responsável pela operação. A cláusula WHERE combina a identificação do parceiro com a restrição de status permitidos por meio de `IN`. No repository, essa operação ocorre dentro de transação e é acompanhada do registro correspondente em `registro_alteracao`.   
 
 
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : há tipo e registros, mas falta status agrupável, logo o agrupamento não representa uma linha válida do painel.<br>
-2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : há tipo e status, mas nenhum registro contabilizado, logo não há grupo a exibir. <br>
-3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : há status e registros, mas falta tipo agrupável, portanto o grupo não atende à estrutura do dashboard.  <br>
-4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : tipo, status e contagem existem. O grupo é contabilizado no painel.<br>
+1- $(A=V, B=F, C=V) \rightarrow A \land B \land C = F$ : parceiro existe, mas está em status que não permite envio para validação, portanto a operação é bloqueada.<br>
+2- $(A=V, B=V, C=F) \rightarrow A \land B \land C = F$ : parceiro existe e está em status permitido, mas não há responsável informado, logo a rastreabilidade fica inválida. <br>
+3- $(A=F, B=V, C=V) \rightarrow A \land B \land C = F$ : id não corresponde a nenhum parceiro, portanto nenhuma linha é atualizada.  <br>
+4- $(A=V, B=V, C=V) \rightarrow A \land B \land C = V$ : parceiro encontrado, status permitido e responsável informado. O envio para validação é concluído.<br>
 
 ---
 
@@ -2608,8 +2608,8 @@ A consulta alimenta o dashboard de interações, retornando a contagem de intera
 
 | 08 | --- |
 |---|---|
-| **Expressão SQL** | ```SQL SELECT p.id, p.nome, p.tipo_pessoa, p.cpf_cnpj, p.email, p.status, p.criado_em FROM parceiros p WHERE p.status = 'ativo' AND p.id IS NOT NULL ORDER BY p.criado_em DESC; ``` |
-| **Proposições lógicas** | $A$ : O parceiro está ativo (p.status = 'ativo') <br> $B$ : O registro possui identificador válido para exportação (p.id IS NOT NULL) |
+| **Expressão SQL** | ```SQL SELECT p.id, p.nome, p.tipo_pessoa, p.cpf_cnpj, p.email, p.status, p.criado_em FROM parceiros p WHERE p.status = 'ativo' ORDER BY p.criado_em DESC; ``` |
+| **Proposições lógicas** | $A$ : O parceiro está ativo (p.status = 'ativo') <br> $B$ : A consulta retorna ao menos um registro para geração do CSV (lista de parceiros não vazia no service) |
 | **Expressão lógica proposicional** | $A \land B$ |
 | **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
@@ -2619,7 +2619,7 @@ A consulta alimenta o dashboard de interações, retornando a contagem de intera
 
 Essa consulta prepara os dados de parceiros para exportação em CSV. O objetivo é permitir compartilhamento e análise das informações fora do sistema.
 <br>
-A expressão lógica $A \land B$ indica que apenas parceiros ativos e com identificador válido podem ser exportados.
+A expressão lógica $A \land B$ indica que apenas parceiros ativos são exportados e que o arquivo CSV só é gerado quando a consulta retorna ao menos um registro.
 <br>
 A consulta seleciona apenas os campos necessários para o arquivo de exportação, mantendo a saída limitada a registros válidos para uso externo.
 <br>
@@ -2627,15 +2627,15 @@ A consulta seleciona apenas os campos necessários para o arquivo de exportaçã
 #### Explicação da consulta SQL:
 
 
-A consulta gera a lista de dados para exportação em CSV conforme o RF017. A cláusula WHERE restringe a exportação a parceiros ativos e garante que o registro possua identificador, enquanto o ORDER BY organiza os registros mais recentes primeiro. Apenas os campos relevantes para compartilhamento externo são selecionados, omitindo dados sensíveis de auditoria.  
+A consulta gera a lista de dados para exportação em CSV conforme o RF017. A cláusula WHERE restringe a exportação a parceiros ativos, enquanto o ORDER BY organiza os registros mais recentes primeiro. Apenas os campos relevantes para compartilhamento externo são selecionados, omitindo dados sensíveis de auditoria.  
 
 
 #### Combinações relevantes da tabela verdade:
 
 
 1- $(A=F, B=V) \rightarrow A \land B = F$ : parceiro inativo, portanto, nunca é exportado (preservando a RN08).  <br>
-2- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro ativo sem identificador válido não deve compor a exportação. <br>
-3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo e identificado, portanto é incluído na exportação. <br>
+2- $(A=V, B=F) \rightarrow A \land B = F$ : existem apenas condições individuais de parceiro ativo, mas a lista final está vazia; nesse caso, o service retorna erro de ausência de dados. <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : há parceiros ativos retornados pela consulta, portanto o CSV é gerado. <br>
 
 ---
 
@@ -2643,15 +2643,15 @@ A consulta gera a lista de dados para exportação em CSV conforme o RF017. A cl
 
 As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Cada consulta introduz uma estrutura proposicional distinta, refletindo diferentes padrões de filtragem e controle utilizados pelo back-end.
 <br>
-As consultas 01 e 03, ambas do tipo `INSERT`, utilizam a estrutura $A \land B$, isto é, a conjunção simples de duas proposições obrigatóriamente verdadeiras. Em 01, as duas condições verificam perfil válido e unicidade de e-mail antes de inserir o usuário. Em 03, verificam ausência de CPF/CNPJ duplicado e tipo de pessoa válido antes de inserir o parceiro como rascunho. Nas duas situações, a falha em qualquer uma das condições impede completamente a inserção.
+As consultas 01 e 03, ambas do tipo `INSERT`, utilizam a estrutura $A \land B$, isto é, a conjunção simples de duas proposições obrigatoriamente verdadeiras. Em 01, as duas condições verificam perfil válido e unicidade de e-mail antes de inserir o usuário. Em 03, a operação só é considerada válida quando não há violação de unicidade de CPF/CNPJ e o tipo de pessoa é aceito pelo contrato de entrada. Nas duas situações, a falha em qualquer uma das condições impede ou invalida a inserção.
 <br>
 As consultas 02 e 04, do tipo `UPDATE`, representam níveis de validação sobre registros alteráveis. Em 02, a expressão $A \land B$ indica que a inativação depende da existência do usuário alvo e da confirmação do status inativo retornado. Em 04, a expressão $A \land B \land C$ confirma que a edição de parceiro depende de registro existente, payload com campo editável e responsável informado. Em ambos os casos, a tabela verdade confirma quando o `UPDATE` afeta uma linha válida.
 <br>
-As consultas 05 e 08, do tipo `SELECT`, utilizam filtros diretos sobre o status do parceiro. Em 05, $A \land B$ verifica identidade e exclusão lógica antes de exibir o perfil detalhado. Em 08, $A \land B$ restringe a exportação aos parceiros ativos e identificáveis, como implementado no repositório de exportação.
+As consultas 05 e 08, do tipo `SELECT`, utilizam filtros diretos sobre o status do parceiro. Em 05, $A \land B$ verifica identidade e exclusão lógica antes de exibir o perfil detalhado. Em 08, $A \land B$ restringe a exportação aos parceiros ativos e à existência de dados retornados para montagem do CSV.
 <br>
-A consulta 06 apresenta a estrutura $A \land B \land C \land D$, a de maior número de proposições de toda a seção. As quatro condições são obrigatórias e independentes, mas três delas ($B$, $C$ e $D$) utilizam internamente o padrão `OR :param IS NULL`, tornando cada filtro opcionalmente ignorável. Isso produz uma consulta que se comporta como busca ampla quando nenhum filtro é informado e como busca precisa quando todos são preenchidos, mantendo sempre a obrigatoriedade da condição de status não inativo em $A$.
+A consulta 06 apresenta a estrutura $A \land B \land C \land D$, a de maior número de proposições de toda a seção. As quatro condições representam o caso em que filtros de nome, região e tipo foram informados simultaneamente. No backend, esses filtros são adicionados dinamicamente ao WHERE apenas quando existem no payload, mantendo sempre a obrigatoriedade da condição de status não inativo em $A$.
 <br>
-A consulta 07 apresenta $A \land B \land C$ aplicada a uma agregação com `GROUP BY`. Diferente das demais consultas `SELECT` desta seção, ela não retorna registros individuais — retorna contagens agrupadas por tipo de interação e status. As três proposições representam a existência das dimensões agrupadas e da contagem resultante, garantindo que os indicadores do dashboard representem grupos efetivamente contabilizados.
+A consulta 07 apresenta $A \land B \land C$ aplicada a uma transição de status com `UPDATE`. Ela demonstra o uso de `IN` para restringir a operação aos estados permitidos pelo fluxo de validação, além de exigir identificação do parceiro e autoria da alteração.
 <br>
 As oito consultas apresentadas atendem ao objetivo da seção ao relacionar operações reais do back-end com lógica proposicional formal, cobrindo os principais fluxos do sistema CRM da ATVOS - do cadastro à exportação - e demonstrando, por meio das respectivas tabelas verdade, que as condições compostas se comportam exatamente como as regras de negócio exigem.
 <br>
