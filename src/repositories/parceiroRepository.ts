@@ -2,6 +2,7 @@ import pool from '../config/connection';
 import {
   Parceiro,
   CreateParceiroInput,
+  EnviarParceiroValidacaoInput,
   HistoricoParceiro,
   ListarParceirosFiltros,
   ParceiroTerra,
@@ -185,6 +186,56 @@ export async function listarHistoricoParceiro(parceiroId: string): Promise<Histo
   );
 
   return rows;
+}
+
+export async function sendParceiroToValidation(
+  id: string,
+  data: EnviarParceiroValidacaoInput,
+  dadosAnteriores: Parceiro
+): Promise<Parceiro | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query<Parceiro>(
+      `UPDATE parceiros
+          SET status = 'pendente',
+              atualizado_por = $1,
+              atualizado_em = NOW()
+        WHERE id = $2
+          AND status IN ('rascunho', 'devolvido')
+        RETURNING *`,
+      [data.atualizado_por, id]
+    );
+
+    const parceiro = rows[0] ?? null;
+    if (!parceiro) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'envio', $3::jsonb, $4::jsonb, 'pendente', $5)`,
+      [
+        data.atualizado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(parceiro),
+        data.comentario ?? null,
+      ]
+    );
+
+    await client.query('COMMIT');
+    return parceiro;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 export async function listarTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[] | null> {

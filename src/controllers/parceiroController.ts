@@ -3,6 +3,7 @@ import asyncHandler from '../helpers/asyncHandler';
 import {
   cadastrarParceiro,
   editarParceiro as editarParceiroService,
+  enviarParceiroParaValidacao as enviarParceiroParaValidacaoService,
   obterHistoricoParceiro,
   obterTerrasDoParceiro,
   obterParceiros,
@@ -12,6 +13,7 @@ import {
 import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
+import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -100,6 +102,21 @@ export const listarHistoricoParceiro = asyncHandler(async (req: Request, res: Re
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const historico = await obterHistoricoParceiro(id);
   res.status(200).json(historico);
+});
+
+export const enviarParceiroParaValidacao = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = enviarParceiroValidacaoSchema.safeParse(req.body);
+  if (!parsed.success) {
+    const detalhes = parsed.error.issues
+      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
+      .join('; ');
+    throw new ValidationError(detalhes);
+  }
+
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const parceiro = await enviarParceiroParaValidacaoService(id, parsed.data);
+
+  res.status(200).json(parceiro);
 });
 
 export const listarTerrasDoParceiro = asyncHandler(async (req: Request, res: Response) => {
