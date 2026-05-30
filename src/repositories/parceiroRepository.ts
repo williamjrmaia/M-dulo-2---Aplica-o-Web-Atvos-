@@ -2,6 +2,7 @@ import pool from '../config/connection';
 import {
   Parceiro,
   CreateParceiroInput,
+  HistoricoParceiro,
   ListarParceirosFiltros,
   ParceiroTerra,
   TerraDoParceiro,
@@ -153,6 +154,37 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
 export async function getParceiroById(id: string): Promise<Parceiro | null> {
   const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE id = $1 AND status != 'inativo'`, [id]);
   return rows[0] ?? null;
+}
+
+export async function listarHistoricoParceiro(parceiroId: string): Promise<HistoricoParceiro[] | null> {
+  const parceiro = await pool.query<{ id: string }>('SELECT id FROM parceiros WHERE id = $1', [parceiroId]);
+  if (parceiro.rows.length === 0) {
+    return null;
+  }
+
+  const { rows } = await pool.query<HistoricoParceiro>(
+    `SELECT
+        id,
+        usuario_id,
+        aprovado_por,
+        entidade_afetada,
+        entidade_id,
+        tipo_operacao,
+        dados_anteriores,
+        dados_novos,
+        status,
+        comentario,
+        data_solicitacao,
+        data_aprovacao,
+        data_alteracao
+       FROM registro_alteracao
+      WHERE entidade_id = $1
+        AND LOWER(entidade_afetada) IN ('parceiro', 'parceiros')
+      ORDER BY data_alteracao DESC`,
+    [parceiroId]
+  );
+
+  return rows;
 }
 
 export async function listarTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[] | null> {

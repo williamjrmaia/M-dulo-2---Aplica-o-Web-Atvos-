@@ -2,12 +2,14 @@ import {
   createParceiro,
   createParceiroTerra,
   getParceiroById,
+  listarHistoricoParceiro,
   listarParceiros,
   listarTerrasDoParceiro,
   updateParceiro,
 } from '../repositories/parceiroRepository';
 import {
   CreateParceiroInput,
+  HistoricoParceiro,
   ListarParceirosFiltros,
   Parceiro,
   ParceiroTerra,
@@ -57,6 +59,24 @@ export async function obterParceiroPorId(id: string): Promise<Parceiro> {
     return parceiro;
   } catch (err: any) {
     if (err.code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    throw err;
+  }
+}
+
+export async function obterHistoricoParceiro(parceiroId: string): Promise<HistoricoParceiro[]> {
+  try {
+    const historico = await listarHistoricoParceiro(parceiroId);
+    if (historico === null) {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    return historico;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
       throw new NotFoundError('Parceiro não encontrado');
     }
     throw err;

@@ -3,6 +3,7 @@ import asyncHandler from '../helpers/asyncHandler';
 import {
   cadastrarParceiro,
   editarParceiro as editarParceiroService,
+  obterHistoricoParceiro,
   obterTerrasDoParceiro,
   obterParceiros,
   obterParceiroPorId as obterParceiroPorIdService,
@@ -93,6 +94,12 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
 export const obterParceiroPorId = asyncHandler(async (req: Request, res: Response) => {
   const parceiro = await obterParceiroPorIdService(req.params.id as string);
   res.status(200).json(parceiro);
+});
+
+export const listarHistoricoParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const historico = await obterHistoricoParceiro(id);
+  res.status(200).json(historico);
 });
 
 export const listarTerrasDoParceiro = asyncHandler(async (req: Request, res: Response) => {

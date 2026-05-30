@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   createParceiro,
   editarParceiro,
+  listarHistoricoParceiro,
   listarParceiros,
   listarTerrasDoParceiro,
   obterParceiroPorId,
@@ -20,6 +21,7 @@ export const apiRouter = Router();
 apiRouter.post('/', createParceiro);
 apiRouter.patch('/:id', editarParceiro);
 apiRouter.get('/', listarParceiros);
+apiRouter.get('/:id/historico', listarHistoricoParceiro);
 apiRouter.get('/:id/terras', listarTerrasDoParceiro);
 apiRouter.post('/:id/terras', vincularTerraAoParceiro);
 apiRouter.get('/:id', obterParceiroPorId);
