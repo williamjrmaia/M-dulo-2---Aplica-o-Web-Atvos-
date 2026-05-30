@@ -1195,7 +1195,29 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
-*Documente os design patterns utilizados (Repository, Strategy, Factory, DTO etc.) e quais princípios SOLID se aplicam. Justifique a adoção de cada padrão com base em uma necessidade real do projeto.*
+No desenvolvimento do backend, foram adotados padrões de projeto voltados à separação de responsabilidades, organização da regra de negócio e redução de acoplamento entre a API, o banco de dados e os fluxos de validação. A escolha desses padrões ocorreu a partir de necessidades reais do projeto, principalmente a complexidade do domínio de parceiros agrícolas, terras, usuários, interações e histórico de alterações.
+
+No contexto da ATVOS, o problema central envolve a substituição de controles dispersos em planilhas, e-mails e registros manuais por uma base única, auditável e confiável para consulta e manutenção de dados de parceiros agrícolas. Por isso, o backend precisava ser organizado de forma que novas regras de governança, validação, rastreabilidade e autorização por perfil pudessem ser adicionadas sem comprometer os fluxos já existentes. Os padrões abaixo foram aplicados para responder diretamente a essa necessidade de padronização, controle e evolução gradual do sistema.
+
+| Padrão aplicado | Onde aparece no backend | Justificativa de adoção |
+| --- | --- | --- |
+| **Repository** | `src/repositories`, como `userRepository.ts`, `parceiroRepository.ts`, `terraRepository.ts`, `interacaoRepository.ts`, `exportaRepository.ts` e `dashboardInteracoesRepository.ts`. | O sistema depende de várias consultas e operações SQL sobre entidades diferentes. O Repository foi usado para concentrar o acesso ao PostgreSQL/Supabase e evitar que controllers e services manipulassem SQL diretamente. No problema da ATVOS, isso é importante porque os dados de parceiros, terras, vínculos e interações precisam formar uma base única e consistente, substituindo consultas manuais em fontes espalhadas. |
+| **Service Layer** | `src/services`, como `userService.ts`, `parceiroService.ts`, `terraService.ts`, `authService.ts` e `interacaoService.ts`. | As regras de negócio não ficam nas rotas. Validações como existência de perfil, usuário inexistente, duplicidade, vínculo entre parceiro e terra, inativação lógica e tratamento de erros de banco são coordenadas nos services. Essa camada reflete a necessidade da ATVOS de aplicar governança sobre cadastros e alterações, garantindo que operações críticas não dependam apenas da interface ou de decisões manuais do usuário. |
+| **Controller** | `src/controllers`, como `userController.ts`, `parceiroController.ts`, `terraController.ts`, `authController.ts` e `dashboardInteracoesController.ts`. | Os controllers foram usados para receber requisições HTTP, chamar os services e devolver respostas com status codes adequados. Essa separação evita misturar regra de negócio com detalhes de Express, como `Request`, `Response`, headers e renderização. |
+| **DTO / Schema de Validação** | `src/schemas`, com schemas Zod como `terra.schema.ts`, `parceiroFiltros.schema.ts`, `parceiroTerra.schema.ts` e `terraParceiro.schema.ts`; também nos tipos de entrada em `src/models`. | O backend recebe dados de cadastro, edição, filtros e vínculos. Os schemas funcionam como contratos de entrada, validando campos obrigatórios, enums, UUIDs e formatos antes de acessar o banco. Isso reduz inconsistência nos dados, uma dor relevante para a ATVOS, já que informações cadastrais divergentes prejudicam a análise de parceiros e a tomada de decisão operacional. |
+| **Middleware de Tratamento de Erros** | `src/middlewares/errorHandler.ts` e `src/errors/AppError.ts`. | Como a API possui muitos cenários de falha (`400`, `404`, `409`, `422` e `500`), foi criado um tratamento centralizado para converter erros da aplicação em respostas HTTP consistentes. Em um sistema de uso interno e recorrente, isso ajuda a tornar falhas de cadastro, consulta e permissão mais previsíveis para os usuários e mais rastreáveis pela equipe técnica. |
+| **Wrapper para handlers assíncronos** | `src/helpers/asyncHandler.ts`, usado em controllers como `terraController.ts`. | Rotas assíncronas podem lançar exceções durante validações, consultas ou persistência. O helper evita blocos repetitivos de `try/catch` e encaminha erros para o middleware central, simplificando os controllers. |
+| **Composição de dependências** | Instanciação de repository, service e controller nas rotas, como em `user.routes.ts`, `auth.routes.ts`, `interacao.routes.ts`, `exporta.routes.ts` e `dashboardInteracoes.routes.ts`. | Cada rota monta explicitamente a cadeia necessária para executar seu módulo. Isso deixa claro o fluxo `Route -> Controller -> Service -> Repository` e reduz dependências globais escondidas. |
+
+Esses padrões também apoiam princípios SOLID no backend:
+
+| Princípio | Aplicação no projeto |
+| --- | --- |
+| **SRP - Single Responsibility Principle** | Rotas definem endpoints, controllers lidam com HTTP, services concentram regras de negócio, repositories acessam o banco e schemas validam entradas. |
+| **OCP - Open/Closed Principle** | Novos módulos podem ser adicionados seguindo a mesma estrutura de camadas sem reescrever os módulos já existentes. Por exemplo, os fluxos de dashboard e exportação seguem a organização já usada em usuários e interações. |
+| **DIP - Dependency Inversion Principle** | Services recebem repositories por construtor em módulos como usuários, autenticação e interações, reduzindo o acoplamento direto entre regra de negócio e implementação de persistência. |
+
+Com isso, a arquitetura do backend ficou preparada para evolução nas próximas sprints, principalmente para integração com o frontend, ampliação dos testes automatizados e refinamento das regras de autorização por perfil.
 
 ## 3.3. Wireframes (sprint 2)
 
