@@ -1,4 +1,4 @@
-import { createTerra, updateTerra } from '../repositories/terraRepository';
+import { createTerra, listarTerras, updateTerra } from '../repositories/terraRepository';
 import { CreateTerraInput, Terra, UpdateTerraInput } from '../models/terra';
 import { NotFoundError, UnprocessableEntityError } from '../errors/AppError';
 
@@ -12,6 +12,10 @@ export async function cadastrarTerra(data: CreateTerraInput): Promise<Terra> {
     }
     throw err;
   }
+}
+
+export async function obterTerras(): Promise<Terra[]> {
+  return listarTerras();
 }
 
 export async function editarTerra(id: string, data: UpdateTerraInput): Promise<Terra> {

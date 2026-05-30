@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import asyncHandler from '../helpers/asyncHandler';
-import { cadastrarTerra, editarTerra } from '../services/terraService';
+import { cadastrarTerra, editarTerra, obterTerras } from '../services/terraService';
 import { createTerraSchema, updateTerraSchema } from '../schemas/terra.schema';
 import { ValidationError } from '../errors/AppError';
 
@@ -16,6 +16,11 @@ export const createTerra = asyncHandler(async (req: Request, res: Response) => {
   const terra = await cadastrarTerra(parsed.data);
 
   res.status(201).location(`/api/terras/${terra.id}`).json(terra);
+});
+
+export const listarTerras = asyncHandler(async (_req: Request, res: Response) => {
+  const terras = await obterTerras();
+  res.status(200).json(terras);
 });
 
 export const updateTerra = asyncHandler(async (req: Request, res: Response) => {

@@ -94,6 +94,70 @@ describe('POST /api/terras', () => {
   });
 });
 
+describe('GET /api/terras', () => {
+  it('Caso 1 — retorna 200 com a lista de terras cadastradas não inativas', async () => {
+    await request(app).post('/api/terras').send({
+      ...terraValida(),
+      nome: 'Fazenda Santa Maria',
+    });
+    await request(app).post('/api/terras').send({
+      ...terraValida(),
+      nome: 'Fazenda Boa Vista',
+      cidade: 'Sertãozinho',
+    });
+
+    const res = await request(app).get('/api/terras');
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.map((terra: { nome: string }) => terra.nome)).toEqual(
+      expect.arrayContaining(['Fazenda Santa Maria', 'Fazenda Boa Vista'])
+    );
+  });
+
+  it('Caso 2 — retorna array mesmo quando o banco compartilhado tem estado variável', async () => {
+    const res = await request(app).get('/api/terras');
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  it('Caso 3 — não inclui terras com status inativo na listagem padrão', async () => {
+    const { rows } = await pool.query<{ id: string }>(
+      `INSERT INTO terras (nome, area_contratada_ha, cidade, estado, status, criado_por)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING id`,
+      ['Fazenda Inativa', 90, 'Sertãozinho', 'SP', 'inativo', testUserId]
+    );
+
+    const res = await request(app).get('/api/terras');
+
+    expect(res.status).toBe(200);
+    expect(res.body.map((terra: { id: string }) => terra.id)).not.toContain(rows[0].id);
+  });
+
+  it('Caso 4 — retorna dados que conferem com o banco', async () => {
+    const criado = await request(app).post('/api/terras').send(terraValida());
+
+    const res = await request(app).get('/api/terras');
+    const { rows } = await pool.query('SELECT nome, cidade, estado FROM terras WHERE id = $1', [
+      criado.body.id,
+    ]);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: criado.body.id,
+          nome: rows[0].nome,
+          cidade: rows[0].cidade,
+          estado: rows[0].estado,
+        }),
+      ])
+    );
+  });
+});
+
 describe('PUT /api/terras/:id', () => {
   const criarTerra = async () => {
     const res = await request(app).post('/api/terras').send(terraValida());
