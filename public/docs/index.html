@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safra Control — Documentação da WebAPI (seção 3.7)</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #1f242d;
+      --border: #2a313c;
+      --text: #e6e9ef;
+      --muted: #9aa4b2;
+      --accent: #3fa66a;
+      --get: #2f81f7;
+      --post: #3fa66a;
+      --put: #d29922;
+      --patch: #a371f7;
+      --delete: #f85149;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    a { color: var(--get); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .layout { display: flex; min-height: 100vh; }
+    /* Sidebar */
+    nav.sidebar {
+      width: 290px;
+      flex-shrink: 0;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 20px 16px;
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    nav.sidebar h1 { font-size: 16px; margin: 0 0 4px; }
+    nav.sidebar .sub { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+    nav.sidebar .group { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: .06em; margin: 18px 0 6px; }
+    nav.sidebar ul { list-style: none; margin: 0; padding: 0; }
+    nav.sidebar li { margin: 2px 0; }
+    nav.sidebar a { display: block; padding: 4px 8px; border-radius: 6px; color: var(--text); font-size: 13px; }
+    nav.sidebar a:hover { background: var(--panel-2); text-decoration: none; }
+    /* Main */
+    main { flex: 1; padding: 32px 40px; max-width: 980px; }
+    header.intro h2 { margin-top: 0; font-size: 26px; }
+    .note { background: var(--panel-2); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: 8px; margin: 16px 0; color: var(--muted); font-size: 14px; }
+    .note strong { color: var(--text); }
+    /* Endpoint card */
+    .endpoint { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin: 22px 0; scroll-margin-top: 16px; }
+    .endpoint h3 { margin: 0 0 4px; font-size: 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .method { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; color: #fff; letter-spacing: .04em; }
+    .method.get { background: var(--get); }
+    .method.post { background: var(--post); }
+    .method.put { background: var(--put); color: #1a1d23; }
+    .method.patch { background: var(--patch); }
+    .method.delete { background: var(--delete); }
+    code.path { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 15px; color: var(--text); }
+    .rf { margin-left: auto; font-size: 12px; color: var(--accent); border: 1px solid var(--accent); border-radius: 20px; padding: 2px 10px; }
+    .desc { color: var(--muted); font-size: 14px; margin: 2px 0 14px; }
+    .endpoint h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 16px 0 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 4px 0; }
+    th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    td code, .inline { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; background: var(--panel-2); padding: 1px 6px; border-radius: 4px; }
+    pre { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-size: 12.5px; margin: 4px 0; }
+    pre code { font-family: "SF Mono", Menlo, Consolas, monospace; color: #cdd7e3; }
+    .sc { display: inline-block; min-width: 38px; text-align: center; font-weight: 700; padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+    .sc.s2 { background: rgba(63,166,106,.18); color: #56d98a; }
+    .sc.s4 { background: rgba(210,153,34,.18); color: #e3b341; }
+    .sc.s5 { background: rgba(248,81,73,.18); color: #ff7b72; }
+    .muted { color: var(--muted); }
+    footer { color: var(--muted); font-size: 12px; margin: 40px 0 10px; border-top: 1px solid var(--border); padding-top: 16px; }
+    .reqline { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 13px; background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar">
+    <h1>Safra Control · WebAPI</h1>
+    <div class="sub">Documentação de endpoints — seção 3.7</div>
+
+    <a href="#intro">Visão geral</a>
+    <a href="#convencoes">Convenções</a>
+
+    <div class="group">Autenticação</div>
+    <ul>
+      <li><a href="#post-login">POST /login</a></li>
+    </ul>
+
+    <div class="group">Usuários</div>
+    <ul>
+      <li><a href="#put-usuario">PUT /usuarios/:id</a></li>
+      <li><a href="#put-usuario-perfil">PUT /usuarios/:id/perfil</a></li>
+      <li><a href="#put-usuario-inativar">PUT /usuarios/:id/inativar</a></li>
+    </ul>
+
+    <div class="group">Parceiros</div>
+    <ul>
+      <li><a href="#post-parceiro">POST /api/parceiros</a></li>
+      <li><a href="#patch-parceiro">PATCH /api/parceiros/:id</a></li>
+      <li><a href="#get-parceiros">GET /api/parceiros</a></li>
+      <li><a href="#get-parceiro">GET /api/parceiros/:id</a></li>
+      <li><a href="#get-parceiro-historico">GET …/:id/historico</a></li>
+      <li><a href="#put-parceiro-validacao">PUT …/:id/validacao</a></li>
+      <li><a href="#put-parceiro-aprovar">PUT …/:id/aprovar</a></li>
+      <li><a href="#get-parceiro-terras">GET …/:id/terras</a></li>
+      <li><a href="#post-parceiro-terras">POST …/:id/terras</a></li>
+    </ul>
+
+    <div class="group">Terras</div>
+    <ul>
+      <li><a href="#post-terra">POST /api/terras</a></li>
+      <li><a href="#get-terras">GET /api/terras</a></li>
+      <li><a href="#put-terra">PUT /api/terras/:id</a></li>
+      <li><a href="#get-terra-parceiros">GET …/:id/parceiros</a></li>
+      <li><a href="#post-terra-parceiros">POST …/:id/parceiros</a></li>
+    </ul>
+
+    <div class="group">Interações</div>
+    <ul>
+      <li><a href="#post-interacao">POST …/:id/interacoes</a></li>
+    </ul>
+
+    <div class="group">Indicadores / Exportação</div>
+    <ul>
+      <li><a href="#get-dashboard">GET /dashboards/interacoes</a></li>
+      <li><a href="#get-exporta">GET /parceiros/exportar</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <header class="intro" id="intro">
+      <h2>Documentação da WebAPI — Safra Control</h2>
+      <p class="muted">
+        CRM web da ATVOS para gestão de parceiros de terras, fornecedores de cana,
+        terras e histórico de interações. Esta página documenta <strong>todos os
+        endpoints da WebAPI</strong> implementados no backend.
+      </p>
+      <div class="note">
+        <strong>O que esta página é:</strong> documentação técnica navegável da WebAPI,
+        servida pelo próprio backend como arquivo estático em <span class="inline">/docs/</span>.
+        <strong>O que NÃO é:</strong> não é a interface de uso final do sistema. As telas
+        renderizadas (EJS) em rotas como <span class="inline">/login</span>,
+        <span class="inline">/parceiros</span> e <span class="inline">/usuarios/:id/editar</span>
+        são a UI e não estão documentadas aqui.
+      </div>
+    </header>
+
+    <section id="convencoes">
+      <h3>Convenções gerais</h3>
+      <table>
+        <tr><th>Item</th><th>Descrição</th></tr>
+        <tr><td>Base URL</td><td><code>http://localhost:3000</code> (porta definida por <code>PORT</code>)</td></tr>
+        <tr><td>Formato</td><td>Requisições e respostas em <code>application/json</code> (exceto exportação, que retorna CSV)</td></tr>
+        <tr><td>Content-Type</td><td>Em métodos com corpo (POST/PUT/PATCH): <code>Content-Type: application/json</code></td></tr>
+        <tr><td>IDs</td><td>UUID no formato <code>8-4-4-4-12</code> (ex.: <code>0e1f…-…-…-…-…</code>)</td></tr>
+        <tr><td>Erros (padrão)</td><td><code>{ "error": "mensagem" }</code> — os módulos de Dashboard e Exportação usam a chave <code>{ "erro": "…" }</code></td></tr>
+      </table>
+      <h4>Legenda de status codes</h4>
+      <p>
+        <span class="sc s2">2xx</span> sucesso &nbsp;
+        <span class="sc s4">4xx</span> erro do cliente &nbsp;
+        <span class="sc s5">5xx</span> erro do servidor
+      </p>
+      <table>
+        <tr><th>Código</th><th>Significado no projeto</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>OK</td></tr>
+        <tr><td><span class="sc s2">201</span></td><td>Recurso criado (acompanha header <code>Location</code>)</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Payload malformado / campo obrigatório ausente / validação (zod)</td></tr>
+        <tr><td><span class="sc s4">401</span></td><td>Não autenticado (token ausente/inválido)</td></tr>
+        <tr><td><span class="sc s4">403</span></td><td>Sem permissão (perfil insuficiente)</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>Recurso não encontrado</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>Conflito (unicidade / transição de status inválida)</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>Regra de negócio / referência (FK) inexistente</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno</td></tr>
+        <tr><td><span class="sc s5">503</span></td><td>Serviço indisponível (dashboard)</td></tr>
+      </table>
+    </section>
+
+    <!-- ============ AUTENTICAÇÃO ============ -->
+    <div class="endpoint" id="post-login">
+      <h3><span class="method post">POST</span> <code class="path">/login</code> <span class="rf">RF011</span></h3>
+      <p class="desc">Autentica um usuário interno por e-mail e senha (RN02 — só usuários cadastrados acessam).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "email": "usuario@atvos.com",
+  "senha": "string"
+}</code></pre>
+      <h4>Resposta (200)</h4>
+      <pre><code>{ "token": "…", "usuario": { "id": "…", "nome": "…", "email": "…" } }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Autenticado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"E-mail e senha são obrigatórios" / "Formato de e-mail inválido"</td></tr>
+        <tr><td><span class="sc s4">401</span></td><td>"Credenciais inválidas"</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Usuário não cadastrado"</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
+    <!-- ============ USUÁRIOS ============ -->
+    <div class="endpoint" id="put-usuario">
+      <h3><span class="method put">PUT</span> <code class="path">/usuarios/:id</code> <span class="rf">RF002 · RF018 · RF019</span></h3>
+      <p class="desc">Atualiza dados cadastrais de um usuário (registra autoria/data — RN11).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Identificador do usuário</td></tr></table>
+      <h4>Body <span class="muted">(pelo menos um campo)</span></h4>
+      <pre><code>{
+  "nome": "string?",
+  "email": "string? (formato e-mail)",
+  "ativo": true,
+  "perfil_acesso_id": "UUID?"
+}</code></pre>
+      <h4>Resposta (200)</h4>
+      <pre><code>{ "success": "Dados atualizados com governanca", "usuario": { … } }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Atualizado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"Dados de entrada invalidos" / "Perfil nao encontrado"</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Usuario nao localizado na base"</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="put-usuario-perfil">
+      <h3><span class="method put">PUT</span> <code class="path">/usuarios/:id/perfil</code> <span class="rf">RF003</span></h3>
+      <p class="desc">Atribui um perfil de acesso (analista / coordenador / administrador) ao usuário.</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Identificador do usuário</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{ "role_id": "UUID" }   // aceita também "perfil_acesso_id"</code></pre>
+      <h4>Resposta (200)</h4>
+      <pre><code>{ "success": "Perfil de acesso atualizado", "usuario": { … } }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Perfil atualizado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"Dados obrigatorios ausentes" / "Perfil nao encontrado"</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Usuario nao encontrado"</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="put-usuario-inativar">
+      <h3><span class="method put">PUT</span> <code class="path">/usuarios/:id/inativar</code> <span class="rf">RF020 · RF002 · RF014</span></h3>
+      <p class="desc">Revoga o acesso de um usuário (exclusão lógica — RN15). Exige perfil administrador.</p>
+      <h4>Headers <span class="muted">(obrigatórios)</span></h4>
+      <table>
+        <tr><th>Header</th><th>Valor</th></tr>
+        <tr><td><code>Authorization</code></td><td>Bearer &lt;token&gt;</td></tr>
+        <tr><td><code>x-user-role</code></td><td><code>administrador</code> (aceita <code>x-user-perfil</code> / <code>x-perfil-acesso</code>)</td></tr>
+      </table>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Usuário a inativar</td></tr></table>
+      <h4>Body</h4>
+      <p class="muted">Vazio.</p>
+      <h4>Resposta (200)</h4>
+      <pre><code>{ "success": "Acesso revogado e historico preservado", "usuario": { …, "ativo": false } }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Usuário inativado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"Dados obrigatorios ausentes"</td></tr>
+        <tr><td><span class="sc s4">401</span></td><td>"Token invalido ou ausente"</td></tr>
+        <tr><td><span class="sc s4">403</span></td><td>"Usuario sem permissao de administrador"</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Usuario nao encontrado"</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
+    <!-- ============ PARCEIROS ============ -->
+    <div class="endpoint" id="post-parceiro">
+      <h3><span class="method post">POST</span> <code class="path">/api/parceiros</code> <span class="rf">RF004 · RF009 · RF010</span></h3>
+      <p class="desc">Cadastra um parceiro agrícola. Inicia com status <code>rascunho</code>.</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "nome": "string",
+  "tipo_pessoa": "fisica | juridica",
+  "cpf_cnpj": "string",
+  "criado_por": "UUID",
+  "apelido": "string?",
+  "email": "string?",
+  "data_nascimento": "YYYY-MM-DD?",
+  "nome_acompanhante": "string?"
+}</code></pre>
+      <h4>Resposta (201)</h4>
+      <pre><code>{ "id": "…", "nome": "…", "status": "rascunho", "criado_em": "…", … }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">201</span></td><td>Parceiro criado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"Campos obrigatórios: nome, tipo_pessoa, cpf_cnpj, criado_por" / tipo_pessoa inválido</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"cpf_cnpj já cadastrado" (RN09)</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="patch-parceiro">
+      <h3><span class="method patch">PATCH</span> <code class="path">/api/parceiros/:id</code> <span class="rf">RF005</span></h3>
+      <p class="desc">Edita parcialmente os dados de um parceiro existente (RN12 — versionamento).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro a editar</td></tr></table>
+      <h4>Body <span class="muted">(<code>atualizado_por</code> obrigatório + pelo menos um campo editável)</span></h4>
+      <pre><code>{
+  "atualizado_por": "UUID",
+  "nome": "string?", "apelido": "string?", "tipo_pessoa": "fisica|juridica?",
+  "cpf_cnpj": "string?", "email": "string?", "data_nascimento": "YYYY-MM-DD?",
+  "nome_acompanhante": "string?", "status": "string?"
+}</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Parceiro atualizado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"Campo obrigatório: atualizado_por" / "Pelo menos um campo deve ser fornecido para atualização"</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"cpf_cnpj ou email já cadastrado"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="get-parceiros">
+      <h3><span class="method get">GET</span> <code class="path">/api/parceiros</code> <span class="rf">RF007 · RF012 · RF016</span></h3>
+      <p class="desc">Lista parceiros, com filtros opcionais. Exclui registros inativos (RN08).</p>
+      <h4>Parâmetros de query <span class="muted">(todos opcionais)</span></h4>
+      <table>
+        <tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>nome</code></td><td>string</td><td>Filtra por nome</td></tr>
+        <tr><td><code>regiao</code></td><td>string</td><td>Filtra por região</td></tr>
+        <tr><td><code>area</code></td><td>number &gt; 0</td><td>Filtra por área contratada</td></tr>
+        <tr><td><code>tipo</code></td><td>enum</td><td><code>fisica | juridica | arrendador | fornecedor</code></td></tr>
+      </table>
+      <h4>Exemplo</h4>
+      <p class="reqline">GET /api/parceiros?nome=Silva&amp;tipo=arrendador&amp;area=100</p>
+      <h4>Resposta (200)</h4>
+      <pre><code>[ { "id": "…", "nome": "…", "status": "…", … } ]</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Lista (array, possivelmente vazio)</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Filtro inválido (ex.: <code>area</code> não positiva, <code>tipo</code> fora do enum)</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="get-parceiro">
+      <h3><span class="method get">GET</span> <code class="path">/api/parceiros/:id</code> <span class="rf">RF008</span></h3>
+      <p class="desc">Retorna o detalhe de um parceiro.</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Parceiro encontrado</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado" (inclui UUID malformado)</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="get-parceiro-historico">
+      <h3><span class="method get">GET</span> <code class="path">/api/parceiros/:id/historico</code> <span class="rf">RF013</span></h3>
+      <p class="desc">Lista o histórico de alterações do parceiro (tabela <code>registro_alteracao</code> — RN12).</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Resposta (200)</h4>
+      <pre><code>[ { "tipo_operacao": "…", "dados_anteriores": {…}, "dados_novos": {…}, "data_alteracao": "…" } ]</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Histórico (array)</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="put-parceiro-validacao">
+      <h3><span class="method put">PUT</span> <code class="path">/api/parceiros/:id/validacao</code> <span class="rf">RF021</span></h3>
+      <p class="desc">Analista envia o parceiro para validação (transição <code>rascunho|devolvido → pendente</code>, RN16).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{ "atualizado_por": "UUID", "comentario": "string?" }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Enviado para validação (status → pendente)</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Body inválido (ex.: atualizado_por não é UUID)</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"Parceiro só pode ser enviado para validação quando estiver em rascunho ou devolvido"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"atualizado_por não referencia um usuário existente"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="put-parceiro-aprovar">
+      <h3><span class="method put">PUT</span> <code class="path">/api/parceiros/:id/aprovar</code> <span class="rf">RF022</span></h3>
+      <p class="desc">Coordenador aprova um parceiro pendente (transição <code>pendente → ativo</code>, RN17).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{ "aprovado_por": "UUID", "comentario": "string?" }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Aprovado (status → ativo)</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Body inválido</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"Parceiro só pode ser aprovado quando estiver pendente"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"aprovado_por não referencia um usuário existente"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="get-parceiro-terras">
+      <h3><span class="method get">GET</span> <code class="path">/api/parceiros/:id/terras</code> <span class="rf">RF015</span></h3>
+      <p class="desc">Lista as terras vinculadas a um parceiro (RN13).</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Lista de terras (array)</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="post-parceiro-terras">
+      <h3><span class="method post">POST</span> <code class="path">/api/parceiros/:id/terras</code> <span class="rf">RF015</span></h3>
+      <p class="desc">Vincula uma terra a um parceiro (RN13).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{ "terra_id": "UUID", "tipo_vinculo": "string?" }</code></pre>
+      <h4>Resposta (201)</h4>
+      <p class="muted">Header <code>Location: /api/parceiros/:id/terras/:terra_id</code></p>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">201</span></td><td>Vínculo criado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Body inválido</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"Terra já vinculada ao parceiro"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"terra_id não referencia uma terra existente"</td></tr>
+      </table>
+    </div>
+
+    <!-- ============ TERRAS ============ -->
+    <div class="endpoint" id="post-terra">
+      <h3><span class="method post">POST</span> <code class="path">/api/terras</code> <span class="rf">RF010</span></h3>
+      <p class="desc">Cadastra uma terra. Inicia com status <code>rascunho</code> (RN10).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "nome": "string",
+  "area_contratada_ha": 150.5,
+  "cidade": "string",
+  "estado": "SP",
+  "criado_por": "UUID",
+  "status": "rascunho | pendente | ativo | devolvido | inativo  (opcional)"
+}</code></pre>
+      <h4>Resposta (201)</h4>
+      <p class="muted">Header <code>Location: /api/terras/:id</code></p>
+      <pre><code>{ "id": "…", "nome": "…", "status": "rascunho", "criado_em": "…", … }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">201</span></td><td>Terra criada</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Validação (nome, area &gt; 0, estado 2 chars, criado_por UUID)</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"criado_por não referencia um usuário existente"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="get-terras">
+      <h3><span class="method get">GET</span> <code class="path">/api/terras</code> <span class="rf">RF012</span></h3>
+      <p class="desc">Lista as terras cadastradas.</p>
+      <h4>Resposta (200)</h4>
+      <pre><code>[ { "id": "…", "nome": "…", "cidade": "…", "estado": "…", "status": "…", … } ]</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Lista de terras (array)</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="put-terra">
+      <h3><span class="method put">PUT</span> <code class="path">/api/terras/:id</code> <span class="rf">RF010 · RF014</span></h3>
+      <p class="desc">Edita uma terra existente.</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Terra</td></tr></table>
+      <h4>Body <span class="muted">(<code>atualizado_por</code> obrigatório + pelo menos um campo editável)</span></h4>
+      <pre><code>{
+  "atualizado_por": "UUID",
+  "nome": "string?", "area_contratada_ha": "number? (&gt; 0)",
+  "cidade": "string?", "estado": "2 chars?", "status": "enum?"
+}</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Terra atualizada</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Validação / "pelo menos um campo editável deve ser informado"</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Terra não encontrada"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"atualizado_por não referencia um usuário existente"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="get-terra-parceiros">
+      <h3><span class="method get">GET</span> <code class="path">/api/terras/:id/parceiros</code> <span class="rf">RF015</span></h3>
+      <p class="desc">Lista os parceiros vinculados a uma terra (RN14).</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Terra</td></tr></table>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Lista de parceiros (array)</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Terra não encontrada"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="post-terra-parceiros">
+      <h3><span class="method post">POST</span> <code class="path">/api/terras/:id/parceiros</code> <span class="rf">RF015</span></h3>
+      <p class="desc">Vincula um parceiro a uma terra (RN14).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Terra</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{ "parceiro_id": "UUID", "tipo_vinculo": "string?" }</code></pre>
+      <h4>Resposta (201)</h4>
+      <p class="muted">Header <code>Location: /api/terras/:id/parceiros/:parceiro_id</code></p>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">201</span></td><td>Vínculo criado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Body inválido</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Terra não encontrada"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"Parceiro já vinculado à terra"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"parceiro_id não referencia um parceiro existente"</td></tr>
+      </table>
+    </div>
+
+    <!-- ============ INTERAÇÕES ============ -->
+    <div class="endpoint" id="post-interacao">
+      <h3><span class="method post">POST</span> <code class="path">/parceiros/:id/interacoes</code> <span class="rf">RF006</span></h3>
+      <p class="desc">Registra uma interação/contato com um parceiro (histórico de relacionamento, RN11).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{
+  "registrado_por": "UUID",
+  "tipo": "string",
+  "descricao": "string",
+  "data": "YYYY-MM-DD"
+}</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">201</span></td><td>Interação registrada</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"Dados de interação inválidos"</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não localizado para registro"</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
+    <!-- ============ DASHBOARD / EXPORTAÇÃO ============ -->
+    <div class="endpoint" id="get-dashboard">
+      <h3><span class="method get">GET</span> <code class="path">/dashboards/interacoes</code> <span class="rf">Indicadores · Fluxo 15</span></h3>
+      <p class="desc">Retorna métricas de engajamento e histórico de interações (KPIs).</p>
+      <h4>Resposta (200)</h4>
+      <pre><code>{ /* DTO com métricas de engajamento e histórico */ }</code></pre>
+      <h4>Status codes <span class="muted">(erros usam a chave <code>erro</code>)</span></h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Métricas retornadas</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>Nenhum registro encontrado</td></tr>
+        <tr><td><span class="sc s5">503</span></td><td>Dashboard indisponível (falha no servidor de dados)</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="get-exporta">
+      <h3><span class="method get">GET</span> <code class="path">/parceiros/exportar</code> <span class="rf">RF017</span></h3>
+      <p class="desc">Exporta a lista de parceiros ativos em CSV.</p>
+      <h4>Resposta (200)</h4>
+      <table>
+        <tr><th>Header</th><th>Valor</th></tr>
+        <tr><td><code>Content-Type</code></td><td>text/csv; charset=utf-8</td></tr>
+        <tr><td><code>Content-Disposition</code></td><td>attachment; filename="dados_parceiros_ativos.csv"</td></tr>
+      </table>
+      <h4>Status codes <span class="muted">(erros usam a chave <code>erro</code>)</span></h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>CSV gerado</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>Sem dados para exportar</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>"Falha na geração do arquivo" / erro interno</td></tr>
+      </table>
+    </div>
+
+    <footer>
+      Safra Control — documentação da WebAPI (WAD seção 3.7). Gerada a partir das rotas,
+      controllers e schemas (zod) do backend. Padrão de erro: <code>{ "error": "…" }</code>
+      (Dashboard e Exportação usam <code>{ "erro": "…" }</code>).
+    </footer>
+  </main>
+</div>
+</body>
+</html>
