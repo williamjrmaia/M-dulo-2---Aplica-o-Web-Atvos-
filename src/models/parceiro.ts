@@ -82,3 +82,8 @@ export interface HistoricoParceiro {
     data_aprovacao?: Date | null;
     data_alteracao: Date;
 }
+
+export interface EnviarParceiroValidacaoInput {
+    atualizado_por: string;
+    comentario?: string;
+}

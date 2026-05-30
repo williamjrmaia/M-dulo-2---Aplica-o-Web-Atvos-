@@ -5,10 +5,12 @@ import {
   listarHistoricoParceiro,
   listarParceiros,
   listarTerrasDoParceiro,
+  sendParceiroToValidation,
   updateParceiro,
 } from '../repositories/parceiroRepository';
 import {
   CreateParceiroInput,
+  EnviarParceiroValidacaoInput,
   HistoricoParceiro,
   ListarParceirosFiltros,
   Parceiro,
@@ -78,6 +80,40 @@ export async function obterHistoricoParceiro(parceiroId: string): Promise<Histor
     }
     if ((err as { code?: string }).code === '22P02') {
       throw new NotFoundError('Parceiro não encontrado');
+    }
+    throw err;
+  }
+}
+
+export async function enviarParceiroParaValidacao(
+  id: string,
+  data: EnviarParceiroValidacaoInput
+): Promise<Parceiro> {
+  try {
+    const parceiroAtual = await getParceiroById(id);
+    if (!parceiroAtual) {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+
+    if (!['rascunho', 'devolvido'].includes(parceiroAtual.status)) {
+      throw new ConflictError('Parceiro só pode ser enviado para validação quando estiver em rascunho ou devolvido');
+    }
+
+    const parceiro = await sendParceiroToValidation(id, data, parceiroAtual);
+    if (!parceiro) {
+      throw new ConflictError('Parceiro só pode ser enviado para validação quando estiver em rascunho ou devolvido');
+    }
+
+    return parceiro;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError || err instanceof ConflictError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    if ((err as { code?: string }).code === '23503') {
+      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
     }
     throw err;
   }
