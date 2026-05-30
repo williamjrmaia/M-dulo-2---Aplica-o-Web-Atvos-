@@ -1,6 +1,20 @@
-import { createParceiro, updateParceiro, listarParceiros, getParceiroById } from '../repositories/parceiroRepository';
-import { CreateParceiroInput, Parceiro, UpdateParceiroInput } from '../models/parceiro';
-import { ConflictError, NotFoundError } from '../errors/AppError';
+import {
+  createParceiro,
+  createParceiroTerra,
+  getParceiroById,
+  listarParceiros,
+  listarTerrasDoParceiro,
+  updateParceiro,
+} from '../repositories/parceiroRepository';
+import {
+  CreateParceiroInput,
+  Parceiro,
+  ParceiroTerra,
+  TerraDoParceiro,
+  UpdateParceiroInput,
+  VincularTerraAoParceiroInput,
+} from '../models/parceiro';
+import { ConflictError, NotFoundError, UnprocessableEntityError } from '../errors/AppError';
 
 export async function cadastrarParceiro(data: CreateParceiroInput): Promise<Parceiro> {
   try {
@@ -43,6 +57,51 @@ export async function obterParceiroPorId(id: string): Promise<Parceiro> {
   } catch (err: any) {
     if (err.code === '22P02') {
       throw new NotFoundError('Parceiro não encontrado');
+    }
+    throw err;
+  }
+}
+
+export async function obterTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[]> {
+  try {
+    const terras = await listarTerrasDoParceiro(parceiroId);
+    if (terras === null) {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    return terras;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    throw err;
+  }
+}
+
+export async function vincularTerraAoParceiro(
+  parceiroId: string,
+  data: VincularTerraAoParceiroInput
+): Promise<ParceiroTerra> {
+  try {
+    const vinculo = await createParceiroTerra(parceiroId, data);
+    if (!vinculo) {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    return vinculo;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    if ((err as { code?: string }).code === '23505') {
+      throw new ConflictError('Terra já vinculada ao parceiro');
+    }
+    if ((err as { code?: string }).code === '23503') {
+      throw new UnprocessableEntityError('terra_id não referencia uma terra existente');
     }
     throw err;
   }

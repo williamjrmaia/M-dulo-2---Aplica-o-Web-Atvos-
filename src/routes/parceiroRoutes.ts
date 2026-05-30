@@ -3,6 +3,7 @@ import {
   createParceiro,
   editarParceiro,
   listarParceiros,
+  listarTerrasDoParceiro,
   obterParceiroPorId,
   renderFormCadastro,
   processarCadastro,
@@ -10,6 +11,7 @@ import {
   renderDetalheParceiro,
   renderFormEdicao,
   processarEdicao,
+  vincularTerraAoParceiro,
 } from '../controllers/parceiroController';
 
 // ─── API JSON (montado em /api/parceiros) ────────────────────────────────────
@@ -18,6 +20,8 @@ export const apiRouter = Router();
 apiRouter.post('/', createParceiro);
 apiRouter.patch('/:id', editarParceiro);
 apiRouter.get('/', listarParceiros);
+apiRouter.get('/:id/terras', listarTerrasDoParceiro);
+apiRouter.post('/:id/terras', vincularTerraAoParceiro);
 apiRouter.get('/:id', obterParceiroPorId);
 
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
