@@ -2657,7 +2657,74 @@ As oito consultas apresentadas atendem ao objetivo da seção ao relacionar oper
 
 ## 4.1. Primeira versão da aplicação web (sprint 3)
 
-*Descreva e ilustre aqui o desenvolvimento da primeira versão do sistema web. Utilize prints de tela para ilustrar. Indique obrigatoriamente: (a) o que foi implementado, (b) o que não foi concluído, (c) dificuldades técnicas enfrentadas e próximos passos.*
+O desenvolvimento da primeira versão da aplicação web concentrou-se na construção do backend do CRM da ATVOS. O foco principal foi transformar os requisitos e fluxos definidos nas etapas anteriores em endpoints, regras de negócio, acesso ao banco de dados e testes automatizados, deixando a aplicação preparada para receber a interface na sprint seguinte. A camada de frontend ainda não foi implementada como experiência final do usuário; portanto, os resultados desta sprint devem ser avaliados principalmente pela API, pela estrutura do servidor e pela integração com o banco.
+
+### 4.1.1. O que foi implementado
+
+Foi estruturada uma aplicação Node.js com Express e TypeScript, organizada em camadas de rotas, controllers, services, repositories, schemas e models. Essa separação permitiu isolar responsabilidades: as rotas recebem as requisições, os controllers tratam o fluxo HTTP, os services concentram as regras de negócio e os repositories fazem a comunicação com o banco PostgreSQL (SupaBase).
+
+Foram implementados endpoints para os principais módulos do backend:
+
+| Módulo | Funcionalidades implementadas no backend |
+| --- | --- |
+| Autenticação | Login de usuário, validação de credenciais e encerramento de sessão. |
+| Usuários | Criação, edição, alteração de perfil de acesso e inativação lógica. |
+| Parceiros | Cadastro, listagem, consulta por ID, edição, envio para validação, aprovação, devolução e histórico. |
+| Terras | Cadastro, listagem, edição e relacionamento com parceiros. |
+| Vínculos parceiro-terra | Associação de terras a parceiros e de parceiros a terras, com tratamento de duplicidade e validação de existência. |
+| Interações | Registro de interações vinculadas a parceiros. |
+| Exportação | Geração de CSV com dados de parceiros. |
+| Dashboard de interações | Consulta de métricas consolidadas sobre interações registradas. |
+
+Também foram criados schemas de validação para padronizar os dados recebidos pela API, reduzindo o risco de registros inconsistentes. Além disso, o backend passou a contar com tratamento centralizado de erros, configuração de conexão com banco de dados via variáveis de ambiente e scripts de migração/seed para apoiar a preparação da base.
+
+Os testes automatizados com Jest e Supertest foram desenvolvidos para validar fluxos de integração dos endpoints e regras de negócio dos services. Eles cobrem cenários de sucesso, validações de campos obrigatórios, registros inexistentes, conflitos de duplicidade, persistência no banco e respostas HTTP esperadas.
+
+<div align="center">
+  <sub>Figura 4.1.1.1</sub><br>
+  <img src="documentos/assets/estrutura_de_pastas_back.png" width="100%" alt="Estrutura de Pastas do Backend"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+<div align="center">
+  <sub>Figura 4.1.1.1</sub><br>
+  <img src="documentos/assets/testes_passando_backend.png" width="100%" alt="Testes do Backend no terminal"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+### 4.1.2. O que não foi concluído
+
+A interface final do sistema ainda não foi implementada nesta sprint. Embora existam estruturas auxiliares de views no projeto, a entrega da sprint 3 deve ser considerada como uma primeira versão funcional do backend, não como a aplicação web completa do ponto de vista visual e de experiência do usuário.
+
+Também permaneceram pontos de consolidação para as próximas etapas, como ajustes finos na integração entre todos os fluxos, revisão final dos retornos de erro, padronização completa das mensagens da API e validação dos endpoints em conjunto com as telas que serão construídas posteriormente.
+
+Além disso, parte dos testes depende diretamente da correta configuração do ambiente local e da conexão com o banco. Por isso, a estabilidade da suíte automatizada ainda exige atenção à padronização das variáveis de ambiente, da base de teste e da organização dos arquivos de teste.
+
+### 4.1.3. Dificuldades técnicas enfrentadas
+
+Uma das principais dificuldades foi alinhar a modelagem do banco de dados com os fluxos reais do sistema, especialmente nos relacionamentos entre parceiros, terras, vínculos comerciais, usuários responsáveis e histórico de alterações. Como o domínio possui regras de validação e rastreabilidade, foi necessário organizar o backend para evitar duplicação de lógica entre controllers, services e repositories.
+
+Outro desafio foi lidar com a integração dos testes automatizados com banco real. Os testes de integração precisam preparar dados, executar requisições, validar persistência e limpar registros criados, o que aumenta a complexidade em comparação com testes unitários isolados.
+
+Também houve dificuldade na padronização dos contratos da API, principalmente em endpoints com múltiplos cenários de erro, como cadastro, edição, vinculação de entidades e autenticação. Esses fluxos exigiram tratamento cuidadoso para retornar status HTTP coerentes, como `400`, `401`, `403`, `404`, `409` e `422`.
+
+
+### 4.1.4. Próximos passos
+
+O principal próximo passo para a próxima versão é implementar o frontend da aplicação, conectando as telas aos endpoints já construídos no backend. Essa etapa deve transformar os fluxos disponíveis via API em uma experiência navegável para os perfis de usuário definidos no projeto.
+
+Também devem ser priorizados os seguintes pontos:
+
+| Próximo passo | Objetivo |
+| --- | --- |
+| Implementar as telas principais do sistema | Criar a interface para login, gestão de usuários, cadastro/listagem/edição de parceiros, terras, interações, exportação e dashboard. |
+| Integrar frontend e backend | Consumir os endpoints implementados e validar o fluxo completo da aplicação. |
+| Revisar autenticação e autorização nas rotas | Garantir que cada perfil acesse apenas as funcionalidades permitidas. |
+| Padronizar feedbacks de erro e sucesso | Exibir mensagens claras para validações, conflitos e ações concluídas. |
+| Consolidar a suíte de testes | Garantir que todos os testes esperados sejam descobertos e executados no ambiente local e no ambiente dos demais integrantes. |
+| Refinar documentação técnica | Atualizar endpoints, exemplos de uso e evidências de execução conforme a evolução da aplicação. |
+
+Com isso, a primeira versão entrega a base técnica do sistema: banco integrado, API estruturada, regras de negócio implementadas e testes automatizados iniciados. As próximas versões deverão se concentrar principalmente na implementação da interface e na integração completa entre frontend e backend.
 
 ## 4.2. Segunda versão da aplicação web (sprint 4)
 
