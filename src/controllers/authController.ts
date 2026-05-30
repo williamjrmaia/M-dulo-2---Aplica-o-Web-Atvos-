@@ -35,4 +35,28 @@ export class AuthController {
       return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   };
+
+  encerrarSessao = async (req: Request, res: Response) => {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const revogadaPor = req.body?.revogada_por;
+
+    try {
+      const sessao = await this.authService.encerrarSessao(id, revogadaPor);
+      return res.status(200).json({ success: 'Sessao encerrada', sessao });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Erro interno do servidor';
+
+      if (message === 'Sessao nao encontrada') {
+        return res.status(404).json({ error: message });
+      }
+      if (message === 'Sessao ja encerrada') {
+        return res.status(409).json({ error: message });
+      }
+      if (message === 'Usuario revogador nao encontrado') {
+        return res.status(422).json({ error: message });
+      }
+      return res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  };
 }

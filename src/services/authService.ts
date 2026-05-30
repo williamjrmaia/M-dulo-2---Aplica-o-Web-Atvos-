@@ -1,14 +1,20 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { AuthSessao } from '../models/AuthSessao';
+import { AuthSessionRepository } from '../repositories/authSessionRepository';
 import { Usuario, UserRepository } from '../repositories/userRepository';
 
 export interface LoginResult {
   token: string;
   usuario: { id: string; nome: string; email: string };
+  sessao: { id: string; expira_em: Date };
 }
 
 export class AuthService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly authSessionRepository = new AuthSessionRepository()
+  ) {}
 
   async autenticar(email: string, senha: string): Promise<LoginResult> {
     console.log(`[SERVICE] Buscando usuário: ${email}`);
@@ -35,11 +41,41 @@ export class AuthService {
       secret,
       { expiresIn: '8h' }
     );
+    const expiraEm = new Date(Date.now() + 8 * 60 * 60 * 1000);
+    const sessao = await this.authSessionRepository.criarSessao(usuario.id, token, expiraEm);
 
     console.log('[SERVICE] Login realizado com sucesso');
     return {
       token,
       usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email },
+      sessao: { id: sessao.id, expira_em: sessao.expira_em },
     };
+  }
+
+  async encerrarSessao(id: string, revogadaPor?: string): Promise<AuthSessao> {
+    try {
+      const sessaoExistente = await this.authSessionRepository.buscarSessao(id);
+      if (!sessaoExistente) {
+        throw new Error('Sessao nao encontrada');
+      }
+      if (!sessaoExistente.ativa) {
+        throw new Error('Sessao ja encerrada');
+      }
+
+      const sessao = await this.authSessionRepository.encerrarSessao(id, revogadaPor);
+      if (!sessao) {
+        throw new Error('Sessao ja encerrada');
+      }
+
+      return sessao;
+    } catch (err: unknown) {
+      if ((err as { code?: string }).code === '22P02') {
+        throw new Error('Sessao nao encontrada');
+      }
+      if ((err as { code?: string }).code === '23503') {
+        throw new Error('Usuario revogador nao encontrado');
+      }
+      throw err;
+    }
   }
 }

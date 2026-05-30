@@ -35,6 +35,10 @@ const limparDadosDeTeste = async (): Promise<void> => {
 
   if (ids.length > 0) {
     await pool.query(
+      `DELETE FROM auth_sessoes WHERE usuario_id = ANY($1::uuid[])`,
+      [ids],
+    );
+    await pool.query(
       `DELETE FROM usuarios WHERE id = ANY($1::uuid[])`,
       [ids],
     );
