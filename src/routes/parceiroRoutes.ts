@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  aprovarParceiro,
   createParceiro,
   editarParceiro,
   enviarParceiroParaValidacao,
@@ -22,6 +23,7 @@ export const apiRouter = Router();
 apiRouter.post('/', createParceiro);
 apiRouter.patch('/:id', editarParceiro);
 apiRouter.get('/', listarParceiros);
+apiRouter.put('/:id/aprovar', aprovarParceiro);
 apiRouter.put('/:id/validacao', enviarParceiroParaValidacao);
 apiRouter.get('/:id/historico', listarHistoricoParceiro);
 apiRouter.get('/:id/terras', listarTerrasDoParceiro);
