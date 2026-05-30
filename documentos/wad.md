@@ -538,18 +538,18 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 #### Justificativa, derivação e mensuração dos RNFs
 
-Como a Sprint 1 tem foco em especificação conceitual, os requisitos não funcionais foram definidos como metas verificáveis para orientar as próximas etapas de projeto, implementação e testes. Cada RNF foi derivado do minimundo do sistema, das necessidades identificadas no contexto da ATVOS e dos fluxos prioritários definidos nos Requisitos Funcionais e nas Regras de Negócio.
+Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema da ATVOS: substituir controles dispersos por uma base única, rastreável e segura para parceiros, terras, usuários e interações. Nesta sprint, esses RNFs evoluíram para decisões técnicas concretas no backend, alinhadas aos 8 eixos da ISO/IEC 25010.
 
-| Eixo | Derivação a partir do contexto da ATVOS | Forma de mensuração | Conexão com RF/RN | Critério de aceite conceitual |
+| Eixo ISO/IEC 25010 | RNF do projeto | Evolução técnica nesta sprint | Conexão com RF/RN | Critério de verificação |
 |---|---|---|---|---|
-| **USAB — Usabilidade** | A ATVOS possui informações hoje dispersas em planilhas, e-mails e anotações individuais, o que dificulta a consulta rápida ao histórico e aos dados dos parceiros. Por isso, o sistema deve reduzir o esforço de navegação para que usuários internos encontrem informações sem depender de conhecimento informal ou busca manual em arquivos externos. | A mensuração será feita em testes de usabilidade nas sprints futuras, verificando se pelo menos 80% dos usuários conseguem acessar o perfil de um parceiro em até 4 cliques. | Relaciona-se aos RF007 e RF008, que tratam da listagem e consulta detalhada de parceiros, e à RN04, que define o acesso de visualização para o perfil Observador. | O RNF será considerado atendido se a navegação prevista permitir que a maioria dos usuários internos acesse o perfil do parceiro em até 4 cliques no fluxo listagem → detalhe. |
-| **CONF — Confiabilidade** | A dor central do parceiro envolve baixa padronização, risco de inconsistência cadastral e perda de histórico de relacionamento. Como a solução pretende substituir controles dispersos por uma base única, os dados persistidos precisam respeitar regras mínimas de integridade. | A mensuração será feita pela verificação de que 100% dos registros persistidos respeitam validações de integridade, como campos obrigatórios e unicidade de CPF/CNPJ/e-mail. | Relaciona-se aos RF009, RF010, RF018 e RF019, e às RN09, RN10 e RN11, que tratam de duplicidade, obrigatoriedade de campos e registro de auditoria. | O RNF será aceito se o sistema impedir persistência de registros que violem regras de integridade previstas, como campos obrigatórios nulos ou identificadores duplicados. |
-| **DES — Desempenho** | Como a aplicação será usada para consulta operacional e apoio à tomada de decisão, tempos de resposta altos poderiam manter a dependência de planilhas e reduzir a utilidade do sistema no uso diário. O desempenho, portanto, foi definido para os fluxos de consulta mais relevantes do MVP. | A mensuração será feita por testes de desempenho nas próximas sprints, considerando tempo de resposta p95 menor que 3 segundos para consultas com até 100 registros em ambiente controlado. | Relaciona-se aos RF007, RF008 e RF016, que envolvem listagem, consulta de perfil e aplicação de filtros. | O RNF será aceito se as consultas priorizadas retornarem em p95 < 3 segundos no cenário definido para o MVP. |
-| **SUP — Suportabilidade** | O projeto evoluirá ao longo das sprints, com refinamento progressivo de funcionalidades, regras e telas. Por isso, o sistema deve ser concebido com organização técnica suficiente para permitir manutenção e expansão sem comprometer os fluxos já definidos. | A mensuração será feita pela verificação arquitetural de que 100% das funcionalidades implementadas respeitem separação em camadas, como Controller, Service e Repository. | Relaciona-se de forma transversal aos RF004 a RF019, especialmente aos fluxos de cadastro, edição, consulta, histórico e auditoria. Também se conecta às RN11 e RN12, pois histórico e versionamento exigem organização clara da lógica de negócio. | O RNF será aceito se as funcionalidades implementadas forem organizadas em camadas, evitando concentração indevida de regra de negócio na interface ou no acesso direto ao banco. |
-| **SEG — Segurança** | O sistema lidará com dados internos e estratégicos sobre parceiros agrícolas, terras, fornecedores e histórico de relacionamento. Como esses dados não devem ser acessados ou alterados por qualquer usuário, o controle de acesso por perfil é essencial desde a concepção do sistema. | A mensuração será feita verificando se 100% das operações protegidas exigem autenticação e validação de permissão conforme o perfil do usuário. | Relaciona-se aos RF001, RF002, RF003, RF011 e RF020, e às RN02, RN03, RN04, RN05, RN06 e RN15, que definem perfis, autenticação e comportamento após inativação de usuário. | O RNF será aceito se usuários não autenticados ou sem permissão não conseguirem executar operações protegidas, como edição, exclusão lógica ou gestão de usuários. |
-| **CAP — Capacidade** | Como a aplicação é voltada a equipes internas da ATVOS, não há necessidade de escala pública massiva. Ainda assim, o sistema deve ser concebido para suportar múltiplos usuários internos realizando consultas e cadastros simultaneamente. | A mensuração será feita por testes futuros considerando até 20 usuários simultâneos executando operações básicas, como consulta, cadastro e edição, sem falhas críticas. | Relaciona-se aos RF004, RF005, RF006, RF007, RF008 e RF016, que representam os principais fluxos operacionais do sistema. | O RNF será aceito se o sistema suportar até 20 usuários simultâneos realizando operações básicas sem indisponibilidade ou erro crítico nos fluxos prioritários. |
-| **REST — Restrições de Design** | O MVP foi definido como aplicação web acessível por navegador, sem necessidade de aplicativo móvel, instalação local ou integração automática com sistemas corporativos externos nesta etapa. Essa restrição reduz complexidade e mantém o escopo adequado ao projeto acadêmico e ao MVP. | A mensuração será feita verificando se 100% das funcionalidades priorizadas são acessíveis por navegadores modernos compatíveis com HTML5, CSS3 e JavaScript. | Relaciona-se a todos os RFs, pois a solução proposta será entregue como aplicação web. Também reforça a restrição de escopo definida no minimundo, que exclui integrações automáticas com SharePoint, ERP e ferramentas financeiras no MVP. | O RNF será aceito se os fluxos priorizados puderem ser executados em navegador moderno, sem dependência de instalação local ou aplicação externa. |
-| **ORG — Organizacionais** | O escopo do MVP deve respeitar as restrições definidas no TAP, no workshop do parceiro e no recorte da Sprint 1. Como a solução não deve substituir sistemas corporativos da ATVOS nem integrar automaticamente fontes externas neste momento, o requisito organizacional evita expansão indevida de escopo. | A mensuração será feita pela verificação de que o MVP possui 0 integrações externas com ERP, SharePoint ou APIs corporativas e permanece restrito aos módulos planejados. | Relaciona-se aos RF001 a RF020 como restrição transversal de escopo, especialmente aos módulos de usuários, parceiros, histórico, filtros e exportação. | O RNF será aceito se o MVP permanecer dentro do escopo definido, sem implementar integrações externas não previstas para a Sprint 1. |
+| **Adequação funcional** | O backend deve implementar os fluxos centrais do CRM conforme RFs e RNs priorizados. | Foram criados endpoints e camadas para autenticação, usuários, parceiros, terras, vínculos, interações, dashboard, histórico e exportação. | RF001 a RF023; RN01 a RN17. | Rotas documentadas e cobertas por testes de controller/service para cenários de sucesso e erro. |
+| **Eficiência de desempenho** | Consultas operacionais devem responder em tempo adequado ao uso interno. | Repositories usam consultas SQL objetivas, filtros no banco, `ORDER BY`, `EXISTS` para vínculos e seleção apenas dos campos necessários na exportação/dashboard. | RF007, RF008, RF016, RF017. | Consultas principais devem manter resposta aceitável em base de teste, sem processamento pesado fora do banco. |
+| **Compatibilidade** | A solução deve operar como aplicação web/API sem depender de integrações corporativas externas no MVP. | O backend foi implementado em Express, com rotas HTTP, JSON, EJS auxiliar e documentação em `public/docs/index.html`, sem integração automática com ERP, SharePoint ou APIs externas. | Todos os RFs; restrição de escopo do MVP. | Fluxos executáveis via navegador/cliente HTTP e ambiente Node/PostgreSQL configurado por `.env`. |
+| **Usabilidade** | A API deve apoiar uma navegação simples para consulta e operação dos dados. | Foram disponibilizados endpoints de listagem, detalhe, filtros, histórico e exportação, reduzindo a necessidade de busca manual em planilhas. | RF007, RF008, RF012, RF016, RF017; RN04, RN08. | Frontend da Sprint 4 deve consumir esses endpoints para permitir acesso rápido aos perfis e consultas. |
+| **Confiabilidade** | Dados persistidos devem respeitar integridade, validação e rastreabilidade. | Foram adotados schemas Zod, validações em services, constraints do banco, tratamento de duplicidade, status não inativo, autoria (`criado_por`/`atualizado_por`) e testes de persistência. | RF009, RF010, RF018, RF019; RN09, RN10, RN11. | Testes devem confirmar rejeição de payload inválido, duplicidade, FK inexistente e persistência correta. |
+| **Segurança** | Acesso e operações sensíveis devem ser controlados por autenticação e perfil. | O backend implementou login com hash/JWT, encerramento de sessão, inativação lógica e validações de permissão em rotas sensíveis como inativação de usuários. | RF003, RF011, RF020; RN02, RN03, RN06, RN15. | Testes devem cobrir credenciais inválidas, token ausente, perfil sem permissão e usuário inativo. |
+| **Manutenibilidade** | O backend deve permitir evolução sem concentrar regras em um único arquivo. | A arquitetura foi organizada em `routes`, `controllers`, `services`, `repositories`, `schemas`, `models`, `errors` e `middlewares`, com tratamento centralizado de erros. | Transversal aos RF004 a RF023; RN11, RN12. | Novos fluxos devem seguir a separação Controller-Service-Repository e possuir testes próprios. |
+| **Portabilidade** | O sistema deve ser executável em ambientes de desenvolvimento equivalentes. | Configuração por `.env`, conexão PostgreSQL/Supabase, scripts `migrate`/`seed`, TypeScript e Jest permitem reproduzir o ambiente sem dependência de máquina específica. | Todos os RFs; restrições organizacionais do MVP. | Projeto deve subir com Node, dependências instaladas e variáveis de ambiente corretas. |
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
@@ -2342,7 +2342,7 @@ As cláusulas `JOIN` e `LEFT JOIN` foram utilizadas para combinar entidades rela
 
 
 
-As consultas foram elaboradas com uma a quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
+As consultas foram elaboradas com duas a quatro proposições para permitir a construção de tabelas verdade completas sem comprometer a legibilidade da seção. Consultas com muitas proposições aumentariam exponencialmente o número de combinações possíveis, dificultando a validação manual.
 
 ---
 
@@ -2388,9 +2388,9 @@ O comando INSERT insere novos registros correspondentes à um novo usuário do s
 | 02 | --- |
 |---|---|
 | **Expressão SQL** | ```SQL UPDATE usuarios SET ativo = FALSE WHERE id = :usuario_id RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em; ``` |
-| **Proposições lógicas** | $A$ : O id corresponde ao usuário alvo (id = :usuario_id) |
-| **Expressão lógica proposicional** | $A$ |
-| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $A$ </th></tr></thead><tbody><tr><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td></tr></tbody></table> |
+| **Proposições lógicas** | $A$ : O id corresponde ao usuário alvo (id = :usuario_id) <br> $B$ : O registro retornado fica com acesso inativo (ativo = FALSE) |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
 
 #### Explicação do que significa essa consulta:
@@ -2400,7 +2400,7 @@ Essa consulta representa a inativação lógica de usuários do sistema. Em vez 
 <br>
 A operação só acontece quando o usuário alvo existe e o `UPDATE` encontra uma linha correspondente ao id informado.
 <br>
-A expressão lógica $A$ demonstra que a inativação depende diretamente da correspondência entre o id informado e um registro existente. Quando nenhuma linha é retornada, o service interpreta o resultado como usuário não encontrado.
+A expressão lógica $A \land B$ demonstra que a inativação depende da correspondência entre o id informado e um registro existente, além da confirmação de que o acesso foi efetivamente marcado como inativo. Quando nenhuma linha é retornada, o service interpreta o resultado como usuário não encontrado.
 <br>
 
 
@@ -2414,8 +2414,9 @@ O comando UPDATE realiza a inativação lógica de um usuário, alterando o camp
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=F) \rightarrow A = F$ : id não corresponde a nenhum usuário, portanto nenhuma linha é afetada. <br>
-2- $(A=V) \rightarrow A = V$ : usuário existe, portanto a inativação lógica é executada com sucesso. <br>
+1- $(A=F, B=V) \rightarrow A \land B = F$ : id não corresponde a nenhum usuário, portanto nenhuma linha é afetada. <br>
+2- $(A=V, B=F) \rightarrow A \land B = F$ : usuário existe, mas o registro não foi retornado como inativo, logo a operação não é considerada concluída. <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : usuário existe e o registro retornado está inativo, portanto a inativação lógica é executada com sucesso. <br>
 
 ---
 
@@ -2607,10 +2608,10 @@ A consulta alimenta o dashboard de interações, retornando a contagem de intera
 
 | 08 | --- |
 |---|---|
-| **Expressão SQL** | ```SQL SELECT p.id, p.nome, p.tipo_pessoa, p.cpf_cnpj, p.email, p.status, p.criado_em FROM parceiros p WHERE p.status = 'ativo' ORDER BY p.criado_em DESC; ``` |
-| **Proposições lógicas** | $A$ : O parceiro está ativo (p.status = 'ativo') |
-| **Expressão lógica proposicional** | $A$ |
-| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $A$ </th></tr></thead><tbody><tr><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td></tr></tbody></table> |
+| **Expressão SQL** | ```SQL SELECT p.id, p.nome, p.tipo_pessoa, p.cpf_cnpj, p.email, p.status, p.criado_em FROM parceiros p WHERE p.status = 'ativo' AND p.id IS NOT NULL ORDER BY p.criado_em DESC; ``` |
+| **Proposições lógicas** | $A$ : O parceiro está ativo (p.status = 'ativo') <br> $B$ : O registro possui identificador válido para exportação (p.id IS NOT NULL) |
+| **Expressão lógica proposicional** | $A \land B$ |
+| **Tabela Verdade** | <table><thead><tr><th> $A$ </th><th> $B$ </th><th> $A \land B$ </th></tr></thead><tbody><tr><td>F</td><td>F</td><td>F</td></tr><tr><td>F</td><td>V</td><td>F</td></tr><tr><td>V</td><td>F</td><td>F</td></tr><tr><td>V</td><td>V</td><td>V</td></tr></tbody></table> |
 
 
 #### Explicação do que significa essa consulta:
@@ -2618,7 +2619,7 @@ A consulta alimenta o dashboard de interações, retornando a contagem de intera
 
 Essa consulta prepara os dados de parceiros para exportação em CSV. O objetivo é permitir compartilhamento e análise das informações fora do sistema.
 <br>
-A expressão lógica $A$ indica que apenas parceiros ativos podem ser exportados.
+A expressão lógica $A \land B$ indica que apenas parceiros ativos e com identificador válido podem ser exportados.
 <br>
 A consulta seleciona apenas os campos necessários para o arquivo de exportação, mantendo a saída limitada a registros válidos para uso externo.
 <br>
@@ -2626,14 +2627,15 @@ A consulta seleciona apenas os campos necessários para o arquivo de exportaçã
 #### Explicação da consulta SQL:
 
 
-A consulta gera a lista de dados para exportação em CSV conforme o RF017. A cláusula WHERE restringe a exportação a parceiros ativos, e o ORDER BY organiza os registros mais recentes primeiro. Apenas os campos relevantes para compartilhamento externo são selecionados, omitindo dados sensíveis de auditoria.  
+A consulta gera a lista de dados para exportação em CSV conforme o RF017. A cláusula WHERE restringe a exportação a parceiros ativos e garante que o registro possua identificador, enquanto o ORDER BY organiza os registros mais recentes primeiro. Apenas os campos relevantes para compartilhamento externo são selecionados, omitindo dados sensíveis de auditoria.  
 
 
 #### Combinações relevantes da tabela verdade:
 
 
-1- $(A=F) \rightarrow A = F$ : parceiro inativo, portanto, nunca é exportado (preservando a RN08).  <br>
-2- $(A=V) \rightarrow A = V$ : parceiro ativo, portanto é incluído na exportação. <br>
+1- $(A=F, B=V) \rightarrow A \land B = F$ : parceiro inativo, portanto, nunca é exportado (preservando a RN08).  <br>
+2- $(A=V, B=F) \rightarrow A \land B = F$ : parceiro ativo sem identificador válido não deve compor a exportação. <br>
+3- $(A=V, B=V) \rightarrow A \land B = V$ : parceiro ativo e identificado, portanto é incluído na exportação. <br>
 
 ---
 
@@ -2643,9 +2645,9 @@ As tabelas verdade confirmam que as expressões proposicionais preservam a lógi
 <br>
 As consultas 01 e 03, ambas do tipo `INSERT`, utilizam a estrutura $A \land B$, isto é, a conjunção simples de duas proposições obrigatóriamente verdadeiras. Em 01, as duas condições verificam perfil válido e unicidade de e-mail antes de inserir o usuário. Em 03, verificam ausência de CPF/CNPJ duplicado e tipo de pessoa válido antes de inserir o parceiro como rascunho. Nas duas situações, a falha em qualquer uma das condições impede completamente a inserção.
 <br>
-As consultas 02 e 04, do tipo `UPDATE`, representam dois níveis de validação. Em 02, a expressão $A$ indica que a inativação depende da existência do usuário alvo. Em 04, a expressão $A \land B \land C$ confirma que a edição de parceiro depende de registro existente, payload com campo editável e responsável informado. Em ambos os casos, a tabela verdade confirma quando o `UPDATE` afeta uma linha válida.
+As consultas 02 e 04, do tipo `UPDATE`, representam níveis de validação sobre registros alteráveis. Em 02, a expressão $A \land B$ indica que a inativação depende da existência do usuário alvo e da confirmação do status inativo retornado. Em 04, a expressão $A \land B \land C$ confirma que a edição de parceiro depende de registro existente, payload com campo editável e responsável informado. Em ambos os casos, a tabela verdade confirma quando o `UPDATE` afeta uma linha válida.
 <br>
-As consultas 05 e 08, do tipo `SELECT`, utilizam filtros diretos sobre o status do parceiro. Em 05, $A \land B$ verifica identidade e exclusão lógica antes de exibir o perfil detalhado. Em 08, $A$ restringe a exportação aos parceiros ativos, como implementado no repositório de exportação.
+As consultas 05 e 08, do tipo `SELECT`, utilizam filtros diretos sobre o status do parceiro. Em 05, $A \land B$ verifica identidade e exclusão lógica antes de exibir o perfil detalhado. Em 08, $A \land B$ restringe a exportação aos parceiros ativos e identificáveis, como implementado no repositório de exportação.
 <br>
 A consulta 06 apresenta a estrutura $A \land B \land C \land D$, a de maior número de proposições de toda a seção. As quatro condições são obrigatórias e independentes, mas três delas ($B$, $C$ e $D$) utilizam internamente o padrão `OR :param IS NULL`, tornando cada filtro opcionalmente ignorável. Isso produz uma consulta que se comporta como busca ampla quando nenhum filtro é informado e como busca precisa quando todos são preenchidos, mantendo sempre a obrigatoriedade da condição de status não inativo em $A$.
 <br>
