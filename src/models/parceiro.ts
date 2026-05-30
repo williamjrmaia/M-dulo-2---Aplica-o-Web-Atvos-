@@ -36,3 +36,26 @@ export interface UpdateParceiroInput {
     status?: string;
     atualizado_por: string;
 }
+
+export interface ParceiroTerra {
+    id: string;
+    parceiro_id: string;
+    terra_id: string;
+    tipo_vinculo?: string | null;
+}
+
+export interface TerraDoParceiro {
+    id: string;
+    nome: string;
+    area_contratada_ha: number;
+    cidade: string;
+    estado: string;
+    status: string;
+    criado_em: Date;
+    tipo_vinculo?: string | null;
+}
+
+export interface VincularTerraAoParceiroInput {
+    terra_id: string;
+    tipo_vinculo?: string;
+}

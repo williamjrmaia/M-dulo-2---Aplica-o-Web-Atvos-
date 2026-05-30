@@ -3,10 +3,13 @@ import asyncHandler from '../helpers/asyncHandler';
 import {
   cadastrarParceiro,
   editarParceiro as editarParceiroService,
+  obterTerrasDoParceiro,
   obterParceiros,
   obterParceiroPorId as obterParceiroPorIdService,
+  vincularTerraAoParceiro as vincularTerraAoParceiroService,
 } from '../services/parceiroService';
 import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
+import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -81,6 +84,27 @@ export const listarParceiros = asyncHandler(async (_req: Request, res: Response)
 export const obterParceiroPorId = asyncHandler(async (req: Request, res: Response) => {
   const parceiro = await obterParceiroPorIdService(req.params.id as string);
   res.status(200).json(parceiro);
+});
+
+export const listarTerrasDoParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const terras = await obterTerrasDoParceiro(id);
+  res.status(200).json(terras);
+});
+
+export const vincularTerraAoParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = vincularTerraAoParceiroSchema.safeParse(req.body);
+  if (!parsed.success) {
+    const detalhes = parsed.error.issues
+      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
+      .join('; ');
+    throw new ValidationError(detalhes);
+  }
+
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const vinculo = await vincularTerraAoParceiroService(id, parsed.data);
+
+  res.status(201).location(`/api/parceiros/${id}/terras/${vinculo.terra_id}`).json(vinculo);
 });
 
 // ─── Views HTML ──────────────────────────────────────────────────────────────

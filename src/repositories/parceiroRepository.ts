@@ -1,5 +1,12 @@
 import pool from '../config/connection';
-import { Parceiro, CreateParceiroInput, UpdateParceiroInput } from '../models/parceiro';
+import {
+  Parceiro,
+  CreateParceiroInput,
+  ParceiroTerra,
+  TerraDoParceiro,
+  UpdateParceiroInput,
+  VincularTerraAoParceiroInput,
+} from '../models/parceiro';
 
 export async function createParceiro(data: CreateParceiroInput): Promise<Parceiro> {
   const { rows } = await pool.query<Parceiro>(
@@ -86,4 +93,63 @@ export async function listarParceiros(): Promise<Parceiro[]> {
 export async function getParceiroById(id: string): Promise<Parceiro | null> {
   const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE id = $1`, [id]);
   return rows[0] ?? null;
+}
+
+export async function listarTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[] | null> {
+  const parceiro = await pool.query<{ id: string }>('SELECT id FROM parceiros WHERE id = $1', [parceiroId]);
+  if (parceiro.rows.length === 0) {
+    return null;
+  }
+
+  const { rows } = await pool.query<TerraDoParceiro>(
+    `SELECT
+        t.id,
+        t.nome,
+        t.area_contratada_ha,
+        t.cidade,
+        t.estado,
+        t.status,
+        t.criado_em,
+        pt.tipo_vinculo
+       FROM parceiro_terra pt
+       JOIN terras t ON t.id = pt.terra_id
+      WHERE pt.parceiro_id = $1
+        AND t.status != 'inativo'
+      ORDER BY t.criado_em DESC`,
+    [parceiroId]
+  );
+
+  return rows;
+}
+
+export async function createParceiroTerra(
+  parceiroId: string,
+  data: VincularTerraAoParceiroInput
+): Promise<ParceiroTerra | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const parceiro = await client.query<{ id: string }>('SELECT id FROM parceiros WHERE id = $1', [parceiroId]);
+    if (parceiro.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    const { rows } = await client.query<ParceiroTerra>(
+      `INSERT INTO parceiro_terra (parceiro_id, terra_id, tipo_vinculo)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [parceiroId, data.terra_id, data.tipo_vinculo ?? null]
+    );
+
+    await client.query('COMMIT');
+    return rows[0];
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
