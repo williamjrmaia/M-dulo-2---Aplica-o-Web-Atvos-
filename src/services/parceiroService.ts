@@ -8,6 +8,7 @@ import {
 } from '../repositories/parceiroRepository';
 import {
   CreateParceiroInput,
+  ListarParceirosFiltros,
   Parceiro,
   ParceiroTerra,
   TerraDoParceiro,
@@ -43,8 +44,8 @@ export async function editarParceiro(id: string, data: UpdateParceiroInput): Pro
   }
 }
 
-export async function obterParceiros(): Promise<Parceiro[]> {
-  return await listarParceiros();
+export async function obterParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
+  return await listarParceiros(filtros);
 }
 
 export async function obterParceiroPorId(id: string): Promise<Parceiro> {
