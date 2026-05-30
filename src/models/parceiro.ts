@@ -66,3 +66,19 @@ export interface ListarParceirosFiltros {
     area?: number;
     tipo?: 'fisica' | 'juridica' | 'arrendador' | 'fornecedor';
 }
+
+export interface HistoricoParceiro {
+    id: string;
+    usuario_id: string;
+    aprovado_por?: string | null;
+    entidade_afetada: string;
+    entidade_id: string;
+    tipo_operacao: string;
+    dados_anteriores?: Record<string, unknown> | null;
+    dados_novos?: Record<string, unknown> | null;
+    status: string;
+    comentario?: string | null;
+    data_solicitacao: Date;
+    data_aprovacao?: Date | null;
+    data_alteracao: Date;
+}
