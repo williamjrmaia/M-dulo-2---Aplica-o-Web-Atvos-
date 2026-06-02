@@ -15,14 +15,14 @@
 - <a href="https://www.linkedin.com/in/ant%C3%B4nio-neto-83971b23b/">Antonio de Souza Dantas Neto</a> 
 - <a href="https://www.linkedin.com/in/jo%C3%A3o-paulo-barreto-ferreira-andrade-rodrigues-de-paula-b483203aa/">João Paulo Barreto Ferreira Andrade Rodrigues de Paula</a>
 - <a href="https://www.linkedin.com/in/william-maia-95785b323/">William Junior dos Santos Maia</a> 
-- <a href="Mariana Pires de Carvalho Moussa">Mariana Pires de Carvalho Moussa</a>
+- <a href="https://www.linkedin.com/in/marianamoussa/">Mariana Pires de Carvalho Moussa</a>
 
 ## 🧑‍🏫 Professores:
 ### Orientador(a) 
 - <a href="https://www.linkedin.com/in/fabiocassiosouza/">Fábio Cássio de Souza</a>
 ### Instrutores
 - <a href="https://www.linkedin.com/in/bruna-mayer/">Bruna Mayer Costa</a>
-- <a href="https://www.linkedin.com/feed/update/urn:li:activity:7440575463783120896/">Afonso Cesar Lelis Brandão</a> 
+- <a href="https://www.linkedin.com/in/afonsolelis/">Afonso Cesar Lelis Brandão</a> 
 - <a href="https://www.linkedin.com/in/marcelo-gon%C3%A7alves-phd/">Marcelo Luiz do Amaral Gonçalves</a> 
 - <a href="https://www.linkedin.com/in/cristinagramani/">Maria Cristina Nogueira Gramani</a>
 - <a href="https://www.linkedin.com/in/marcelodesterro/">Marcelo de Paula do Desterro</a>
