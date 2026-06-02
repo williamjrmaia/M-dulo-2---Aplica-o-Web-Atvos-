@@ -87,12 +87,17 @@ npm start
     * 
 * 0.4.0 - XX/XX/2024
     * 
-* 0.3.0 - XX/XX/2024
-    * 
-* 0.2.0 - XX/XX/2024
-    * 
-* 0.1.0 - XX/XX/2024
-    *
+* 0.3.0 - 29/05/2024
+    * Backend funcional com WebAPI e endpoints operantes
+    * Protótipo de alta fidelidade e guia de estilos elaborados
+    * Arquitetura em camadas documentada com diagramas atualizados
+* 0.2.0 - 15/05/2024
+    * Wireframe com fluxo de navegação criado
+    * Diagramas UML e modelagem do banco de dados elaborados
+* 0.1.0 - 01/05/2024
+    * Análise de negócios e estrutura do WAD criados
+    * Personas, User Stories e backlog elaborados
+    * Requisitos funcionais, regras de negócio e casos de uso documentados
 
 ## 📋 Licença/License
 ```
