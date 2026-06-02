@@ -21,7 +21,6 @@ app.use(routes);
 app.use('/api/parceiros', parceiroApiRoutes);
 app.use('/parceiros', parceiroViewRoutes);
 app.use('/api/terras', terraApiRoutes);
-app.use(routes);
 
 app.use(errorHandler);
 

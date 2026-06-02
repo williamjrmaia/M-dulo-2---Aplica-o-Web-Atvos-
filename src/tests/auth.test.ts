@@ -30,7 +30,7 @@ const criarUsuario = async (
   return id;
 };
 
-const limparDadosDeTeste = async (): Promise<void> => {
+const limparDadosDeTeste = async (emails: string[] = ['teste@atvos.com']): Promise<void> => {
   const ids = Array.from(usuariosCriados);
 
   if (ids.length > 0) {
@@ -43,6 +43,25 @@ const limparDadosDeTeste = async (): Promise<void> => {
       [ids],
     );
     usuariosCriados.clear();
+  }
+
+  if (emails.length > 0) {
+    const usuarios = await pool.query<{ id: string }>(
+      `SELECT id FROM usuarios WHERE email = ANY($1::text[])`,
+      [emails],
+    );
+    const idsPorEmail = usuarios.rows.map((usuario) => usuario.id);
+
+    if (idsPorEmail.length > 0) {
+      await pool.query(
+        `DELETE FROM auth_sessoes WHERE usuario_id = ANY($1::uuid[])`,
+        [idsPorEmail],
+      );
+      await pool.query(
+        `DELETE FROM usuarios WHERE id = ANY($1::uuid[])`,
+        [idsPorEmail],
+      );
+    }
   }
 };
 
