@@ -12,7 +12,7 @@ import app from './app';
 if (require.main === module) {
   const port = Number(process.env.PORT) || 3000;
   app.listen(port, () => {
-    console.log(`Servidor ATVOS CRM rodando na porta ${port}`);
+    console.log(`Servidor Safra Control rodando na porta ${port}`);
   });
 }
 

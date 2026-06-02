@@ -91,17 +91,23 @@
 
     <a href="#intro">Visão geral</a>
     <a href="#convencoes">Convenções</a>
+    <a href="#execucao">Execução local</a>
+    <a href="#testes-manuais">Testes manuais</a>
 
     <div class="group">Autenticação</div>
     <ul>
+      <li><a href="#get-login">GET /login</a></li>
       <li><a href="#post-login">POST /login</a></li>
+      <li><a href="#put-sessao">PUT /auth/sessoes/:id</a></li>
     </ul>
 
     <div class="group">Usuários</div>
     <ul>
+      <li><a href="#post-usuario">POST /api/usuarios</a></li>
       <li><a href="#put-usuario">PUT /usuarios/:id</a></li>
       <li><a href="#put-usuario-perfil">PUT /usuarios/:id/perfil</a></li>
       <li><a href="#put-usuario-inativar">PUT /usuarios/:id/inativar</a></li>
+      <li><a href="#views-usuarios">Rotas HTML de usuários</a></li>
     </ul>
 
     <div class="group">Parceiros</div>
@@ -113,8 +119,10 @@
       <li><a href="#get-parceiro-historico">GET …/:id/historico</a></li>
       <li><a href="#put-parceiro-validacao">PUT …/:id/validacao</a></li>
       <li><a href="#put-parceiro-aprovar">PUT …/:id/aprovar</a></li>
+      <li><a href="#put-parceiro-devolver">PUT …/:id/devolver</a></li>
       <li><a href="#get-parceiro-terras">GET …/:id/terras</a></li>
       <li><a href="#post-parceiro-terras">POST …/:id/terras</a></li>
+      <li><a href="#views-parceiros">Rotas HTML de parceiros</a></li>
     </ul>
 
     <div class="group">Terras</div>
@@ -149,10 +157,10 @@
       <div class="note">
         <strong>O que esta página é:</strong> documentação técnica navegável da WebAPI,
         servida pelo próprio backend como arquivo estático em <span class="inline">/docs/</span>.
-        <strong>O que NÃO é:</strong> não é a interface de uso final do sistema. As telas
-        renderizadas (EJS) em rotas como <span class="inline">/login</span>,
+        Ela diferencia contratos JSON de rotas HTML renderizadas pelo Express.
+        As telas renderizadas (EJS) em rotas como <span class="inline">/login</span>,
         <span class="inline">/parceiros</span> e <span class="inline">/usuarios/:id/editar</span>
-        são a UI e não estão documentadas aqui.
+        usam os mesmos controllers/services quando aplicável, mas não retornam JSON.
       </div>
     </header>
 
@@ -187,7 +195,32 @@
       </table>
     </section>
 
+    <section id="execucao">
+      <h3>Execução local</h3>
+      <pre><code>npm install
+cp .env.example .env
+npm run migrate
+npm run seed
+npm run dev</code></pre>
+      <p class="muted">
+        Configure <code>DATABASE_URL</code> antes de rodar migrations, seed ou servidor.
+        A API sobe em <code>http://localhost:3000</code>, salvo quando <code>PORT</code> definir outra porta.
+      </p>
+    </section>
+
     <!-- ============ AUTENTICAÇÃO ============ -->
+    <div class="endpoint" id="get-login">
+      <h3><span class="method get">GET</span> <code class="path">/login</code> <span class="rf">RF011</span></h3>
+      <p class="desc">Renderiza a tela HTML de login.</p>
+      <h4>Resposta</h4>
+      <p class="muted">HTML EJS renderizado por <code>src/routes/auth.routes.ts</code>.</p>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Tela renderizada</td></tr>
+      </table>
+    </div>
+
     <div class="endpoint" id="post-login">
       <h3><span class="method post">POST</span> <code class="path">/login</code> <span class="rf">RF011</span></h3>
       <p class="desc">Autentica um usuário interno por e-mail e senha (RN02 — só usuários cadastrados acessam).</p>
@@ -211,7 +244,54 @@
       </table>
     </div>
 
+    <div class="endpoint" id="put-sessao">
+      <h3><span class="method put">PUT</span> <code class="path">/auth/sessoes/:id</code> <span class="rf">RF020</span></h3>
+      <p class="desc">Encerra/revoga uma sessão autenticada.</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Identificador da sessão</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{ "revogada_por": "UUID?" }</code></pre>
+      <h4>Resposta (200)</h4>
+      <pre><code>{ "success": "Sessao encerrada", "sessao": { …, "ativa": false } }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Sessão encerrada</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Sessao nao encontrada"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"Sessao ja encerrada"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"Usuario revogador nao encontrado"</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
     <!-- ============ USUÁRIOS ============ -->
+    <div class="endpoint" id="post-usuario">
+      <h3><span class="method post">POST</span> <code class="path">/api/usuarios</code> <span class="rf">RF001 · RF009 · RF010</span></h3>
+      <p class="desc">Cadastra um usuário interno ativo com perfil de acesso existente.</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Body</h4>
+      <pre><code>{
+  "nome": "string",
+  "email": "usuario@example.com",
+  "perfil_acesso_id": "UUID"
+}</code></pre>
+      <h4>Resposta (201)</h4>
+      <pre><code>{ "id": "…", "nome": "…", "email": "…", "ativo": true, "perfil_acesso_id": "…" }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">201</span></td><td>Usuário criado</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>"Dados de entrada invalidos"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"Email ja cadastrado"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"Perfil nao encontrado"</td></tr>
+        <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
     <div class="endpoint" id="put-usuario">
       <h3><span class="method put">PUT</span> <code class="path">/usuarios/:id</code> <span class="rf">RF002 · RF018 · RF019</span></h3>
       <p class="desc">Atualiza dados cadastrais de um usuário (registra autoria/data — RN11).</p>
@@ -286,6 +366,20 @@
         <tr><td><span class="sc s4">403</span></td><td>"Usuario sem permissao de administrador"</td></tr>
         <tr><td><span class="sc s4">404</span></td><td>"Usuario nao encontrado"</td></tr>
         <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="views-usuarios">
+      <h3><span class="method get">HTML</span> <code class="path">Rotas de usuários por formulário</code> <span class="rf">RF002 · RF003 · RF020</span></h3>
+      <p class="desc">Rotas testáveis no navegador ou por ferramenta HTTP. Retornam HTML ou redirecionamento, não JSON.</p>
+      <table>
+        <tr><th>Método</th><th>Rota</th><th>Finalidade</th><th>Controller</th></tr>
+        <tr><td>GET</td><td><code>/usuarios/:id/editar</code></td><td>Formulário de edição</td><td><code>editarUsuario</code></td></tr>
+        <tr><td>POST</td><td><code>/usuarios/:id</code></td><td>Submissão HTML de edição</td><td><code>atualizaUsuarioViaFormulario</code></td></tr>
+        <tr><td>GET</td><td><code>/usuarios/:id/inativar</code></td><td>Confirmação de inativação</td><td><code>confirmarInativacao</code></td></tr>
+        <tr><td>POST</td><td><code>/usuarios/:id/inativar</code></td><td>Submissão HTML de inativação</td><td><code>inativarUsuarioViaFormulario</code></td></tr>
+        <tr><td>GET</td><td><code>/usuarios/:id/perfil</code></td><td>Formulário de perfil</td><td><code>editarPerfil</code></td></tr>
+        <tr><td>POST</td><td><code>/usuarios/:id/perfil</code></td><td>Submissão HTML de perfil</td><td><code>atualizaPerfilDeAcessoViaFormulario</code></td></tr>
       </table>
     </div>
 
@@ -437,6 +531,27 @@
       </table>
     </div>
 
+    <div class="endpoint" id="put-parceiro-devolver">
+      <h3><span class="method put">PUT</span> <code class="path">/api/parceiros/:id/devolver</code> <span class="rf">RF023</span></h3>
+      <p class="desc">Coordenador devolve um parceiro pendente para ajustes (transição <code>pendente → devolvido</code>, RN17).</p>
+      <h4>Headers</h4>
+      <p class="reqline">Content-Type: application/json</p>
+      <h4>Parâmetros de path</h4>
+      <table><tr><th>Param</th><th>Tipo</th><th>Descrição</th></tr>
+        <tr><td><code>id</code></td><td>UUID</td><td>Parceiro</td></tr></table>
+      <h4>Body</h4>
+      <pre><code>{ "devolvido_por": "UUID", "comentario": "string?" }</code></pre>
+      <h4>Status codes</h4>
+      <table>
+        <tr><th>Código</th><th>Quando</th></tr>
+        <tr><td><span class="sc s2">200</span></td><td>Devolvido (status → devolvido)</td></tr>
+        <tr><td><span class="sc s4">400</span></td><td>Body inválido</td></tr>
+        <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
+        <tr><td><span class="sc s4">409</span></td><td>"Parceiro só pode ser devolvido quando estiver pendente"</td></tr>
+        <tr><td><span class="sc s4">422</span></td><td>"devolvido_por não referencia um usuário existente"</td></tr>
+      </table>
+    </div>
+
     <div class="endpoint" id="get-parceiro-terras">
       <h3><span class="method get">GET</span> <code class="path">/api/parceiros/:id/terras</code> <span class="rf">RF015</span></h3>
       <p class="desc">Lista as terras vinculadas a um parceiro (RN13).</p>
@@ -471,6 +586,20 @@
         <tr><td><span class="sc s4">404</span></td><td>"Parceiro não encontrado"</td></tr>
         <tr><td><span class="sc s4">409</span></td><td>"Terra já vinculada ao parceiro"</td></tr>
         <tr><td><span class="sc s4">422</span></td><td>"terra_id não referencia uma terra existente"</td></tr>
+      </table>
+    </div>
+
+    <div class="endpoint" id="views-parceiros">
+      <h3><span class="method get">HTML</span> <code class="path">Rotas de parceiros por navegador/formulário</code> <span class="rf">RF004 · RF005 · RF007 · RF008</span></h3>
+      <p class="desc">Rotas montadas em <code>/parceiros</code>. Retornam HTML ou redirecionamento, não JSON.</p>
+      <table>
+        <tr><th>Método</th><th>Rota</th><th>Finalidade</th><th>Controller</th></tr>
+        <tr><td>GET</td><td><code>/parceiros</code></td><td>Listagem HTML de parceiros</td><td><code>renderListaParceiros</code></td></tr>
+        <tr><td>GET</td><td><code>/parceiros/novo</code></td><td>Formulário de cadastro</td><td><code>renderFormCadastro</code></td></tr>
+        <tr><td>POST</td><td><code>/parceiros</code></td><td>Submissão HTML de cadastro</td><td><code>processarCadastro</code></td></tr>
+        <tr><td>GET</td><td><code>/parceiros/:id</code></td><td>Detalhe HTML do parceiro</td><td><code>renderDetalheParceiro</code></td></tr>
+        <tr><td>GET</td><td><code>/parceiros/:id/editar</code></td><td>Formulário de edição</td><td><code>renderFormEdicao</code></td></tr>
+        <tr><td>POST</td><td><code>/parceiros/:id/editar</code></td><td>Submissão HTML de edição</td><td><code>processarEdicao</code></td></tr>
       </table>
     </div>
 
@@ -633,6 +762,46 @@
         <tr><td><span class="sc s5">500</span></td><td>"Falha na geração do arquivo" / erro interno</td></tr>
       </table>
     </div>
+
+    <section id="testes-manuais">
+      <h3>Exemplos de teste manual</h3>
+      <p class="muted">
+        As rotas podem ser testadas no Thunder Client, Postman, Insomnia ou por <code>curl</code>.
+        A seção 3.7 do WAD concentra a tabela detalhada de endpoints e os exemplos principais.
+      </p>
+      <h4>Login</h4>
+      <pre><code>curl -X POST http://localhost:3000/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@safracontrol.com","senha":"123456"}'</code></pre>
+      <h4>Listar parceiros</h4>
+      <pre><code>curl -X GET http://localhost:3000/api/parceiros</code></pre>
+      <h4>Criar parceiro</h4>
+      <pre><code>curl -X POST http://localhost:3000/api/parceiros \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Fornecedor Teste",
+    "tipo_pessoa": "juridica",
+    "cpf_cnpj": "12345678000199",
+    "criado_por": "00000000-0000-0000-0000-000000000001",
+    "email": "fornecedor.teste@example.com"
+  }'</code></pre>
+      <h4>Enviar para validação</h4>
+      <pre><code>curl -X PUT http://localhost:3000/api/parceiros/ID_DO_PARCEIRO/validacao \
+  -H "Content-Type: application/json" \
+  -d '{
+    "atualizado_por": "00000000-0000-0000-0000-000000000001",
+    "comentario": "Cadastro pronto para validacao."
+  }'</code></pre>
+      <h4>Registrar interação</h4>
+      <pre><code>curl -X POST http://localhost:3000/parceiros/ID_DO_PARCEIRO/interacoes \
+  -H "Content-Type: application/json" \
+  -d '{
+    "registrado_por": "00000000-0000-0000-0000-000000000001",
+    "tipo": "visita",
+    "descricao": "Visita tecnica registrada para acompanhamento do parceiro.",
+    "data": "2026-06-02"
+  }'</code></pre>
+    </section>
 
     <footer>
       Safra Control — documentação da WebAPI (WAD seção 3.7). Gerada a partir das rotas,
