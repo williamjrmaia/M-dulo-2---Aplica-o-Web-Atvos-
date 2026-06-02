@@ -2822,7 +2822,11 @@ Com isso, a primeira versão entrega a base técnica do sistema: banco integrado
 ## 6.2 Análise de Mercado
 
 *a) Visão Geral do Setor (até 250 palavras)*
-*Contextualize o setor no qual a aplicação está inserida, considerando aspectos econômicos, tecnológicos e regulatórios. Utilize fontes confiáveis.*
+O setor sucroenergético brasileiro está inserido em uma cadeia estratégica para a matriz energética, para o agronegócio e para o mercado global de commodities agrícolas. Identificou-se que a cana-de-açúcar sustenta a produção de açúcar, etanol e bioenergia, com forte concentração produtiva nas regiões Centro-Sul, Sudeste e Centro-Oeste. Na safra 2025/2026, a produção nacional de cana-de-açúcar foi estimada em 673,2 milhões de toneladas, mesmo diante de redução de produtividade causada por condições climáticas adversas (CONAB, 2026).
+
+No campo regulatório, observou-se que o Programa RenovaBio amplia a relevância da rastreabilidade produtiva e da eficiência ambiental. Em 2026, as metas compulsórias das distribuidoras foram calculadas a partir da meta anual de 48,09 milhões de CBIOs, sendo cada CBIO equivalente a uma tonelada de gases de efeito estufa evitada pelo uso de biocombustível em substituição a combustíveis fósseis (ANP, 2026).
+
+Nesse contexto, concluiu-se que soluções digitais de gestão, como o CRM proposto, tornam-se relevantes para empresas que precisam centralizar cadastros, preservar histórico de relacionamento e garantir rastreabilidade nas interações com fornecedores e parceiros agrícolas.
 
 *b) Tamanho e Crescimento do Mercado (até 250 palavras)*
 *Apresente dados quantitativos sobre o tamanho atual e projeções de crescimento do mercado. Utilize fontes confiáveis.*
@@ -2923,10 +2927,19 @@ https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYj
 
 MODESTO, Farina et al, Psicodinâmica das cores em comunicação. In: BLUCHER, [S.l.], 2011. Disponível em: https://search.worldcat.org/pt/title/1295699137. Acesso em: 20 maio 2026.
 
-
-
 ATVOS. *Guia da marca Atvos*. São Paulo: Atvos, 2023. Material institucional disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli) por meio do Google Drive da disciplina. Acesso em: 20 maio 2026.
 
+COMPANHIA NACIONAL DE ABASTECIMENTO (CONAB). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. Brasília, DF: Conab, 17 abr. 2026. Disponível em: https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26. Acesso em: 2 jun. 2026.
+
+AGÊNCIA NACIONAL DO PETRÓLEO, GÁS NATURAL E BIOCOMBUSTÍVEIS (ANP). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. Brasília, DF: ANP, 31 mar. 2026. Disponível em: https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026. Acesso em: 2 jun. 2026.
+
+GRAND VIEW RESEARCH. Customer Relationship Management Market Size, Share & Trends Analysis Report, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/industry-analysis/customer-relationship-management-crm-market. Acesso em: 2 jun. 2026.
+
+GRAND VIEW RESEARCH. Latin America Customer Relationship Management Market Size & Outlook, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/horizon/outlook/customer-relationship-management-market/latin-america. Acesso em: 2 jun. 2026.
+
+MINISTÉRIO DA AGRICULTURA E PECUÁRIA (MAPA). Plano de Transformação Digital — PTD. Brasília, DF: MAPA, 23 jan. 2025. Disponível em: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd. Acesso em: 2 jun. 2026.
+
+INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
 
 # <a name="c9"></a>Anexos
 
