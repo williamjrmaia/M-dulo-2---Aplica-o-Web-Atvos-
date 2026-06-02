@@ -2840,7 +2840,12 @@ No segmento de tecnologia, as soluções de relacionamento apresentam cresciment
 Na América Latina, esse mercado gerou US$ 4,944 bilhões em 2024, com previsão de alcançar US$ 10,931 bilhões até 2030 e expansão anual de 14,5%. O Brasil deve liderar esse crescimento na região, o que reforça a oportunidade para a adoção de ferramentas digitais de relacionamento voltadas ao agronegócio (GRAND VIEW RESEARCH, 2025).
 
 *c) Tendências de Mercado (até 300 palavras)*
-*Identifique e analise tendências relevantes (tecnológicas, comportamentais e mercadológicas) que influenciam o setor. Utilize fontes confiáveis.*
+
+Identificou-se que a digitalização do agronegócio é uma das principais tendências que influenciam o mercado da aplicação proposta. O Plano de Transformação Digital do Ministério da Agricultura e Pecuária aponta como objetivos a modernização de serviços, a integração de sistemas, a ampliação da transparência e a implementação de soluções inovadoras para atender às demandas do setor agropecuário (MAPA, 2026).
+
+Também foi observado avanço nas tecnologias de agricultura digital. Segundo estudo divulgado pelo INPI, os depósitos de patentes em agricultura digital crescem em média 9,4% ao ano, taxa três vezes superior à média geral das tecnologias. O mesmo levantamento destaca que ferramentas digitais, bancos de dados, sistemas de monitoramento e aplicativos contribuem para melhorar a tomada de decisão, a gestão e o acompanhamento da produção agrícola (INPI, 2025).
+
+Outra tendência relevante é a valorização da rastreabilidade e da governança de dados. No setor sucroenergético, essas práticas tornam-se ainda mais importantes em razão do RenovaBio, dos CBIOs e da necessidade de comprovar eficiência produtiva e ambiental. Dessa forma, concluiu-se que a aplicação web proposta está alinhada às demandas atuais do mercado, pois transforma informações dispersas em uma base centralizada, auditável e útil para decisões estratégicas.
 
 ## 6.3 Análise da Concorrência
 
