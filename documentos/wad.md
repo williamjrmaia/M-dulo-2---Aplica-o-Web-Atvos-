@@ -2942,9 +2942,13 @@ Com isso, a primeira versão entrega a base técnica do sistema: banco integrado
 
 ## 6.1 Resumo Executivo
 
-*Preencher com até 300 palavras, sem necessidade de fonte*
+*A aplicação web proposta foi desenvolvida para apoiar a ATVOS na gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. Identificou-se como principal oportunidade de mercado a crescente necessidade de digitalização, rastreabilidade e centralização de informações no setor sucroenergético, especialmente em um contexto no qual a eficiência operacional, a governança de dados e a continuidade dos relacionamentos agrícolas tornam-se fatores estratégicos para a competitividade.
 
-*Apresente de forma clara e objetiva os principais destaques do projeto: oportunidades de mercado, diferenciais competitivos da aplicação web e os objetivos estratégicos pretendidos.*
+Foi observado que o modelo atual, baseado em planilhas, e-mails e registros individuais, compromete a padronização dos cadastros, dificulta a consulta rápida de informações e gera perda de histórico quando há mudanças na equipe responsável. Diante desse cenário, a solução proposta busca transformar dados dispersos em uma base única, confiável e acessível aos usuários internos da empresa.
+
+Como diferencial competitivo, a aplicação reúne funcionalidades de cadastro centralizado, registro de histórico de interações, filtros de consulta, exportação de listas e controle de acesso por perfil. Dessa forma, o sistema contribui para reduzir retrabalho operacional, preservar informações estratégicas ao longo das safras e fortalecer a rastreabilidade das ações realizadas.
+
+Os objetivos estratégicos pretendidos envolvem aumentar a eficiência da gestão de parceiros, apoiar decisões baseadas em dados estruturados, melhorar a continuidade dos relacionamentos agrícolas e oferecer uma solução alinhada às demandas de transformação digital do agronegócio. Concluiu-se que o CRM proposto agrega valor ao tornar o relacionamento com parceiros um ativo institucional, e não dependente apenas do conhecimento individual dos colaboradores. 
 
 ## 6.2 Análise de Mercado
 
