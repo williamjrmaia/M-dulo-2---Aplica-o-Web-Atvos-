@@ -2928,6 +2928,27 @@ Com isso, a primeira versão entrega a base técnica do sistema: banco integrado
 
 *Posicione aqui também o relatório de cobertura de testes Jest se houver (através de link ou transcrito para estrutura markdown).*
 
+### 5.1.1 Estratégia de Testes
+
+O CRM da ATVOS centraliza o cadastro de parceiros, o histórico de interações e o controle de acesso por perfil, de modo que qualquer falha na WebAPI afeta diretamente registros que a empresa usa para tomar decisão. Por esse motivo, definiu-se uma estratégia de testes automatizados que verifica cada endpoint e cada regra de negócio antes do código chegar à produção, organizada em camadas para que cada tipo de teste responda a uma pergunta diferente sobre o sistema.
+
+Na camada de Service, utilizou-se a abordagem white-box, com testes unitários. Eles conhecem a implementação e chamam o método do service direto, sem passar pelo HTTP, para verificar se a regra de negócio está correta. Um exemplo é o arquivo userService.spec.ts, que chama o método atualizaPerfilDeAcesso e confere o resultado tanto no retorno quanto no banco. Esses testes encontram erros de lógica de negócio cedo e de forma barata.
+
+Na camada de Controller, utilizou-se a abordagem black-box, com testes de integração. Eles não conhecem a implementação interna, batem no endpoint por meio do Supertest e verificam apenas o contrato HTTP, ou seja, o status da resposta, o corpo retornado e o efeito observável no banco. Um exemplo é o arquivo parceiroController.spec.ts, que envia um POST para /api/parceiros e confere o status e o registro gravado. Esses testes garantem que a pilha inteira, da rota até o banco, funciona junta.
+
+Para o Repository, adotou-se um critério de necessidade: quando há lógica de consulta que não seja trivial, escreve-se teste próprio; quando a consulta é direta, esse teste fica opcional, porque o comportamento já é coberto pelos testes de Service e de Controller.
+
+Em todas as camadas, seguiu-se o padrão AAA, que organiza cada teste em três blocos. No Arrange o cenário é preparado, em geral dentro do beforeEach, criando os dados que o teste precisa. No Act é executada uma única ação, que é a que está sendo testada. No Assert o resultado é verificado com expect, que faz o teste falhar quando o valor não bate. Estabeleceu-se ainda que a verificação nunca fica só no retorno: depois de uma escrita, lê-se o banco com pool.query para provar que o dado foi realmente gravado.
+
+A suíte também foi construída para ser determinística, ou seja, para dar sempre o mesmo resultado. Para isso, foram adotados os seguintes critérios:
+
+- O estado é limpo entre os testes, com beforeEach e afterEach que removem ou recriam os dados, sem que nenhum teste dependa do que outro deixou.
+- Não há dependência da ordem de execução, porque cada teste monta o próprio cenário no Arrange.
+- Não há dependência do relógio do sistema, de rede externa ou de aleatoriedade não controlada. Para os casos limite, utilizam-se identificadores fixos, como o UUID inexistente 00000000-0000-0000-0000-0000000000ff.
+- Ao final de cada arquivo, a conexão com o banco é fechada com afterAll e pool.end, evitando estado residual e conexões abertas.
+
+Concluiu-se que a estratégia de testes contribui diretamente para o CRM da ATVOS ao proteger justamente os fluxos críticos do produto: o cadastro de parceiros com CPF e CNPJ únicos, a atualização de perfil de acesso e as transições de status do parceiro. Ao cobrir esses fluxos nas camadas de Service e de Controller, a suíte impede que mudanças futuras quebrem em silêncio a integridade dos dados de parceiros, e dá ao grupo segurança para evoluir a WebAPI sem medo de regressão.
+
 ## 5.2. Testes de usabilidade (sprint 5)
 
 ### 5.2.1. Relatório de testes de guerrilha
