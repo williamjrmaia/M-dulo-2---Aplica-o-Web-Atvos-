@@ -635,6 +635,176 @@ Nesse padrão, cada camada possui um papel bem definido e se comunica exclusivam
 
 O diagrama a seguir representa visualmente essa organização, evidenciando os componentes de cada camada e os relacionamentos entre eles.
 
+```mermaid
+flowchart TB
+    classDef client fill:#AED6F1,stroke:#2E86C1,color:#1a1a1a,font-weight:bold
+    classDef route fill:#BFD7EA,stroke:#5D8AA8,color:#1a1a1a,font-weight:bold
+    classDef controller fill:#2E75B6,stroke:#1F4E79,color:#fff,font-weight:bold
+    classDef service fill:#FF8100,stroke:#b35a00,color:#1a1a1a,font-weight:bold
+    classDef repository fill:#70AD47,stroke:#4a7a2e,color:#1a1a1a,font-weight:bold
+    classDef model fill:#E1EB80,stroke:#96B400,color:#1a1a1a,font-weight:bold
+    classDef schema fill:#F7DC6F,stroke:#B7950B,color:#1a1a1a,font-weight:bold
+    classDef helper fill:#D5D8DC,stroke:#717D7E,color:#1a1a1a,font-style:italic
+    classDef middleware fill:#D7BDE2,stroke:#7D3C98,color:#1a1a1a,font-weight:bold
+    classDef error fill:#F1948A,stroke:#C0392B,color:#1a1a1a,font-weight:bold
+    classDef banco fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+
+    %% Cliente
+    USER(["Usuário\nNavegador / Cliente HTTP"]):::client
+
+    %% Rotas Express
+    subgraph ROUTES["0. Routes"]
+        direction LR
+        RT0["index.routes"]:::route
+        RT1["auth.routes"]:::route
+        RT2["user.routes"]:::route
+        RT3["parceiroRoutes"]:::route
+        RT4["terra.routes"]:::route
+        RT5["interacao.routes"]:::route
+        RT6["exporta.routes"]:::route
+        RT7["dashboardInteracoes.routes"]:::route
+    end
+
+    %% Camada 1 - Controllers
+    subgraph LAYER1["1. Controller"]
+        direction LR
+        C1["AuthController"]:::controller
+        C2["UserController"]:::controller
+        C3["ParceiroController"]:::controller
+        C4["TerraController"]:::controller
+        C5["InteracaoController"]:::controller
+        C6["ExportaController"]:::controller
+        C7["DashboardInteracoesController"]:::controller
+    end
+
+    %% Camada 2 - Services
+    subgraph LAYER2["2. Service"]
+        direction LR
+        S1["AuthService"]:::service
+        S2["UserService"]:::service
+        S3["ParceiroService"]:::service
+        S4["TerraService"]:::service
+        S5["InteracaoService"]:::service
+        S6["ExportaService"]:::service
+        S7["DashboardInteracoesService"]:::service
+    end
+
+    %% Camada 3 - Repositories
+    subgraph LAYER3["3. Repository"]
+        direction LR
+        R1["UserRepository"]:::repository
+        R2["AuthSessionRepository"]:::repository
+        R3["ParceiroRepository"]:::repository
+        R4["TerraRepository"]:::repository
+        R5["InteracaoRepository"]:::repository
+        R6["ExportaRepository"]:::repository
+        R7["DashboardInteracoesRepository"]:::repository
+    end
+
+    %% Schemas de validação
+    subgraph SCHEMAS["Schemas / Validação"]
+        direction LR
+        V1["parceiroValidacao.schema"]:::schema
+        V2["parceiroAprovacao.schema"]:::schema
+        V3["parceiroDevolucao.schema"]:::schema
+        V4["parceiroFiltros.schema"]:::schema
+        V5["parceiroTerra.schema"]:::schema
+        V6["terra.schema"]:::schema
+        V7["terraParceiro.schema"]:::schema
+    end
+
+    %% Camada 4 - Models
+    subgraph LAYER4["4. Model"]
+        direction LR
+        M1["Usuario"]:::model
+        M2["PerfilAcesso"]:::model
+        M3["AuthSessao"]:::model
+        M4["Parceiro"]:::model
+        M5["ParceiroExportacao"]:::model
+        M6["Terra"]:::model
+        M7["Interacao"]:::model
+        M8["InteracoesListEntity"]:::model
+    end
+
+    %% Errors
+    subgraph ERRORS["Errors"]
+        direction LR
+        ER1["AppError"]:::error
+        ER2["dashboardInteracoesErrors"]:::error
+        ER3["exportaErrors"]:::error
+    end
+
+    %% Middleware e helpers
+    subgraph CROSS["Middleware / Helpers"]
+        direction LR
+        MW1["errorHandler"]:::middleware
+        H1["asyncHandler"]:::helper
+    end
+
+    %% Banco
+    DB[("Banco de Dados\nPostgreSQL / Supabase")]:::banco
+
+    %% Fluxo principal top-down
+    USER -->|"HTTP Request"| ROUTES
+
+    RT0 --> RT1 & RT2 & RT3 & RT4 & RT5 & RT6 & RT7
+
+    RT1 --> C1
+    RT2 --> C2
+    RT3 --> C3
+    RT4 --> C4
+    RT5 --> C5
+    RT6 --> C6
+    RT7 --> C7
+
+    C1 --> S1
+    C2 --> S2
+    C3 --> S3
+    C4 --> S4
+    C5 --> S5
+    C6 --> S6
+    C7 --> S7
+
+    C3 -.-> V1 & V2 & V3 & V4 & V5
+    C4 -.-> V6 & V7
+
+    S1 --> R1 & R2
+    S2 --> R1
+    S3 --> R3 & R4
+    S4 --> R4 & R3
+    S5 --> R5
+    S6 --> R6
+    S7 --> R7
+
+    R1 --> M1 & M2
+    R2 --> M3
+    R3 --> M4
+    R6 --> M5
+    R4 --> M6
+    R5 --> M7
+    R7 --> M8
+
+    LAYER4 --> DB
+
+    %% Errors
+    S3 -.->|"lança"| ER1
+    S6 -.->|"lança"| ER3
+    S7 -.->|"lança"| ER2
+    ER1 & ER2 & ER3 -.-> MW1
+
+    %% Tratamento transversal
+    C3 & C4 -.->|"usa"| H1
+    H1 -.-> MW1
+```
+
+---
+
+
+A adoção da Arquitetura em Camadas garante que alterações em uma camada não propaguem impactos desnecessários às demais. Por exemplo, uma mudança na lógica de validação de parceiros afeta apenas o `ParceiroService`, sem exigir alterações no `ParceiroController` ou no `ParceiroRepository`. Da mesma forma, uma eventual migração de banco de dados impactaria exclusivamente a camada de Repository, preservando intactas as regras de negócio e os contratos de interface da API.
+<br>
+Essa separação também viabiliza a escrita de testes automatizados por camada de forma isolada, permitindo que Services sejam testados e que Controllers sejam validados independentemente da lógica de negócio. A centralização das exceções de domínio na camada Errors reforça o princípio de responsabilidade única, evitando duplicação de tratamento de erros entre Services distintos. A inclusão dos Helpers como módulos auxiliares complementa esse princípio, centralizando lógicas de uso transversal em um único ponto de manutenção.
+<br>
+
 ### 3.2.2. Diagrama de Casos de Uso (Sprint 1)
 
 O Diagrama de Casos de Uso apresentado para esta primeira sprint tem como objetivo mapear as interações fundamentais entre os usuários e a aplicação web de gestão de parceiros da ATVOS, estabelecendo as fronteiras funcionais necessárias para mitigar a dispersão de dados e a falta de governança histórica no relacionamento agrícola. Através da representação de atores como Editor, Observador e Administrador, o diagrama detalha desde processos operacionais críticos, como o cadastro e registro de interações, até funcionalidades estratégicas de consulta, gestão e controle de acessos.
