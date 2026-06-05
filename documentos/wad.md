@@ -2977,7 +2977,7 @@ Concluiu-se que a estratégia de testes contribui diretamente para o CRM da ATVO
 
 ## 6.1 Resumo Executivo
 
-*A aplicação web proposta foi desenvolvida para apoiar a ATVOS na gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. Identificou-se como principal oportunidade de mercado a crescente necessidade de digitalização, rastreabilidade e centralização de informações no setor sucroenergético, especialmente em um contexto no qual a eficiência operacional, a governança de dados e a continuidade dos relacionamentos agrícolas tornam-se fatores estratégicos para a competitividade.
+A aplicação web proposta foi desenvolvida para apoiar a ATVOS na gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. Identificou-se como principal oportunidade de mercado a crescente necessidade de digitalização, rastreabilidade e centralização de informações no setor sucroenergético, especialmente em um contexto no qual a eficiência operacional, a governança de dados e a continuidade dos relacionamentos agrícolas tornam-se fatores estratégicos para a competitividade.
 
 Foi observado que o modelo atual, baseado em planilhas, e-mails e registros individuais, compromete a padronização dos cadastros, dificulta a consulta rápida de informações e gera perda de histórico quando há mudanças na equipe responsável. Diante desse cenário, a solução proposta busca transformar dados dispersos em uma base única, confiável e acessível aos usuários internos da empresa.
 
@@ -2987,7 +2987,7 @@ Os objetivos estratégicos pretendidos envolvem aumentar a eficiência da gestã
 
 ## 6.2 Análise de Mercado
 
-*a) Visão Geral do Setor (até 250 palavras)*
+### 6.2.1 Visão Geral do Setor (até 250 palavras)
 
 O setor sucroenergético brasileiro está inserido em uma cadeia estratégica para a matriz energética, para o agronegócio e para o mercado global de commodities agrícolas. Identificou-se que a cana-de-açúcar sustenta a produção de açúcar, etanol e bioenergia, com forte concentração produtiva nas regiões Centro-Sul, Sudeste e Centro-Oeste. Na safra 2025/2026, a produção nacional de cana-de-açúcar foi estimada em 673,2 milhões de toneladas, mesmo diante de redução de produtividade causada por condições climáticas adversas (CONAB, 2026).
 
@@ -2996,7 +2996,7 @@ No campo regulatório, observou-se que o Programa RenovaBio amplia a relevância
 Nesse contexto, concluiu-se que soluções digitais de gestão, como o CRM proposto, tornam-se relevantes para empresas que precisam centralizar cadastros, preservar histórico de relacionamento e garantir rastreabilidade nas interações com fornecedores e parceiros agrícolas.
 
 
-*b) Tamanho e Crescimento do Mercado (até 250 palavras)*
+### 6.2.2 Tamanho e Crescimento do Mercado (até 250 palavras)
 
 O mercado envolve duas dimensões principais: o setor sucroenergético e as soluções digitais de CRM.
 
@@ -3005,7 +3005,7 @@ No setor produtivo, a estimativa para a safra 2025/2026 é de 44,2 milhões de t
 No segmento de tecnologia, as soluções de relacionamento apresentam crescimento expressivo. O mercado global de CRM foi avaliado em US$ 73,40 bilhões em 2024 e projeta atingir US$ 163,16 bilhões até 2030, mantendo uma taxa composta anual de crescimento de 14,6% entre 2025 e 2030 (GRAND VIEW RESEARCH, 2025).
 Na América Latina, esse mercado gerou US$ 4,944 bilhões em 2024, com previsão de alcançar US$ 10,931 bilhões até 2030 e expansão anual de 14,5%. O Brasil deve liderar esse crescimento na região, o que reforça a oportunidade para a adoção de ferramentas digitais de relacionamento voltadas ao agronegócio (GRAND VIEW RESEARCH, 2025).
 
-*c) Tendências de Mercado (até 300 palavras)*
+### 6.2.3 Tendências de Mercado (até 300 palavras)
 
 Identificou-se que a digitalização do agronegócio é uma das principais tendências que influenciam o mercado da aplicação proposta. O Plano de Transformação Digital do Ministério da Agricultura e Pecuária aponta como objetivos a modernização de serviços, a integração de sistemas, a ampliação da transparência e a implementação de soluções inovadoras para atender às demandas do setor agropecuário (MAPA, 2026).
 
