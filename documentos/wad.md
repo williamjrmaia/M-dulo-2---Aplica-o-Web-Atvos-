@@ -625,14 +625,15 @@ Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema d
 
 ### 3.2.1. Diagrama de Arquitetura (sprints 3 e 4)
 
-
 A arquitetura da aplicação web desenvolvida para a ATVOS segue o padrão de Arquitetura em Camadas, organizada no estilo User-Controller-Service-Repository, que é usualmente adotado em aplicações back-end com Node.js por promover separação clara de responsabilidades, facilidade de manutenção e testabilidade independente de cada camada.
 <br>
-Nesse padrão, cada camada possui um papel bem definido e se comunica exclusivamente com outras camadas definidas. A camada Controller é responsável por receber as requisições HTTP, validar os dados de entrada e delegar o processamento ao Service. A camada Service é a que possui todas as regras de negócio do sistema, sendo responsável por operações entre múltiplos repositórios quando necessário e lançando exceções de domínio em caso de violação de regras. A camada de Repository abstrai o acesso ao banco de dados, isolando as queries SQL do restante da aplicação e retornando entidades mapeadas para o Service. A camada Model representa as entidades do domínio, correspondendo diretamente às tabelas do banco de dados PostgreSQL hospedado no Supabase. Adicionalmente, funções auxiliares agrupadas como Helpers oferecem utilitários transversais reutilizáveis pelos Services, como validação de e-mail, validação de CPF/CNPJ e formatação de datas.
-<br>
-O diagrama a seguir representa visualmente essa organização, evidenciando os componentes de cada camada e os relacionamentos entre eles.
 
----
+
+Nesse padrão, cada camada possui um papel bem definido e se comunica exclusivamente com as camadas adjacentes definidas. A camada Controller é responsável por receber as requisições HTTP, validar os dados de entrada e delegar o processamento ao Service. A camada Service contém todas as regras de negócio do sistema, sendo responsável por operações entre múltiplos repositórios quando necessário e lançando exceções de domínio em caso de violação de regras. A camada Repository abstrai o acesso ao banco de dados, isolando as queries SQL do restante da aplicação e retornando entidades mapeadas para o Service. A camada Model representa as entidades do domínio, correspondendo diretamente às tabelas do banco de dados PostgreSQL hospedado no Supabase. Adicionalmente, a camada Errors centraliza as exceções de domínio reutilizáveis pelos Services, e funções auxiliares agrupadas como Helpers oferecem utilitários transversais, como tratamento assíncrono de erros e formatação de respostas.
+<br>
+
+
+O diagrama a seguir representa visualmente essa organização, evidenciando os componentes de cada camada e os relacionamentos entre eles.
 
 ```mermaid
 flowchart TB
@@ -645,15 +646,16 @@ flowchart TB
     classDef schema fill:#F7DC6F,stroke:#B7950B,color:#1a1a1a,font-weight:bold
     classDef helper fill:#D5D8DC,stroke:#717D7E,color:#1a1a1a,font-style:italic
     classDef middleware fill:#D7BDE2,stroke:#7D3C98,color:#1a1a1a,font-weight:bold
+    classDef error fill:#F1948A,stroke:#C0392B,color:#1a1a1a,font-weight:bold
     classDef banco fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
-    classDef layer fill:#F2F3F4,stroke:#BDC3C7,color:#1a1a1a,font-weight:bold
 
     %% Cliente
-    USER(["Usuario\nNavegador / Cliente HTTP"]):::client
+    USER(["Usuário\nNavegador / Cliente HTTP"]):::client
 
     %% Rotas Express
     subgraph ROUTES["0. Routes"]
         direction LR
+        RT0["index.routes"]:::route
         RT1["auth.routes"]:::route
         RT2["user.routes"]:::route
         RT3["parceiroRoutes"]:::route
@@ -700,7 +702,7 @@ flowchart TB
     end
 
     %% Schemas de validação
-    subgraph SCHEMAS["Schemas / Validacao"]
+    subgraph SCHEMAS["Schemas / Validação"]
         direction LR
         V1["parceiroValidacao.schema"]:::schema
         V2["parceiroAprovacao.schema"]:::schema
@@ -716,10 +718,20 @@ flowchart TB
         direction LR
         M1["Usuario"]:::model
         M2["PerfilAcesso"]:::model
-        M3["Parceiro"]:::model
-        M4["Terra"]:::model
-        M5["Interacao"]:::model
-        M6["DashboardInteracoes"]:::model
+        M3["AuthSessao"]:::model
+        M4["Parceiro"]:::model
+        M5["ParceiroExportacao"]:::model
+        M6["Terra"]:::model
+        M7["Interacao"]:::model
+        M8["InteracoesListEntity"]:::model
+    end
+
+    %% Errors
+    subgraph ERRORS["Errors"]
+        direction LR
+        ER1["AppError"]:::error
+        ER2["dashboardInteracoesErrors"]:::error
+        ER3["exportaErrors"]:::error
     end
 
     %% Middleware e helpers
@@ -727,7 +739,6 @@ flowchart TB
         direction LR
         MW1["errorHandler"]:::middleware
         H1["asyncHandler"]:::helper
-        E1["AppError"]:::middleware
     end
 
     %% Banco
@@ -735,6 +746,8 @@ flowchart TB
 
     %% Fluxo principal top-down
     USER -->|"HTTP Request"| ROUTES
+
+    RT0 --> RT1 & RT2 & RT3 & RT4 & RT5 & RT6 & RT7
 
     RT1 --> C1
     RT2 --> C2
@@ -752,46 +765,44 @@ flowchart TB
     C6 --> S6
     C7 --> S7
 
-    C3 -.-> V1
-    C3 -.-> V2
-    C3 -.-> V3
-    C3 -.-> V4
-    C3 -.-> V5
-    C4 -.-> V6
-    C4 -.-> V7
+    C3 -.-> V1 & V2 & V3 & V4 & V5
+    C4 -.-> V6 & V7
 
-    S1 --> R1
-    S1 --> R2
+    S1 --> R1 & R2
     S2 --> R1
-    S3 --> R3
-    S3 --> R4
-    S4 --> R4
-    S4 --> R3
+    S3 --> R3 & R4
+    S4 --> R4 & R3
     S5 --> R5
     S6 --> R6
     S7 --> R7
 
-    R1 --> M1
-    R1 --> M2
-    R3 --> M3
-    R4 --> M4
-    R5 --> M5
-    R7 --> M6
+    R1 --> M1 & M2
+    R2 --> M3
+    R3 --> M4
+    R6 --> M5
+    R4 --> M6
+    R5 --> M7
+    R7 --> M8
 
     LAYER4 --> DB
 
+    %% Errors
+    S3 -.->|"lança"| ER1
+    S6 -.->|"lança"| ER3
+    S7 -.->|"lança"| ER2
+    ER1 & ER2 & ER3 -.-> MW1
+
     %% Tratamento transversal
-    C3 -.->|"usa"| H1
-    C4 -.->|"usa"| H1
+    C3 & C4 -.->|"usa"| H1
     H1 -.-> MW1
-    MW1 -.-> E1
 ```
 
 ---
 
-A adoção da Arquitetura em Camadas é importante pois garante que alterações em uma camada não propaguem impactos desnecessários às demais. Por exemplo, uma mudança na lógica de validação de parceiros afeta apenas o `ParceirosService`, sem exigir alterações no `ParceirosController` ou no `ParceirosRepository`. Da mesma forma, uma eventual migração de banco de dados impactaria exclusivamente a camada de Repository, preservando intactas as regras de negócio e os contratos de interface da API.
+
+A adoção da Arquitetura em Camadas garante que alterações em uma camada não propaguem impactos desnecessários às demais. Por exemplo, uma mudança na lógica de validação de parceiros afeta apenas o `ParceiroService`, sem exigir alterações no `ParceiroController` ou no `ParceiroRepository`. Da mesma forma, uma eventual migração de banco de dados impactaria exclusivamente a camada de Repository, preservando intactas as regras de negócio e os contratos de interface da API.
 <br>
-Essa separação também viabiliza a escrita de testes automatizados por camada de forma isolada, permitindo que Services sejam testados e que Controllers sejam validados independentemente da lógica de negócio. A inclusão dos Helpers como módulos auxiliares reforça o princípio de responsabilidade única, evitando duplicação de código entre Services distintos e centralizando lógicas de uso transversal em um único ponto de manutenção.
+Essa separação também viabiliza a escrita de testes automatizados por camada de forma isolada, permitindo que Services sejam testados e que Controllers sejam validados independentemente da lógica de negócio. A centralização das exceções de domínio na camada Errors reforça o princípio de responsabilidade única, evitando duplicação de tratamento de erros entre Services distintos. A inclusão dos Helpers como módulos auxiliares complementa esse princípio, centralizando lógicas de uso transversal em um único ponto de manutenção.
 <br>
 
 ### 3.2.2. Diagrama de Casos de Uso (Sprint 1)
