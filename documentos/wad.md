@@ -747,7 +747,10 @@ flowchart TB
     %% Fluxo principal top-down
     USER -->|"HTTP Request"| ROUTES
 
-    RT0 --> RT1 & RT2 & RT3 & RT4 & RT5 & RT6 & RT7
+    RT0 --> RT1 & RT2 & RT5 & RT6 & RT7
+
+      USER -->|"HTTP Request"| RT3
+      USER -->|"HTTP Request"| RT4
 
     RT1 --> C1
     RT2 --> C2
