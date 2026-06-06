@@ -3039,6 +3039,9 @@ Em relação a formação acadêmica, há certa concentração dos times nas ár
 #### Aspectos Psicográficos e Comportamentais
 Durante as pesquisas foi observado uma forte busca cultural pela manutenção das ferramentas e dos métodos tradicionais de controle, as equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e informções. Os times demonstram alto senso de responsabilidade e urgência, entretanto também demonstram sofrimento com fadiga operacional advinda do retrabalho.
 
+#### Dores e Necessidades
+As principais dores se voltam para a falta de governança de dados e na perda do histórico de relacionamento com fornecedores e parceiros agrícolas. No TAPI acordado entre a instituição e a ATVOS foi indicada a necessidade de uma interface intuitiva e amigável (UX/UI), capaz de fornecer uma centralização dos cadastros e integrar paineis de dados estatísticos integrados, já que 100% dos parceiros possuem dados críticos e essenciais para negociações e tomadas de decisões, a visualização agíl dos dados é essencial para o perfil avaliado.
+
 ## 6.5 Posicionamento
 
 *a) Proposta de Valor Única (até 250 palavras)*
