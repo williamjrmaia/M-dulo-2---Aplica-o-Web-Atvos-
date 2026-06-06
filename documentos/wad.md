@@ -3033,11 +3033,11 @@ Com a União da Indústria de Cana-de-Açúcar e Bioenergia (ÚNICA) e o Centro 
 ### 6.4.2 Perfil do Público-Alvo (até 250 palavras)
 
 #### Aspectos Demográficos
-
 Analisando os profissionais das áreas de Estratégias de Terras e Fornecedores, é notórios, em ambos os genêros, que a média de idade varia predominantemente de 25 a 55 anos. 
 Em relação a formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e nas 8 unidades nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo.
 
-
+#### Aspectos Psicográficos e Comportamentais
+Durante as pesquisas foi observado uma forte busca cultural pela manutenção das ferramentas e dos métodos tradicionais de controle, as equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e informções. Os times demonstram alto senso de responsabilidade e urgência, entretanto também demonstram sofrimento com fadiga operacional advinda do retrabalho.
 
 ## 6.5 Posicionamento
 
