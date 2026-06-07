@@ -3038,7 +3038,15 @@ A solução tem como principal objetivo garantir a centralização e a governan�
 A aplicação Web soluciona um problema crônico do mercado: A dependência em planilhas dispersas e controles manuais para gerenciamento de dados, garantindo a preservação das informações sobre os 1.137 parceiros de terras e 108 fornecedores de forma integral.
 Analisando sob a ótica do framework, o valor gerado atinge principalmente duas frentes de alinhamento com o cliente:
 
-*b) Estratégia de Diferenciação (até 250 palavras)*
+**a) Minimalizadores de dores (Pain relivers):**
+O risco de perda de dados e informações essenciais para negociações e na manutenção de relacionamentos com parceiros e fornecedores é mitigado, dessa forma evita-se o retrabalho ligado a distribuição de dados em multiplos arquivos.
+
+
+**b) Criadores de ganhos (Gain Creators):**
+A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e paineis de visualização de dados estatíticos nativos. Tais ferramentas dão um suporte direto para consultas rápidas e geração de listas.
+
+
+
 *Explique como sua aplicação se destacará da concorrência, evidenciando a lógica por trás do posicionamento.*
 
 ## 6.6 Estratégia de Marketing 
