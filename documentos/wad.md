@@ -3034,20 +3034,13 @@ Descreva os principais segmentos de mercado a serem atendidos pela aplicação. 
 ## 6.5 Posicionamento
 
 #### 6.5.1 Proposta de Valor Única (até 250 palavras)
-A solução tem como principal objetivo garantir a centralização e a governança sobre os dados de relacionamento de parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução teve como base o Value Proposition Canvas de Alexander OsterWalder, que alinha as dores dos usuários á solução tecnológica desenvolvida.
-A aplicação Web soluciona um problema crônico do mercado: A dependência em planilhas dispersas e controles manuais para gerenciamento de dados, garantindo a preservação das informações sobre os 1.137 parceiros de terras e 108 fornecedores de forma integral.
-Analisando sob a ótica do framework, o valor gerado atinge principalmente duas frentes de alinhamento com o cliente:
+A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento de parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no Value Proposition Canvas de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida.  A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados. Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e 108 fornecedores é garantida de forma integral.  Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
 
 **a) Minimalizadores de dores (Pain relivers):**
-O risco de perda de dados e informações essenciais para negociações e na manutenção de relacionamentos com parceiros e fornecedores é mitigado, dessa forma evita-se o retrabalho ligado a distribuição de dados em multiplos arquivos.
-
+O risco de perda de dados e de informações essenciais para negociações e para a manutenção de relacionamentos de longo prazo com parceiros e fornecedores é mitigado. Dessa forma, o retrabalho ligado à distribuição de dados em múltiplos arquivos individuais é evitado.
 
 **b) Criadores de ganhos (Gain Creators):**
-A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e paineis de visualização de dados estatíticos nativos. Tais ferramentas dão um suporte direto para consultas rápidas e geração de listas.
-
-
-
-*Explique como sua aplicação se destacará da concorrência, evidenciando a lógica por trás do posicionamento.*
+A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e de painéis de visualização de dados estatísticos nativos. Tais ferramentas dão suporte direto para a realização de consultas rápidas e para a geração de listas segmentadas.
 
 ## 6.6 Estratégia de Marketing 
 
