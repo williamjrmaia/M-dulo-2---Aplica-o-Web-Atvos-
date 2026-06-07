@@ -3033,8 +3033,10 @@ Descreva os principais segmentos de mercado a serem atendidos pela aplicação. 
 
 ## 6.5 Posicionamento
 
-*a) Proposta de Valor Única (até 250 palavras)*
-*Defina de maneira clara o que torna a sua aplicação única e valiosa para o mercado.*
+#### 6.5.1 Proposta de Valor Única (até 250 palavras)
+A solução tem como principal objetivo garantir a centralização e a governança sobre os dados de relacionamento de parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução teve como base o Value Proposition Canvas de Alexander OsterWalder, que alinha as dores dos usuários á solução tecnológica desenvolvida.
+A aplicação Web soluciona um problema crônico do mercado: A dependência em planilhas dispersas e controles manuais para gerenciamento de dados, garantindo a preservação das informações sobre os 1.137 parceiros de terras e 108 fornecedores de forma integral.
+Analisando sob a ótica do framework, o valor gerado atinge principalmente duas frentes de alinhamento com o cliente:
 
 *b) Estratégia de Diferenciação (até 250 palavras)*
 *Explique como sua aplicação se destacará da concorrência, evidenciando a lógica por trás do posicionamento.*
