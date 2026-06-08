@@ -3015,6 +3015,10 @@ Outra tendência relevante é a valorização da rastreabilidade e da governanç
 
 ## 6.3 Análise da Concorrência
 
+A análise da concorrência foi realizada considerando dois grupos principais: os concorrentes diretos da ATVOS no setor sucroenergético e os concorrentes indiretos da aplicação web, representados por soluções digitais de CRM e sistemas de gestão rural. Essa separação foi adotada porque a aplicação proposta não concorre apenas com empresas produtoras de etanol, açúcar e bioenergia, mas também com ferramentas tecnológicas que poderiam ser utilizadas para organizar dados, registrar interações e apoiar a tomada de decisão.
+
+Identificou-se que a rivalidade no setor sucroenergético é elevada, pois grandes grupos disputam acesso a fornecedores, terras produtivas, eficiência operacional e mercados ligados à bioenergia. Nesse contexto, a governança dos dados de relacionamento com parceiros agrícolas torna-se um fator relevante de competitividade, uma vez que a perda de histórico, a duplicidade de informações e a ausência de rastreabilidade podem comprometer negociações e decisões estratégicas.
+
 *a) Principais Concorrentes (até 250 palavras)*
 *Liste os concorrentes diretos e indiretos, destacando suas principais características e posicionamento no mercado.*
 
