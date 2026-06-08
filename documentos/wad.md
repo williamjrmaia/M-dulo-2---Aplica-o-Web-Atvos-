@@ -2724,7 +2724,8 @@ Rotas JSON seguem a convenção `/api/...` para recursos de API, enquanto rotas 
 | Método | Rota | Objetivo | Entrada | Saída esperada | RF relacionado |
 | --- | --- | --- | --- | --- | --- |
 | GET | `/login` | Renderizar a tela de login. | Sem body. | HTML da tela de login. | RF011 |
-| POST | `/login` | Autenticar usuário por e-mail e senha. | Body JSON com `email` e `senha`. | `200` com token, usuário e sessão; `400`, `401`, `404` ou `500` em erro. | RF011 |
+| POST | `/login` | Autenticar usuário por e-mail e senha. | Body JSON ou formulário com `email` e `senha`. | `200` com token, usuário e sessão para JSON; cookie HttpOnly e redirecionamento para `/parceiros` no formulário web; `400`, `401` ou `500` em erro. | RF011 |
+| POST | `/logout` | Encerrar a sessão do usuário autenticado no fluxo web. | Cookies de autenticação ativos. | Sessão revogada quando existir, cookies limpos e redirecionamento para `/login`. | RF020 |
 | PUT | `/auth/sessoes/:id` | Encerrar/revogar uma sessão autenticada. | Path `id`; body opcional com `revogada_por`. | `200` com sessão encerrada; `404`, `409`, `422` ou `500` em erro. | RF020 |
 | POST | `/api/usuarios` | Cadastrar usuário interno com perfil de acesso. | Body JSON com `nome`, `email` e `perfil_acesso_id`. | `201` com usuário criado; `400`, `409`, `422` ou `500` em erro. | RF001, RF009, RF010 |
 | GET | `/usuarios/:id/editar` | Renderizar formulário de edição de usuário. | Path `id`. | HTML do formulário; `404` se usuário não existir. | RF002 |

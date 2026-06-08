@@ -306,6 +306,24 @@ h2,
   text-decoration: none;
 }
 
+.logout-form {
+  margin: 0;
+}
+
+button.logout-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.user-chip {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 /* =========================================================
    5. Login
    ========================================================= */

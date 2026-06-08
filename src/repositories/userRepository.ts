@@ -13,7 +13,6 @@ export interface Usuario {
 
 export class UserRepository {
   async buscarPorEmail(email: string): Promise<Usuario | null> {
-    console.log(`[REPOSITORY] buscarPorEmail: ${email}`);
     const result = await pool.query<Usuario>(
       'SELECT id, nome, email, senha_hash, ativo, perfil_acesso_id FROM usuarios WHERE email = $1',
       [email],
@@ -64,7 +63,6 @@ export class UserRepository {
   }
 
   async criaUsuario(data: CriarUsuarioInput): Promise<UsuarioComPerfil> {
-    console.log(`[REPOSITORY] criaUsuario: ${data.email}`);
     const result = await pool.query<UsuarioComPerfil>(
       `INSERT INTO usuarios (perfil_acesso_id, nome, email, senha_hash, ativo)
        VALUES ($1, $2, LOWER($3), NULL, TRUE)
