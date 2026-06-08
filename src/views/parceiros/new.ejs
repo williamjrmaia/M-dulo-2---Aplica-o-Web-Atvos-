@@ -1,56 +1,126 @@
-<%- include('../partials/header', { title: 'Cadastrar Parceiro' }) %>
+<%- include('../partials/header', { title: 'Novo Parceiro', active: 'parceiros' }) %>
 
 <section aria-labelledby="titulo-cadastro">
-  <h1 id="titulo-cadastro">Cadastrar Parceiro</h1>
-  <p class="subtitle">Cadastro centralizado de fornecedor de cana ou proprietário cedente</p>
+  <div class="page-header">
+    <div class="page-back">
+      <a href="/parceiros" class="back-btn" aria-label="Voltar para a lista de parceiros">←</a>
+      <div class="page-header-text">
+        <h1 id="titulo-cadastro" class="page-title">Novo Parceiro</h1>
+        <p class="subtitle">Cadastro centralizado de fornecedor de cana ou proprietário cedente</p>
+      </div>
+    </div>
+  </div>
 
   <%- include('../partials/flash', { error: locals.error }) %>
 
-  <p class="obrigatorios">Campos com <strong>*</strong> são obrigatórios</p>
-
   <form action="/parceiros" method="POST" novalidate>
-    <label>
-      Nome *
-      <input type="text" name="nome" value="<%= dados.nome || '' %>" required />
-    </label>
+    <div class="form-card">
+      <div class="form-card-header">
+        <h2 class="section-title">Informações do Parceiro</h2>
+        <p class="card-subtitle">Campos marcados com <span class="required">*</span> são obrigatórios</p>
+      </div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="nome">Nome <span class="required">*</span></label>
+            <input class="form-control" type="text" id="nome" name="nome"
+              value="<%= dados.nome || '' %>" placeholder="Razão social ou nome do parceiro" required />
+          </div>
 
-    <label>
-      Tipo de pessoa *
-      <select name="tipo_pessoa" required>
-        <option value="">Selecione...</option>
-        <option value="fisica" <%= dados.tipo_pessoa === 'fisica' ? 'selected' : '' %>>Pessoa Física</option>
-        <option value="juridica" <%= dados.tipo_pessoa === 'juridica' ? 'selected' : '' %>>Pessoa Jurídica</option>
-      </select>
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="tipo_pessoa">Tipo de pessoa <span class="required">*</span></label>
+            <select class="form-select" id="tipo_pessoa" name="tipo_pessoa" required>
+              <option value="">Selecione...</option>
+              <option value="fisica" <%= dados.tipo_pessoa === 'fisica' ? 'selected' : '' %>>Pessoa Física</option>
+              <option value="juridica" <%= dados.tipo_pessoa === 'juridica' ? 'selected' : '' %>>Pessoa Jurídica</option>
+            </select>
+          </div>
 
-    <label>
-      CPF/CNPJ *
-      <input type="text" name="cpf_cnpj" value="<%= dados.cpf_cnpj || '' %>" required />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="cpf_cnpj">CPF/CNPJ <span class="required">*</span></label>
+            <input class="form-control" type="text" id="cpf_cnpj" name="cpf_cnpj"
+              value="<%= dados.cpf_cnpj || '' %>" placeholder="000.000.000-00 ou 00.000.000/0000-00"
+              data-mask="cpf-cnpj" required />
+          </div>
 
-    <label>
-      Apelido <span class="opcional">(opcional)</span>
-      <input type="text" name="apelido" value="<%= dados.apelido || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="apelido">Apelido <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="apelido" name="apelido"
+              value="<%= dados.apelido || '' %>" placeholder="Como o parceiro é conhecido" />
+          </div>
 
-    <label>
-      E-mail <span class="opcional">(opcional)</span>
-      <input type="email" name="email" value="<%= dados.email || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="email">E-mail <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="email" id="email" name="email"
+              value="<%= dados.email || '' %>" placeholder="contato@parceiro.com.br" />
+          </div>
 
-    <label>
-      Data de nascimento <span class="opcional">(opcional)</span>
-      <input type="date" name="data_nascimento" value="<%= dados.data_nascimento || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="data_nascimento">Data de nascimento <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="date" id="data_nascimento" name="data_nascimento"
+              value="<%= dados.data_nascimento || '' %>" />
+          </div>
 
-    <label>
-      Nome do acompanhante <span class="opcional">(opcional)</span>
-      <input type="text" name="nome_acompanhante" value="<%= dados.nome_acompanhante || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="nome_acompanhante">Nome do acompanhante <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="nome_acompanhante" name="nome_acompanhante"
+              value="<%= dados.nome_acompanhante || '' %>" placeholder="Pessoa de contato no parceiro" />
+          </div>
 
-    <div class="actions">
-      <button type="submit" class="btn">Salvar</button>
-      <a href="/parceiros" class="btn-link">Cancelar</a>
+          <div class="form-group">
+            <label class="form-label" for="telefone">Telefone <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="telefone" name="telefone"
+              value="<%= dados.telefone || '' %>" placeholder="(00) 00000-0000" data-mask="telefone" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regiao">Região <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="regiao" name="regiao"
+              value="<%= dados.regiao || '' %>" placeholder="Ex: Ribeirão Preto - SP" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inscricao_estadual">Inscrição Estadual <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="inscricao_estadual" name="inscricao_estadual"
+              value="<%= dados.inscricao_estadual || '' %>" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="usina_referencia">Usina de Referência <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="usina_referencia" name="usina_referencia"
+              value="<%= dados.usina_referencia || '' %>" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="area_plantada">Área Plantada <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="area_plantada" name="area_plantada"
+              value="<%= dados.area_plantada || '' %>" placeholder="Ex: 500 hectares" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="tch_medio">TCH Médio <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="tch_medio" name="tch_medio"
+              value="<%= dados.tch_medio || '' %>" placeholder="Ex: 85 toneladas/hectare" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="atr_medio">ATR Médio <span class="optional">(opcional)</span></label>
+            <input class="form-control" type="text" id="atr_medio" name="atr_medio"
+              value="<%= dados.atr_medio || '' %>" placeholder="Ex: 145 kg/tonelada" />
+          </div>
+
+          <div class="form-group span-2">
+            <label class="form-label" for="observacoes">Observações <span class="optional">(opcional)</span></label>
+            <textarea class="form-textarea" id="observacoes" name="observacoes" placeholder="Informações adicionais sobre o parceiro..."><%= dados.observacoes || '' %></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="/parceiros" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-export">Salvar Rascunho</button>
+      <button type="submit" class="btn btn-primary">Enviar para Validação</button>
     </div>
   </form>
 </section>

@@ -1,74 +1,88 @@
-<%- include('../partials/header', { title: 'Editar Parceiro' }) %>
+<%- include('../partials/header', { title: 'Editar Parceiro', active: 'parceiros' }) %>
 
 <section aria-labelledby="titulo-edicao">
-  <h1 id="titulo-edicao">Editar Parceiro</h1>
-  <p class="subtitle">Edição parcial dos dados de um parceiro existente</p>
-
-  <div class="id-box">
-    <p>Editando o parceiro com ID: <code><%= id %></code></p>
+  <div class="page-header">
+    <div class="page-back">
+      <a href="/parceiros/<%= id %>" class="back-btn" aria-label="Voltar para o parceiro">←</a>
+      <div class="page-header-text">
+        <h1 id="titulo-edicao" class="page-title">Editar Parceiro</h1>
+        <p class="subtitle">As alterações serão registradas no histórico de auditoria</p>
+      </div>
+    </div>
   </div>
 
-  <aside class="flash flash-info" role="note">
-    <strong>Preencha apenas os campos que deseja alterar.</strong>
-    Campos em branco não serão modificados (comportamento PATCH).
-  </aside>
+  <div class="flash flash-info" role="note">
+    <span class="flash-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
+    <span class="flash-text"><strong>Preencha apenas os campos que deseja alterar.</strong> Campos em branco não serão modificados (comportamento PATCH).</span>
+  </div>
 
   <%- include('../partials/flash', { error: locals.error }) %>
 
   <form action="/parceiros/<%= id %>/editar" method="POST" novalidate>
-    <label>
-      Nome
-      <input type="text" name="nome" value="<%= dados.nome || '' %>" />
-    </label>
+    <div class="form-card">
+      <div class="form-card-header">
+        <h2 class="section-title">Dados do Parceiro</h2>
+        <p class="card-subtitle">Editando o parceiro <span class="code"><%= id %></span></p>
+      </div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="nome">Nome</label>
+            <input class="form-control" type="text" id="nome" name="nome" value="<%= dados.nome || '' %>" />
+          </div>
 
-    <label>
-      Tipo de pessoa
-      <select name="tipo_pessoa">
-        <option value="">(não alterar)</option>
-        <option value="fisica" <%= dados.tipo_pessoa === 'fisica' ? 'selected' : '' %>>Pessoa Física</option>
-        <option value="juridica" <%= dados.tipo_pessoa === 'juridica' ? 'selected' : '' %>>Pessoa Jurídica</option>
-      </select>
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="tipo_pessoa">Tipo de pessoa</label>
+            <select class="form-select" id="tipo_pessoa" name="tipo_pessoa">
+              <option value="">(não alterar)</option>
+              <option value="fisica" <%= dados.tipo_pessoa === 'fisica' ? 'selected' : '' %>>Pessoa Física</option>
+              <option value="juridica" <%= dados.tipo_pessoa === 'juridica' ? 'selected' : '' %>>Pessoa Jurídica</option>
+            </select>
+          </div>
 
-    <label>
-      CPF/CNPJ
-      <input type="text" name="cpf_cnpj" value="<%= dados.cpf_cnpj || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="cpf_cnpj">CPF/CNPJ</label>
+            <input class="form-control" type="text" id="cpf_cnpj" name="cpf_cnpj"
+              value="<%= dados.cpf_cnpj || '' %>" data-mask="cpf-cnpj" />
+          </div>
 
-    <label>
-      Apelido
-      <input type="text" name="apelido" value="<%= dados.apelido || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="apelido">Apelido</label>
+            <input class="form-control" type="text" id="apelido" name="apelido" value="<%= dados.apelido || '' %>" />
+          </div>
 
-    <label>
-      E-mail
-      <input type="email" name="email" value="<%= dados.email || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="email">E-mail</label>
+            <input class="form-control" type="email" id="email" name="email" value="<%= dados.email || '' %>" />
+          </div>
 
-    <label>
-      Data de nascimento
-      <input type="date" name="data_nascimento" value="<%= dados.data_nascimento || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="data_nascimento">Data de nascimento</label>
+            <input class="form-control" type="date" id="data_nascimento" name="data_nascimento" value="<%= dados.data_nascimento || '' %>" />
+          </div>
 
-    <label>
-      Nome do acompanhante
-      <input type="text" name="nome_acompanhante" value="<%= dados.nome_acompanhante || '' %>" />
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="nome_acompanhante">Nome do acompanhante</label>
+            <input class="form-control" type="text" id="nome_acompanhante" name="nome_acompanhante" value="<%= dados.nome_acompanhante || '' %>" />
+          </div>
 
-    <label>
-      Status
-      <select name="status">
-        <option value="">(não alterar)</option>
-        <option value="rascunho" <%= dados.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
-        <option value="pendente" <%= dados.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
-        <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
-        <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
-      </select>
-    </label>
+          <div class="form-group">
+            <label class="form-label" for="status">Status</label>
+            <select class="form-select" id="status" name="status">
+              <option value="">(não alterar)</option>
+              <option value="rascunho" <%= dados.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
+              <option value="pendente" <%= dados.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
+              <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
+              <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div class="actions">
-      <button type="submit" class="btn">Salvar alterações</button>
-      <a href="/parceiros" class="btn-link">Cancelar</a>
+    <div class="form-actions">
+      <a href="/parceiros/<%= id %>" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Salvar Alterações</button>
     </div>
   </form>
 </section>

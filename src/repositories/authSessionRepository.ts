@@ -45,6 +45,22 @@ export class AuthSessionRepository {
     return rows[0] ?? null;
   }
 
+  async buscarSessaoAtivaPorToken(token: string): Promise<AuthSessao | null> {
+    await garantirTabelaSessoes();
+
+    const { rows } = await pool.query<AuthSessao>(
+      `SELECT *
+         FROM auth_sessoes
+        WHERE token = $1
+          AND ativa = TRUE
+          AND expira_em > NOW()
+        LIMIT 1`,
+      [token]
+    );
+
+    return rows[0] ?? null;
+  }
+
   async encerrarSessao(id: string, revogadaPor?: string): Promise<AuthSessao | null> {
     await garantirTabelaSessoes();
 

@@ -536,72 +536,94 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
-#### Justificativa, derivação e mensuração dos RNFs
+Os Requisitos Não Funcionais (RNFs) definem os critérios de qualidade que o sistema deve atender para que os requisitos funcionais sejam úteis, confiáveis e sustentáveis no contexto de uso da ATVOS. Eles complementam os RFs ao estabelecer parâmetros de experiência, segurança, desempenho, manutenção, rastreabilidade e organização do produto.
 
-Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema da ATVOS: substituir controles dispersos por uma base única, rastreável e segura para parceiros, terras, usuários e interações. Nesta sprint, os mesmos RNFs foram atualizados com decisões técnicas concretas do backend, preservando os eixos já mapeados e relacionando-os à ISO/IEC 25010.
+Para este projeto, os RNFs foram organizados nos oito eixos definidos para a documentação da solução, tomando a ISO/IEC 25010 como referência e adaptando sua aplicação ao MVP do CRM agrícola. Os critérios abaixo foram formulados de modo verificável, com relação explícita aos fluxos principais: autenticação, gestão de usuários, cadastro e validação de parceiros, consulta por filtros, histórico de interações, vínculos com terras, exportação e dashboard.
 
-| Eixo | Derivação a partir do contexto da ATVOS | Forma de mensuração | Conexão com RF/RN | Critério de aceite conceitual |
+| ID | Eixo | Requisito Não Funcional | Relação com RFs/fluxos principais | Critério de aceite / Forma de verificação |
 |---|---|---|---|---|
-| **USAB — Usabilidade** | A necessidade de reduzir busca manual em planilhas evoluiu para endpoints de listagem, detalhe, filtros, histórico e exportação, que darão suporte direto às telas da Sprint 4. | Verificar se o frontend consome esses endpoints e permite acessar listagem, perfil e histórico sem navegação excessiva. | RF007, RF008, RF012, RF016, RF017; RN04, RN08. | Usuários internos devem conseguir localizar e consultar um parceiro a partir da listagem e dos filtros, com dados vindos da API. |
-| **CONF — Confiabilidade** | A exigência de uma base única e consistente evoluiu para validações com Zod, regras em services, constraints no banco, tratamento de duplicidade e testes de persistência. | Testes automatizados devem confirmar rejeição de payload inválido, CPF/CNPJ/e-mail duplicado, FK inexistente e persistência correta. | RF009, RF010, RF018, RF019; RN09, RN10, RN11. | O sistema deve impedir registros inconsistentes e preservar dados auditáveis como `criado_por`, `atualizado_por` e timestamps. |
-| **DES — Desempenho** | A necessidade de consulta operacional rápida evoluiu para repositories com filtros no banco, `EXISTS` para vínculos, `ORDER BY` e seleção apenas dos campos necessários. | Verificar tempo de resposta dos endpoints de listagem, filtros, detalhe, dashboard e exportação em base de teste. | RF007, RF008, RF016, RF017. | Consultas prioritárias devem responder sem processamento pesado fora do banco e permanecer adequadas ao uso interno. |
-| **SUP — Suportabilidade** | A necessidade de evolução contínua do CRM evoluiu para arquitetura em camadas: `routes`, `controllers`, `services`, `repositories`, `schemas`, `models`, `errors` e `middlewares`. | Verificar se novos fluxos mantêm separação Controller-Service-Repository e possuem testes próprios. | RF004 a RF023; RN11, RN12. | Funcionalidades devem ser mantidas sem concentrar regra de negócio em rotas, views ou acesso direto ao banco. |
-| **SEG — Segurança** | A necessidade de proteger dados estratégicos evoluiu para login com hash/JWT, encerramento de sessão, inativação lógica e validações de perfil em operações sensíveis. | Testes devem cobrir credenciais inválidas, token ausente, perfil sem permissão, usuário inexistente e usuário inativo. | RF003, RF011, RF020; RN02, RN03, RN06, RN15. | Usuários sem autenticação ou permissão não devem executar operações protegidas, como gestão e inativação de usuários. |
-| **CAP — Capacidade** | O uso interno por múltiplos colaboradores evoluiu para uma API stateless em Express, com conexão PostgreSQL/Supabase e queries centralizadas nos repositories. | Validar cenários básicos de concorrência em consultas, cadastros e edições durante a integração frontend-backend. | RF004, RF005, RF006, RF007, RF008, RF016. | O sistema deve suportar uso interno simultâneo sem indisponibilidade nos fluxos prioritários. |
-| **REST — Restrições de Design** | A restrição de aplicação web sem app móvel ou integração corporativa automática foi mantida e materializada em rotas HTTP, JSON, EJS auxiliar e documentação em `public/docs/index.html`. | Verificar que os fluxos priorizados são executáveis por navegador ou cliente HTTP, sem dependência de ERP, SharePoint ou APIs externas. | Todos os RFs; restrição de escopo do MVP. | O MVP deve permanecer como aplicação web/API executável em ambiente Node/PostgreSQL. |
-| **ORG — Organizacionais** | O recorte acordado com a ATVOS evoluiu para backend focado nos módulos planejados: usuários, parceiros, terras, vínculos, interações, histórico, dashboard e exportação. | Conferir se a RTM e a documentação de endpoints permanecem limitadas ao escopo aprovado. | RF001 a RF023; regras de negócio associadas ao MVP. | O projeto não deve implementar integrações ou módulos fora do escopo definido para a entrega acadêmica. |
+| RNF-USAB-01 | Usabilidade | O sistema deve apresentar formulários de cadastro e edição com campos obrigatórios identificáveis, mensagens de erro compreensíveis e indicação visual de sucesso ou falha nas operações. | RF001, RF002, RF004, RF005, RF010, RF021, RF022, RF023; fluxos de cadastro de usuários, cadastro/edição de parceiros e validação. | Verificar por teste manual e/ou teste de interface os cenários de envio válido, campos obrigatórios ausentes, e-mail duplicado, CPF/CNPJ duplicado e transição de status inválida; o usuário deve compreender o motivo do erro sem consultar documentação técnica. |
+| RNF-USAB-02 | Usabilidade | O sistema deve permitir que a listagem, os filtros e o perfil detalhado de parceiros sejam navegáveis em telas desktop e mobile sem sobreposição de informações críticas. | RF007, RF008, RF016, RF017; fluxos de listagem de parceiros, filtro por nome/região/área/tipo, perfil do parceiro e exportação. | Verificar as telas de login, listagem, filtros, detalhe, cadastro e exportação em largura desktop e mobile; botões, campos, tabelas e mensagens devem permanecer legíveis e acionáveis. |
+| RNF-CONF-01 | Confiabilidade | O sistema deve validar dados de entrada antes da persistência, rejeitando payloads inválidos, identificadores duplicados e referências inexistentes. | RF004, RF005, RF009, RF010, RF015, RF018, RF019; fluxos de cadastro de usuários, parceiros, terras e vínculos parceiro-terra. | Executar testes automatizados de controllers e services para payload inválido, CPF/CNPJ/e-mail duplicado, usuário responsável inexistente, terra inexistente e parceiro inexistente; a API deve retornar erros controlados sem gravar dados inconsistentes. |
+| RNF-CONF-02 | Confiabilidade | O sistema deve preservar a consistência dos fluxos de status, impedindo transições incompatíveis entre rascunho, pendente, ativo, devolvido e inativo. | RF012, RF021, RF022, RF023; fluxos de envio para validação, aprovação, devolução e exclusão lógica. | Executar testes automatizados para envio de rascunho/devolvido para pendente, aprovação de pendente para ativo, devolução de pendente para devolvido e bloqueio de transições inválidas; registros inativos não devem aparecer nas consultas padrão. |
+| RNF-DESEMP-01 | Desempenho | As páginas e endpoints dos fluxos prioritários devem responder em até 3 segundos em ambiente local ou de homologação com base acadêmica de testes. | RF007, RF008, RF016, RF017; fluxos de listagem, filtros, perfil detalhado, dashboard e exportação. | Medir o tempo de resposta de `GET /api/parceiros`, `GET /api/parceiros/:id`, filtros combinados, `GET /dashboards/interacoes` e `GET /parceiros/exportar`; cada operação deve concluir em até 3 segundos sem travamento perceptível. |
+| RNF-DESEMP-02 | Desempenho | As consultas de listagem e filtros devem delegar filtragem e ordenação ao banco de dados, evitando processamento desnecessário na camada de controller ou view. | RF007, RF012, RF016; fluxos de listagem de parceiros, listagem de terras e aplicação de filtros. | Revisar repositories e testes de filtros para confirmar uso de parâmetros de consulta, `WHERE`, ordenação e exclusão de inativos no banco; não deve haver filtragem principal feita manualmente após carregar todos os registros. |
+| RNF-SUP-01 | Suportabilidade | Novas funcionalidades devem seguir a arquitetura em camadas documentada, separando rotas, controllers, services, repositories, schemas, models, errors e middlewares. | RF001 a RF023; todos os fluxos implementados na WebAPI. | Revisar a implementação de cada novo fluxo; regra de negócio deve ficar em service, acesso a banco em repository, validação em schema/controller e tratamento de falhas em errors/middleware. |
+| RNF-SUP-02 | Suportabilidade | Cada endpoint ou fluxo relevante deve possuir documentação objetiva e, quando aplicável, testes automatizados de sucesso, erro e persistência. | RF001, RF004, RF005, RF006, RF007, RF008, RF013, RF015, RF016, RF017, RF020, RF021, RF022, RF023; fluxos cobertos na documentação da WebAPI e RTM. | Conferir a existência de documentação em `documentos/`, tabela de endpoints na seção 3.7 e testes em `src/tests` ou `src/test`; alterações futuras devem atualizar a RTM e a documentação correspondente. |
+| RNF-SEG-01 | Segurança | O sistema deve exigir autenticação para acesso aos fluxos protegidos e impedir que usuários inativos mantenham sessões válidas. | RF011, RF020; fluxos de login, revogação de sessão e inativação de usuários. | Executar testes para credenciais válidas, senha incorreta, usuário inexistente, token ausente, sessão revogada e usuário inativo; operações protegidas devem retornar erro controlado quando a autenticação não for válida. |
+| RNF-SEG-02 | Segurança | O sistema deve aplicar controle de acesso por perfil no backend, impedindo operações administrativas ou de alteração por usuários sem permissão. | RF001, RF002, RF003, RF004, RF005, RF007, RF008, RF020; fluxos de gestão de usuários, edição de dados, consulta e inativação. | Verificar por testes e revisão de rotas/services que administrador, editor e observador acessam apenas as operações previstas; o frontend não pode ser a única barreira de autorização. |
+| RNF-CAP-01 | Capacidade | O sistema deve suportar uso interno simultâneo por pelo menos 20 usuários em operações básicas de consulta, cadastro e edição, sem indisponibilidade dos fluxos principais. | RF004, RF005, RF006, RF007, RF008, RF016; fluxos de cadastro, edição, registro de interações, listagem e filtros. | Realizar teste de carga simples em homologação ou local, simulando requisições concorrentes aos endpoints principais; não deve haver falhas críticas, perda de dados ou degradação que impeça o uso básico. |
+| RNF-CAP-02 | Capacidade | A base deve comportar crescimento gradual de registros de parceiros, terras, vínculos e interações sem exigir mudança estrutural imediata no MVP. | RF006, RF007, RF008, RF013, RF015, RF016, RF017; fluxos de histórico, vínculos N:N, consulta e exportação. | Popular a base de teste com volume representativo para o projeto acadêmico, por exemplo 1.000 parceiros, 1.000 terras e 5.000 interações, e verificar listagem, detalhe, histórico e exportação dentro do limite de desempenho definido. |
+| RNF-RAST-01 | Rastreabilidade | Cada requisito funcional deve manter vínculo documentado com regras de negócio, endpoint, tela ou fluxo, teste e evidência na matriz de rastreabilidade. | RF001 a RF023; RTM da seção 3.9, matriz RF -> RN -> Endpoint da seção 3.1.4 e documentação da WebAPI. | Revisar a RTM a cada sprint; nenhum fluxo central de usuários, parceiros, terras, validação, histórico, exportação ou dashboard deve ficar sem RF, RN, endpoint e teste/evidência associados. |
+| RNF-RAST-02 | Rastreabilidade | O sistema deve registrar autoria e data/hora em criações e alterações, preservando histórico consultável para auditoria dos cadastros. | RF013, RF018, RF019; fluxos de cadastro, edição, histórico de alterações e registro de interações. | Executar testes que confirmem persistência de `criado_por`, `atualizado_por`, timestamps e histórico em `GET /api/parceiros/:id/historico`; alterações anteriores devem permanecer acessíveis após edição. |
+| RNF-ORG-01 | Organização | A documentação do projeto deve manter separação clara entre análise de negócio, requisitos, arquitetura, modelagem, endpoints, testes, evidências e ativos visuais. | WAD, README, documentação em `documentos/`, RTM e seções 3.1, 3.2, 3.6, 3.7 e 3.9. | Verificar, antes de cada entrega, se novos conteúdos foram inseridos na seção correta, com nomenclatura consistente e sem duplicar informações conflitantes entre WAD, README e documentos de endpoints. |
+| RNF-ORG-02 | Organização | A estrutura do código e dos documentos deve manter nomenclatura coerente para módulos, RFs, RNs, RNFs, endpoints, testes e evidências. | RF001 a RF023; módulos de autenticação, usuários, parceiros, terras, interações, exportação e dashboard. | Revisar nomes de arquivos, tabelas e referências cruzadas; endpoints documentados devem corresponder às rotas implementadas e testes citados devem existir no repositório. |
+
+#### Restrições de Design
+
+Além dos oito eixos de RNF, o projeto possui restrições de design que delimitam as escolhas técnicas e de produto do MVP. Essas restrições não substituem os RNFs acima; elas definem o contorno dentro do qual a solução deve ser implementada e verificada.
+
+| ID | Restrição de Design | Relação com RFs/fluxos principais | Critério de aceite / Forma de verificação |
+|---|---|---|---|
+| RD-01 | O MVP deve permanecer como aplicação web interna, acessível por navegador e por rotas HTTP, sem aplicativo móvel nativo nesta entrega. | Todos os RFs; fluxos de login, usuários, parceiros, terras, interações, dashboard e exportação. | Verificar que os fluxos implementados estão disponíveis por views HTML ou endpoints HTTP documentados, sem dependência de app mobile para uso básico. |
+| RD-02 | A WebAPI deve manter a convenção de rotas JSON sob `/api/...` e rotas HTML/formulários em caminhos de navegação como `/login`, `/parceiros` e `/usuarios`. | RF001 a RF023; documentação de endpoints da seção 3.7. | Conferir `src/app.ts`, `src/routes/` e a tabela de endpoints; novas rotas devem seguir a mesma separação entre contratos JSON e navegação HTML. |
+| RD-03 | O sistema não deve depender de integrações automáticas com ERP, SharePoint, sistemas financeiros ou ferramentas corporativas externas no escopo do MVP. | Escopo do minimundo; fluxos de cadastro, consulta, exportação e histórico. | Verificar que cadastro, consulta, validação, histórico e exportação funcionam com a base PostgreSQL/Supabase e arquivos gerados pela aplicação, sem chamada obrigatória a sistemas externos. |
+| RD-04 | A implementação deve seguir a arquitetura Node.js, Express, TypeScript e PostgreSQL/Supabase já documentada, mantendo separação em camadas. | RF001 a RF023; arquitetura da seção 3.2 e fluxos da WebAPI. | Revisar estrutura de pastas, imports e responsabilidades; novas funcionalidades devem respeitar routes, controllers, services, repositories, schemas, models, errors e middlewares. |
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
-| RF | US relacionada | RN associadas | Endpoint visto nos diagramas | Método |
+| RF | US relacionada | RN associadas | Endpoint | Método |
 |---|---|---|---|---|
 | RF001 | US08 | RN01, RN03 | `/api/usuarios` | POST |
-| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id` | PUT | 
-| RF002 | US08, US09 | RN01, RN06 | `/usuarios/:id/inativar` | PUT | 
-| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | PUT | 
-| RF004 | US01, US02 | RN09, RN10, RN11 | `/parceiros` | POST |
-| RF005 | US05 | RN10, RN11, RN12, RN19, RN20 | `/parceiros/:id` | PUT |
-| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST | 
-| RF007 | US04, US06 | RN04, RN08 | `/parceiros` | GET | 
-| RF008 | US04 | RN04, RN08 | `/parceiros/:id` | GET |
-| RF009 | US01, US02, US08 | RN09 | `/api/usuarios` | POST | 
-| RF009 | US01, US02, US08 | RN09 | `/parceiros` | POST | 
-| RF010 | US01, US02, US08 | RN10 | `/api/usuarios` | POST | 
-| RF010 | US01, US02, US08 | RN10 | `/parceiros` | POST |
-| RF010 | US01, US02, US08 | RN10 | `/parceiros/:id` | PUT |
-| RF010 | US01, US02, US08 | RN10 | `/terras` | POST | 
-| RF010 | US01, US02, US08 | RN10 | `/terras/:id` | PUT | 
-| RF011 | US08, US09 | RN02 | `/login` | POST | 
-| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros` | GET | 
-| RF012 | US04, US06, US07 | RN07, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET | 
-| RF012 | US04, US06, US07 | RN07, RN08 | `/terras` | GET | 
-| RF013 | US05 | RN12 | `/parceiros/:id/historico` | GET | 
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/usuarios/:id/inativar` | PUT | 
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/parceiros/:id` | PUT |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/terras/:id` | PUT | 
-| RF015 | US01, US02 | RN13, RN14 | `/parceiros/:id/terras` | GET, POST |
-| RF015 | US01, US02 | RN13, RN14 | `/terras/:id/parceiros` | GET, POST | 
-| RF016 | US06 | RN04, RN08 | `/parceiros?nome=&regiao=&area=&tipo=` | GET | 
+| RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id` | PUT |
+| RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id/inativar` | PUT |
+| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | PUT |
+| RF004 | US01, US02 | RN05, RN10 | `/api/parceiros` | POST |
+| RF005 | US05 | RN10, RN19, RN20 | `/api/parceiros/:id` | PATCH |
+| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF007 | US04, US06 | RN04, RN08 | `/api/parceiros` | GET |
+| RF008 | US04 | RN04, RN08 | `/api/parceiros/:id` | GET |
+| RF009 | US01, US02, US08 | RN09 | `/api/usuarios` | POST |
+| RF009 | US01, US02, US08 | RN09 | `/api/parceiros` | POST |
+| RF009 | US01, US02, US08 | RN09 | `/api/parceiros/:id` | PATCH |
+| RF010 | US01, US02, US08 | RN10 | `/api/usuarios` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/api/parceiros` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/api/parceiros/:id` | PATCH |
+| RF010 | US01, US02, US08 | RN10 | `/api/terras` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/api/terras/:id` | PUT |
+| RF011 | US08, US09 | RN02 | `/login` | POST |
+| RF012 | US04, US06, US07 | RN07, RN08 | `/api/parceiros` | GET |
+| RF012 | US04, US06, US07 | RN07, RN08 | `/api/parceiros/:id` | GET |
+| RF012 | US04, US06, US07 | RN07, RN08 | `/api/terras` | GET |
+| RF013 | US05 | RN12 | `/api/parceiros/:id/historico` | GET |
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/usuarios/:id/inativar` | PUT |
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/api/parceiros/:id` | PATCH |
+| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/api/terras/:id` | PUT |
+| RF015 | US01, US02 | RN13, RN14 | `/api/parceiros/:id/terras` | GET, POST |
+| RF015 | US01, US02 | RN13, RN14 | `/api/terras/:id/parceiros` | GET, POST |
+| RF016 | US06 | RN04, RN08 | `/api/parceiros?nome=&regiao=&area=&tipo=` | GET |
 | RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST | 
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT | 
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros` | POST | 
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id` | PUT | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
 | RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras` | POST | 
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras/:id` | PUT | 
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
 | RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
 | RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros` | POST | 
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id` | PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
 | RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras` | POST | 
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/terras/:id` | PUT | 
-| RF020 | US09 | RN15 | `/usuarios/:id/inativar` | PUT | 
-| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT | 
-| RF021 | US01, US02 | RN16 | `/parceiros/:id/validacao` | PUT | 
-| RF022 | US11 | RN17 | `/parceiros/:id/aprovar` | PUT | 
-| RF023 | US11 | RN17 | `/parceiros/:id/devolver` | PUT | 
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
+| RF020 | US09 | RN15 | `/usuarios/:id/inativar` | PUT |
+| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT |
+| RF021 | US01, US02 | RN16 | `/api/parceiros/:id/validacao` | PUT |
+| RF022 | US11 | RN17 | `/api/parceiros/:id/aprovar` | PUT |
+| RF023 | US11 | RN17 | `/api/parceiros/:id/devolver` | PUT |
+| RF024 | Sem US prioritária associada nesta Sprint | — | — | — |
+| RF025 | Sem US prioritária associada nesta Sprint | RN18 | — | — |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
@@ -2702,7 +2724,8 @@ Rotas JSON seguem a convenção `/api/...` para recursos de API, enquanto rotas 
 | Método | Rota | Objetivo | Entrada | Saída esperada | RF relacionado |
 | --- | --- | --- | --- | --- | --- |
 | GET | `/login` | Renderizar a tela de login. | Sem body. | HTML da tela de login. | RF011 |
-| POST | `/login` | Autenticar usuário por e-mail e senha. | Body JSON com `email` e `senha`. | `200` com token, usuário e sessão; `400`, `401`, `404` ou `500` em erro. | RF011 |
+| POST | `/login` | Autenticar usuário por e-mail e senha. | Body JSON ou formulário com `email` e `senha`. | `200` com token, usuário e sessão para JSON; cookie HttpOnly e redirecionamento para `/parceiros` no formulário web; `400`, `401` ou `500` em erro. | RF011 |
+| POST | `/logout` | Encerrar a sessão do usuário autenticado no fluxo web. | Cookies de autenticação ativos. | Sessão revogada quando existir, cookies limpos e redirecionamento para `/login`. | RF020 |
 | PUT | `/auth/sessoes/:id` | Encerrar/revogar uma sessão autenticada. | Path `id`; body opcional com `revogada_por`. | `200` com sessão encerrada; `404`, `409`, `422` ou `500` em erro. | RF020 |
 | POST | `/api/usuarios` | Cadastrar usuário interno com perfil de acesso. | Body JSON com `nome`, `email` e `perfil_acesso_id`. | `201` com usuário criado; `400`, `409`, `422` ou `500` em erro. | RF001, RF009, RF010 |
 | GET | `/usuarios/:id/editar` | Renderizar formulário de edição de usuário. | Path `id`. | HTML do formulário; `404` se usuário não existir. | RF002 |
@@ -3040,7 +3063,7 @@ Com a União da Indústria de Cana-de-Açúcar e Bioenergia (ÚNICA) e o Centro 
 
 #### Aspectos Demográficos
 Analisando os profissionais das áreas de Estratégias de Terras e Fornecedores, é notórios, em ambos os genêros, que a média de idade varia predominantemente de 25 a 55 anos. 
-Em relação a formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e nas 8 unidades nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo.
+Em relação a formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e nas 8 unidades nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo (ATVOS,2026).
 
 #### Aspectos Psicográficos e Comportamentais
 Durante as pesquisas foi observado uma forte busca cultural pela manutenção das ferramentas e dos métodos tradicionais de controle, as equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e informções. Os times demonstram alto senso de responsabilidade e urgência, entretanto também demonstram sofrimento com fadiga operacional advinda do retrabalho.
@@ -3050,11 +3073,17 @@ As principais dores se voltam para a falta de governança de dados e na perda do
 
 ## 6.5 Posicionamento
 
-*a) Proposta de Valor Única (até 250 palavras)*
-*Defina de maneira clara o que torna a sua aplicação única e valiosa para o mercado.*
+#### 6.5.1 Proposta de Valor Única (até 250 palavras)
+A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento de parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no Value Proposition Canvas de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida (Osterwalder et al., 2014). A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados (Inteli, 2026). Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e 108 fornecedores é garantida de forma integral (Atvos, 2026). Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
 
-*b) Estratégia de Diferenciação (até 250 palavras)*
-*Explique como sua aplicação se destacará da concorrência, evidenciando a lógica por trás do posicionamento.*
+**a) Minimizadores de Dores (Pain Relievers):**
+O risco de perda de dados e de informações essenciais para negociações e para a manutenção de relacionamentos de longo prazo com parceiros e fornecedores é mitigado. Dessa forma, o retrabalho ligado à distribuição de dados em múltiplos arquivos individuais é evitado (Inteli, 2026)
+
+**b) Criadores de ganhos (Gain Creators):**
+A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e de painéis de visualização de dados estatísticos nativos. Tais ferramentas dão suporte direto para a realização de consultas rápidas e para a geração de listas segmentadas (Osterwalder et al., 2014).
+
+#### 6.5.2 Posicionamento e Diferenciação
+No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Relacionamento Agrícola, moldado estritamente como uma solução Business-to-Employee (B2E), visando à ocupação de um espaço mental e funcional único na rotina operacional (Ries & Trout, 2001). Dessa maneira, identificou-se que a principal diferenciação da aplicação desenvolvida está na modernização das alternativas utilizadas no mercado, diferentemente de planilhas e outros sistemas corporativos tradicionais, os quais podem gerar erros e dispersão de dados, além de possuírem telas genéricas e custos altos (Inteli, 2026). O desenvolvimento do protótipo foi voltado especificamente para agilizar o trabalho do setor sucroenergético (Atvos, 2026). Diante disso, o produto aposta em uma identidade eficiente, ágil e sustentável, para garantir que a ferramenta facilite a rotina diária dos times de Negócios Agrícolas (Ries & Trout, 2001). Conclui-se, portanto, que essa entrega consolida um produto completo, com um banco de dados estruturado e painéis de visualização autênticos, que funciona de forma independente e não exige contratação ou custos à parte com softwares externos.
 
 ## 6.6 Estratégia de Marketing 
 
@@ -3129,18 +3158,21 @@ MODESTO, Farina et al, Psicodinâmica das cores em comunicação. In: BLUCHER, [
 
 ATVOS. *Guia da marca Atvos*. São Paulo: Atvos, 2023. Material institucional disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli) por meio do Google Drive da disciplina. Acesso em: 20 maio 2026.
 
-COMPANHIA NACIONAL DE ABASTECIMENTO (CONAB). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. Brasília, DF: Conab, 17 abr. 2026. Disponível em: https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26. Acesso em: 2 jun. 2026.
+Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 (Documento interno corporativo). Estratégia de Terras e Fornecedores.
 
 AGÊNCIA NACIONAL DO PETRÓLEO, GÁS NATURAL E BIOCOMBUSTÍVEIS (ANP). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. Brasília, DF: ANP, 31 mar. 2026. Disponível em: https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026. Acesso em: 2 jun. 2026.
+
+COMPANHIA NACIONAL DE ABASTECIMENTO (CONAB). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. Brasília, DF: Conab, 17 abr. 2026. Disponível em: https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26. Acesso em: 2 jun. 2026.
 
 GRAND VIEW RESEARCH. Customer Relationship Management Market Size, Share & Trends Analysis Report, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/industry-analysis/customer-relationship-management-crm-market. Acesso em: 2 jun. 2026.
 
 GRAND VIEW RESEARCH. Latin America Customer Relationship Management Market Size & Outlook, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/horizon/outlook/customer-relationship-management-market/latin-america. Acesso em: 2 jun. 2026.
 
-MINISTÉRIO DA AGRICULTURA E PECUÁRIA (MAPA). Plano de Transformação Digital — PTD. Brasília, DF: MAPA, 23 jan. 2025. Disponível em: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd. Acesso em: 2 jun. 2026.
+Instituto de Tecnologia e Liderança [Inteli]. (2026). Projeto Parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 (Documento de escopo de projeto). Campus Inteli.
 
 INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
 
+<<<<<<< HEAD
 AEGRO. Aegro: sistema de gestão rural. Porto Alegre: Aegro, 2026. Disponível em: https://aegro.com.br/. Acesso em: 8 jun. 2026.
 
 BUNGE. Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. St. Louis: Bunge, 2024. Disponível em: https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil. Acesso em: 8 jun. 2026.
@@ -3155,6 +3187,13 @@ SAP. Customer Experience and Customer Relationship Management. Walldorf: SAP, 20
 
 SÃO MARTINHO. São Martinho. São Paulo: São Martinho, 2026. Disponível em: https://www.saomartinho.com.br/. Acesso em: 8 jun. 2026.
 
+=======
+MINISTÉRIO DA AGRICULTURA E PECUÁRIA (MAPA). Plano de Transformação Digital — PTD. Brasília, DF: MAPA, 23 jan. 2025. Disponível em: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd. Acesso em: 2 jun. 2026.
+
+Osterwalder, A., Pigneur, Y., Bernarda, G., & Smith, A. (2014). Value Proposition Design: How to create products and services customers want. John Wiley & Sons.
+
+Ries, A., & Trout, J. (2001). Positioning: The battle for your mind (20th anniversary ed.). McGraw-Hill.
+>>>>>>> 332c7424bb95dfdd907ebfcb7c8b434127d02bc3
 # <a name="c9"></a>Anexos
 
 ## Classificação de Impacto, Probabilidade e Matriz de Risco

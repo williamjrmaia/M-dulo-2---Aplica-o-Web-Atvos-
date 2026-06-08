@@ -17,10 +17,12 @@ import {
   processarEdicao,
   vincularTerraAoParceiro,
 } from '../controllers/parceiroController';
+import { requireAuth } from '../middlewares/requireAuth';
 
 // ─── API JSON (montado em /api/parceiros) ────────────────────────────────────
 export const apiRouter = Router();
 
+apiRouter.use(requireAuth);
 apiRouter.post('/', createParceiro);
 apiRouter.patch('/:id', editarParceiro);
 apiRouter.get('/', listarParceiros);
@@ -35,6 +37,7 @@ apiRouter.get('/:id', obterParceiroPorId);
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
 export const viewRouter = Router();
 
+viewRouter.use(requireAuth);
 viewRouter.get('/novo', renderFormCadastro);
 viewRouter.post('/', processarCadastro);
 viewRouter.get('/', renderListaParceiros);

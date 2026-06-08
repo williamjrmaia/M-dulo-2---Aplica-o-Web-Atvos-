@@ -10,6 +10,11 @@ export class UserService {
     return this.userRepository.listarPerfis();
   }
 
+  async listarUsuarios(): Promise<UsuarioComPerfil[]> {
+    console.log('[SERVICE] listarUsuarios');
+    return this.userRepository.listarUsuarios();
+  }
+
   async buscarUsuario(id: string): Promise<UsuarioComPerfil | null> {
     console.log(`[SERVICE] buscarUsuario: ${id}`);
     return this.userRepository.buscarPorId(id);

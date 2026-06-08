@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/userController';
+import { requireAuth } from '../middlewares/requireAuth';
 import { UserRepository } from '../repositories/userRepository';
 import { UserService } from '../services/userService';
 
@@ -9,9 +10,27 @@ const repository = new UserRepository();
 const service = new UserService(repository);
 const controller = new UserController(service);
 
+router.use(requireAuth);
+
 router.post('/api/usuarios', (req, res) => {
   console.log('[ROUTE] POST /api/usuarios recebida');
   return controller.criaUsuario(req, res);
+});
+
+// ─── Views HTML: gestão e cadastro de usuários ───────────────────────────────
+router.get('/usuarios', (req, res) => {
+  console.log('[ROUTE] GET /usuarios recebida');
+  return controller.listarUsuariosView(req, res);
+});
+
+router.get('/usuarios/novo', (req, res) => {
+  console.log('[ROUTE] GET /usuarios/novo recebida');
+  return controller.novoUsuarioView(req, res);
+});
+
+router.post('/usuarios', (req, res) => {
+  console.log('[ROUTE] POST /usuarios (formulario) recebida');
+  return controller.criarUsuarioViaFormulario(req, res);
 });
 
 router.get('/usuarios/:id/editar', (req, res) => {

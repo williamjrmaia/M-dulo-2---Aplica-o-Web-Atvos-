@@ -232,14 +232,13 @@ npm run dev</code></pre>
   "senha": "string"
 }</code></pre>
       <h4>Resposta (200)</h4>
-      <pre><code>{ "token": "…", "usuario": { "id": "…", "nome": "…", "email": "…" } }</code></pre>
+      <pre><code>{ "token": "…", "usuario": { "id": "…", "nome": "…", "email": "…" }, "sessao": { "id": "…", "expira_em": "…" } }</code></pre>
       <h4>Status codes</h4>
       <table>
         <tr><th>Código</th><th>Quando</th></tr>
         <tr><td><span class="sc s2">200</span></td><td>Autenticado</td></tr>
         <tr><td><span class="sc s4">400</span></td><td>"E-mail e senha são obrigatórios" / "Formato de e-mail inválido"</td></tr>
-        <tr><td><span class="sc s4">401</span></td><td>"Credenciais inválidas"</td></tr>
-        <tr><td><span class="sc s4">404</span></td><td>"Usuário não cadastrado"</td></tr>
+        <tr><td><span class="sc s4">401</span></td><td>"Credenciais inválidas" para e-mail inexistente ou senha incorreta</td></tr>
         <tr><td><span class="sc s5">500</span></td><td>Erro interno do servidor</td></tr>
       </table>
     </div>

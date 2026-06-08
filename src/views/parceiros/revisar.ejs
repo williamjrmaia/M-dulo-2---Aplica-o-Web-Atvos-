@@ -1,0 +1,191 @@
+<%- include('../partials/header', { title: naoEncontrado ? 'Registro não encontrado' : `Revisar: ${parceiro.nome}`, active: 'validacao' }) %>
+
+<% if (naoEncontrado) { %>
+  <section aria-labelledby="titulo-404">
+    <div class="page-header">
+      <div class="page-back">
+        <a href="/validacao" class="back-btn" aria-label="Voltar para validação">←</a>
+        <div class="page-header-text">
+          <h1 id="titulo-404" class="page-title">Registro não encontrado</h1>
+        </div>
+      </div>
+    </div>
+    <div class="empty-state">
+      <p class="empty-title">Registro não encontrado</p>
+      <p class="empty-text">Nenhum registro corresponde ao ID informado.</p>
+      <a href="/validacao" class="btn btn-primary empty-action">Voltar para Validação</a>
+    </div>
+  </section>
+<% } else { %>
+  <%- include('../partials/flash', { error: locals.error }) %>
+
+  <section aria-labelledby="titulo-revisar">
+    <div class="page-header">
+      <div class="page-back">
+        <a href="/validacao" class="back-btn" aria-label="Voltar para validação">←</a>
+        <div class="page-header-text">
+          <h1 id="titulo-revisar" class="page-title">Revisar Registro</h1>
+          <p class="subtitle"><%= parceiro.nome %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-layout">
+      <div class="detail-main">
+        <article class="card" aria-labelledby="dados-cadastrais">
+          <div class="card-header">
+            <h2 class="card-title" id="dados-cadastrais">Dados Cadastrais</h2>
+            <span class="badge badge-<%= parceiro.status %>"><%= parceiro.status %></span>
+          </div>
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="definition-list">
+                <p class="term">Nome</p>
+                <p class="value"><%= parceiro.nome %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">CPF/CNPJ</p>
+                <p class="value"><%= parceiro.cpf_cnpj %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">Tipo</p>
+                <p class="value"><%= parceiro.tipo_pessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">E-mail</p>
+                <p class="value"><%= parceiro.email || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">Apelido</p>
+                <p class="value"><%= parceiro.apelido || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">Acompanhante</p>
+                <p class="value"><%= parceiro.nome_acompanhante || '—' %></p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="dados-territoriais">
+          <div class="card-header">
+            <h2 class="card-title" id="dados-territoriais">Dados Territoriais</h2>
+          </div>
+          <div class="card-body">
+            <% if (terras && terras.length > 0) { %>
+              <div class="table-wrapper">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Terra</th>
+                      <th scope="col">Área (ha)</th>
+                      <th scope="col">Cidade/UF</th>
+                      <th scope="col">Vínculo</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% terras.forEach(function(t) { %>
+                      <tr>
+                        <td><%= t.nome %></td>
+                        <td><%= t.area_contratada_ha %></td>
+                        <td><%= (t.cidade || '—') + (t.estado ? ' - ' + t.estado : '') %></td>
+                        <td><%= t.tipo_vinculo || '—' %></td>
+                        <td><% if (t.status) { %><span class="badge badge-<%= t.status %>"><%= t.status %></span><% } else { %>—<% } %></td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            <% } else { %>
+              <div class="empty-state">
+                <p class="empty-title">Sem terras vinculadas</p>
+                <p class="empty-text">Este registro ainda não possui terras associadas.</p>
+              </div>
+            <% } %>
+          </div>
+        </article>
+      </div>
+
+      <aside class="detail-sidebar">
+        <article class="card" aria-labelledby="info-envio">
+          <div class="card-header">
+            <h2 class="card-title" id="info-envio">Informações de Envio</h2>
+          </div>
+          <div class="card-body stack-4">
+            <div class="definition-list">
+              <p class="term">Responsável pelo Cadastro</p>
+              <p class="value"><span class="code"><%= parceiro.criado_por %></span></p>
+            </div>
+            <div class="definition-list">
+              <p class="term">Data de Envio</p>
+              <p class="value"><%= parceiro.atualizado_em ? new Date(parceiro.atualizado_em).toLocaleDateString('pt-BR') : new Date(parceiro.criado_em).toLocaleDateString('pt-BR') %></p>
+            </div>
+            <div class="definition-list">
+              <p class="term">Status Atual</p>
+              <p class="value"><span class="badge badge-<%= parceiro.status %>"><%= parceiro.status %></span></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-body stack-3">
+            <button type="button" class="btn btn-primary btn-full" data-modal-open data-modal-target="modal-aprovar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Aprovar
+            </button>
+            <button type="button" class="btn btn-danger btn-full" data-modal-open data-modal-target="modal-devolver">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Devolver com Comentário
+            </button>
+            <a href="/validacao" class="btn btn-secondary btn-full">Voltar</a>
+          </div>
+        </article>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Modal: Aprovar Registro -->
+  <div class="modal-backdrop" id="modal-aprovar" role="dialog" aria-modal="true" aria-labelledby="modal-aprovar-title">
+    <form class="modal-card" action="/validacao/<%= parceiro.id %>/aprovar" method="POST">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-aprovar-title">Aprovar Registro</h2>
+        <button type="button" class="modal-close" data-modal-close aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Confirma a aprovação do registro de <strong><%= parceiro.nome %></strong>? O parceiro passará a ficar ativo no sistema.</p>
+        <div class="form-group">
+          <label class="form-label" for="aprovar-comentario">Comentário <span class="optional">(opcional)</span></label>
+          <textarea class="form-textarea" id="aprovar-comentario" name="comentario" placeholder="Observações sobre a aprovação..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancelar</button>
+        <button type="submit" class="btn btn-primary">Confirmar Aprovação</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal: Devolver Registro -->
+  <div class="modal-backdrop" id="modal-devolver" role="dialog" aria-modal="true" aria-labelledby="modal-devolver-title">
+    <form class="modal-card" action="/validacao/<%= parceiro.id %>/devolver" method="POST">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-devolver-title">Devolver Registro</h2>
+        <button type="button" class="modal-close" data-modal-close aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Informe o motivo da devolução. O analista responsável receberá este comentário.</p>
+        <div class="form-group">
+          <label class="form-label" for="devolver-comentario">Comentário</label>
+          <textarea class="form-textarea" id="devolver-comentario" name="comentario" placeholder="Descreva as correções necessárias..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancelar</button>
+        <button type="submit" class="btn btn-danger">Confirmar Devolução</button>
+      </div>
+    </form>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>
