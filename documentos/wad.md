@@ -559,6 +559,8 @@ Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema d
 | RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id` | PUT |
 | RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id/inativar` | PUT |
 | RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | PUT |
+| RF004 | US01, US02 | RN05, RN10 | `/api/parceiros` | POST |
+| RF005 | US05 | RN10, RN19, RN20 | `/api/parceiros/:id` | PATCH |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
