@@ -3173,6 +3173,10 @@ Instituto de Tecnologia e Liderança [Inteli]. (2026). Projeto Parceiro ATVOS: A
 
 INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
 
+Kotler, P., & Armstrong, G. (2015). Princípios de marketing (15a ed.). Pearson Education.
+
+Kotler, P., & Keller, K. L. (2012). Administração de marketing (14a ed.). Pearson Education.
+
 AEGRO. Aegro: sistema de gestão rural. Porto Alegre: Aegro, 2026. Disponível em: https://aegro.com.br/. Acesso em: 8 jun. 2026.
 
 BUNGE. Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. St. Louis: Bunge, 2024. Disponível em: https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil. Acesso em: 8 jun. 2026.
