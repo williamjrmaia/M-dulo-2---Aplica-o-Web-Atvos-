@@ -3087,16 +3087,16 @@ No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Re
 
 ## 6.6 Estratégia de Marketing 
 
-*a) Produto/Serviço (até 200 palavras)*
+#### 6.6.1 Produto/Serviço
 *Descreva as funcionalidades, benefícios e diferenciais da aplicação*
 
-*b) Preço (até 200 palavras)*
+#### 6.6.2 Preço
 *Explique o modelo de precificação adotado e justifique com base nas análises anteriores.*
 
-*c) Praça (Distribuição) (até 200 palavras)*
+#### 6.6.3 Praça
 *Apresente os canais digitais utilizados para distribuir e entregar a aplicação ao público.*
 
-*d) Promoção (até 200 palavras)*
+#### Promoção 
 *Descreva as estratégias digitais planejadas, como SEO, redes sociais, marketing de conteúdo e campanhas pagas.*
 
 # <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
