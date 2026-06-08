@@ -1,12 +1,22 @@
-<%- include('../partials/header', { title: 'Erro de autenticação' }) %>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Erro de autenticação &middot; Safra Control</title>
+  <link rel="stylesheet" href="/css/atvos.css" />
+</head>
+<body class="login-page">
+  <main class="login-card" aria-labelledby="titulo-erro">
+    <div class="login-brand">
+      <span class="brand-mark" aria-hidden="true">SC</span>
+      <span class="login-brand-name">Safra Control</span>
+    </div>
 
-<section aria-labelledby="titulo-erro">
-  <h1 id="titulo-erro">Erro de autenticação</h1>
-  <p class="subtitle"><%= locals.message || 'Algo deu errado.' %></p>
+    <h1 id="titulo-erro" class="login-title">Erro de autenticação</h1>
+    <p class="login-subtitle"><%= locals.message || 'Algo deu errado.' %></p>
 
-  <div class="actions">
-    <a href="/login" class="btn">Voltar ao login</a>
-  </div>
-</section>
-
-<%- include('../partials/footer') %>
+    <a href="/login" class="btn btn-primary btn-full">Voltar ao login</a>
+  </main>
+</body>
+</html>

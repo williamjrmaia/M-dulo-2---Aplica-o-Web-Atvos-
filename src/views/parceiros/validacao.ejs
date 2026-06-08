@@ -1,0 +1,62 @@
+<%- include('../partials/header', { title: 'Validação de Registros', active: 'validacao' }) %>
+
+<section aria-labelledby="titulo-validacao">
+  <div class="page-header">
+    <div class="page-header-text">
+      <h1 id="titulo-validacao" class="page-title">Validação de Registros Pendentes</h1>
+      <p class="subtitle">Registros aguardando aprovação ou devolução</p>
+    </div>
+  </div>
+
+  <div class="list-toolbar">
+    <div class="search-bar">
+      <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input type="search" class="search-input" placeholder="Buscar por nome ou CPF/CNPJ..." aria-label="Buscar registros" data-search-input data-search-target="lista-validacao" />
+    </div>
+  </div>
+
+  <% if (!pendentes || pendentes.length === 0) { %>
+    <div class="empty-state">
+      <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <p class="empty-title">Nenhum registro pendente</p>
+      <p class="empty-text">Não há registros aguardando validação no momento.</p>
+    </div>
+  <% } else { %>
+    <div class="partner-list" id="lista-validacao">
+      <% pendentes.forEach(function(p) { %>
+        <article class="partner-list-item" data-search-item data-search-text="<%= (p.nome || '') + ' ' + (p.cpf_cnpj || '') %>">
+          <div class="list-item-head">
+            <h2 class="list-item-title"><%= p.nome %></h2>
+            <span class="badge badge-<%= p.status %>"><%= p.status %></span>
+            <div class="list-item-actions">
+              <a href="/validacao/<%= p.id %>" class="btn btn-primary btn-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Revisar Registro
+              </a>
+            </div>
+          </div>
+          <div class="list-item-grid">
+            <div>
+              <p class="field-label">Tipo</p>
+              <p class="field-value"><%= p.tipo_pessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' %></p>
+            </div>
+            <div>
+              <p class="field-label">CPF/CNPJ</p>
+              <p class="field-value"><%= p.cpf_cnpj %></p>
+            </div>
+            <div>
+              <p class="field-label">E-mail</p>
+              <p class="field-value"><%= p.email || '—' %></p>
+            </div>
+            <div>
+              <p class="field-label">Enviado em</p>
+              <p class="field-value"><%= p.atualizado_em ? new Date(p.atualizado_em).toLocaleDateString('pt-BR') : new Date(p.criado_em).toLocaleDateString('pt-BR') %></p>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>
