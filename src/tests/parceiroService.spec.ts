@@ -51,6 +51,7 @@ async function criarParceiroNoBanco(status = 'rascunho') {
 }
 
 describe('parceiroService (unitário, banco real) — caminhos de sucesso', () => {
+  // CT01 → RN10 (RF004): cadastro de parceiro em rascunho
   it('cadastra um parceiro novo e persiste no banco com status rascunho', async () => {
     // Arrange
     const cpf = randomUUID();
@@ -76,6 +77,7 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     expect(rows[0].status).toBe('rascunho');
   });
 
+  // CT02 → RN05 (RF005): edição de parceiro
   it('edita um parceiro existente e persiste a alteração', async () => {
     // Arrange
     const parceiro = await criarParceiroNoBanco('rascunho');
@@ -98,6 +100,7 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     expect(rows[0].apelido).toBe('Sítio Novo');
   });
 
+  // CT03 → RN04 (RF008): consulta de parceiro por id
   it('retorna um parceiro existente pelo id', async () => {
     // Arrange
     const parceiro = await criarParceiroNoBanco('rascunho');
@@ -110,6 +113,7 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     expect(encontrado.status).toBe('rascunho');
   });
 
+  // CT04 → RN16 (RF021): transição rascunho/devolvido → pendente
   it('envia um parceiro em rascunho para validação (rascunho → pendente)', async () => {
     // Arrange
     const parceiro = await criarParceiroNoBanco('rascunho');
@@ -129,6 +133,7 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     expect(rows[0].status).toBe('pendente');
   });
 
+  // CT05 → RN17 (RF022): transição pendente → ativo
   it('aprova um parceiro pendente (pendente → ativo)', async () => {
     // Arrange
     const parceiro = await criarParceiroNoBanco('pendente');
@@ -148,6 +153,7 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     expect(rows[0].status).toBe('ativo');
   });
 
+  // CT06 → RN17 (RF023): transição pendente → devolvido
   it('devolve um parceiro pendente para ajuste (pendente → devolvido)', async () => {
     // Arrange
     const parceiro = await criarParceiroNoBanco('pendente');
