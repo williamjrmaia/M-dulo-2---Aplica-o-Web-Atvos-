@@ -3035,7 +3035,7 @@ Com a União da Indústria de Cana-de-Açúcar e Bioenergia (ÚNICA) e o Centro 
 
 #### Aspectos Demográficos
 Analisando os profissionais das áreas de Estratégias de Terras e Fornecedores, é notórios, em ambos os genêros, que a média de idade varia predominantemente de 25 a 55 anos. 
-Em relação a formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e nas 8 unidades nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo.
+Em relação a formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e nas 8 unidades nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo (ATVOS,2026).
 
 #### Aspectos Psicográficos e Comportamentais
 Durante as pesquisas foi observado uma forte busca cultural pela manutenção das ferramentas e dos métodos tradicionais de controle, as equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e informções. Os times demonstram alto senso de responsabilidade e urgência, entretanto também demonstram sofrimento com fadiga operacional advinda do retrabalho.
@@ -3045,11 +3045,17 @@ As principais dores se voltam para a falta de governança de dados e na perda do
 
 ## 6.5 Posicionamento
 
-*a) Proposta de Valor Única (até 250 palavras)*
-*Defina de maneira clara o que torna a sua aplicação única e valiosa para o mercado.*
+#### 6.5.1 Proposta de Valor Única (até 250 palavras)
+A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento de parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no Value Proposition Canvas de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida (Osterwalder et al., 2014). A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados (Inteli, 2026). Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e 108 fornecedores é garantida de forma integral (Atvos, 2026). Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
 
-*b) Estratégia de Diferenciação (até 250 palavras)*
-*Explique como sua aplicação se destacará da concorrência, evidenciando a lógica por trás do posicionamento.*
+**a) Minimizadores de Dores (Pain Relievers):**
+O risco de perda de dados e de informações essenciais para negociações e para a manutenção de relacionamentos de longo prazo com parceiros e fornecedores é mitigado. Dessa forma, o retrabalho ligado à distribuição de dados em múltiplos arquivos individuais é evitado (Inteli, 2026)
+
+**b) Criadores de ganhos (Gain Creators):**
+A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e de painéis de visualização de dados estatísticos nativos. Tais ferramentas dão suporte direto para a realização de consultas rápidas e para a geração de listas segmentadas (Osterwalder et al., 2014).
+
+#### 6.5.2 Posicionamento e Diferenciação
+No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Relacionamento Agrícola, moldado estritamente como uma solução Business-to-Employee (B2E), visando à ocupação de um espaço mental e funcional único na rotina operacional (Ries & Trout, 2001). Dessa maneira, identificou-se que a principal diferenciação da aplicação desenvolvida está na modernização das alternativas utilizadas no mercado, diferentemente de planilhas e outros sistemas corporativos tradicionais, os quais podem gerar erros e dispersão de dados, além de possuírem telas genéricas e custos altos (Inteli, 2026). O desenvolvimento do protótipo foi voltado especificamente para agilizar o trabalho do setor sucroenergético (Atvos, 2026). Diante disso, o produto aposta em uma identidade eficiente, ágil e sustentável, para garantir que a ferramenta facilite a rotina diária dos times de Negócios Agrícolas (Ries & Trout, 2001). Conclui-se, portanto, que essa entrega consolida um produto completo, com um banco de dados estruturado e painéis de visualização autênticos, que funciona de forma independente e não exige contratação ou custos à parte com softwares externos.
 
 ## 6.6 Estratégia de Marketing 
 
@@ -3124,18 +3130,25 @@ MODESTO, Farina et al, Psicodinâmica das cores em comunicação. In: BLUCHER, [
 
 ATVOS. *Guia da marca Atvos*. São Paulo: Atvos, 2023. Material institucional disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli) por meio do Google Drive da disciplina. Acesso em: 20 maio 2026.
 
-COMPANHIA NACIONAL DE ABASTECIMENTO (CONAB). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. Brasília, DF: Conab, 17 abr. 2026. Disponível em: https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26. Acesso em: 2 jun. 2026.
+Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 (Documento interno corporativo). Estratégia de Terras e Fornecedores.
 
 AGÊNCIA NACIONAL DO PETRÓLEO, GÁS NATURAL E BIOCOMBUSTÍVEIS (ANP). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. Brasília, DF: ANP, 31 mar. 2026. Disponível em: https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026. Acesso em: 2 jun. 2026.
+
+COMPANHIA NACIONAL DE ABASTECIMENTO (CONAB). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. Brasília, DF: Conab, 17 abr. 2026. Disponível em: https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26. Acesso em: 2 jun. 2026.
 
 GRAND VIEW RESEARCH. Customer Relationship Management Market Size, Share & Trends Analysis Report, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/industry-analysis/customer-relationship-management-crm-market. Acesso em: 2 jun. 2026.
 
 GRAND VIEW RESEARCH. Latin America Customer Relationship Management Market Size & Outlook, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/horizon/outlook/customer-relationship-management-market/latin-america. Acesso em: 2 jun. 2026.
 
-MINISTÉRIO DA AGRICULTURA E PECUÁRIA (MAPA). Plano de Transformação Digital — PTD. Brasília, DF: MAPA, 23 jan. 2025. Disponível em: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd. Acesso em: 2 jun. 2026.
+Instituto de Tecnologia e Liderança [Inteli]. (2026). Projeto Parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 (Documento de escopo de projeto). Campus Inteli.
 
 INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
 
+MINISTÉRIO DA AGRICULTURA E PECUÁRIA (MAPA). Plano de Transformação Digital — PTD. Brasília, DF: MAPA, 23 jan. 2025. Disponível em: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd. Acesso em: 2 jun. 2026.
+
+Osterwalder, A., Pigneur, Y., Bernarda, G., & Smith, A. (2014). Value Proposition Design: How to create products and services customers want. John Wiley & Sons.
+
+Ries, A., & Trout, J. (2001). Positioning: The battle for your mind (20th anniversary ed.). McGraw-Hill.
 # <a name="c9"></a>Anexos
 
 ## Classificação de Impacto, Probabilidade e Matriz de Risco
