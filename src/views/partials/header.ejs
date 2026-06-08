@@ -12,6 +12,17 @@
       <span class="brand">ATVOS CRM</span>
       <a href="/parceiros">Parceiros</a>
       <a href="/parceiros/novo">+ Novo Parceiro</a>
+      <% if (locals.usuarioAutenticado) { %>
+        <span class="user-chip">
+          <%= locals.usuarioAutenticado.nome %>
+          <% if (locals.usuarioAutenticado.perfil) { %>
+            · <%= locals.usuarioAutenticado.perfil %>
+          <% } %>
+        </span>
+        <form action="/logout" method="POST" class="logout-form">
+          <button type="submit" class="logout-link">Sair</button>
+        </form>
+      <% } %>
     </nav>
   </header>
   <main role="main">

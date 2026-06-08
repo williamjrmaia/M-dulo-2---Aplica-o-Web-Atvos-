@@ -30,7 +30,7 @@ header.app-header {
   border-bottom: 2px solid var(--cinza-bg);
   margin-bottom: 24px;
 }
-header.app-header nav { display: flex; gap: 16px; align-items: center; }
+header.app-header nav { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 header.app-header nav a {
   color: var(--azul);
   text-decoration: none;
@@ -44,6 +44,23 @@ header.app-header .brand {
   color: var(--laranja-escuro);
   margin-right: 16px;
 }
+.user-chip {
+  margin-left: auto;
+  color: var(--cinza-texto);
+  font-size: 13px;
+}
+.logout-form { margin: 0; }
+.logout-link {
+  background: transparent;
+  border: 0;
+  color: var(--laranja-escuro);
+  cursor: pointer;
+  font-family: Tahoma, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0;
+}
+.logout-link:hover { text-decoration: underline; }
 
 footer.app-footer {
   margin-top: 48px;
