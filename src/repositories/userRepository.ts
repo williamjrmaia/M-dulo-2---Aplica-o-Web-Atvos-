@@ -30,6 +30,18 @@ export class UserRepository {
     return result.rows.length > 0;
   }
 
+  async listarUsuarios(): Promise<UsuarioComPerfil[]> {
+    console.log('[REPOSITORY] listarUsuarios');
+    const result = await pool.query<UsuarioComPerfil>(
+      `SELECT u.id, u.perfil_acesso_id, u.nome, u.email, u.senha_hash, u.ativo, u.criado_em,
+              pa.nome AS perfil
+         FROM usuarios u
+         JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id
+        ORDER BY u.nome`,
+    );
+    return result.rows;
+  }
+
   async buscarPorId(id: string): Promise<UsuarioComPerfil | null> {
     console.log(`[REPOSITORY] buscarPorId usuario: ${id}`);
     const result = await pool.query<UsuarioComPerfil>(

@@ -1,0 +1,87 @@
+<%- include('../partials/header', { title: 'Safra Control', active: 'home' }) %>
+
+<section class="home-hero" aria-labelledby="home-hero-title">
+  <p class="home-hero-eyebrow">Gestão agrícola ATVOS</p>
+  <h1 id="home-hero-title" class="home-hero-title">Bem-vindo ao Safra Control</h1>
+  <p class="home-hero-text">
+    Plataforma para gestão de parceiros agrícolas, fornecedores de cana,
+    proprietários cedentes, validação de registros e controle de usuários.
+  </p>
+  <a class="btn btn-primary btn-lg" href="/parceiros">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    Ir para Parceiros
+  </a>
+</section>
+
+<section aria-labelledby="home-areas-title">
+  <div class="page-header">
+    <div class="page-header-text">
+      <h2 id="home-areas-title" class="page-title">Acesse uma área do sistema</h2>
+      <p class="subtitle">Escolha abaixo o fluxo que deseja consultar ou cadastrar.</p>
+    </div>
+  </div>
+
+  <div class="home-grid">
+    <article class="card home-card">
+      <div class="card-body">
+        <span class="home-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <h3 class="card-title">Parceiros</h3>
+        <p class="home-card-text">
+          Consulte fornecedores de cana e proprietários cedentes, com busca e exportação CSV.
+        </p>
+      </div>
+      <div class="card-footer home-card-footer">
+        <a class="btn btn-secondary" href="/parceiros">Abrir lista</a>
+      </div>
+    </article>
+
+    <article class="card home-card">
+      <div class="card-body">
+        <span class="home-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+        <h3 class="card-title">Novo Parceiro</h3>
+        <p class="home-card-text">
+          Cadastre novos fornecedores ou proprietários para análise e validação.
+        </p>
+      </div>
+      <div class="card-footer home-card-footer">
+        <a class="btn btn-secondary" href="/parceiros/novo">Novo cadastro</a>
+      </div>
+    </article>
+
+    <article class="card home-card">
+      <div class="card-body">
+        <span class="home-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </span>
+        <h3 class="card-title">Validação</h3>
+        <p class="home-card-text">
+          Revise, aprove ou devolva registros pendentes de análise dos parceiros.
+        </p>
+      </div>
+      <div class="card-footer home-card-footer">
+        <a class="btn btn-secondary" href="/validacao">Ver pendentes</a>
+      </div>
+    </article>
+
+    <article class="card home-card">
+      <div class="card-body">
+        <span class="home-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="19" cy="11" r="2"/></svg>
+        </span>
+        <h3 class="card-title">Usuários</h3>
+        <p class="home-card-text">
+          Gerencie perfis de acesso, edição e inativação de usuários do sistema.
+        </p>
+      </div>
+      <div class="card-footer home-card-footer">
+        <a class="btn btn-secondary" href="/usuarios">Ver usuários</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

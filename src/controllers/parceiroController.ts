@@ -270,3 +270,70 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
     });
   }
 });
+
+// ─── Views HTML: validação e revisão de registros ────────────────────────────
+
+export const renderValidacao = asyncHandler(async (_req: Request, res: Response) => {
+  const todos = await obterParceiros();
+  const pendentes = todos.filter((p) => p.status === 'pendente');
+  res.render('parceiros/validacao', { pendentes });
+});
+
+export const renderRevisar = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  try {
+    const parceiro = await obterParceiroPorIdService(id);
+    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    res.render('parceiros/revisar', { parceiro, terras, naoEncontrado: false, error: null });
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      res.status(404).render('parceiros/revisar', { parceiro: null, terras: [], naoEncontrado: true, error: null });
+      return;
+    }
+    throw err;
+  }
+});
+
+export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  try {
+    await aprovarParceiroService(id, {
+      aprovado_por: SEED_USER_ID,
+      ...(comentario ? { comentario } : {}),
+    });
+    res.redirect('/validacao');
+  } catch (err) {
+    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao aprovar registro';
+    const parceiro = await obterParceiroPorIdService(id).catch(() => null);
+    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
+      parceiro,
+      terras,
+      naoEncontrado: !parceiro,
+      error: mensagem,
+    });
+  }
+});
+
+export const devolverParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  try {
+    await devolverParceiroService(id, {
+      devolvido_por: SEED_USER_ID,
+      ...(comentario ? { comentario } : {}),
+    });
+    res.redirect('/validacao');
+  } catch (err) {
+    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao devolver registro';
+    const parceiro = await obterParceiroPorIdService(id).catch(() => null);
+    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
+      parceiro,
+      terras,
+      naoEncontrado: !parceiro,
+      error: mensagem,
+    });
+  }
+});

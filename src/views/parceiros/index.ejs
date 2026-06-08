@@ -1,46 +1,130 @@
-<%- include('../partials/header', { title: 'Parceiros Cadastrados' }) %>
+<%- include('../partials/header', { title: 'Parceiros', active: 'parceiros' }) %>
+
+<%- include('../partials/flash', { error: locals.error, info: locals.info }) %>
 
 <section aria-labelledby="titulo-lista">
-  <h1 id="titulo-lista">Parceiros Cadastrados</h1>
-  <p class="subtitle">Listagem de parceiros agrícolas (fornecedores de cana e proprietários cedentes) da ATVOS</p>
+  <div class="page-header">
+    <div class="page-header-text">
+      <h1 id="titulo-lista" class="page-title">Parceiros</h1>
+      <p class="subtitle">Fornecedores de cana e proprietários cedentes da ATVOS</p>
+    </div>
+    <div class="page-header-actions">
+      <button type="button" class="btn btn-secondary" data-modal-open data-modal-target="modal-exportar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar CSV
+      </button>
+      <a href="/parceiros/novo" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo Fornecedor
+      </a>
+      <a href="/parceiros/novo" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Novo Proprietário
+      </a>
+    </div>
+  </div>
 
-  <div class="actions">
-    <a href="/parceiros/novo" class="btn">+ Novo Parceiro</a>
+  <div class="list-toolbar">
+    <div class="search-bar">
+      <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Buscar por nome ou CPF/CNPJ..."
+        aria-label="Buscar parceiros"
+        data-search-input
+        data-search-target="lista-parceiros"
+      />
+    </div>
   </div>
 
   <% if (parceiros.length === 0) { %>
-    <p class="empty">Nenhum parceiro cadastrado ainda.</p>
+    <div class="empty-state">
+      <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+      <p class="empty-title">Nenhum parceiro cadastrado ainda</p>
+      <p class="empty-text">Cadastre o primeiro fornecedor ou proprietário para começar.</p>
+      <a href="/parceiros/novo" class="btn btn-primary empty-action">+ Novo Parceiro</a>
+    </div>
   <% } else { %>
-    <table aria-label="Lista de parceiros cadastrados">
-      <thead>
-        <tr>
-          <th scope="col">Nome</th>
-          <th scope="col">Tipo</th>
-          <th scope="col">CPF/CNPJ</th>
-          <th scope="col">E-mail</th>
-          <th scope="col">Status</th>
-          <th scope="col">Cadastrado em</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% parceiros.forEach(function(p) { %>
-          <tr>
-            <td>
-              <strong><%= p.nome %></strong>
-              <% if (p.apelido) { %>
-                <div class="tipo"><%= p.apelido %></div>
-              <% } %>
-            </td>
-            <td><span class="tipo"><%= p.tipo_pessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' %></span></td>
-            <td><%= p.cpf_cnpj %></td>
-            <td><%= p.email || '—' %></td>
-            <td><span class="badge badge-<%= p.status %>"><%= p.status %></span></td>
-            <td><%= new Date(p.criado_em).toLocaleDateString('pt-BR') %></td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
+    <div class="partner-list" id="lista-parceiros">
+      <% parceiros.forEach(function(p) { %>
+        <article
+          class="partner-list-item"
+          data-search-item
+          data-search-text="<%= (p.nome || '') + ' ' + (p.cpf_cnpj || '') + ' ' + (p.apelido || '') %>"
+        >
+          <div class="list-item-head">
+            <h2 class="list-item-title"><%= p.nome %></h2>
+            <span class="badge badge-<%= p.status %>"><%= p.status %></span>
+            <div class="list-item-actions">
+              <a href="/parceiros/<%= p.id %>" class="btn btn-secondary btn-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Ver Detalhes
+              </a>
+            </div>
+          </div>
+
+          <div class="list-item-grid">
+            <div>
+              <p class="field-label">Tipo</p>
+              <p class="field-value"><%= p.tipo_pessoa === 'fisica' ? 'Pessoa Física' : 'Pessoa Jurídica' %></p>
+            </div>
+            <div>
+              <p class="field-label">CPF/CNPJ</p>
+              <p class="field-value"><%= p.cpf_cnpj %></p>
+            </div>
+            <% if (p.apelido) { %>
+              <div>
+                <p class="field-label">Apelido</p>
+                <p class="field-value"><%= p.apelido %></p>
+              </div>
+            <% } %>
+            <% if (p.regiao) { %>
+              <div>
+                <p class="field-label">Região</p>
+                <p class="field-value"><%= p.regiao %></p>
+              </div>
+            <% } %>
+            <div>
+              <p class="field-label">E-mail</p>
+              <p class="field-value"><%= p.email || '—' %></p>
+            </div>
+            <% if (p.telefone) { %>
+              <div>
+                <p class="field-label">Telefone</p>
+                <p class="field-value"><%= p.telefone %></p>
+              </div>
+            <% } %>
+            <div>
+              <p class="field-label">Cadastrado em</p>
+              <p class="field-value"><%= new Date(p.criado_em).toLocaleDateString('pt-BR') %></p>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
   <% } %>
 </section>
+
+<!-- Modal: Exportar CSV -->
+<div class="modal-backdrop" id="modal-exportar" role="dialog" aria-modal="true" aria-labelledby="modal-exportar-title">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-exportar-title">Exportar CSV</h2>
+      <button type="button" class="modal-close" data-modal-close aria-label="Fechar">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Será exportado um arquivo CSV com <%= parceiros.length %> parceiro(s) encontrado(s).</p>
+      <p>O arquivo incluirá: nome, tipo, CPF/CNPJ, e-mail, telefone, região e status.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-modal-close>Cancelar</button>
+      <a href="/parceiros/exportar" class="btn btn-export">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar
+      </a>
+    </div>
+  </div>
+</div>
 
 <%- include('../partials/footer') %>

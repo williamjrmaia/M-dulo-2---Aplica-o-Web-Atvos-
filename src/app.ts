@@ -22,6 +22,14 @@ app.use('/api/parceiros', parceiroApiRoutes);
 app.use('/parceiros', parceiroViewRoutes);
 app.use('/api/terras', terraApiRoutes);
 
+app.use((req, res) => {
+  if (req.path.startsWith('/api/')) {
+    res.status(404).json({ error: 'Recurso não encontrado' });
+    return;
+  }
+  res.status(404).render('errors/404');
+});
+
 app.use(errorHandler);
 
 export default app;
