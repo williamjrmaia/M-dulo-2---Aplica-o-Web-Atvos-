@@ -1,11 +1,3 @@
-/* ============================================================================
- * REVISÃO DO PROFESSOR — Semana 8 (Afonso) — COMENTÁRIO DE REVISÃO, NÃO ALTERA O CÓDIGO
- * 🔴 Nenhuma destas rotas (nem a API JSON em /api/parceiros, nem as views em
- * /parceiros) tem middleware de autenticação. Como o projeto já gera JWT + sessão
- * no login, qualquer um acessa/edita parceiros SEM estar logado. Para a entrega
- * de sexta, criar um requireAuth (verifica o JWT/sessão a partir do cookie/header)
- * e aplicá-lo a estas rotas (e às de usuários/terras).
- * ========================================================================== */
 import { Router } from 'express';
 import {
   aprovarParceiro,
@@ -25,10 +17,12 @@ import {
   processarEdicao,
   vincularTerraAoParceiro,
 } from '../controllers/parceiroController';
+import { requireAuth } from '../middlewares/requireAuth';
 
 // ─── API JSON (montado em /api/parceiros) ────────────────────────────────────
 export const apiRouter = Router();
 
+apiRouter.use(requireAuth);
 apiRouter.post('/', createParceiro);
 apiRouter.patch('/:id', editarParceiro);
 apiRouter.get('/', listarParceiros);
@@ -43,6 +37,7 @@ apiRouter.get('/:id', obterParceiroPorId);
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
 export const viewRouter = Router();
 
+viewRouter.use(requireAuth);
 viewRouter.get('/novo', renderFormCadastro);
 viewRouter.post('/', processarCadastro);
 viewRouter.get('/', renderListaParceiros);

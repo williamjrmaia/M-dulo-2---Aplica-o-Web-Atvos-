@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { InteracaoController } from '../controllers/interacaoController';
+import { requireAuth } from '../middlewares/requireAuth';
 import { InteracaoRepository } from '../repositories/interacaoRepository';
 import { InteracaoService } from '../services/interacaoService';
 
@@ -8,6 +9,8 @@ const router = Router();
 const repository = new InteracaoRepository();
 const service = new InteracaoService(repository);
 const controller = new InteracaoController(service);
+
+router.use(requireAuth);
 
 router.post('/parceiros/:id/interacoes', (req, res) => {
   console.log(`[ROUTE] POST /parceiros/${req.params.id}/interacoes recebida`);
