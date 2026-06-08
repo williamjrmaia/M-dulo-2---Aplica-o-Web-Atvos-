@@ -1,10 +1,3 @@
-/* ============================================================================
- * REVISÃO DO PROFESSOR — Semana 8 (Afonso) — COMENTÁRIO DE REVISÃO, NÃO ALTERA O CÓDIGO
- * Ótimo: usa DATABASE_URL_TEST em NODE_ENV=test (banco de teste separado!),
- * falha cedo se faltar configuração e dá dicas úteis para o pooler do Supabase.
- * É o tratamento de conexão mais cuidadoso da turma. Sem ressalvas relevantes —
- * apenas evitar logar a connection string em qualquer log de erro.
- * ========================================================================== */
 import path from 'path';
 import dotenv from 'dotenv';
 import { Pool, PoolConfig } from 'pg';
