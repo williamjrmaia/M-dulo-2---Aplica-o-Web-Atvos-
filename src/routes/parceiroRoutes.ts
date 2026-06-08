@@ -1,3 +1,11 @@
+/* ============================================================================
+ * REVISÃO DO PROFESSOR — Semana 8 (Afonso) — COMENTÁRIO DE REVISÃO, NÃO ALTERA O CÓDIGO
+ * 🔴 Nenhuma destas rotas (nem a API JSON em /api/parceiros, nem as views em
+ * /parceiros) tem middleware de autenticação. Como o projeto já gera JWT + sessão
+ * no login, qualquer um acessa/edita parceiros SEM estar logado. Para a entrega
+ * de sexta, criar um requireAuth (verifica o JWT/sessão a partir do cookie/header)
+ * e aplicá-lo a estas rotas (e às de usuários/terras).
+ * ========================================================================== */
 import { Router } from 'express';
 import {
   aprovarParceiro,

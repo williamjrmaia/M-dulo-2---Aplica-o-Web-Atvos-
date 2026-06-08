@@ -1,3 +1,16 @@
+/* ============================================================================
+ * REVISÃO DO PROFESSOR — Semana 8 (Afonso) — COMENTÁRIO DE REVISÃO, NÃO ALTERA O CÓDIGO
+ * 🔴 LIGAÇÃO QUE FALTA PARA A ENTREGA DE SEXTA (login + sessão no front):
+ *  - login() responde sempre com JSON (res.json) — NÃO seta cookie nem
+ *    redireciona. Como a view login/index.ejs faz POST /login pelo navegador,
+ *    o usuário recebe um JSON na tela e NENHUMA sessão é estabelecida no browser.
+ *    O JWT e a sessão no banco são criados, mas o navegador não recebe o cookie.
+ *    Para o fluxo web: setar o token em cookie HttpOnly e redirecionar para uma
+ *    página logada (ex.: /parceiros).
+ *  - Vaza enumeração de e-mails: 404 "Usuário não cadastrado" vs 401
+ *    "Credenciais inválidas". Usar a MESMA resposta para os dois casos.
+ *  - console.log expõe o email a cada login — remover/usar logger com níveis.
+ * ========================================================================== */
 import { Request, Response } from 'express';
 import { AuthService } from '../services/authService';
 

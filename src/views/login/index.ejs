@@ -1,3 +1,15 @@
+<%#
+  ===========================================================================
+  REVISÃO DO PROFESSOR — Semana 8 (Afonso) — COMENTÁRIO DE REVISÃO, NÃO ALTERA O CÓDIGO
+  (Comentário EJS <%# %> — não renderiza.)
+  ENTREGA DE SEXTA: este formulário de login está bem feito e faz POST /login,
+  MAS o controller responde JSON (ver authController) — então, ao enviar, o
+  usuário vê um JSON e nenhuma sessão é criada no navegador. Para fechar o ciclo:
+  o POST deve setar cookie de sessão e redirecionar para uma página logada; e as
+  páginas (parceiros/usuários) devem exigir login via middleware. Mostrar também
+  o usuário logado + um link de "Sair".
+  ===========================================================================
+%>
 <%- include('../partials/header', { title: 'Login' }) %>
 
 <section aria-labelledby="titulo-login">

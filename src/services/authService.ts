@@ -1,3 +1,16 @@
+/* ============================================================================
+ * REVISÃO DO PROFESSOR — Semana 8 (Afonso) — COMENTÁRIO DE REVISÃO, NÃO ALTERA O CÓDIGO
+ * Muito bom: bcrypt + JWT + SESSÃO PERSISTIDA no banco (criar/encerrar com
+ * revogação e tratamento de códigos de erro do Postgres). 2º grupo mais completo.
+ * A melhorar:
+ *  - JWT_SECRET tem fallback hardcoded ('secret-test') — em produção deve ser
+ *    obrigatório (falhar se ausente).
+ *  - autenticar() distingue "Usuário não cadastrado" de "Credenciais inválidas"
+ *    -> vaza quais e-mails existem. Usar a mesma mensagem (ver authController).
+ *  - console.log de email/etapas em produção — remover/usar logger.
+ *  - Falta um middleware que VERIFIQUE o JWT/sessão e proteja as rotas
+ *    (hoje a sessão é criada, mas nada exige autenticação — ver parceiroRoutes).
+ * ========================================================================== */
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { AuthSessao } from '../models/AuthSessao';
