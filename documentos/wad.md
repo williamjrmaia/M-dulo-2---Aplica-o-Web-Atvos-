@@ -564,6 +564,14 @@ Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema d
 | RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
 | RF007 | US04, US06 | RN04, RN08 | `/api/parceiros` | GET |
 | RF008 | US04 | RN04, RN08 | `/api/parceiros/:id` | GET |
+| RF009 | US01, US02, US08 | RN09 | `/api/usuarios` | POST |
+| RF009 | US01, US02, US08 | RN09 | `/api/parceiros` | POST |
+| RF009 | US01, US02, US08 | RN09 | `/api/parceiros/:id` | PATCH |
+| RF010 | US01, US02, US08 | RN10 | `/api/usuarios` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/api/parceiros` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/api/parceiros/:id` | PATCH |
+| RF010 | US01, US02, US08 | RN10 | `/api/terras` | POST |
+| RF010 | US01, US02, US08 | RN10 | `/api/terras/:id` | PUT |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
