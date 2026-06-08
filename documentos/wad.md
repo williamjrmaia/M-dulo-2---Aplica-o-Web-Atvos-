@@ -3091,7 +3091,7 @@ No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Re
 O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituído por uma arquitetura full-stack com banco de dados SQL nativo. O sistema tem como principais funções: o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações através de painéis dinâmicos que permitem uma análise estatística. A plataforma busca eliminar a dependência completa em planilhas eletrônicas e controles manuais informais, que podem acarretar falhas crônicas, inconsistência entre os dados e perda do histórico de relacionamentos. A principal diferenciação em relação aos outros sistemas CRM disponíveis no mercado, que são caros e com interfaces rígidas, é que toda a proposta foi baseada na experiência do usuário (UX/UI), voltada especialmente para o fluxo de governança e homologação de 100% das informações dos parceiros agrícolas. Segundo os autores Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, que tem um valor central na transformação de dados dispersos em ativos estratégicos.
 
 #### 6.6.2 Preço
-Como a plataforma foi projetada para ser uma solução somente corporativa e voltada para uso interno do tipo B2E, o modelo de monetização de licenciamento comercial ou assinatura(SaaS) não foi considerado o mais adequado. Sendo assim, a estratégia de percificação adotada foi planejada a partir do modelo de Desenvovimento Interno Proprietário (In-house Software). A aplicação desse determinado modelo é baseado na eliminação de impecilhos financeiros e custos frequentes com fornecedores de softwares externos, o valor de investimento foi centrado no custo do desenvolvimento de software das equipes e na manutenção preventiva.
+Como a plataforma foi projetada para ser uma solução somente corporativa e voltada para uso interno do tipo B2E, o modelo de monetização de licenciamento comercial ou assinatura (SaaS) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de Desenvolvimento Interno Proprietário (In-house Software). A aplicação desse determinado modelo é baseada na eliminação de empecilhos financeiros e custos frequentes com fornecedores de softwares externos; o valor de investimento foi centrado no custo do desenvolvimento de software pelas equipes e na manutenção preventiva.
 Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar os riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
 #### 6.6.3 Praça
@@ -3173,7 +3173,6 @@ Instituto de Tecnologia e Liderança [Inteli]. (2026). Projeto Parceiro ATVOS: A
 
 INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
 
-<<<<<<< HEAD
 AEGRO. Aegro: sistema de gestão rural. Porto Alegre: Aegro, 2026. Disponível em: https://aegro.com.br/. Acesso em: 8 jun. 2026.
 
 BUNGE. Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. St. Louis: Bunge, 2024. Disponível em: https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil. Acesso em: 8 jun. 2026.
@@ -3188,13 +3187,6 @@ SAP. Customer Experience and Customer Relationship Management. Walldorf: SAP, 20
 
 SÃO MARTINHO. São Martinho. São Paulo: São Martinho, 2026. Disponível em: https://www.saomartinho.com.br/. Acesso em: 8 jun. 2026.
 
-=======
-MINISTÉRIO DA AGRICULTURA E PECUÁRIA (MAPA). Plano de Transformação Digital — PTD. Brasília, DF: MAPA, 23 jan. 2025. Disponível em: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd. Acesso em: 2 jun. 2026.
-
-Osterwalder, A., Pigneur, Y., Bernarda, G., & Smith, A. (2014). Value Proposition Design: How to create products and services customers want. John Wiley & Sons.
-
-Ries, A., & Trout, J. (2001). Positioning: The battle for your mind (20th anniversary ed.). McGraw-Hill.
->>>>>>> 332c7424bb95dfdd907ebfcb7c8b434127d02bc3
 # <a name="c9"></a>Anexos
 
 ## Classificação de Impacto, Probabilidade e Matriz de Risco
