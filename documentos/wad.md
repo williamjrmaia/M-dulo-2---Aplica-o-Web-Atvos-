@@ -3019,6 +3019,12 @@ A análise da concorrência foi realizada considerando dois grupos principais: o
 
 Identificou-se que a rivalidade no setor sucroenergético é elevada, pois grandes grupos disputam acesso a fornecedores, terras produtivas, eficiência operacional e mercados ligados à bioenergia. Nesse contexto, a governança dos dados de relacionamento com parceiros agrícolas torna-se um fator relevante de competitividade, uma vez que a perda de histórico, a duplicidade de informações e a ausência de rastreabilidade podem comprometer negociações e decisões estratégicas.
 
+## 6.3.1 Principais Concorrentes
+
+Entre os principais concorrentes diretos da ATVOS no setor sucroenergético, destacam-se Raízen, BP Bioenergy e São Martinho. A Raízen atua na distribuição de combustíveis por meio da marca Shell e na produção de etanol, açúcar e energia renovável a partir da cana-de-açúcar, posicionando-se como um dos grupos mais relevantes do setor (RAÍZEN, 2026). A BP Bioenergy também se apresenta como concorrente relevante, especialmente após a aquisição integral da antiga BP Bunge Bioenergia pela bp, movimento que consolidou sua atuação no mercado brasileiro de bioenergia (BUNGE, 2024). A São Martinho, por sua vez, possui forte presença agroindustrial e conta com uma das maiores estruturas de processamento de cana-de-açúcar do mundo, reforçando sua capacidade produtiva e competitiva (SÃO MARTINHO, 2026).
+
+Além dos concorrentes diretos do setor, foram considerados concorrentes indiretos da aplicação web os sistemas digitais que poderiam substituir parcialmente a solução proposta. Nesse grupo, incluem-se CRMs generalistas, como Salesforce, Microsoft Dynamics 365 e SAP Customer Experience, que oferecem recursos para gestão de relacionamento, dados de clientes e jornadas comerciais (SALESFORCE, 2026; MICROSOFT, 2026; SAP, 2026). Também foram consideradas plataformas de gestão rural, como o Aegro, voltadas ao controle financeiro, operacional e de campo em propriedades agrícolas (AEGRO, 2026). Embora essas ferramentas não tenham sido desenvolvidas especificamente para o relacionamento entre usinas, fornecedores de cana e proprietários de terra, elas representam alternativas tecnológicas para digitalização de processos.
+
 *a) Principais Concorrentes (até 250 palavras)*
 *Liste os concorrentes diretos e indiretos, destacando suas principais características e posicionamento no mercado.*
 
