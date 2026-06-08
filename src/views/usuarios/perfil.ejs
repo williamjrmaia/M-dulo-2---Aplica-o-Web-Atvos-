@@ -1,31 +1,52 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Perfil de acesso do usuario</title>
-  </head>
-  <body>
-    <main>
-      <h1>Perfil de acesso do usuario</h1>
+<%- include('../partials/header', { title: 'Perfil de Acesso', active: 'usuarios' }) %>
 
-      <% if (error) { %>
-        <p><%= error %></p>
-      <% } %>
+<section aria-labelledby="titulo-perfil-usuario">
+  <div class="page-header">
+    <div class="page-back">
+      <a href="/parceiros" class="back-btn" aria-label="Voltar">←</a>
+      <div class="page-header-text">
+        <h1 id="titulo-perfil-usuario" class="page-title">Perfil de Acesso do Usuário</h1>
+        <p class="subtitle">Defina o nível de permissão do usuário no sistema</p>
+      </div>
+    </div>
+  </div>
 
-      <% if (usuario) { %>
-        <form method="POST" action="/usuarios/<%= usuario.id %>/perfil">
-          <label for="role_id">Perfil</label>
-          <select id="role_id" name="role_id" required>
-            <% perfis.forEach((perfil) => { %>
-              <option value="<%= perfil.id %>" <%= usuario.perfil_acesso_id === perfil.id ? 'selected' : '' %>>
-                <%= perfil.nome %>
-              </option>
-            <% }) %>
-          </select>
-          <button type="submit">Atualizar perfil</button>
-        </form>
-      <% } %>
-    </main>
-  </body>
-</html>
+  <%- include('../partials/flash', { error: error }) %>
+
+  <% if (usuario) { %>
+    <form method="POST" action="/usuarios/<%= usuario.id %>/perfil" novalidate>
+      <div class="form-card">
+        <div class="form-card-header">
+          <h2 class="section-title">Perfil de Acesso</h2>
+          <% if (usuario.nome) { %>
+            <p class="card-subtitle"><%= usuario.nome %></p>
+          <% } %>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label class="form-label" for="role_id">Perfil <span class="required">*</span></label>
+            <select class="form-select" id="role_id" name="role_id" required>
+              <% perfis.forEach((perfil) => { %>
+                <option value="<%= perfil.id %>" <%= usuario.perfil_acesso_id === perfil.id ? 'selected' : '' %>>
+                  <%= perfil.nome %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="/parceiros" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
+      </div>
+    </form>
+  <% } else { %>
+    <div class="empty-state">
+      <p class="empty-title">Usuário indisponível</p>
+      <p class="empty-text">Não foi possível carregar os dados deste usuário.</p>
+    </div>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>
