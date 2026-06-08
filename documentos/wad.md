@@ -603,6 +603,7 @@ Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema d
 | RF021 | US01, US02 | RN16 | `/api/parceiros/:id/validacao` | PUT |
 | RF022 | US11 | RN17 | `/api/parceiros/:id/aprovar` | PUT |
 | RF023 | US11 | RN17 | `/api/parceiros/:id/devolver` | PUT |
+| RF024 | Sem US prioritária associada nesta Sprint | — | — | — |
 | RF025 | Sem US prioritária associada nesta Sprint | RN18 | — | — |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
