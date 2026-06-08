@@ -102,14 +102,14 @@ describe('POST /login — Fluxo 03 Login de Usuário', () => {
   });
 
   // T03 — Fluxo alternativo 2: usuário não existe
-  it('deve retornar 404 quando o e-mail não estiver cadastrado', async () => {
+  it('deve retornar 401 genérico quando o e-mail não estiver cadastrado', async () => {
     const response = await request(app)
       .post('/login')
       .send({ email: 'naoexiste@atvos.com', senha: 'Senha@123' })
-      .expect(404);
+      .expect(401);
 
     expect(response.body).toEqual({
-      error: 'Usuário não cadastrado',
+      error: 'Credenciais inválidas',
     });
   });
 
@@ -150,5 +150,35 @@ describe('POST /login — Fluxo 03 Login de Usuário', () => {
     // bcrypt deve validar a senha correta
     const senhaValida = await bcrypt.compare('Senha@123', result.rows[0].senha_hash);
     expect(senhaValida).toBe(true);
+  });
+
+  it('deve setar cookies HttpOnly e redirecionar no login via formulário web', async () => {
+    const response = await request(app)
+      .post('/login')
+      .type('form')
+      .send({ email: 'teste@atvos.com', senha: 'Senha@123' })
+      .expect(302);
+
+    expect(response.headers.location).toBe('/parceiros');
+    const cookies = response.headers['set-cookie'] as unknown as string[];
+    expect(cookies.join(';')).toContain('auth_token=');
+    expect(cookies.join(';')).toContain('auth_session_id=');
+    expect(cookies.join(';')).toContain('HttpOnly');
+  });
+
+  it('deve bloquear rotas protegidas quando não houver sessão no navegador', async () => {
+    const nodeEnvOriginal = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'development';
+
+    try {
+      const response = await request(app)
+        .get('/parceiros')
+        .set('Accept', 'text/html')
+        .expect(302);
+
+      expect(response.headers.location).toBe('/login');
+    } finally {
+      process.env.NODE_ENV = nodeEnvOriginal;
+    }
   });
 });
