@@ -584,6 +584,26 @@ Na Sprint 1, os RNFs foram definidos em nível conceitual a partir do problema d
 | RF015 | US01, US02 | RN13, RN14 | `/api/terras/:id/parceiros` | GET, POST |
 | RF016 | US06 | RN04, RN08 | `/api/parceiros?nome=&regiao=&area=&tipo=` | GET |
 | RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
+| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
+| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
+| RF020 | US09 | RN15 | `/usuarios/:id/inativar` | PUT |
+| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT |
+| RF021 | US01, US02 | RN16 | `/api/parceiros/:id/validacao` | PUT |
+| RF022 | US11 | RN17 | `/api/parceiros/:id/aprovar` | PUT |
+| RF023 | US11 | RN17 | `/api/parceiros/:id/devolver` | PUT |
+| RF025 | Sem US prioritária associada nesta Sprint | RN18 | — | — |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
