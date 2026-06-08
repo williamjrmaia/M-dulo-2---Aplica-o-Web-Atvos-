@@ -2708,63 +2708,76 @@ npm run seed
 npm run dev
 ```
 
-Rotas JSON seguem a convenção `/api/...` para recursos de API, enquanto rotas como `/login`, `/parceiros` e `/usuarios/:id/editar` renderizam views HTML ou processam formulários. As rotas de formulário podem usar `POST` como alternativa prática a `PUT/PATCH`, mantendo os métodos HTTP JSON documentados para os contratos de API.
+Rotas JSON seguem a convenção `/api/...` para recursos de API, enquanto rotas como `/login`, `/parceiros`, `/validacao` e `/usuarios/:id/editar` renderizam views HTML ou processam formulários. As rotas de formulário podem usar `POST` como alternativa prática a `PUT/PATCH`, mantendo os métodos HTTP JSON documentados para os contratos de API.
+
+A autenticação é estabelecida em `POST /login`: no fluxo web o backend define cookies `HttpOnly` (`auth_token` e `auth_session_id`) e redireciona para a área logada; no fluxo de API a mesma rota responde em JSON com token, usuário e sessão. Todas as rotas internas (parceiros, usuários, terras, interações, validação, exportação e dashboard) são protegidas pelo middleware `requireAuth`, permanecendo públicas apenas a home, a tela de login e o processamento do login. O fluxo de sessão e a proteção de rotas estão detalhados na seção 3.7.4.
 
 | Módulo | Endpoints principais | RFs relacionados | Status |
 | --- | --- | --- | --- |
-| Autenticação | `GET /login`, `POST /login`, `PUT /auth/sessoes/:id` | RF011, RF020 | Implementado |
-| Usuários | `POST /api/usuarios`, `PUT /usuarios/:id`, `PUT /usuarios/:id/inativar`, `PUT /usuarios/:id/perfil` e rotas HTML auxiliares | RF001, RF002, RF003, RF009, RF010, RF020 | Implementado |
+| Autenticação e sessão | `GET /login`, `POST /login`, `POST /logout`, `PUT /auth/sessoes/:id` | RF011, RF020 | Implementado |
+| Usuários | `POST /api/usuarios`, `GET /usuarios`, `GET /usuarios/novo`, `POST /usuarios`, `PUT /usuarios/:id`, `PUT /usuarios/:id/inativar`, `PUT /usuarios/:id/perfil` e rotas HTML auxiliares | RF001, RF002, RF003, RF009, RF010, RF020 | Implementado |
 | Parceiros | `POST /api/parceiros`, `GET /api/parceiros`, `GET /api/parceiros/:id`, `PATCH /api/parceiros/:id`, `PUT /api/parceiros/:id/validacao`, `PUT /api/parceiros/:id/aprovar`, `PUT /api/parceiros/:id/devolver`, `GET /api/parceiros/:id/historico` | RF004, RF005, RF007, RF008, RF009, RF010, RF013, RF021, RF022, RF023 | Implementado |
+| Validação (views) | `GET /validacao`, `GET /validacao/:id`, `POST /validacao/:id/aprovar`, `POST /validacao/:id/devolver` | RF011, RF022, RF023 | Implementado |
 | Terras e vínculos | `POST /api/terras`, `GET /api/terras`, `PUT /api/terras/:id`, `GET/POST /api/parceiros/:id/terras`, `GET/POST /api/terras/:id/parceiros` | RF010, RF012, RF015, RF018, RF019 | Implementado |
 | Interações | `POST /parceiros/:id/interacoes` | RF006, RF018, RF019 | Implementado |
 | Exportação e dashboard | `GET /parceiros/exportar`, `GET /dashboards/interacoes` | RF017 e indicadores do fluxo 15 | Implementado |
 
 ### 3.7.1. Tabela detalhada de endpoints da WebAPI
 
-| Método | Rota | Objetivo | Entrada | Saída esperada | RF relacionado |
-| --- | --- | --- | --- | --- | --- |
-| GET | `/login` | Renderizar a tela de login. | Sem body. | HTML da tela de login. | RF011 |
-| POST | `/login` | Autenticar usuário por e-mail e senha. | Body JSON ou formulário com `email` e `senha`. | `200` com token, usuário e sessão para JSON; cookie HttpOnly e redirecionamento para `/parceiros` no formulário web; `400`, `401` ou `500` em erro. | RF011 |
-| POST | `/logout` | Encerrar a sessão do usuário autenticado no fluxo web. | Cookies de autenticação ativos. | Sessão revogada quando existir, cookies limpos e redirecionamento para `/login`. | RF020 |
-| PUT | `/auth/sessoes/:id` | Encerrar/revogar uma sessão autenticada. | Path `id`; body opcional com `revogada_por`. | `200` com sessão encerrada; `404`, `409`, `422` ou `500` em erro. | RF020 |
-| POST | `/api/usuarios` | Cadastrar usuário interno com perfil de acesso. | Body JSON com `nome`, `email` e `perfil_acesso_id`. | `201` com usuário criado; `400`, `409`, `422` ou `500` em erro. | RF001, RF009, RF010 |
-| GET | `/usuarios/:id/editar` | Renderizar formulário de edição de usuário. | Path `id`. | HTML do formulário; `404` se usuário não existir. | RF002 |
-| PUT | `/usuarios/:id` | Atualizar dados cadastrais de usuário. | Path `id`; body JSON com `nome`, `email`, `ativo` e/ou `perfil_acesso_id`. | `200` com usuário atualizado; `400`, `404` ou `500` em erro. | RF002, RF018, RF019 |
-| POST | `/usuarios/:id` | Processar edição de usuário via formulário HTML. | Path `id`; body de formulário com campos editáveis. | Redirect para `/usuarios/:id/editar` ou HTML com erro. | RF002 |
-| GET | `/usuarios/:id/inativar` | Renderizar confirmação de inativação de usuário. | Path `id`. | HTML de confirmação; `404` se usuário não existir. | RF020 |
-| PUT | `/usuarios/:id/inativar` | Inativar usuário por exclusão lógica. | Path `id`; headers `Authorization` e perfil administrador. | `200` com usuário inativado; `401`, `403`, `404` ou `500` em erro. | RF002, RF020 |
-| POST | `/usuarios/:id/inativar` | Processar inativação via formulário HTML. | Path `id`; body de formulário. | Redirect para `/usuarios/:id/inativar` ou HTML com erro. | RF020 |
-| GET | `/usuarios/:id/perfil` | Renderizar formulário de alteração de perfil. | Path `id`. | HTML do formulário; `404` se usuário não existir. | RF003 |
-| PUT | `/usuarios/:id/perfil` | Alterar perfil de acesso de usuário. | Path `id`; body JSON com `role_id` ou `perfil_acesso_id`. | `200` com perfil atualizado; `400`, `404` ou `500` em erro. | RF003 |
-| POST | `/usuarios/:id/perfil` | Processar alteração de perfil via formulário HTML. | Path `id`; body de formulário com perfil. | Redirect para `/usuarios/:id/perfil` ou HTML com erro. | RF003 |
-| POST | `/api/parceiros` | Cadastrar parceiro agrícola. | Body JSON com `nome`, `tipo_pessoa`, `cpf_cnpj`, `criado_por` e campos opcionais. | `201` com parceiro criado; `400`, `409` ou `500` em erro. | RF004, RF009, RF010, RF018, RF019 |
-| GET | `/api/parceiros` | Listar parceiros ativos/não inativos com filtros opcionais. | Query opcional `nome`, `regiao`, `area`, `tipo`. | `200` com array de parceiros; `400` se filtro inválido. | RF007, RF012, RF016 |
-| GET | `/api/parceiros/:id` | Consultar detalhe de parceiro. | Path `id`. | `200` com parceiro; `404` se não encontrado ou inativo. | RF008, RF012 |
-| PATCH | `/api/parceiros/:id` | Editar parcialmente dados de parceiro. | Path `id`; body JSON com `atualizado_por` e ao menos um campo editável. | `200` com parceiro atualizado; `400`, `404`, `409` ou `500` em erro. | RF005, RF009, RF010, RF018, RF019 |
-| PUT | `/api/parceiros/:id/validacao` | Enviar parceiro para validação. | Path `id`; body JSON com `atualizado_por` e `comentario` opcional. | `200` com status `pendente`; `400`, `404`, `409` ou `422` em erro. | RF021 |
-| PUT | `/api/parceiros/:id/aprovar` | Aprovar parceiro pendente. | Path `id`; body JSON com `aprovado_por` e `comentario` opcional. | `200` com status `ativo`; `400`, `404`, `409` ou `422` em erro. | RF022 |
-| PUT | `/api/parceiros/:id/devolver` | Devolver parceiro pendente para ajustes. | Path `id`; body JSON com `devolvido_por` e `comentario` opcional. | `200` com status `devolvido`; `400`, `404`, `409` ou `422` em erro. | RF023 |
-| GET | `/api/parceiros/:id/historico` | Consultar histórico de alterações de parceiro. | Path `id`. | `200` com array de histórico; `404` se parceiro não existir. | RF013 |
-| GET | `/api/parceiros/:id/terras` | Listar terras vinculadas a um parceiro. | Path `id`. | `200` com array de terras; `404` se parceiro não existir. | RF015 |
-| POST | `/api/parceiros/:id/terras` | Vincular uma terra a um parceiro. | Path `id`; body JSON com `terra_id` e `tipo_vinculo` opcional. | `201` com vínculo criado; `400`, `404`, `409` ou `422` em erro. | RF015 |
-| GET | `/parceiros` | Renderizar listagem HTML de parceiros. | Sem body. | HTML com lista de parceiros. | RF007 |
-| GET | `/parceiros/novo` | Renderizar formulário de cadastro de parceiro. | Sem body. | HTML do formulário de cadastro. | RF004 |
-| POST | `/parceiros` | Processar cadastro de parceiro via formulário HTML. | Body de formulário com dados do parceiro. | Redirect para `/parceiros` ou HTML com erro. | RF004, RF010 |
-| GET | `/parceiros/:id` | Renderizar detalhe HTML de parceiro. | Path `id`. | HTML de detalhe; `404` se parceiro não existir. | RF008 |
-| GET | `/parceiros/:id/editar` | Renderizar formulário de edição de parceiro. | Path `id`. | HTML do formulário de edição. | RF005 |
-| POST | `/parceiros/:id/editar` | Processar edição de parceiro via formulário HTML. | Path `id`; body de formulário com campos editáveis. | Redirect para `/parceiros` ou HTML com erro. | RF005 |
-| POST | `/api/terras` | Cadastrar terra. | Body JSON com `nome`, `area_contratada_ha`, `cidade`, `estado`, `criado_por` e `status` opcional. | `201` com terra criada; `400`, `422` ou `500` em erro. | RF010, RF018, RF019 |
-| GET | `/api/terras` | Listar terras não inativas. | Sem body. | `200` com array de terras. | RF012 |
-| PUT | `/api/terras/:id` | Editar dados de terra. | Path `id`; body JSON com `atualizado_por` e ao menos um campo editável. | `200` com terra atualizada; `400`, `404` ou `422` em erro. | RF010, RF014, RF018, RF019 |
-| GET | `/api/terras/:id/parceiros` | Listar parceiros vinculados a uma terra. | Path `id`. | `200` com array de parceiros; `404` se terra não existir. | RF015 |
-| POST | `/api/terras/:id/parceiros` | Vincular parceiro a uma terra. | Path `id`; body JSON com `parceiro_id` e `tipo_vinculo` opcional. | `201` com vínculo criado; `400`, `404`, `409` ou `422` em erro. | RF015 |
-| POST | `/parceiros/:id/interacoes` | Registrar interação/histórico de relacionamento com parceiro. | Path `id`; body JSON com `registrado_por`, `tipo`, `descricao` e `data`. | `201` com interação criada; `400`, `404` ou `500` em erro. | RF006, RF018, RF019 |
-| GET | `/parceiros/exportar` | Exportar parceiros ativos em CSV. | Sem body. | `200` com CSV; `404` se não houver dados; `500` em erro. | RF017 |
-| GET | `/dashboards/interacoes` | Consultar métricas consolidadas de interações. | Sem body. | `200` com DTO de métricas; `404`, `503` ou `500` em erro. | Fluxo 15 |
+As rotas internas exigem autenticação via `requireAuth`; as rotas públicas estão sinalizadas na coluna "Acesso" (ver seção 3.7.4).
+
+| Método | Rota | Objetivo | Entrada | Saída esperada | Acesso | RF relacionado |
+| --- | --- | --- | --- | --- | --- | --- |
+| GET | `/` | Renderizar a página inicial da aplicação. | Sem body. | HTML da home. | Pública | — |
+| GET | `/login` | Renderizar a tela de login. | Sem body. | HTML da tela de login. | Pública | RF011 |
+| POST | `/login` | Autenticar usuário por e-mail e senha. | Body JSON ou formulário com `email` e `senha`. | `200` com token, usuário e sessão para JSON; cookies HttpOnly e redirecionamento para `/parceiros` no formulário web; `400`, `401` (mensagem genérica) ou `500` em erro. | Pública | RF011 |
+| POST | `/logout` | Encerrar a sessão do usuário autenticado no fluxo web. | Cookies de autenticação ativos. | Sessão revogada quando existir, cookies limpos e redirecionamento para `/login`. | `requireAuth` | RF020 |
+| PUT | `/auth/sessoes/:id` | Encerrar/revogar uma sessão autenticada. | Path `id`; body opcional com `revogada_por`. | `200` com sessão encerrada; `404`, `409`, `422` ou `500` em erro. | `requireAuth` | RF020 |
+| POST | `/api/usuarios` | Cadastrar usuário interno com perfil de acesso. | Body JSON com `nome`, `email` e `perfil_acesso_id`. | `201` com usuário criado; `400`, `409`, `422` ou `500` em erro. | `requireAuth` | RF001, RF009, RF010 |
+| GET | `/usuarios` | Renderizar listagem HTML de usuários cadastrados. | Sem body. | HTML com lista de usuários; `500` em erro. | `requireAuth` | RF002, RF009 |
+| GET | `/usuarios/novo` | Renderizar formulário de cadastro de usuário. | Sem body. | HTML do formulário com perfis disponíveis; `500` em erro. | `requireAuth` | RF001 |
+| POST | `/usuarios` | Processar cadastro de usuário via formulário HTML. | Body de formulário com `nome`, `email` e `perfil_acesso_id`. | Redirect para `/usuarios` ou HTML do formulário com erro. | `requireAuth` | RF001, RF009, RF010 |
+| GET | `/usuarios/:id/editar` | Renderizar formulário de edição de usuário. | Path `id`. | HTML do formulário; `404` se usuário não existir. | `requireAuth` | RF002 |
+| PUT | `/usuarios/:id` | Atualizar dados cadastrais de usuário. | Path `id`; body JSON com `nome`, `email`, `ativo` e/ou `perfil_acesso_id`. | `200` com usuário atualizado; `400`, `404` ou `500` em erro. | `requireAuth` | RF002, RF018, RF019 |
+| POST | `/usuarios/:id` | Processar edição de usuário via formulário HTML. | Path `id`; body de formulário com campos editáveis. | Redirect para `/usuarios/:id/editar` ou HTML com erro. | `requireAuth` | RF002 |
+| GET | `/usuarios/:id/inativar` | Renderizar confirmação de inativação de usuário. | Path `id`. | HTML de confirmação; `404` se usuário não existir. | `requireAuth` | RF020 |
+| PUT | `/usuarios/:id/inativar` | Inativar usuário por exclusão lógica. | Path `id`; headers `Authorization` e perfil administrador. | `200` com usuário inativado; `401`, `403`, `404` ou `500` em erro. | `requireAuth` | RF002, RF020 |
+| POST | `/usuarios/:id/inativar` | Processar inativação via formulário HTML. | Path `id`; body de formulário. | Redirect para `/usuarios/:id/inativar` ou HTML com erro. | `requireAuth` | RF020 |
+| GET | `/usuarios/:id/perfil` | Renderizar formulário de alteração de perfil. | Path `id`. | HTML do formulário; `404` se usuário não existir. | `requireAuth` | RF003 |
+| PUT | `/usuarios/:id/perfil` | Alterar perfil de acesso de usuário. | Path `id`; body JSON com `role_id` ou `perfil_acesso_id`. | `200` com perfil atualizado; `400`, `404` ou `500` em erro. | `requireAuth` | RF003 |
+| POST | `/usuarios/:id/perfil` | Processar alteração de perfil via formulário HTML. | Path `id`; body de formulário com perfil. | Redirect para `/usuarios/:id/perfil` ou HTML com erro. | `requireAuth` | RF003 |
+| POST | `/api/parceiros` | Cadastrar parceiro agrícola. | Body JSON com `nome`, `tipo_pessoa`, `cpf_cnpj`, `criado_por` e campos opcionais. | `201` com parceiro criado; `400`, `409` ou `500` em erro. | `requireAuth` | RF004, RF009, RF010, RF018, RF019 |
+| GET | `/api/parceiros` | Listar parceiros ativos/não inativos com filtros opcionais. | Query opcional `nome`, `regiao`, `area`, `tipo`. | `200` com array de parceiros; `400` se filtro inválido. | `requireAuth` | RF007, RF012, RF016 |
+| GET | `/api/parceiros/:id` | Consultar detalhe de parceiro. | Path `id`. | `200` com parceiro; `404` se não encontrado ou inativo. | `requireAuth` | RF008, RF012 |
+| PATCH | `/api/parceiros/:id` | Editar parcialmente dados de parceiro. | Path `id`; body JSON com `atualizado_por` e ao menos um campo editável. | `200` com parceiro atualizado; `400`, `404`, `409` ou `500` em erro. | `requireAuth` | RF005, RF009, RF010, RF018, RF019 |
+| PUT | `/api/parceiros/:id/validacao` | Enviar parceiro para validação. | Path `id`; body JSON com `atualizado_por` e `comentario` opcional. | `200` com status `pendente`; `400`, `404`, `409` ou `422` em erro. | `requireAuth` | RF021 |
+| PUT | `/api/parceiros/:id/aprovar` | Aprovar parceiro pendente. | Path `id`; body JSON com `aprovado_por` e `comentario` opcional. | `200` com status `ativo`; `400`, `404`, `409` ou `422` em erro. | `requireAuth` | RF022 |
+| PUT | `/api/parceiros/:id/devolver` | Devolver parceiro pendente para ajustes. | Path `id`; body JSON com `devolvido_por` e `comentario` opcional. | `200` com status `devolvido`; `400`, `404`, `409` ou `422` em erro. | `requireAuth` | RF023 |
+| GET | `/api/parceiros/:id/historico` | Consultar histórico de alterações de parceiro. | Path `id`. | `200` com array de histórico; `404` se parceiro não existir. | `requireAuth` | RF013 |
+| GET | `/api/parceiros/:id/terras` | Listar terras vinculadas a um parceiro. | Path `id`. | `200` com array de terras; `404` se parceiro não existir. | `requireAuth` | RF015 |
+| POST | `/api/parceiros/:id/terras` | Vincular uma terra a um parceiro. | Path `id`; body JSON com `terra_id` e `tipo_vinculo` opcional. | `201` com vínculo criado; `400`, `404`, `409` ou `422` em erro. | `requireAuth` | RF015 |
+| GET | `/parceiros` | Renderizar listagem HTML de parceiros. | Sem body. | HTML com lista de parceiros. | `requireAuth` | RF007 |
+| GET | `/parceiros/novo` | Renderizar formulário de cadastro de parceiro. | Sem body. | HTML do formulário de cadastro. | `requireAuth` | RF004 |
+| POST | `/parceiros` | Processar cadastro de parceiro via formulário HTML. | Body de formulário com dados do parceiro. | Redirect para `/parceiros` ou HTML com erro. | `requireAuth` | RF004, RF010 |
+| GET | `/parceiros/:id` | Renderizar detalhe HTML de parceiro. | Path `id`. | HTML de detalhe; `404` se parceiro não existir. | `requireAuth` | RF008 |
+| GET | `/parceiros/:id/editar` | Renderizar formulário de edição de parceiro. | Path `id`. | HTML do formulário de edição. | `requireAuth` | RF005 |
+| POST | `/parceiros/:id/editar` | Processar edição de parceiro via formulário HTML. | Path `id`; body de formulário com campos editáveis. | Redirect para `/parceiros` ou HTML com erro. | `requireAuth` | RF005 |
+| GET | `/validacao` | Renderizar a lista de parceiros pendentes de validação. | Sem body. | HTML com parceiros pendentes. | `requireAuth` | RF011 |
+| GET | `/validacao/:id` | Renderizar a tela de revisão de um parceiro pendente. | Path `id`. | HTML de revisão; `404` se parceiro não encontrado. | `requireAuth` | RF011 |
+| POST | `/validacao/:id/aprovar` | Aprovar parceiro pendente via formulário de validação. | Path `id`; body de formulário com `comentario` opcional. | Redirect para `/validacao` ou HTML da revisão com erro. | `requireAuth` | RF022 |
+| POST | `/validacao/:id/devolver` | Devolver parceiro pendente via formulário de validação. | Path `id`; body de formulário com `comentario`/motivo opcional. | Redirect para `/validacao` ou HTML da revisão com erro. | `requireAuth` | RF023 |
+| POST | `/api/terras` | Cadastrar terra. | Body JSON com `nome`, `area_contratada_ha`, `cidade`, `estado`, `criado_por` e `status` opcional. | `201` com terra criada; `400`, `422` ou `500` em erro. | `requireAuth` | RF010, RF018, RF019 |
+| GET | `/api/terras` | Listar terras não inativas. | Sem body. | `200` com array de terras. | `requireAuth` | RF012 |
+| PUT | `/api/terras/:id` | Editar dados de terra. | Path `id`; body JSON com `atualizado_por` e ao menos um campo editável. | `200` com terra atualizada; `400`, `404` ou `422` em erro. | `requireAuth` | RF010, RF014, RF018, RF019 |
+| GET | `/api/terras/:id/parceiros` | Listar parceiros vinculados a uma terra. | Path `id`. | `200` com array de parceiros; `404` se terra não existir. | `requireAuth` | RF015 |
+| POST | `/api/terras/:id/parceiros` | Vincular parceiro a uma terra. | Path `id`; body JSON com `parceiro_id` e `tipo_vinculo` opcional. | `201` com vínculo criado; `400`, `404`, `409` ou `422` em erro. | `requireAuth` | RF015 |
+| POST | `/parceiros/:id/interacoes` | Registrar interação/histórico de relacionamento com parceiro. | Path `id`; body JSON com `registrado_por`, `tipo`, `descricao` e `data`. | `201` com interação criada; `400`, `404` ou `500` em erro. | `requireAuth` | RF006, RF018, RF019 |
+| GET | `/parceiros/exportar` | Exportar parceiros ativos em CSV. | Sem body. | `200` com CSV; `404` se não houver dados; `500` em erro. | `requireAuth` | RF017 |
+| GET | `/dashboards/interacoes` | Consultar métricas consolidadas de interações. | Sem body. | `200` com DTO de métricas; `404`, `503` ou `500` em erro. | `requireAuth` | Fluxo 15 |
 
 ### 3.7.2. Exemplos de requisições
 
-Login:
+Login (API JSON) — retorna token, usuário e sessão no corpo da resposta:
 
 ```bash
 curl -X POST http://localhost:3000/login \
@@ -2772,10 +2785,23 @@ curl -X POST http://localhost:3000/login \
   -d '{"email":"admin@safracontrol.com","senha":"123456"}'
 ```
 
-Listar parceiros:
+Login (fluxo web) — envia o formulário e grava os cookies `HttpOnly` em `cookies.txt`, redirecionando para `/parceiros`:
 
 ```bash
-curl -X GET http://localhost:3000/api/parceiros
+curl -i -c cookies.txt -X POST http://localhost:3000/login \
+  -d "email=admin@safracontrol.com&senha=123456"
+```
+
+Listar parceiros (rota protegida) — reaproveita o cookie de sessão obtido no login web:
+
+```bash
+curl -X GET http://localhost:3000/api/parceiros -b cookies.txt
+```
+
+Logout (encerra a sessão e limpa os cookies):
+
+```bash
+curl -i -b cookies.txt -X POST http://localhost:3000/logout
 ```
 
 Criar parceiro:
@@ -2820,9 +2846,26 @@ curl -X POST http://localhost:3000/parceiros/ID_DO_PARCEIRO/interacoes \
 
 ### 3.7.3. Suporte aos fluxos principais
 
-A WebAPI suporta os fluxos principais da aplicação separando contratos JSON de rotas HTML. A autenticação ocorre por `POST /login`, enquanto `PUT /auth/sessoes/:id` permite revogar sessões. A gestão de usuários é coberta por criação, edição, inativação e alteração de perfil. O fluxo de parceiros cobre cadastro, listagem, detalhe, edição, envio para validação, aprovação, devolução e histórico de alterações. Terras e vínculos N:N são tratados por rotas específicas sob `/api/terras` e `/api/parceiros/:id/terras`. O histórico de relacionamento é registrado por `/parceiros/:id/interacoes`, e os fluxos de consulta analítica e saída de dados são suportados por dashboard e exportação CSV.
+A WebAPI suporta os fluxos principais da aplicação separando contratos JSON de rotas HTML. A autenticação ocorre por `POST /login` (com cookie no fluxo web ou JSON no fluxo de API), o `POST /logout` encerra a sessão pelo front-end e o `PUT /auth/sessoes/:id` permite revogar sessões específicas. A gestão de usuários é coberta por listagem, criação, edição, inativação e alteração de perfil. O fluxo de parceiros cobre cadastro, listagem, detalhe, edição, envio para validação, aprovação, devolução e histórico de alterações; a validação em si é operada pelas telas `GET /validacao`, `GET /validacao/:id` e pelas ações `POST /validacao/:id/aprovar` e `POST /validacao/:id/devolver`. Terras e vínculos N:N são tratados por rotas específicas sob `/api/terras` e `/api/parceiros/:id/terras`. O histórico de relacionamento é registrado por `/parceiros/:id/interacoes`, e os fluxos de consulta analítica e saída de dados são suportados por dashboard e exportação CSV.
 
 As rotas foram revisadas contra `src/app.ts` e `src/routes/`, evitando duplicidade de montagem. A duplicidade anterior de `app.use(routes)` foi removida, mantendo ativas as rotas gerais, `/api/parceiros`, `/parceiros` e `/api/terras`.
+
+### 3.7.4. Autenticação e proteção de rotas
+
+O acesso à aplicação é controlado por uma combinação de JWT, sessão persistida no banco e cookies `HttpOnly`, descrita em maior profundidade na seção 3.8.
+
+**Estabelecimento de sessão (`POST /login`).** Após validar as credenciais com bcrypt, o backend gera um JWT (`expiresIn` de 8h) e persiste a sessão na tabela `auth_sessoes`. No fluxo web, dois cookies `HttpOnly` são definidos — `auth_token` (JWT) e `auth_session_id` (identificador da sessão) — com `sameSite: 'lax'`, `secure` em produção e expiração alinhada ao token; em seguida o usuário é redirecionado para `/parceiros`. No fluxo de API, a mesma rota responde em JSON com token, usuário e sessão, preservando o contrato anterior.
+
+**Mensagem de erro genérica.** Para credenciais inválidas, a resposta é sempre a mesma (`E-mail ou senha inválidos` / `Credenciais inválidas`, status `401`), independentemente de o e-mail existir ou não, evitando enumeração de usuários.
+
+**Middleware `requireAuth`.** Toda rota interna passa por `requireAuth`, que: (1) lê o token do cookie `auth_token` ou do header `Authorization: Bearer`; (2) valida assinatura e expiração do JWT; (3) confirma que a sessão correspondente continua ativa no banco (bloqueando sessões revogadas); (4) confirma que o usuário ainda está ativo; e (5) anexa os dados mínimos do usuário autenticado à requisição. Quando a autenticação falha, rotas de view redirecionam para `/login` e rotas de API respondem `401` em JSON, sem expor detalhes técnicos do token.
+
+**Encerramento (`POST /logout`).** Revoga a sessão correspondente no banco, limpa os cookies de autenticação e redireciona para `/login`.
+
+| Acesso | Rotas |
+| --- | --- |
+| Pública | `GET /`, `GET /login`, `POST /login`, arquivos estáticos (`/css`, `/js`, `/docs`) |
+| Protegida (`requireAuth`) | Demais rotas: parceiros (`/api/parceiros`, `/parceiros`), usuários (`/usuarios`, `/api/usuarios`), terras (`/api/terras`), validação (`/validacao`), interações, exportação, dashboard, `POST /logout` e `PUT /auth/sessoes/:id` |
 
 ## 3.8. Autenticação, Autorização e Resiliência (sprint 5)
 
