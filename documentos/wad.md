@@ -1266,6 +1266,34 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 *Diagrama UML de deployment mostrando nós físicos, artefatos e canais de comunicação. Representa a visão Engineering + Technology do RM-ODP.*
 
+A seguir, apresenta-se a topologia de implantação inferida a partir do código-fonte disponível, considerando os nós e canais realmente mencionados no repositório.
+
+```mermaid
+graph TD
+  subgraph CLIENT["🖥️ Cliente — Navegador Web"]
+    BROWSER["Navegador Web\n(HTML / CSS / JS)"]
+  end
+
+  subgraph APP["☁️ Servidor de Aplicação"]
+    SERVER["Backend\n(Node.js / Express / EJS)"]
+  end
+
+  subgraph DATA["💾 Banco de Dados"]
+    DB["PostgreSQL\n(PostgreSQL / pg)"]
+  end
+
+  BROWSER -- "HTTP :3000\nHTML / REST" --> SERVER
+  SERVER -- "TCP :5432\nSQL" --> DB
+```
+
+<div align="center">
+  <sub>Figura 3.2.6.1 - Diagrama de Implantação</sub><br>
+  <img src="./assets/diagrama_implantacao.png" width="100%" alt="Diagrama de Implantação UML"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+O diagrama de implantação representa a arquitetura de execução inferida do repositório: o navegador web consome a aplicação Node.js/Express que serve páginas EJS e ativos estáticos, enquanto o backend conecta-se a um banco PostgreSQL para persistência de dados. Essa descrição foi baseada nos arquivos `src/app.ts`, `src/server.ts` e `src/config/connection.ts`; não foi encontrada configuração de deploy explícita como Dockerfile ou YAML de orquestração, portanto o diagrama concentra-se na topologia de runtime observada.
+
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
 No desenvolvimento do backend, foram adotados padrões de projeto voltados à separação de responsabilidades, organização da regra de negócio e redução de acoplamento entre a API, o banco de dados e os fluxos de validação. A escolha desses padrões ocorreu a partir de necessidades reais do projeto, principalmente a complexidade do domínio de parceiros agrícolas, terras, usuários, interações e histórico de alterações.
