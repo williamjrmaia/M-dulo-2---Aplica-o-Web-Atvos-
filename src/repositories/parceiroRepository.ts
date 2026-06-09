@@ -13,24 +13,78 @@ import {
   VincularTerraAoParceiroInput,
 } from '../models/parceiro';
 
+function vazioComoNull(value: string | undefined): string | null {
+  if (value === undefined) return null;
+  const text = value.trim();
+  return text.length > 0 ? text : null;
+}
+
 export async function createParceiro(data: CreateParceiroInput): Promise<Parceiro> {
-  const { rows } = await pool.query<Parceiro>(
-    `INSERT INTO parceiros
-       (nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, criado_por)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-     RETURNING *`,
-    [
-      data.nome,
-      data.apelido ?? null,
-      data.tipo_pessoa,
-      data.cpf_cnpj,
-      data.email ?? null,
-      data.data_nascimento ?? null,
-      data.nome_acompanhante ?? null,
-      data.criado_por,
-    ]
-  );
-  return rows[0];
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query<Parceiro>(
+      `INSERT INTO parceiros
+         (
+          nome,
+          apelido,
+          tipo_pessoa,
+          cpf_cnpj,
+          email,
+          data_nascimento,
+          nome_acompanhante,
+          regiao,
+          inscricao_estadual,
+          usina_referencia,
+          area_plantada,
+          tch_medio,
+          atr_medio,
+          observacoes,
+          status,
+          criado_por
+         )
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::status_validacao, $16)
+       RETURNING *`,
+      [
+        data.nome,
+        vazioComoNull(data.apelido),
+        data.tipo_pessoa,
+        data.cpf_cnpj,
+        vazioComoNull(data.email),
+        vazioComoNull(data.data_nascimento),
+        vazioComoNull(data.nome_acompanhante),
+        vazioComoNull(data.regiao),
+        vazioComoNull(data.inscricao_estadual),
+        vazioComoNull(data.usina_referencia),
+        vazioComoNull(data.area_plantada),
+        vazioComoNull(data.tch_medio),
+        vazioComoNull(data.atr_medio),
+        vazioComoNull(data.observacoes),
+        data.status ?? 'rascunho',
+        data.criado_por,
+      ]
+    );
+
+    const parceiro = rows[0];
+
+    if (data.telefone && data.telefone.trim()) {
+      await client.query(
+        `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
+         VALUES ($1, $2, 'celular', TRUE, $3)`,
+        [parceiro.id, data.telefone.trim(), data.criado_por]
+      );
+    }
+
+    await client.query('COMMIT');
+    return { ...parceiro, telefone: data.telefone?.trim() || null };
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 export async function updateParceiro(id: string, data: UpdateParceiroInput): Promise<Parceiro | null> {
@@ -68,7 +122,42 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
 
   if (data.nome_acompanhante !== undefined) {
     campos.push(`nome_acompanhante = $${contador++}`);
-    valores.push(data.nome_acompanhante);
+    valores.push(vazioComoNull(data.nome_acompanhante));
+  }
+
+  if (data.regiao !== undefined) {
+    campos.push(`regiao = $${contador++}`);
+    valores.push(vazioComoNull(data.regiao));
+  }
+
+  if (data.inscricao_estadual !== undefined) {
+    campos.push(`inscricao_estadual = $${contador++}`);
+    valores.push(vazioComoNull(data.inscricao_estadual));
+  }
+
+  if (data.usina_referencia !== undefined) {
+    campos.push(`usina_referencia = $${contador++}`);
+    valores.push(vazioComoNull(data.usina_referencia));
+  }
+
+  if (data.area_plantada !== undefined) {
+    campos.push(`area_plantada = $${contador++}`);
+    valores.push(vazioComoNull(data.area_plantada));
+  }
+
+  if (data.tch_medio !== undefined) {
+    campos.push(`tch_medio = $${contador++}`);
+    valores.push(vazioComoNull(data.tch_medio));
+  }
+
+  if (data.atr_medio !== undefined) {
+    campos.push(`atr_medio = $${contador++}`);
+    valores.push(vazioComoNull(data.atr_medio));
+  }
+
+  if (data.observacoes !== undefined) {
+    campos.push(`observacoes = $${contador++}`);
+    valores.push(vazioComoNull(data.observacoes));
   }
 
   if (data.status !== undefined) {
@@ -83,11 +172,34 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
   contador++;
   valores.push(id);
 
-  const result = await pool.query(
+  const result = await pool.query<Parceiro>(
     `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
     valores
   );
-  return result.rows[0] ?? null;
+  const parceiro = result.rows[0] ?? null;
+
+  if (parceiro && data.telefone !== undefined) {
+    const telefone = vazioComoNull(data.telefone);
+    await pool.query(
+      `UPDATE telefone_parceiro
+          SET principal = FALSE,
+              atualizado_por = $2,
+              atualizado_em = NOW()
+        WHERE parceiro_id = $1
+          AND principal = TRUE`,
+      [id, data.atualizado_por]
+    );
+
+    if (telefone) {
+      await pool.query(
+        `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
+         VALUES ($1, $2, 'celular', TRUE, $3)`,
+        [id, telefone, data.atualizado_por]
+      );
+    }
+  }
+
+  return parceiro ? { ...parceiro, telefone: data.telefone ?? null } : null;
 }
 
 export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
@@ -96,20 +208,26 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
 
   if (filtros.nome !== undefined) {
     valores.push(`%${filtros.nome}%`);
-    where.push(`(p.nome ILIKE $${valores.length} OR p.apelido ILIKE $${valores.length})`);
+    where.push(
+      `(p.nome ILIKE $${valores.length}
+        OR p.apelido ILIKE $${valores.length}
+        OR p.cpf_cnpj ILIKE $${valores.length}
+        OR p.email ILIKE $${valores.length})`
+    );
   }
 
   if (filtros.regiao !== undefined) {
     valores.push(`%${filtros.regiao}%`);
     where.push(
-      `EXISTS (
-        SELECT 1
-          FROM parceiro_terra pt
-          JOIN terras t ON t.id = pt.terra_id
-         WHERE pt.parceiro_id = p.id
-           AND t.status != 'inativo'
-           AND (t.cidade ILIKE $${valores.length} OR t.estado ILIKE $${valores.length})
-      )`
+      `(p.regiao ILIKE $${valores.length}
+        OR EXISTS (
+          SELECT 1
+            FROM parceiro_terra pt
+            JOIN terras t ON t.id = pt.terra_id
+           WHERE pt.parceiro_id = p.id
+             AND t.status != 'inativo'
+             AND (t.cidade ILIKE $${valores.length} OR t.estado ILIKE $${valores.length})
+        ))`
     );
   }
 
@@ -144,9 +262,28 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
     }
   }
 
+  if (filtros.status !== undefined) {
+    valores.push(filtros.status);
+    where.push(`p.status = $${valores.length}::status_validacao`);
+  }
+
+  if (filtros.usina_referencia !== undefined) {
+    valores.push(`%${filtros.usina_referencia}%`);
+    where.push(`p.usina_referencia ILIKE $${valores.length}`);
+  }
+
   const { rows } = await pool.query<Parceiro>(
-    `SELECT p.*
+    `SELECT p.*,
+            tp.numero AS telefone
        FROM parceiros p
+       LEFT JOIN LATERAL (
+         SELECT numero
+           FROM telefone_parceiro
+          WHERE parceiro_id = p.id
+            AND ativo = TRUE
+          ORDER BY principal DESC, criado_em DESC
+          LIMIT 1
+       ) tp ON TRUE
       WHERE ${where.join(' AND ')}
       ORDER BY p.criado_em DESC`,
     valores
@@ -155,7 +292,22 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
 }
 
 export async function getParceiroById(id: string): Promise<Parceiro | null> {
-  const { rows } = await pool.query<Parceiro>(`SELECT * FROM parceiros WHERE id = $1 AND status != 'inativo'`, [id]);
+  const { rows } = await pool.query<Parceiro>(
+    `SELECT p.*,
+            tp.numero AS telefone
+       FROM parceiros p
+       LEFT JOIN LATERAL (
+         SELECT numero
+           FROM telefone_parceiro
+          WHERE parceiro_id = p.id
+            AND ativo = TRUE
+          ORDER BY principal DESC, criado_em DESC
+          LIMIT 1
+       ) tp ON TRUE
+      WHERE p.id = $1
+        AND p.status != 'inativo'`,
+    [id]
+  );
   return rows[0] ?? null;
 }
 

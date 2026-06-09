@@ -56,6 +56,13 @@ CREATE TABLE IF NOT EXISTS parceiros (
   email VARCHAR,
   data_nascimento DATE,
   nome_acompanhante VARCHAR,
+  regiao VARCHAR,
+  inscricao_estadual VARCHAR,
+  usina_referencia VARCHAR,
+  area_plantada VARCHAR,
+  tch_medio VARCHAR,
+  atr_medio VARCHAR,
+  observacoes TEXT,
   status status_validacao NOT NULL DEFAULT 'rascunho',
   criado_em TIMESTAMP NOT NULL DEFAULT NOW(),
   atualizado_em TIMESTAMP,
@@ -63,10 +70,20 @@ CREATE TABLE IF NOT EXISTS parceiros (
   atualizado_por UUID REFERENCES usuarios(id)
 );
 
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS regiao VARCHAR;
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS inscricao_estadual VARCHAR;
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS usina_referencia VARCHAR;
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS area_plantada VARCHAR;
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS tch_medio VARCHAR;
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS atr_medio VARCHAR;
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS observacoes TEXT;
+
 CREATE INDEX IF NOT EXISTS idx_parceiro_status ON parceiros(status);
 CREATE INDEX IF NOT EXISTS idx_parceiro_cpf_cnpj ON parceiros(cpf_cnpj);
 CREATE INDEX IF NOT EXISTS idx_parceiro_nome ON parceiros(nome);
 CREATE INDEX IF NOT EXISTS idx_parceiro_tipo_pessoa ON parceiros(tipo_pessoa);
+CREATE INDEX IF NOT EXISTS idx_parceiro_regiao ON parceiros(regiao);
+CREATE INDEX IF NOT EXISTS idx_parceiro_usina_referencia ON parceiros(usina_referencia);
 
 CREATE TABLE IF NOT EXISTS terras (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

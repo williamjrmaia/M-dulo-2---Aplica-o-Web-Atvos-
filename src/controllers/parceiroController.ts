@@ -21,10 +21,34 @@ import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.sche
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
+function textoOpcional(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const text = value.trim();
+  return text.length > 0 ? text : undefined;
+}
+
 // ─── API JSON ────────────────────────────────────────────────────────────────
 
 export const createParceiro = asyncHandler(async (req: Request, res: Response) => {
-  const { nome, tipo_pessoa, cpf_cnpj, criado_por, apelido, email, data_nascimento, nome_acompanhante } = req.body;
+  const {
+    nome,
+    tipo_pessoa,
+    cpf_cnpj,
+    criado_por,
+    apelido,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    status,
+  } = req.body;
 
   if (!nome || !tipo_pessoa || !cpf_cnpj || !criado_por) {
     throw new ValidationError('Campos obrigatórios: nome, tipo_pessoa, cpf_cnpj, criado_por');
@@ -39,10 +63,19 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     tipo_pessoa,
     cpf_cnpj,
     criado_por,
-    apelido,
-    email,
-    data_nascimento,
-    nome_acompanhante,
+    apelido: textoOpcional(apelido),
+    email: textoOpcional(email),
+    data_nascimento: textoOpcional(data_nascimento),
+    nome_acompanhante: textoOpcional(nome_acompanhante),
+    telefone: textoOpcional(telefone),
+    regiao: textoOpcional(regiao),
+    inscricao_estadual: textoOpcional(inscricao_estadual),
+    usina_referencia: textoOpcional(usina_referencia),
+    area_plantada: textoOpcional(area_plantada),
+    tch_medio: textoOpcional(tch_medio),
+    atr_medio: textoOpcional(atr_medio),
+    observacoes: textoOpcional(observacoes),
+    status: status === 'pendente' ? 'pendente' : 'rascunho',
   });
 
   res.status(201).json(parceiro);
@@ -50,7 +83,25 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
 
 export const editarParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status, atualizado_por } = req.body;
+  const {
+    nome,
+    apelido,
+    tipo_pessoa,
+    cpf_cnpj,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    status,
+    atualizado_por,
+  } = req.body;
 
   if (atualizado_por === undefined) {
     throw new ValidationError('Campo obrigatório: atualizado_por');
@@ -64,6 +115,14 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     email === undefined &&
     data_nascimento === undefined &&
     nome_acompanhante === undefined &&
+    telefone === undefined &&
+    regiao === undefined &&
+    inscricao_estadual === undefined &&
+    usina_referencia === undefined &&
+    area_plantada === undefined &&
+    tch_medio === undefined &&
+    atr_medio === undefined &&
+    observacoes === undefined &&
     status === undefined
   ) {
     throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
@@ -77,6 +136,14 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     email,
     data_nascimento,
     nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
     status,
     atualizado_por,
   });
@@ -181,7 +248,25 @@ export const renderFormCadastro = asyncHandler(async (_req: Request, res: Respon
 });
 
 export const processarCadastro = asyncHandler(async (req: Request, res: Response) => {
-  const { nome, tipo_pessoa, cpf_cnpj, apelido, email, data_nascimento, nome_acompanhante } = req.body;
+  const {
+    nome,
+    tipo_pessoa,
+    cpf_cnpj,
+    apelido,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    acao,
+  } = req.body;
+  const enviarParaValidacao = acao === 'validacao';
 
   try {
     if (!nome || !tipo_pessoa || !cpf_cnpj) {
@@ -190,19 +275,34 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
     if (!['fisica', 'juridica'].includes(tipo_pessoa)) {
       throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
     }
+    if (enviarParaValidacao && !email) {
+      throw new ValidationError('Preencha o e-mail antes de enviar o parceiro para validação');
+    }
 
     await cadastrarParceiro({
       nome,
       tipo_pessoa,
       cpf_cnpj,
       criado_por: SEED_USER_ID,
-      apelido: apelido || undefined,
-      email: email || undefined,
-      data_nascimento: data_nascimento || undefined,
-      nome_acompanhante: nome_acompanhante || undefined,
+      apelido: textoOpcional(apelido),
+      email: textoOpcional(email),
+      data_nascimento: textoOpcional(data_nascimento),
+      nome_acompanhante: textoOpcional(nome_acompanhante),
+      telefone: textoOpcional(telefone),
+      regiao: textoOpcional(regiao),
+      inscricao_estadual: textoOpcional(inscricao_estadual),
+      usina_referencia: textoOpcional(usina_referencia),
+      area_plantada: textoOpcional(area_plantada),
+      tch_medio: textoOpcional(tch_medio),
+      atr_medio: textoOpcional(atr_medio),
+      observacoes: textoOpcional(observacoes),
+      status: enviarParaValidacao ? 'pendente' : 'rascunho',
     });
 
-    res.redirect('/parceiros');
+    const info = enviarParaValidacao
+      ? 'Parceiro enviado para validação.'
+      : 'Rascunho salvo com sucesso.';
+    res.redirect(`/parceiros?info=${encodeURIComponent(info)}`);
   } catch (err) {
     const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao cadastrar parceiro';
     res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/new', {
@@ -212,9 +312,13 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
   }
 });
 
-export const renderListaParceiros = asyncHandler(async (_req: Request, res: Response) => {
-  const parceiros = await obterParceiros();
-  res.render('parceiros/index', { parceiros });
+export const renderListaParceiros = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = listarParceirosFiltrosSchema.safeParse(req.query);
+  const filtros = parsed.success ? parsed.data : {};
+  const parceiros = await obterParceiros(filtros);
+  const info = typeof req.query.info === 'string' ? req.query.info : null;
+  const error = parsed.success ? null : 'Filtros inválidos. Revise os campos informados.';
+  res.render('parceiros/index', { parceiros, filtros, info, error });
 });
 
 export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Response) => {
@@ -238,7 +342,24 @@ export const renderFormEdicao = asyncHandler(async (req: Request, res: Response)
 
 export const processarEdicao = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status } = req.body;
+  const {
+    nome,
+    apelido,
+    tipo_pessoa,
+    cpf_cnpj,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    status,
+  } = req.body;
 
   const camposEditaveis: Record<string, unknown> = {};
   if (nome) camposEditaveis.nome = nome;
@@ -248,6 +369,14 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
   if (email) camposEditaveis.email = email;
   if (data_nascimento) camposEditaveis.data_nascimento = data_nascimento;
   if (nome_acompanhante) camposEditaveis.nome_acompanhante = nome_acompanhante;
+  if (telefone) camposEditaveis.telefone = telefone;
+  if (regiao) camposEditaveis.regiao = regiao;
+  if (inscricao_estadual) camposEditaveis.inscricao_estadual = inscricao_estadual;
+  if (usina_referencia) camposEditaveis.usina_referencia = usina_referencia;
+  if (area_plantada) camposEditaveis.area_plantada = area_plantada;
+  if (tch_medio) camposEditaveis.tch_medio = tch_medio;
+  if (atr_medio) camposEditaveis.atr_medio = atr_medio;
+  if (observacoes) camposEditaveis.observacoes = observacoes;
   if (status) camposEditaveis.status = status;
 
   try {
