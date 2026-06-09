@@ -24,25 +24,62 @@
     </div>
   </div>
 
-  <div class="list-toolbar">
-    <div class="search-bar">
+  <% const filtrosAtivos = typeof filtros !== 'undefined' ? filtros : {}; %>
+  <form class="list-toolbar filters-toolbar" method="GET" action="/parceiros" aria-label="Filtros de parceiros">
+    <div class="search-bar filter-search">
       <span class="search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
       <input
         type="search"
         class="search-input"
+        name="nome"
+        value="<%= filtrosAtivos.nome || '' %>"
         placeholder="Buscar por nome ou CPF/CNPJ..."
         aria-label="Buscar parceiros"
         data-search-input
         data-search-target="lista-parceiros"
       />
     </div>
-  </div>
+    <select class="form-select filter-control" name="tipo" aria-label="Filtrar por tipo">
+      <option value="">Tipo</option>
+      <option value="fisica" <%= filtrosAtivos.tipo === 'fisica' ? 'selected' : '' %>>Pessoa Física</option>
+      <option value="juridica" <%= filtrosAtivos.tipo === 'juridica' ? 'selected' : '' %>>Pessoa Jurídica</option>
+      <option value="fornecedor" <%= filtrosAtivos.tipo === 'fornecedor' ? 'selected' : '' %>>Fornecedor</option>
+      <option value="arrendador" <%= filtrosAtivos.tipo === 'arrendador' ? 'selected' : '' %>>Arrendador</option>
+    </select>
+    <select class="form-select filter-control" name="status" aria-label="Filtrar por status">
+      <option value="">Status</option>
+      <option value="rascunho" <%= filtrosAtivos.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
+      <option value="pendente" <%= filtrosAtivos.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
+      <option value="ativo" <%= filtrosAtivos.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
+      <option value="devolvido" <%= filtrosAtivos.status === 'devolvido' ? 'selected' : '' %>>Devolvido</option>
+    </select>
+    <input
+      class="form-control filter-control"
+      type="text"
+      name="regiao"
+      value="<%= filtrosAtivos.regiao || '' %>"
+      placeholder="Região"
+      aria-label="Filtrar por região"
+    />
+    <input
+      class="form-control filter-control"
+      type="text"
+      name="usina_referencia"
+      value="<%= filtrosAtivos.usina_referencia || '' %>"
+      placeholder="Usina de referência"
+      aria-label="Filtrar por usina de referência"
+    />
+    <div class="filter-actions">
+      <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+      <a href="/parceiros" class="btn btn-secondary btn-sm">Limpar</a>
+    </div>
+  </form>
 
   <% if (parceiros.length === 0) { %>
     <div class="empty-state">
       <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
-      <p class="empty-title">Nenhum parceiro cadastrado ainda</p>
-      <p class="empty-text">Cadastre o primeiro fornecedor ou proprietário para começar.</p>
+      <p class="empty-title">Nenhum parceiro encontrado</p>
+      <p class="empty-text">Cadastre o primeiro fornecedor ou proprietário, ou ajuste os filtros aplicados.</p>
       <a href="/parceiros/novo" class="btn btn-primary empty-action">+ Novo Parceiro</a>
     </div>
   <% } else { %>
@@ -51,7 +88,16 @@
         <article
           class="partner-list-item"
           data-search-item
-          data-search-text="<%= (p.nome || '') + ' ' + (p.cpf_cnpj || '') + ' ' + (p.apelido || '') %>"
+          data-search-text="<%= [
+            p.nome,
+            p.cpf_cnpj,
+            p.apelido,
+            p.email,
+            p.telefone,
+            p.regiao,
+            p.usina_referencia,
+            p.status
+          ].filter(Boolean).join(' ') %>"
         >
           <div class="list-item-head">
             <h2 class="list-item-title"><%= p.nome %></h2>
@@ -79,22 +125,22 @@
                 <p class="field-value"><%= p.apelido %></p>
               </div>
             <% } %>
-            <% if (p.regiao) { %>
-              <div>
-                <p class="field-label">Região</p>
-                <p class="field-value"><%= p.regiao %></p>
-              </div>
-            <% } %>
+            <div>
+              <p class="field-label">Região</p>
+              <p class="field-value"><%= p.regiao || '—' %></p>
+            </div>
             <div>
               <p class="field-label">E-mail</p>
               <p class="field-value"><%= p.email || '—' %></p>
             </div>
-            <% if (p.telefone) { %>
-              <div>
-                <p class="field-label">Telefone</p>
-                <p class="field-value"><%= p.telefone %></p>
-              </div>
-            <% } %>
+            <div>
+              <p class="field-label">Telefone</p>
+              <p class="field-value"><%= p.telefone || '—' %></p>
+            </div>
+            <div>
+              <p class="field-label">Usina</p>
+              <p class="field-value"><%= p.usina_referencia || '—' %></p>
+            </div>
             <div>
               <p class="field-label">Cadastrado em</p>
               <p class="field-value"><%= new Date(p.criado_em).toLocaleDateString('pt-BR') %></p>
@@ -102,6 +148,11 @@
           </div>
         </article>
       <% }) %>
+      <div class="empty-state" data-search-empty hidden>
+        <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <p class="empty-title">Nenhum parceiro corresponde à busca</p>
+        <p class="empty-text">Tente buscar por outro nome, CPF/CNPJ, e-mail, região ou usina.</p>
+      </div>
     </div>
   <% } %>
 </section>
