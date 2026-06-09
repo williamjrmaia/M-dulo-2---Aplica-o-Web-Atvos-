@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { AUTH_TOKEN_COOKIE, getJwtSecret } from '../config/auth';
+import type { NomePerfilAcesso } from '../models/PerfilAcesso';
 import { AuthSessionRepository } from '../repositories/authSessionRepository';
 import { UserRepository } from '../repositories/userRepository';
 
@@ -8,7 +9,7 @@ type UsuarioAutenticado = {
   id: string;
   nome: string;
   email: string;
-  perfil?: string;
+  perfil?: NomePerfilAcesso;
   sessaoId: string;
 };
 
@@ -111,7 +112,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   }
 }
 
-export function authorizeRoles(...roles: string[]) {
+export function authorizeRoles(...roles: NomePerfilAcesso[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (process.env.NODE_ENV === 'test') {
       return next();

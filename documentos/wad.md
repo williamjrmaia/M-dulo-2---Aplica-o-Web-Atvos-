@@ -103,7 +103,7 @@ Os dados estão disponíveis no SharePoint da área de Estratégia de Terras da 
 
 #### c) Solução proposta
 
-Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações. O acesso será controlado por três perfis distintos: administrador, editor e observador.
+Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações. O acesso será controlado por três perfis distintos: administrador, analista e coordenador.
 
 #### d) Forma de utilização da solução
 
@@ -154,7 +154,7 @@ Para responder diretamente à realidade desse cliente, a solução proposta é u
 
 **Produtos e Serviços**
 
-A solução entrega: um CRM web centralizado para gestão de parceiros agrícolas; indicadores-chave de desempenho da base de parceiros para suporte gerencial; exportação de listas de contatos para uso externo ao sistema; e controle de acesso segmentado por perfil: administrador, editor e observador.
+A solução entrega: um CRM web centralizado para gestão de parceiros agrícolas; indicadores-chave de desempenho da base de parceiros para suporte gerencial; exportação de listas de contatos para uso externo ao sistema; e controle de acesso segmentado por perfil: administrador, analista e coordenador.
 
 **Aliviadores de Dor**
 
@@ -482,14 +482,14 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 | ID    | Descrição                                                                                                                     | Prioridade | Status    |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------| ---------- | --------- |
-| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, editor e observador.                 | Alta       | Planejado |
+| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, analista e coordenador.                 | Alta       | Planejado |
 | RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                        | Alta       | Planejado |
 | RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                            | Alta       | Planejado |
-| RF004 | O sistema deve permitir que o editor cadastre novos parceiros agrícolas.                                                      | Alta       | Planejado |
-| RF005 | O sistema deve permitir que o editor edite dados cadastrais de parceiros agrícolas existentes.                                | Alta       | Planejado |
-| RF006 | O sistema deve permitir que o editor registre dados de relacionamento e histórico de interações com parceiros agrícolas.      | Alta       | Planejado |
-| RF007 | O sistema deve permitir que o observador visualize a lista de parceiros agrícolas cadastrados.                                | Alta       | Planejado |
-| RF008 | O sistema deve permitir que o observador consulte o perfil detalhado de um parceiro agrícola.                                 | Alta       | Planejado |
+| RF004 | O sistema deve permitir que o analista cadastre novos parceiros agrícolas.                                                      | Alta       | Planejado |
+| RF005 | O sistema deve permitir que o analista edite dados cadastrais de parceiros agrícolas existentes.                                | Alta       | Planejado |
+| RF006 | O sistema deve permitir que o analista registre dados de relacionamento e histórico de interações com parceiros agrícolas.      | Alta       | Planejado |
+| RF007 | O sistema deve permitir que o coordenador visualize a lista de parceiros agrícolas cadastrados.                                | Alta       | Planejado |
+| RF008 | O sistema deve permitir que o coordenador consulte o perfil detalhado de um parceiro agrícola.                                 | Alta       | Planejado |
 | RF009 | O sistema deve rejeitar ou sinalizar registros duplicados com base nos seguintes identificadores únicos: CPF, CNPJ e e-mail.  | Alta       | Planejado |
 | RF010 | O sistema deve verificar o preenchimento de campos obrigatórios antes dos registros serem enviados para a validação. Registros com o status rascunho podem ser salvos com dados incompletos.                                                                                                                            | Alta       | Planejado |
 | RF011 | O sistema deve exigir autenticação via e-mail e senha para acesso.                                                            | Alta       | Planejado |
@@ -551,7 +551,7 @@ Para este projeto, os RNFs foram organizados nos oito eixos definidos para a doc
 | RNF-SUP-01 | Suportabilidade | Novas funcionalidades devem seguir a arquitetura em camadas documentada, separando rotas, controllers, services, repositories, schemas, models, errors e middlewares. | RF001 a RF023; todos os fluxos implementados na WebAPI. | Revisar a implementação de cada novo fluxo; regra de negócio deve ficar em service, acesso a banco em repository, validação em schema/controller e tratamento de falhas em errors/middleware. |
 | RNF-SUP-02 | Suportabilidade | Cada endpoint ou fluxo relevante deve possuir documentação objetiva e, quando aplicável, testes automatizados de sucesso, erro e persistência. | RF001, RF004, RF005, RF006, RF007, RF008, RF013, RF015, RF016, RF017, RF020, RF021, RF022, RF023; fluxos cobertos na documentação da WebAPI e RTM. | Conferir a existência de documentação em `documentos/`, tabela de endpoints na seção 3.7 e testes em `src/tests` ou `src/test`; alterações futuras devem atualizar a RTM e a documentação correspondente. |
 | RNF-SEG-01 | Segurança | O sistema deve exigir autenticação para acesso aos fluxos protegidos e impedir que usuários inativos mantenham sessões válidas. | RF011, RF020; fluxos de login, revogação de sessão e inativação de usuários. | Executar testes para credenciais válidas, senha incorreta, usuário inexistente, token ausente, sessão revogada e usuário inativo; operações protegidas devem retornar erro controlado quando a autenticação não for válida. |
-| RNF-SEG-02 | Segurança | O sistema deve aplicar controle de acesso por perfil no backend, impedindo operações administrativas ou de alteração por usuários sem permissão. | RF001, RF002, RF003, RF004, RF005, RF007, RF008, RF020; fluxos de gestão de usuários, edição de dados, consulta e inativação. | Verificar por testes e revisão de rotas/services que administrador, editor e observador acessam apenas as operações previstas; o frontend não pode ser a única barreira de autorização. |
+| RNF-SEG-02 | Segurança | O sistema deve aplicar controle de acesso por perfil no backend, impedindo operações administrativas ou de alteração por usuários sem permissão. | RF001, RF002, RF003, RF004, RF005, RF007, RF008, RF020; fluxos de gestão de usuários, edição de dados, consulta e inativação. | Verificar por testes e revisão de rotas/services que administrador, analista e coordenador acessam apenas as operações previstas; o frontend não pode ser a única barreira de autorização. |
 | RNF-CAP-01 | Capacidade | O sistema deve suportar uso interno simultâneo por pelo menos 20 usuários em operações básicas de consulta, cadastro e edição, sem indisponibilidade dos fluxos principais. | RF004, RF005, RF006, RF007, RF008, RF016; fluxos de cadastro, edição, registro de interações, listagem e filtros. | Realizar teste de carga simples em homologação ou local, simulando requisições concorrentes aos endpoints principais; não deve haver falhas críticas, perda de dados ou degradação que impeça o uso básico. |
 | RNF-CAP-02 | Capacidade | A base deve comportar crescimento gradual de registros de parceiros, terras, vínculos e interações sem exigir mudança estrutural imediata no MVP. | RF006, RF007, RF008, RF013, RF015, RF016, RF017; fluxos de histórico, vínculos N:N, consulta e exportação. | Popular a base de teste com volume representativo para o projeto acadêmico, por exemplo 1.000 parceiros, 1.000 terras e 5.000 interações, e verificar listagem, detalhe, histórico e exportação dentro do limite de desempenho definido. |
 | RNF-RAST-01 | Rastreabilidade | Cada requisito funcional deve manter vínculo documentado com regras de negócio, endpoint, tela ou fluxo, teste e evidência na matriz de rastreabilidade. | RF001 a RF023; RTM da seção 3.9, matriz RF -> RN -> Endpoint da seção 3.1.4 e documentação da WebAPI. | Revisar a RTM a cada sprint; nenhum fluxo central de usuários, parceiros, terras, validação, histórico, exportação ou dashboard deve ficar sem RF, RN, endpoint e teste/evidência associados. |
@@ -1299,7 +1299,7 @@ Wireframe é uma representação visual simplificada da interface, usada para pl
 O fluxo da plataforma inicia na tela de login, onde o usuário acessa o sistema com e-mail e senha previamente cadastrados, sem possibilidade de autocadastro. O administrador controla esse acesso, além de gerenciar usuários, atribuir perfis e inativar contas, mantendo o histórico para auditoria. O coordenador atua no cadastro, edição e consulta de parceiros, além de aprovar registros enviados pelo analista. Já o analista pode cadastrar informações e consultar dados, mas depende de aprovação para alterações definitivas. Ao todo, sete fluxos principais foram desenvolvidos na sprint 2, atendendo às User Stories priorizadas.
 
 #### Cadastro de fornecedores de cana
-O fluxo da US01 permite ao editor cadastrar fornecedores de cana de forma padronizada, centralizando informações como CPF/CNPJ, inscrição estadual, área plantada, TCH e ATR médios, histórico de cumprimento de cota, certificações e usina de referência. O sistema valida os campos obrigatórios e, caso algum esteja em branco, bloqueia o envio e sinaliza o erro, conforme o critério CR2. Após a confirmação, o fornecedor passa a constar na listagem.
+O fluxo da US01 permite ao analista cadastrar fornecedores de cana de forma padronizada, centralizando informações como CPF/CNPJ, inscrição estadual, área plantada, TCH e ATR médios, histórico de cumprimento de cota, certificações e usina de referência. O sistema valida os campos obrigatórios e, caso algum esteja em branco, bloqueia o envio e sinaliza o erro, conforme o critério CR2. Após a confirmação, o fornecedor passa a constar na listagem.
 
 A interface do Administrador é focada na governança da plataforma, especialmente na Gestão de Usuários, que atende às US08 e US09. Nela, é possível cadastrar colaboradores, definir perfis de acesso (administrador, coordenador e analista) e inativar contas sem perder o histórico de ações, garantindo rastreabilidade. Também há acesso ao histórico de auditoria, permitindo consultar alterações por data, usuário e registro modificado.
 
@@ -1313,7 +1313,7 @@ Já a interface do Coordenador concentra o cadastro, edição e acompanhamento d
 </div>
 
 #### Atualização de fornecedores de cana
-Este fluxo cobre a US05 aplicada ao perfil de fornecedor de cana. O editor acessa o perfil de um fornecedor existente, altera um ou mais campos cadastrais e confirma a edição; o sistema registra automaticamente data, hora e identificação do usuário responsável pela alteração, atendendo ao critério de rastreabilidade definido na história. As telas reaproveitam os mesmos campos do formulário de cadastro, agora preenchidos com os dados atuais do parceiro, reduzindo a curva de aprendizado para quem já utiliza o fluxo de criação.
+Este fluxo cobre a US05 aplicada ao perfil de fornecedor de cana. O analista acessa o perfil de um fornecedor existente, altera um ou mais campos cadastrais e confirma a edição; o sistema registra automaticamente data, hora e identificação do usuário responsável pela alteração, atendendo ao critério de rastreabilidade definido na história. As telas reaproveitam os mesmos campos do formulário de cadastro, agora preenchidos com os dados atuais do parceiro, reduzindo a curva de aprendizado para quem já utiliza o fluxo de criação.
 
 <div align="center">
   <sub>Figura 3.3.3 - Fluxo de atualização de fornecedores de cana (US05)</sub><br>
@@ -1331,7 +1331,7 @@ A versão da US05 voltada a proprietários cedentes funciona de forma análoga a
 </div>
 
 #### Detalhes e histórico de interações dos fornecedores de cana
-Este fluxo atende simultaneamente à US04, visualização do perfil detalhado do parceiro pelo observador, e à US03, na qual o editor registra interações para documentar o relacionamento. A tela de perfil concentra os dados cadastrais e o histórico de interações em ordem cronológica, com a interação mais recente no topo, conforme o critério CR2 da US03. O formulário de nova interação solicita data, tipo e descrição, e o registro passa a compor o histórico do parceiro imediatamente após a confirmação.
+Este fluxo atende simultaneamente à US04, visualização do perfil detalhado do parceiro pelo coordenador, e à US03, na qual o analista registra interações para documentar o relacionamento. A tela de perfil concentra os dados cadastrais e o histórico de interações em ordem cronológica, com a interação mais recente no topo, conforme o critério CR2 da US03. O formulário de nova interação solicita data, tipo e descrição, e o registro passa a compor o histórico do parceiro imediatamente após a confirmação.
 
 <div align="center">
   <sub>Figura 3.3.5 - Fluxo de detalhes e histórico de interações dos fornecedores de cana (US03 e US04)</sub><br>
@@ -1349,7 +1349,7 @@ A versão equivalente para proprietários cedentes atende às mesmas US03 e US04
 </div>
 
 #### Exportação de lista de contatos em CSV
-Este fluxo atende à US07, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
+Este fluxo atende à US07, em que o coordenador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
 
 <div align="center">
   <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US07)</sub><br>

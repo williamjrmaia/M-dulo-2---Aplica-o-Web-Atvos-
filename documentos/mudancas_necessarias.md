@@ -2,7 +2,7 @@
 
 1. Criar middleware authorizeRoles(...roles) usando req.usuario.perfil, e aplicar em rotas de usuários, parceiros, validação, exportação, dashboard e terras.
 2. Remover SEED_USER_ID dos controllers HTML e usar sempre req.usuario.id.
-3. Alinhar perfis: decidir oficialmente entre administrador/editor/observador ou administrador/analista/coordenador e corrigir WAD, seed, badges e autorização.
+3. Alinhar perfis: usar oficialmente administrador/analista/coordenador e corrigir WAD, seed, badges e autorização.
 4. Alterar autenticação para negar login de usuário inativo.
 5. Ao inativar usuário, encerrar todas as sessões ativas daquele usuário. Adicionar método em AuthSessionRepository, por exemplo encerrarSessoesDoUsuario(usuarioId, revogadaPor).
 6. Criar fluxo de primeiro acesso/cadastro de senha, porque usuários são criados com senha_hash = NULL.

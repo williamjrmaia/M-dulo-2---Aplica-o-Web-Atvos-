@@ -2,7 +2,7 @@
 
 ## 1. Justificativa
 
-O endpoint `GET /api/parceiros` foi implementado para atender ao RF007, que exige que o sistema permita ao observador visualizar a lista de parceiros agricolas cadastrados. Este endpoint concentra a regra de negocio RN08, que determina que registros excluidos logicamente (status `inativo`) nao devem aparecer em consultas padrao do sistema. Sem esse endpoint, nenhum perfil de usuario poderia acessar a base de parceiros de forma estruturada, comprometendo a funcionalidade central do CRM: oferecer uma visao unica e confiavel dos parceiros agricolas da ATVOS.
+O endpoint `GET /api/parceiros` foi implementado para atender ao RF007, que exige que o sistema permita ao coordenador visualizar a lista de parceiros agricolas cadastrados. Este endpoint concentra a regra de negocio RN08, que determina que registros excluidos logicamente (status `inativo`) nao devem aparecer em consultas padrao do sistema. Sem esse endpoint, nenhum perfil de usuario poderia acessar a base de parceiros de forma estruturada, comprometendo a funcionalidade central do CRM: oferecer uma visao unica e confiavel dos parceiros agricolas da ATVOS.
 
 A escolha de retornar apenas parceiros com status diferente de `inativo` e intencional e alinhada a RN08: a exclusao logica preserva o historico no banco sem expor registros descontinuados nas consultas operacionais do sistema.
 
