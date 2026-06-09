@@ -94,6 +94,16 @@ npm run dev
 
 Por padrão, a API roda em `http://localhost:3000`. A porta pode ser alterada pela variável `PORT`.
 
+### 🔑 Usuários de demonstração
+
+O `npm run seed` cria três usuários para testar o login (senha `demo123` para todos):
+
+| Email | Perfil de acesso |
+|---|---|
+| juliano.soares@atvos.com | analista |
+| bianca.souza@atvos.com | coordenador |
+| marcelo.andrade@atvos.com | administrador |
+
 Para executar os testes automatizados:
 
 ```sh
