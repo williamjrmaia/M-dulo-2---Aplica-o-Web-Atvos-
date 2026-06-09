@@ -5,6 +5,11 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   private validarPermissaoAdmin(req: Request): 'autorizado' | 'nao-autenticado' | 'proibido' {
+    const usuarioAutenticado = (req as Request & { usuario?: { perfil?: string } }).usuario;
+    if (usuarioAutenticado) {
+      return usuarioAutenticado.perfil === 'administrador' ? 'autorizado' : 'proibido';
+    }
+
     const authorization = req.headers.authorization;
     const perfil =
       req.headers['x-user-role'] ??

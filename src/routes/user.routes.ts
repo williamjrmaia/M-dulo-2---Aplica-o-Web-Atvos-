@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/userController';
-import { requireAuth } from '../middlewares/requireAuth';
+import { authorizeRoles, requireAuth } from '../middlewares/requireAuth';
 import { UserRepository } from '../repositories/userRepository';
 import { UserService } from '../services/userService';
 
@@ -11,6 +11,7 @@ const service = new UserService(repository);
 const controller = new UserController(service);
 
 router.use(requireAuth);
+router.use(authorizeRoles('administrador'));
 
 router.post('/api/usuarios', (req, res) => {
   console.log('[ROUTE] POST /api/usuarios recebida');
