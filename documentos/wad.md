@@ -1226,7 +1226,7 @@ No fluxo principal, o sistema filtra a base de parceiros por região ou tipo e r
 
 <div align="center">
   <sub>Figura 3.2.4.13 - Fluxo 13: Visualização dos parceiros por filtros</sub><br>
-  <img src="./assets/diagrama_de_sequencia/fluxo_13_visualisar_parceiros_por_filtro.png" width="100%" alt="Diagrama de Sequência 13"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_13_visualisar_parceiros_por_filtro_atualizado.png" width="100%" alt="Diagrama de Sequência 13"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
