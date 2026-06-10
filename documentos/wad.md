@@ -1163,7 +1163,7 @@ No fluxo principal, o administrador visualiza a trilha de auditoria e valores an
 
 <div align="center">
   <sub>Figura 3.2.4.6 - Sexto fluxo: Consulta histórico de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_06_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 6"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_06_visualiza_historico_atualizado.png" width="100%" alt="Diagrama de Sequencia 6"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
