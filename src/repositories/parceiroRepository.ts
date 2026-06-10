@@ -8,6 +8,7 @@ import {
   ExcluirParceiroInput,
   HistoricoParceiro,
   ListarParceirosFiltros,
+  ParceiroPendenteValidacao,
   ParceiroTerra,
   TerraDoParceiro,
   UpdateParceiroInput,
@@ -370,6 +371,30 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
       ORDER BY p.criado_em DESC`,
     valores
   );
+  return rows;
+}
+
+export async function listarPendentesValidacao(): Promise<ParceiroPendenteValidacao[]> {
+  const { rows } = await pool.query<ParceiroPendenteValidacao>(
+    `SELECT
+        p.*,
+        ultimo_envio.data_alteracao AS data_envio
+       FROM parceiros p
+       LEFT JOIN LATERAL (
+         SELECT ra.data_alteracao
+           FROM registro_alteracao ra
+          WHERE ra.entidade_id = p.id
+            AND LOWER(ra.entidade_afetada) IN ('parceiro', 'parceiros')
+            AND ra.tipo_operacao = 'envio'
+          ORDER BY ra.data_alteracao DESC
+          LIMIT 1
+       ) ultimo_envio ON TRUE
+      WHERE p.status = 'pendente'
+      ORDER BY ultimo_envio.data_alteracao DESC NULLS LAST,
+               p.atualizado_em DESC NULLS LAST,
+               p.criado_em DESC`
+  );
+
   return rows;
 }
 

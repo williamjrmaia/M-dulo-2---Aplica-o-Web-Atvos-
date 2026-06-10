@@ -120,6 +120,10 @@ export interface HistoricoParceiro {
     data_alteracao: Date;
 }
 
+export interface ParceiroPendenteValidacao extends Parceiro {
+    data_envio?: Date | null;
+}
+
 export interface EnviarParceiroValidacaoInput {
     atualizado_por: string;
     comentario?: string;
