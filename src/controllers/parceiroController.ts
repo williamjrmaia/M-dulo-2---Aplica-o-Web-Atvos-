@@ -8,6 +8,7 @@ import {
   enviarParceiroParaValidacao as enviarParceiroParaValidacaoService,
   excluirParceiro as excluirParceiroService,
   obterHistoricoParceiro,
+  obterPendentesValidacao,
   obterRascunhosDevolvidosDoAnalista,
   obterTerrasDoParceiro,
   obterParceiros,
@@ -450,8 +451,7 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 // ─── Views HTML: validação e revisão de registros ────────────────────────────
 
 export const renderValidacao = asyncHandler(async (_req: Request, res: Response) => {
-  const todos = await obterParceiros();
-  const pendentes = todos.filter((p) => p.status === 'pendente');
+  const pendentes = await obterPendentesValidacao();
   res.render('parceiros/validacao', { pendentes });
 });
 

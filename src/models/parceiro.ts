@@ -120,6 +120,10 @@ export interface HistoricoParceiro {
     data_alteracao: Date;
 }
 
+export interface ParceiroPendenteValidacao extends Parceiro {
+    data_envio?: Date | null;
+}
+
 export interface ParceiroRascunhoDevolvido extends Parceiro {
     comentario_devolucao?: string | null;
     data_devolucao?: Date | null;

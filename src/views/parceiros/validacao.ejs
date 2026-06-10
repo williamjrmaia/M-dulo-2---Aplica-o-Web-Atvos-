@@ -50,7 +50,7 @@
             </div>
             <div>
               <p class="field-label">Enviado em</p>
-              <p class="field-value"><%= p.atualizado_em ? new Date(p.atualizado_em).toLocaleDateString('pt-BR') : new Date(p.criado_em).toLocaleDateString('pt-BR') %></p>
+              <p class="field-value"><%= p.data_envio ? new Date(p.data_envio).toLocaleDateString('pt-BR') : (p.atualizado_em ? new Date(p.atualizado_em).toLocaleDateString('pt-BR') : new Date(p.criado_em).toLocaleDateString('pt-BR')) %></p>
             </div>
           </div>
         </article>

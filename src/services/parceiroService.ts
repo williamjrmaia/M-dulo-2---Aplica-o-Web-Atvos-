@@ -5,6 +5,7 @@ import {
   deactivateParceiro,
   getParceiroById,
   listarHistoricoParceiro,
+  listarPendentesValidacao,
   listarParceiros,
   listarRascunhosDevolvidosDoAnalista,
   listarTerrasDoParceiro,
@@ -21,6 +22,7 @@ import {
   HistoricoParceiro,
   ListarParceirosFiltros,
   Parceiro,
+  ParceiroPendenteValidacao,
   ParceiroRascunhoDevolvido,
   ParceiroTerra,
   TerraDoParceiro,
@@ -70,6 +72,10 @@ export async function editarParceiro(id: string, data: UpdateParceiroInput): Pro
 
 export async function obterParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
   return await listarParceiros(filtros);
+}
+
+export async function obterPendentesValidacao(): Promise<ParceiroPendenteValidacao[]> {
+  return listarPendentesValidacao();
 }
 
 export async function obterRascunhosDevolvidosDoAnalista(
