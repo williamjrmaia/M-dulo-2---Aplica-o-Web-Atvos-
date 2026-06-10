@@ -1172,7 +1172,7 @@ No fluxo principal, o administrador atualiza as informações e o sistema persis
 
 <div align="center">
   <sub>Figura 3.2.4.7 - Sétimo fluxo: Edição dos dados do usuário</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_07_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 7"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_07_edicao_de_usuarios_atualizado.png" width="100%" alt="Diagrama de Sequencia 7"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
