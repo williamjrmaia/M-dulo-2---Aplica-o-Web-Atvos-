@@ -1,0 +1,61 @@
+<%- include('../partials/header', { title: 'Terras', active: 'terras' }) %>
+
+<%- include('../partials/flash', { error: locals.error, info: locals.info }) %>
+
+<section aria-labelledby="titulo-terras">
+  <div class="page-header">
+    <div class="page-header-text">
+      <h1 id="titulo-terras" class="page-title">Terras</h1>
+      <p class="subtitle">Áreas rurais vinculadas aos parceiros do Safra Control</p>
+    </div>
+    <div class="page-header-actions">
+      <a href="/terras/nova" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nova Terra
+      </a>
+    </div>
+  </div>
+
+  <% if (!terras || terras.length === 0) { %>
+    <div class="empty-state">
+      <p class="empty-title">Nenhuma terra cadastrada</p>
+      <p class="empty-text">Cadastre uma área para iniciar os vínculos com parceiros.</p>
+      <a href="/terras/nova" class="btn btn-primary empty-action">Nova Terra</a>
+    </div>
+  <% } else { %>
+    <div class="partner-list" id="lista-terras">
+      <% terras.forEach(function(t) { %>
+        <article class="partner-list-item" data-search-item data-search-text="<%= [t.nome, t.cidade, t.estado, t.status].filter(Boolean).join(' ') %>">
+          <div class="list-item-head">
+            <h2 class="list-item-title"><%= t.nome %></h2>
+            <span class="badge badge-<%= t.status %>"><%= t.status %></span>
+            <div class="list-item-actions">
+              <a href="/terras/<%= t.id %>/vincular-parceiro" class="btn btn-secondary btn-sm">Vincular parceiro</a>
+              <a href="/terras/<%= t.id %>/editar" class="btn btn-primary btn-sm">Editar</a>
+            </div>
+          </div>
+          <div class="list-item-grid">
+            <div>
+              <p class="field-label">Área contratada</p>
+              <p class="field-value"><%= Number(t.area_contratada_ha).toLocaleString('pt-BR') %> ha</p>
+            </div>
+            <div>
+              <p class="field-label">Cidade</p>
+              <p class="field-value"><%= t.cidade %></p>
+            </div>
+            <div>
+              <p class="field-label">Estado</p>
+              <p class="field-value"><%= t.estado %></p>
+            </div>
+            <div>
+              <p class="field-label">Criada em</p>
+              <p class="field-value"><%= new Date(t.criado_em).toLocaleDateString('pt-BR') %></p>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

@@ -34,6 +34,24 @@ export async function obterTerras(): Promise<Terra[]> {
   return listarTerras();
 }
 
+export async function obterTerraPorId(id: string): Promise<Terra> {
+  try {
+    const terra = await getTerraById(id);
+    if (!terra) {
+      throw new NotFoundError('Terra não encontrada');
+    }
+    return terra;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Terra não encontrada');
+    }
+    throw err;
+  }
+}
+
 export async function editarTerra(id: string, data: UpdateTerraInput): Promise<Terra> {
   try {
     const terra = await updateTerra(id, data);
