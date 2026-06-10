@@ -23,7 +23,19 @@ import {
   UpdateParceiroInput,
   VincularTerraAoParceiroInput,
 } from '../models/parceiro';
-import { ConflictError, NotFoundError, UnprocessableEntityError } from '../errors/AppError';
+import { ConflictError, NotFoundError, UnprocessableEntityError, ValidationError } from '../errors/AppError';
+
+function validarCamposObrigatoriosParaValidacao(parceiro: Parceiro): void {
+  const camposAusentes: string[] = [];
+
+  if (!parceiro.email?.trim()) {
+    camposAusentes.push('email');
+  }
+
+  if (camposAusentes.length > 0) {
+    throw new ValidationError(`Campos obrigatórios para envio à validação: ${camposAusentes.join(', ')}`);
+  }
+}
 
 export async function cadastrarParceiro(data: CreateParceiroInput): Promise<Parceiro> {
   try {
@@ -102,6 +114,8 @@ export async function enviarParceiroParaValidacao(
     if (!['rascunho', 'devolvido'].includes(parceiroAtual.status)) {
       throw new ConflictError('Parceiro só pode ser enviado para validação quando estiver em rascunho ou devolvido');
     }
+
+    validarCamposObrigatoriosParaValidacao(parceiroAtual);
 
     const parceiro = await sendParceiroToValidation(id, data, parceiroAtual);
     if (!parceiro) {
