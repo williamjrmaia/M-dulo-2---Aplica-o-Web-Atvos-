@@ -2,7 +2,9 @@ import { randomUUID } from 'crypto';
 import {
   cadastrarTerra,
   obterTerras,
+  obterTerraPorId,
   editarTerra,
+  excluirTerra,
   obterParceirosDaTerra,
   vincularParceiroATerra,
 } from '../services/terraService';
@@ -144,6 +146,82 @@ describe('terraService (unitário, banco real) — caminhos de sucesso', () => {
       [terra.id, parceiro.id]
     );
     expect(rows[0].tipo_vinculo).toBe('arrendador');
+  });
+});
+
+describe('terraService (unitário, banco real) — obterTerraPorId', () => {
+  // CT → RN08 (RF012): busca terra por id
+  it('retorna uma terra existente pelo id', async () => {
+    const terra = await criarTerraNoBanco();
+    const encontrada = await obterTerraPorId(terra.id);
+    expect(encontrada.id).toBe(terra.id);
+    expect(encontrada.status).toBe('rascunho');
+  });
+
+  it('rejeita quando a terra não existe', async () => {
+    await expect(obterTerraPorId(ids.inexistente)).rejects.toThrow('Terra não encontrada');
+  });
+
+  it('trata id malformado como terra não encontrada', async () => {
+    await expect(obterTerraPorId(ids.malformado)).rejects.toThrow('Terra não encontrada');
+  });
+});
+
+describe('terraService (unitário, banco real) — excluirTerra', () => {
+  async function criarTerraNoBancoComStatus(status: string) {
+    const { rows } = await pool.query<{ id: string; status: string }>(
+      `INSERT INTO terras (nome, area_contratada_ha, cidade, estado, status, criado_por)
+       VALUES ($1, $2, $3, $4, $5::status_validacao, $6)
+       RETURNING id, status`,
+      [`Terra ${randomUUID()}`, 80, 'Bauru', 'SP', status, usuarioId]
+    );
+    terrasCriadas.add(rows[0].id);
+    return rows[0];
+  }
+
+  it('inativa uma terra existente e persiste o status', async () => {
+    const terra = await criarTerraNoBanco();
+    const inativada = await excluirTerra(terra.id, { atualizado_por: usuarioId });
+
+    expect(inativada.id).toBe(terra.id);
+    expect(inativada.status).toBe('inativo');
+
+    const { rows } = await pool.query('SELECT status FROM terras WHERE id = $1', [terra.id]);
+    expect(rows[0].status).toBe('inativo');
+  });
+
+  it('rejeita a exclusão de terra inexistente', async () => {
+    await expect(
+      excluirTerra(ids.inexistente, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Terra não encontrada');
+  });
+
+  it('rejeita a exclusão de terra já inativa', async () => {
+    const terra = await criarTerraNoBancoComStatus('inativo');
+    await expect(
+      excluirTerra(terra.id, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Terra já está inativa');
+  });
+
+  it('trata id malformado como terra não encontrada', async () => {
+    await expect(
+      excluirTerra(ids.malformado, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Terra não encontrada');
+  });
+
+  it('rejeita quando atualizado_por não existe no banco (FK)', async () => {
+    const terra = await criarTerraNoBanco();
+    await expect(
+      excluirTerra(terra.id, { atualizado_por: ids.inexistente })
+    ).rejects.toThrow('atualizado_por não referencia um usuário existente');
+  });
+});
+
+describe('terraService (unitário, banco real) — vincularParceiroATerra id malformado', () => {
+  it('trata terraId malformado como terra não encontrada', async () => {
+    await expect(
+      vincularParceiroATerra(ids.malformado, { parceiro_id: ids.inexistente })
+    ).rejects.toThrow('Terra não encontrada');
   });
 });
 
