@@ -19,6 +19,7 @@ const EMAIL = 'itg.svc.parceiro@atvos.test';
 let perfis: Record<string, string>;
 let usuarioId: string;
 const parceirosCriados = new Set<string>();
+const terrasCriadas = new Set<string>();
 
 beforeAll(async () => {
   perfis = await garantirPerfis();
@@ -30,18 +31,43 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  const ids = Array.from(parceirosCriados);
-  if (ids.length > 0) {
-    await pool.query(`DELETE FROM registro_alteracao WHERE entidade_id = ANY($1::uuid[])`, [ids]);
-    await pool.query(`DELETE FROM parceiros WHERE id = ANY($1::uuid[])`, [ids]);
+  const parceiroIdList = Array.from(parceirosCriados);
+  const terraIdList = Array.from(terrasCriadas);
+  if (parceiroIdList.length > 0 || terraIdList.length > 0) {
+    await pool.query(
+      `DELETE FROM parceiro_terra
+        WHERE parceiro_id = ANY($1::uuid[])
+           OR terra_id = ANY($2::uuid[])`,
+      [parceiroIdList, terraIdList]
+    );
+  }
+  if (parceiroIdList.length > 0) {
+    await pool.query(`DELETE FROM registro_alteracao WHERE entidade_id = ANY($1::uuid[])`, [parceiroIdList]);
+    await pool.query(`DELETE FROM parceiros WHERE id = ANY($1::uuid[])`, [parceiroIdList]);
+  }
+  if (terraIdList.length > 0) {
+    await pool.query(`DELETE FROM terras WHERE id = ANY($1::uuid[])`, [terraIdList]);
   }
   await removerUsuarioPorEmail(EMAIL);
   parceirosCriados.clear();
+  terrasCriadas.clear();
 });
 
 afterAll(async () => {
   await pool.end();
 });
+
+// Arrange auxiliar: cria uma terra ativa direto no banco.
+async function criarTerraNoBanco() {
+  const { rows } = await pool.query<{ id: string }>(
+    `INSERT INTO terras (nome, area_contratada_ha, cidade, estado, status, criado_por)
+     VALUES ($1, $2, $3, $4, 'ativo'::status_validacao, $5)
+     RETURNING id`,
+    [`Terra ${randomUUID()}`, 100, 'Ribeirão Preto', 'SP', usuarioId]
+  );
+  terrasCriadas.add(rows[0].id);
+  return rows[0];
+}
 
 // Arrange auxiliar: cria um parceiro num status controlado, direto no banco.
 async function criarParceiroNoBanco(status = 'rascunho') {
@@ -464,5 +490,41 @@ describe('parceiroService (unitário, banco real) — id malformado e unicidade'
     await expect(
       devolverParceiro(ids.malformado, { devolvido_por: usuarioId })
     ).rejects.toThrow('Parceiro não encontrado');
+  });
+});
+
+describe('parceiroService (unitário, banco real) — falhas de excluirParceiro', () => {
+  // getParceiroById filtra status != 'inativo', então parceiro inexistente e
+  // parceiro inativo ambos resultam em NotFoundError (retorno null do repository).
+  it('rejeita a exclusão de parceiro inexistente', async () => {
+    await expect(
+      excluirParceiro(ids.inexistente, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Parceiro não encontrado');
+  });
+
+  it('trata id malformado como parceiro não encontrado na exclusão', async () => {
+    await expect(
+      excluirParceiro(ids.malformado, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Parceiro não encontrado');
+  });
+});
+
+describe('parceiroService (unitário, banco real) — vincularTerraAoParceiro edge cases', () => {
+  it('trata terra_id malformado como parceiro não encontrado no vínculo', async () => {
+    const parceiro = await criarParceiroNoBanco('rascunho');
+    await expect(
+      vincularTerraAoParceiro(parceiro.id, { terra_id: ids.malformado })
+    ).rejects.toThrow('Parceiro não encontrado');
+  });
+
+  it('rejeita vínculo duplicado com a mesma terra', async () => {
+    const parceiro = await criarParceiroNoBanco('rascunho');
+    const terra = await criarTerraNoBanco();
+
+    await vincularTerraAoParceiro(parceiro.id, { terra_id: terra.id });
+
+    await expect(
+      vincularTerraAoParceiro(parceiro.id, { terra_id: terra.id })
+    ).rejects.toThrow('Terra já vinculada ao parceiro');
   });
 });
