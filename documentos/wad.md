@@ -103,7 +103,7 @@ Os dados estão disponíveis no SharePoint da área de Estratégia de Terras da 
 
 #### c) Solução proposta
 
-Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações. O acesso será controlado por três perfis distintos: administrador, editor e observador.
+Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações. O acesso será controlado por três perfis distintos: administrador, analista e coordenador.
 
 #### d) Forma de utilização da solução
 
@@ -154,7 +154,7 @@ Para responder diretamente à realidade desse cliente, a solução proposta é u
 
 **Produtos e Serviços**
 
-A solução entrega: um CRM web centralizado para gestão de parceiros agrícolas; indicadores-chave de desempenho da base de parceiros para suporte gerencial; exportação de listas de contatos para uso externo ao sistema; e controle de acesso segmentado por perfil: administrador, editor e observador.
+A solução entrega: um CRM web centralizado para gestão de parceiros agrícolas; indicadores-chave de desempenho da base de parceiros para suporte gerencial; exportação de listas de contatos para uso externo ao sistema; e controle de acesso segmentado por perfil: administrador, analista e coordenador.
 
 **Aliviadores de Dor**
 
@@ -482,14 +482,14 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 | ID    | Descrição                                                                                                                     | Prioridade | Status    |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------| ---------- | --------- |
-| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, editor e observador.                 | Alta       | Planejado |
+| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, analista e coordenador.                 | Alta       | Planejado |
 | RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                        | Alta       | Planejado |
 | RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                            | Alta       | Planejado |
-| RF004 | O sistema deve permitir que o editor cadastre novos parceiros agrícolas.                                                      | Alta       | Planejado |
-| RF005 | O sistema deve permitir que o editor edite dados cadastrais de parceiros agrícolas existentes.                                | Alta       | Planejado |
-| RF006 | O sistema deve permitir que o editor registre dados de relacionamento e histórico de interações com parceiros agrícolas.      | Alta       | Planejado |
-| RF007 | O sistema deve permitir que o observador visualize a lista de parceiros agrícolas cadastrados.                                | Alta       | Planejado |
-| RF008 | O sistema deve permitir que o observador consulte o perfil detalhado de um parceiro agrícola.                                 | Alta       | Planejado |
+| RF004 | O sistema deve permitir que o analista cadastre novos parceiros agrícolas.                                                      | Alta       | Planejado |
+| RF005 | O sistema deve permitir que o analista edite dados cadastrais de parceiros agrícolas existentes.                                | Alta       | Planejado |
+| RF006 | O sistema deve permitir que o analista registre dados de relacionamento e histórico de interações com parceiros agrícolas.      | Alta       | Planejado |
+| RF007 | O sistema deve permitir que o coordenador visualize a lista de parceiros agrícolas cadastrados.                                | Alta       | Planejado |
+| RF008 | O sistema deve permitir que o coordenador consulte o perfil detalhado de um parceiro agrícola.                                 | Alta       | Planejado |
 | RF009 | O sistema deve rejeitar ou sinalizar registros duplicados com base nos seguintes identificadores únicos: CPF, CNPJ e e-mail.  | Alta       | Planejado |
 | RF010 | O sistema deve verificar o preenchimento de campos obrigatórios antes dos registros serem enviados para a validação. Registros com o status rascunho podem ser salvos com dados incompletos.                                                                                                                            | Alta       | Planejado |
 | RF011 | O sistema deve exigir autenticação via e-mail e senha para acesso.                                                            | Alta       | Planejado |
@@ -551,7 +551,7 @@ Para este projeto, os RNFs foram organizados nos oito eixos definidos para a doc
 | RNF-SUP-01 | Suportabilidade | Novas funcionalidades devem seguir a arquitetura em camadas documentada, separando rotas, controllers, services, repositories, schemas, models, errors e middlewares. | RF001 a RF023; todos os fluxos implementados na WebAPI. | Revisar a implementação de cada novo fluxo; regra de negócio deve ficar em service, acesso a banco em repository, validação em schema/controller e tratamento de falhas em errors/middleware. |
 | RNF-SUP-02 | Suportabilidade | Cada endpoint ou fluxo relevante deve possuir documentação objetiva e, quando aplicável, testes automatizados de sucesso, erro e persistência. | RF001, RF004, RF005, RF006, RF007, RF008, RF013, RF015, RF016, RF017, RF020, RF021, RF022, RF023; fluxos cobertos na documentação da WebAPI e RTM. | Conferir a existência de documentação em `documentos/`, tabela de endpoints na seção 3.7 e testes em `src/tests` ou `src/test`; alterações futuras devem atualizar a RTM e a documentação correspondente. |
 | RNF-SEG-01 | Segurança | O sistema deve exigir autenticação para acesso aos fluxos protegidos e impedir que usuários inativos mantenham sessões válidas. | RF011, RF020; fluxos de login, revogação de sessão e inativação de usuários. | Executar testes para credenciais válidas, senha incorreta, usuário inexistente, token ausente, sessão revogada e usuário inativo; operações protegidas devem retornar erro controlado quando a autenticação não for válida. |
-| RNF-SEG-02 | Segurança | O sistema deve aplicar controle de acesso por perfil no backend, impedindo operações administrativas ou de alteração por usuários sem permissão. | RF001, RF002, RF003, RF004, RF005, RF007, RF008, RF020; fluxos de gestão de usuários, edição de dados, consulta e inativação. | Verificar por testes e revisão de rotas/services que administrador, editor e observador acessam apenas as operações previstas; o frontend não pode ser a única barreira de autorização. |
+| RNF-SEG-02 | Segurança | O sistema deve aplicar controle de acesso por perfil no backend, impedindo operações administrativas ou de alteração por usuários sem permissão. | RF001, RF002, RF003, RF004, RF005, RF007, RF008, RF020; fluxos de gestão de usuários, edição de dados, consulta e inativação. | Verificar por testes e revisão de rotas/services que administrador, analista e coordenador acessam apenas as operações previstas; o frontend não pode ser a única barreira de autorização. |
 | RNF-CAP-01 | Capacidade | O sistema deve suportar uso interno simultâneo por pelo menos 20 usuários em operações básicas de consulta, cadastro e edição, sem indisponibilidade dos fluxos principais. | RF004, RF005, RF006, RF007, RF008, RF016; fluxos de cadastro, edição, registro de interações, listagem e filtros. | Realizar teste de carga simples em homologação ou local, simulando requisições concorrentes aos endpoints principais; não deve haver falhas críticas, perda de dados ou degradação que impeça o uso básico. |
 | RNF-CAP-02 | Capacidade | A base deve comportar crescimento gradual de registros de parceiros, terras, vínculos e interações sem exigir mudança estrutural imediata no MVP. | RF006, RF007, RF008, RF013, RF015, RF016, RF017; fluxos de histórico, vínculos N:N, consulta e exportação. | Popular a base de teste com volume representativo para o projeto acadêmico, por exemplo 1.000 parceiros, 1.000 terras e 5.000 interações, e verificar listagem, detalhe, histórico e exportação dentro do limite de desempenho definido. |
 | RNF-RAST-01 | Rastreabilidade | Cada requisito funcional deve manter vínculo documentado com regras de negócio, endpoint, tela ou fluxo, teste e evidência na matriz de rastreabilidade. | RF001 a RF023; RTM da seção 3.9, matriz RF -> RN -> Endpoint da seção 3.1.4 e documentação da WebAPI. | Revisar a RTM a cada sprint; nenhum fluxo central de usuários, parceiros, terras, validação, histórico, exportação ou dashboard deve ficar sem RF, RN, endpoint e teste/evidência associados. |
@@ -1299,7 +1299,7 @@ Wireframe é uma representação visual simplificada da interface, usada para pl
 O fluxo da plataforma inicia na tela de login, onde o usuário acessa o sistema com e-mail e senha previamente cadastrados, sem possibilidade de autocadastro. O administrador controla esse acesso, além de gerenciar usuários, atribuir perfis e inativar contas, mantendo o histórico para auditoria. O coordenador atua no cadastro, edição e consulta de parceiros, além de aprovar registros enviados pelo analista. Já o analista pode cadastrar informações e consultar dados, mas depende de aprovação para alterações definitivas. Ao todo, sete fluxos principais foram desenvolvidos na sprint 2, atendendo às User Stories priorizadas.
 
 #### Cadastro de fornecedores de cana
-O fluxo da US01 permite ao editor cadastrar fornecedores de cana de forma padronizada, centralizando informações como CPF/CNPJ, inscrição estadual, área plantada, TCH e ATR médios, histórico de cumprimento de cota, certificações e usina de referência. O sistema valida os campos obrigatórios e, caso algum esteja em branco, bloqueia o envio e sinaliza o erro, conforme o critério CR2. Após a confirmação, o fornecedor passa a constar na listagem.
+O fluxo da US01 permite ao analista cadastrar fornecedores de cana de forma padronizada, centralizando informações como CPF/CNPJ, inscrição estadual, área plantada, TCH e ATR médios, histórico de cumprimento de cota, certificações e usina de referência. O sistema valida os campos obrigatórios e, caso algum esteja em branco, bloqueia o envio e sinaliza o erro, conforme o critério CR2. Após a confirmação, o fornecedor passa a constar na listagem.
 
 A interface do Administrador é focada na governança da plataforma, especialmente na Gestão de Usuários, que atende às US08 e US09. Nela, é possível cadastrar colaboradores, definir perfis de acesso (administrador, coordenador e analista) e inativar contas sem perder o histórico de ações, garantindo rastreabilidade. Também há acesso ao histórico de auditoria, permitindo consultar alterações por data, usuário e registro modificado.
 
@@ -1313,7 +1313,7 @@ Já a interface do Coordenador concentra o cadastro, edição e acompanhamento d
 </div>
 
 #### Atualização de fornecedores de cana
-Este fluxo cobre a US05 aplicada ao perfil de fornecedor de cana. O editor acessa o perfil de um fornecedor existente, altera um ou mais campos cadastrais e confirma a edição; o sistema registra automaticamente data, hora e identificação do usuário responsável pela alteração, atendendo ao critério de rastreabilidade definido na história. As telas reaproveitam os mesmos campos do formulário de cadastro, agora preenchidos com os dados atuais do parceiro, reduzindo a curva de aprendizado para quem já utiliza o fluxo de criação.
+Este fluxo cobre a US05 aplicada ao perfil de fornecedor de cana. O analista acessa o perfil de um fornecedor existente, altera um ou mais campos cadastrais e confirma a edição; o sistema registra automaticamente data, hora e identificação do usuário responsável pela alteração, atendendo ao critério de rastreabilidade definido na história. As telas reaproveitam os mesmos campos do formulário de cadastro, agora preenchidos com os dados atuais do parceiro, reduzindo a curva de aprendizado para quem já utiliza o fluxo de criação.
 
 <div align="center">
   <sub>Figura 3.3.3 - Fluxo de atualização de fornecedores de cana (US05)</sub><br>
@@ -1331,7 +1331,7 @@ A versão da US05 voltada a proprietários cedentes funciona de forma análoga a
 </div>
 
 #### Detalhes e histórico de interações dos fornecedores de cana
-Este fluxo atende simultaneamente à US04, visualização do perfil detalhado do parceiro pelo observador, e à US03, na qual o editor registra interações para documentar o relacionamento. A tela de perfil concentra os dados cadastrais e o histórico de interações em ordem cronológica, com a interação mais recente no topo, conforme o critério CR2 da US03. O formulário de nova interação solicita data, tipo e descrição, e o registro passa a compor o histórico do parceiro imediatamente após a confirmação.
+Este fluxo atende simultaneamente à US04, visualização do perfil detalhado do parceiro pelo coordenador, e à US03, na qual o analista registra interações para documentar o relacionamento. A tela de perfil concentra os dados cadastrais e o histórico de interações em ordem cronológica, com a interação mais recente no topo, conforme o critério CR2 da US03. O formulário de nova interação solicita data, tipo e descrição, e o registro passa a compor o histórico do parceiro imediatamente após a confirmação.
 
 <div align="center">
   <sub>Figura 3.3.5 - Fluxo de detalhes e histórico de interações dos fornecedores de cana (US03 e US04)</sub><br>
@@ -1349,7 +1349,7 @@ A versão equivalente para proprietários cedentes atende às mesmas US03 e US04
 </div>
 
 #### Exportação de lista de contatos em CSV
-Este fluxo atende à US07, em que o observador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
+Este fluxo atende à US07, em que o coordenador exporta a lista de contatos dos parceiros para compartilhar informações com pessoas que não têm acesso ao sistema. A partir da listagem de parceiros, o usuário aciona a exportação e o sistema gera um arquivo CSV contendo nome, contato, tipo e região de cada parceiro ativo, conforme o critério CR1 da história. O download é disponibilizado logo após a confirmação e o arquivo pode ser aberto sem erros em qualquer ferramenta de planilha, atendendo ao CR2 e permitindo que a informação circule fora do CRM sem comprometer o controle de acesso interno.
 
 <div align="center">
   <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US07)</sub><br>
@@ -2991,7 +2991,150 @@ Com isso, a primeira versão entrega a base técnica do sistema: banco integrado
 
 ## 4.2. Segunda versão da aplicação web (sprint 4)
 
-*Descreva e ilustre aqui o desenvolvimento da segunda versão do sistema web, com foco no que foi consolidado entre a primeira versão funcional e o sistema operacional integrado. Utilize prints de tela para ilustrar. Indique obrigatoriamente: (a) o que foi implementado, (b) o que não foi concluído, (c) dificuldades técnicas enfrentadas e próximos passos.*
+Na sprint 4, a aplicação evoluiu da primeira versão centrada em backend para uma versão web navegável, com telas renderizadas no servidor, navegação entre módulos, autenticação por sessão e integração parcial dos fluxos principais com os services e repositories já implementados. O objetivo desta segunda versão foi transformar os endpoints e regras de negócio consolidados na sprint anterior em uma experiência operacional mínima para os perfis internos da ATVOS, permitindo visualizar, cadastrar, editar, validar e administrar registros a partir de páginas HTML.
+
+A implementação utilizou Express com EJS para renderização server-side, mantendo a arquitetura em camadas já adotada no backend. As rotas de interface chamam os mesmos controllers e services usados pela API, evitando duplicidade de regra de negócio entre frontend e backend. Também foram adicionados arquivos públicos de estilo e comportamento (`public/css/atvos.css` e `public/js/app.js`), responsáveis por padronizar componentes visuais, navegação, formulários, busca client-side, máscaras de CPF/CNPJ e telefone, modais e mensagens de feedback.
+
+### 4.2.1. Melhorias em relação à primeira versão
+
+A principal melhoria em relação à sprint 3 foi a criação de uma camada visual funcional. Na primeira versão, o sistema estava estruturado principalmente como WebAPI, com endpoints, testes automatizados e integração com banco. Na segunda versão, esses recursos passaram a ser acessíveis por telas, formulários e fluxos de navegação.
+
+| Aspecto | Primeira versão (sprint 3) | Segunda versão (sprint 4) |
+| --- | --- | --- |
+| Experiência do usuário | Predominantemente API e backend. | Interface web navegável com páginas EJS. |
+| Acesso ao sistema | Login implementado no backend. | Tela de login, criação de sessão, cookie HttpOnly e logout. |
+| Parceiros | Endpoints de cadastro, listagem, edição e detalhe. | Telas de listagem, cadastro, edição e detalhe conectadas aos services. |
+| Validação | Transições de status implementadas por API. | Fila de validação com revisão, aprovação e devolução via formulário. |
+| Usuários | Endpoints e services de gestão. | Telas de listagem, cadastro, edição, alteração de perfil e inativação. |
+| Exportação | Service e endpoint de CSV. | Ação de exportar CSV disponível na tela de parceiros. |
+| Usabilidade | Sem experiência visual consolidada. | Guia visual aplicado com navegação, botões, cards, estados vazios, badges e feedbacks. |
+
+### 4.2.2. Fluxos funcionais disponíveis
+
+Os fluxos implementados nesta segunda versão cobrem os módulos mais importantes para a operação inicial do CRM:
+
+| Fluxo | Telas/rotas envolvidas | Integração com backend | RFs relacionados | User Stories / casos de uso relacionados |
+| --- | --- | --- | --- | --- |
+| Autenticação e sessão | `/login`, `/logout` | `AuthController`, `AuthService`, `AuthSessionRepository`, JWT e cookie `auth_token`. | RF011, RF020 | UC09 |
+| Navegação inicial | `/` | Renderização EJS com links para os módulos principais. | RF007, RF011, RF022 | US04, US06, US08, US11 |
+| Listagem e busca de parceiros | `/parceiros` | Consulta de parceiros pelo `ParceiroService`; busca visual client-side sobre a lista carregada. | RF007, RF012, RF016, RF017 | US04, US06, US07 |
+| Cadastro de parceiros | `/parceiros/novo`, `POST /parceiros` | Persistência via `cadastrarParceiro`, com validação de campos obrigatórios e duplicidade. | RF004, RF009, RF010, RF018, RF019 | US01, US02 |
+| Edição e detalhe de parceiros | `/parceiros/:id`, `/parceiros/:id/editar` | Consulta e atualização via `obterParceiroPorId` e `editarParceiro`. | RF005, RF008, RF013, RF018, RF019 | US04, US05 |
+| Validação de registros | `/validacao`, `/validacao/:id`, ações de aprovar/devolver | Transições de status usando services de aprovação e devolução. | RF021, RF022, RF023 | US11, US12 |
+| Gestão de usuários | `/usuarios`, `/usuarios/novo`, `/usuarios/:id/editar`, `/usuarios/:id/perfil`, `/usuarios/:id/inativar` | `UserController` e `UserService` para CRUD, perfil e inativação lógica. | RF001, RF002, RF003, RF009, RF010, RF020 | US08, US09, US10 |
+| Exportação CSV | `/parceiros/exportar` | `ExportaController`, `ExportaService` e `ExportaRepository`. | RF017 | US07 |
+| Dashboard de interações | `/dashboards/interacoes` | Endpoint JSON com métricas agregadas de interações. | Fluxo 15, RF006, RF018, RF019 | US03 |
+
+### 4.2.3. Telas atualizadas e evidências visuais
+
+As evidências abaixo foram capturadas com a aplicação em execução local na porta `3100`, em `NODE_ENV=test`, para permitir a navegação pelas views sem depender de uma sessão manual durante a geração dos prints. As páginas principais retornaram status `200` durante a verificação manual: `/login`, `/`, `/parceiros`, `/parceiros/novo`, `/validacao` e `/usuarios`.
+
+<div align="center">
+  <sub>Figura 4.2.3.1 - Tela de login do Safra Control</sub><br>
+  <img src="./assets/aplicacao_web_sprint4/login.png" width="100%" alt="Tela de login do Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+A tela de login centraliza o acesso por e-mail e senha e exibe usuários de demonstração, facilitando a validação acadêmica do fluxo. No backend, o login cria uma sessão persistida e retorna token/cookie para acesso às rotas protegidas.
+
+<div align="center">
+  <sub>Figura 4.2.3.2 - Tela inicial com atalhos para os módulos</sub><br>
+  <img src="./assets/aplicacao_web_sprint4/home.png" width="100%" alt="Tela inicial do Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+A tela inicial funciona como ponto de entrada para os principais fluxos: parceiros, novo cadastro, validação e usuários. Ela substitui a necessidade de navegar diretamente por endpoints e organiza a aplicação de acordo com as tarefas dos usuários internos.
+
+<div align="center">
+  <sub>Figura 4.2.3.3 - Listagem de parceiros com busca e exportação</sub><br>
+  <img src="./assets/aplicacao_web_sprint4/parceiros.png" width="100%" alt="Listagem de parceiros do Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+A listagem de parceiros apresenta busca por nome ou CPF/CNPJ, ações de cadastro de fornecedor ou proprietário e exportação CSV. No ambiente usado para a captura, a base não possuía parceiros ativos, portanto a tela exibe corretamente o estado vazio e orienta o usuário a cadastrar o primeiro parceiro.
+
+<div align="center">
+  <sub>Figura 4.2.3.4 - Formulário de cadastro de novo parceiro</sub><br>
+  <img src="./assets/aplicacao_web_sprint4/novo-parceiro.png" width="100%" alt="Formulário de cadastro de parceiro"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+O formulário de parceiro permite cadastrar fornecedores e proprietários, usando campos padronizados e máscaras no frontend para reduzir erros de digitação. A submissão é processada pelo backend e reaproveita as validações de campos obrigatórios e unicidade já cobertas pelos testes.
+
+<div align="center">
+  <sub>Figura 4.2.3.5 - Fila de validação de registros</sub><br>
+  <img src="./assets/aplicacao_web_sprint4/validacao.png" width="100%" alt="Tela de validação de registros pendentes"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+A tela de validação apresenta os registros pendentes e permite acessar a revisão individual para aprovar ou devolver cadastros. No ambiente da evidência não havia registros pendentes, por isso o estado vazio confirma o comportamento previsto para uma fila sem itens.
+
+<div align="center">
+  <sub>Figura 4.2.3.6 - Gestão de usuários</sub><br>
+  <img src="./assets/aplicacao_web_sprint4/usuarios.png" width="100%" alt="Tela de gestão de usuários"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+A gestão de usuários exibe colaboradores cadastrados, status ativo, perfil de acesso, data de cadastro e ações de edição e inativação. Esse fluxo atende à necessidade de governança de acesso, permitindo que o administrador mantenha os perfis coerentes com as responsabilidades de cada colaborador.
+
+### 4.2.4. Decisões técnicas relevantes
+
+A segunda versão manteve a decisão de arquitetura em camadas. As views não acessam o banco diretamente; elas passam por rotas, controllers, services e repositories. Essa escolha reduz o risco de divergência entre comportamento da API e comportamento da interface, pois os dois pontos de entrada compartilham as mesmas regras de negócio.
+
+Outra decisão relevante foi o uso de renderização server-side com EJS. Para esta fase do projeto, essa abordagem reduziu a complexidade de infraestrutura, dispensou a criação de uma aplicação frontend separada e permitiu entregar rapidamente telas funcionais conectadas ao backend Express. Os arquivos públicos de CSS e JavaScript ficaram concentrados em `public/`, mantendo a interface simples de servir e compatível com a estrutura atual.
+
+Também foi consolidado o middleware `requireAuth` para proteger rotas internas. O middleware valida token JWT, consulta a sessão ativa no banco, verifica se o usuário continua ativo e diferencia respostas HTML e JSON: páginas web redirecionam para `/login`, enquanto chamadas de API recebem `401`. Essa separação é importante para manter coerência entre uso por navegador e uso por cliente HTTP.
+
+### 4.2.5. O que foi implementado
+
+Foram implementadas as seguintes entregas de aplicação web:
+
+| Entrega | Descrição |
+| --- | --- |
+| Layout e navegação global | Cabeçalho com marca Safra Control, links para parceiros, validação e usuários, além de ação de logout. |
+| Tela de login | Formulário de acesso com e-mail e senha, mensagens de erro e usuários de demonstração. |
+| Home operacional | Página inicial com atalhos para módulos centrais do sistema. |
+| Módulo de parceiros | Listagem, busca client-side, estado vazio, cadastro, edição, detalhe e exportação CSV. |
+| Módulo de validação | Fila de pendentes, revisão de registro, aprovação e devolução com comentário. |
+| Módulo de usuários | Listagem, cadastro, edição, alteração de perfil e inativação lógica. |
+| Componentes de interface | Botões, cards, badges de status, formulários, modais, flash messages, máscaras e busca em listas. |
+| Integração com backend | Reuso dos controllers/services/repositories existentes para persistência, validação, autenticação e exportação. |
+
+### 4.2.6. O que não foi concluído
+
+Apesar de a aplicação já estar navegável, alguns pontos permanecem incompletos para a versão final:
+
+| Pendência | Impacto |
+| --- | --- |
+| Autorização por perfil mais granular nas views | O backend já autentica o usuário, mas a restrição fina por perfil ainda precisa ser consolidada em todas as rotas e ações da interface. |
+| Telas completas de terras e vínculos | Os endpoints de terras e relacionamento parceiro-terra existem, mas ainda não há uma experiência web completa para cadastro, edição e associação diretamente pela interface. |
+| Dashboard visual | O endpoint de dashboard de interações existe em JSON, porém ainda não foi transformado em uma tela com gráficos e indicadores. |
+| Histórico/auditoria em tela | A API de histórico está implementada, mas a visualização amigável do histórico de alterações ainda deve ser integrada ao perfil do parceiro. |
+| Notificações e processo periódico | O RF025 permanece como evolução futura, sem tela ou rotina operacional final nesta versão. |
+| Base de demonstração para parceiros | Na captura das evidências, a base local não possuía parceiros ativos nem pendentes, resultando em estados vazios nas telas de parceiros e validação. |
+
+### 4.2.7. Dificuldades técnicas enfrentadas
+
+Uma dificuldade relevante foi integrar a interface EJS aos services existentes sem duplicar regras de validação. Como parte da API já estava testada, a solução foi reutilizar os controllers e services para as ações de formulário, adaptando apenas os retornos para HTML, redirecionamentos e mensagens de erro.
+
+Outro desafio foi conciliar autenticação, sessão e renderização por navegador. A aplicação precisa responder de forma diferente para rotas HTML e endpoints JSON, pois uma falha de autenticação em tela deve redirecionar para o login, enquanto uma falha em API deve retornar status HTTP adequado. O middleware `requireAuth` foi ajustado para tratar esses dois contextos.
+
+Também houve complexidade na documentação das evidências visuais, porque algumas telas dependem do estado do banco. Para manter a transparência, os prints foram registrados com a base disponível no ambiente local, incluindo estados vazios quando não havia parceiros ou registros pendentes.
+
+### 4.2.8. Próximos ajustes
+
+Para a versão final da aplicação web, os próximos ajustes recomendados são:
+
+| Próximo ajuste | Objetivo |
+| --- | --- |
+| Consolidar autorização por perfil | Garantir que analistas, coordenadores e administradores acessem apenas as ações permitidas. |
+| Criar telas de terras e vínculos | Permitir a gestão completa do relacionamento entre parceiros e terras pela interface web. |
+| Adicionar dashboard visual | Transformar o endpoint de métricas de interações em uma tela com indicadores e gráficos. |
+| Integrar histórico ao perfil do parceiro | Exibir alterações anteriores e responsáveis diretamente na interface. |
+| Popular uma base de demonstração | Facilitar validação acadêmica e apresentação com parceiros, pendências e interações de exemplo. |
+| Revisar responsividade e acessibilidade | Validar a experiência em telas menores, navegação por teclado, contraste e textos alternativos. |
+
+Com isso, a segunda versão atende ao objetivo da sprint 4: entregar uma aplicação web funcional mínima, integrada ao backend em seus fluxos principais, com evidências visuais, rastreabilidade para RFs e User Stories e registro transparente das limitações que devem ser endereçadas na versão final.
 
 ## 4.3. Versão final da aplicação web (sprint 5)
 
@@ -3207,16 +3350,17 @@ No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Re
 
 ## 6.6 Estratégia de Marketing 
 
-*a) Produto/Serviço (até 200 palavras)*
-*Descreva as funcionalidades, benefícios e diferenciais da aplicação*
+#### 6.6.1 Produto/Serviço
+O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituído por uma arquitetura full-stack com banco de dados SQL nativo. O sistema tem como principais funções: o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações através de painéis dinâmicos que permitem uma análise estatística. A plataforma busca eliminar a dependência completa em planilhas eletrônicas e controles manuais informais, que podem acarretar falhas crônicas, inconsistência entre os dados e perda do histórico de relacionamentos. A principal diferenciação em relação aos outros sistemas CRM disponíveis no mercado, que são caros e com interfaces rígidas, é que toda a proposta foi baseada na experiência do usuário (UX/UI), voltada especialmente para o fluxo de governança e homologação de 100% das informações dos parceiros agrícolas. Segundo os autores Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, que tem um valor central na transformação de dados dispersos em ativos estratégicos.
 
-*b) Preço (até 200 palavras)*
-*Explique o modelo de precificação adotado e justifique com base nas análises anteriores.*
+#### 6.6.2 Preço
+Como a plataforma foi projetada para ser uma solução somente corporativa e voltada para uso interno do tipo B2E, o modelo de monetização de licenciamento comercial ou assinatura (SaaS) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de Desenvolvimento Interno Proprietário (In-house Software). A aplicação desse determinado modelo é baseada na eliminação de empecilhos financeiros e custos frequentes com fornecedores de softwares externos; o valor de investimento foi centrado no custo do desenvolvimento de software pelas equipes e na manutenção preventiva.
+Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar os riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
-*c) Praça (Distribuição) (até 200 palavras)*
+#### 6.6.3 Praça
 *Apresente os canais digitais utilizados para distribuir e entregar a aplicação ao público.*
 
-*d) Promoção (até 200 palavras)*
+#### Promoção 
 *Descreva as estratégias digitais planejadas, como SEO, redes sociais, marketing de conteúdo e campanhas pagas.*
 
 # <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
@@ -3229,35 +3373,64 @@ No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Re
 
 # <a name="c8"></a>8. Referências (sprints 1 a 5)
 
-Agência Brasil. (2022, janeiro 4). Sancionada lei que autoriza postos a comprarem etanol de produtores. https://agenciabrasil.ebc.com.br/politica/noticia/2022-01/sancionada-lei-que-autoriza-postos-comprarem-etanol-de-produtores
+Agência Brasil. (2022, 4 de janeiro). Sancionada lei que autoriza postos a comprarem etanol de produtores. https://agenciabrasil.ebc.com.br/politica/noticia/2022-01/sancionada-lei-que-autoriza-postos-comprarem-etanol-de-produtores
 
-Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2024, fevereiro 1). Vendas de gasolina, diesel e etanol cresceram em 2023. https://www.poder360.com.br/energia/vendas-de-gasolina-diesel-e-etanol-cresceram-em-2023-diz-anp/
+Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2024, 1 de fevereiro). Vendas de gasolina, diesel e etanol cresceram em 2023. https://www.poder360.com.br/energia/vendas-de-gasolina-diesel-e-etanol-cresceram-em-2023-diz-anp/
 
-Agroadvance. (2025). Preço do ATR no CONSECANA-SP. https://agroadvance.com.br/blog-consecana-preco-do-atr/
-
-Agroadvance. (2025). 15 maiores grupos do setor sucroalcooleiro no Brasil em 2024/25. https://agroadvance.com.br/blog-maiores-grupos-do-setor-sucroalcooleiro/
+Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2026, 31 de março). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026
+Aegro. (2026). Aegro: sistema de gestão rural. https://aegro.com.br/
 
 AgFeed. (2023). Fora da RJ, ATVOS refaz planos e mira biometano, etanol de milho e de aviação. https://agfeed.com.br/negocios/fora-da-rj-atvos-refaz-planos-e-mira-biometano-etanol-de-milho-e-de-aviacao/
 
-Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 (Documento interno corporativo). Estratégia de Terras e Fornecedores.
+Agroadvance. (2025). 15 maiores grupos do setor sucroalcooleiro no Brasil em 2024/25. https://agroadvance.com.br/blog-maiores-grupos-do-setor-sucroalcooleiro/
 
+Agroadvance. (2025). Preço do ATR no CONSECANA-SP. https://agroadvance.com.br/blog-consecana-preco-do-atr/
 ATVOS. (2023). Reuters: ATVOS aposta em etanol, não em açúcar, em novo investimento em cana no Brasil. https://atvos.com/reuters-atvos-aposta-em-etanol-nao-em-acucar-em-novo-investimento-em-cana-no-brasil/
 
-ATVOS. (2025, janeiro). Relatório anual da safra 2023/2024. https://www.udop.com.br/noticia/2025/01/14/atvos-divulga-relatorio-anual-da-safra-2023-2024.html
+ATVOS. (2023). Guia da marca Atvos [Material institucional]. Disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli).
+
+ATVOS. (2025, 14 de janeiro). Relatório anual da safra 2023/2024. https://www.udop.com.br/noticia/2025/01/14/atvos-divulga-relatorio-anual-da-safra-2023-2024.html
+
+Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 [Documento interno corporativo].
 
 Brasilagro. (2021). País terá dilema com carros elétricos em 2030: o que fazer com tanto etanol? https://www.brasilagro.com.br/conteudo/pais-tera-dilema-com-carros-eletricos-em-2030o-que-fazer-com-tanto-etanol.html
 
 Broto Notícias. (2026, abril). Pressão da safra 2026/27 e demanda retraída forçam queda nas cotações de etanol e açúcar em SP. https://noticias.broto.com.br/cotacoes/queda-cotacoes-etanol-acucar-safra-2026-27
 
+Bunge. (2024). Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. https://www.bunge.com/Press-Releases/
+Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil
+
 Canal Rural. (2026). Usinas ampliam canaviais por arrendamento. https://www.canalrural.com.br/agricultura/cana/usinas-ampliam-canaviais-por-arrendamento-e-mudam-estrutura-fundiaria-em-sao-paulo/
 
-Centro de Estudos Avançados em Economia Aplicada [CEPEA]. (2026). Indicadores econômicos e pesquisas sobre o setor sucroenergético e arrendamento de terras. Escola Superior de Agricultura Luiz de Queiroz, Universidade de São Paulo (Esalq/USP). https://cepea.esalq.usp.br
+Centro de Estudos Avançados em Economia Aplicada. (2026). Indicadores econômicos e pesquisas sobre o setor sucroenergético e arrendamento de terras. Escola Superior de Agricultura Luiz de Queiroz, Universidade de São Paulo. https://cepea.esalq.usp.br
+
+Companhia Nacional de Abastecimento. (2026, 17 de abril). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26
 
 Eixo. (2025). Hidrogênio e biometano: os gases do futuro. https://eixos.com.br/hidrogenio/hidrogenio-e-biometano-os-gases-do-futuro/
 
-INTELI. (2023). Adalove. Disponível em: https://adalove.inteli.edu.br/feed
+Grand View Research. (2025). Customer relationship management market size, share & trends analysis report, 2030. https://www.grandviewresearch.com/industry-analysis/customer-relationship-management-crm-market
+
+Grand View Research. (2025). Latin America customer relationship management market size & outlook, 2030. https://www.grandviewresearch.com/horizon/outlook/customer-relationship-management-market/latin-america
+
+Grupo 6. (2026). Value Proposition Canvas ATVOS [Diagrama]. Canva. https://canva.link/towo8wkfnm7kd6v
+
+Grupo 6. (2026). Diagrama de Classes UML do Domínio ATVOS [Diagrama]. PlantUML. https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYjsSGEjZExWFO18O64n0iIFm1uG23nX7ZXDV-4Ny9nBctYf9qEeYjjEpuNV-Vu-3kstrAQI9sdYQEPJYWQCxAM92KefiXDY59KeLYWiKYBFpWJZlCiUdFV1sHk64pyTvOpN7nRV1sYAt--n9S7RHAwqaWB9Dbwer7C98qq4znnr2F6Cm9OK6HmOAqbkyurzIF1v-mBYkwrLDI6nE8nuskq8ecYBKd2EDMVPnG9gJUY9U0YfefcwEBrjYD9-AF-Q4RYs3Y_UBcD2qif7ay4roMSYrS7HVfpoEgrI69RkjYmw16dIg6By_ksq1M9aEYPbylFaDzQuLxvwIKBVUaWz3Q97gsbo7bSAqzUC_-CHCYOodhqrV83eost5-N7UTfsJ7cUxl4xcRpYtRVzOdmV0xHR_NAXwLw_hxklzFpUVytuVNfRANh1yg5N5kAFtloWRWOJapL59nw4I2KfVYt-eke4GC7SPTWBbeafB9KW9LA4ffFgwptuUjfHks8yoXDHwqt2MU2vtZYSVUBY09TZU3RpWZ4sOmjlDiCT5tDDTAwwJl32lmhBNtwm--q5hh4UXpq8OGP1HAGnTsS-Td5OkuBzw7-u_TjxtxrSpd7buzQKJl7CzVnPE4SUkYg-3zpbPNXaQgT4HfH9eH05qp_Ay1Ho1UGxOeGrsQwgjr6k0pXZyGWjb_wu-ek3qGWI9M57LYDwkpoZrb9LiYXRkJpxj6j0Ky8IomS59XBSyXmJJGAY8fPIhiK8ZOccEnGu4cb6-8PmRTbjcD92iaZu88B545G1DFf4L-Apykl5YCH4QKdaSyzN0x3s965V4EbM4j48WFDKdW1LZu7dL3dwT9UlkboQR2R3USlghFgTKRshsL6xW2kfAijnr2tBNMfypYBMIOiPdR2qFIIk5PKtTGxQIJfhWcOtknHG7b4vb98AWXrwKofBpc8Iqxj4dbSctK637qFrG1fX1xN3QD1MGcbDRECgrsaY9ASHZO6s1d7TLFdi8g3fDM5Fm5nsnzSvaJ4ZbdOgOaYFGU02pKfYYdGmntKMBLo3iA79K1wJky7kxyhRrxsDQJUfZMbXwk4EI0RNjG-FI4hgdC5cUnUeOqnXdvEaHf_1WQ5srHCQsodqBMvsMqyQKKua4zZ4TqJaPNnrqBTIy7A-BBwQ-U7y52q37xg8PyWOkzvy7Xx7n4kL5py1F0KUgl0C9-F8S6Q7XGzkgKZ4R6tLsa2EOMk3qjj299Jm0xiUGBG6slkRoXLBAdJ7jWD9Fykfn9aKDzKcximFKqN0p6HueyHqnJYJC6tAO4hQ8nn8drdSFKJJGdjR_Gtq84MXbxnBrERuBCA1c6k8fi-NkqvnABzrE0VNEgzq_a_sx4wxZzHTOGv-V3yJxI7s8Rp_MxkITCtAfjsWWqZjvcMBMh7DAdE14zqvfHsJSxFK9bzuHGrdMVLK2_ljlJaFZZgdmoO1XdlD8OK9QI9-Rnu6BL4WReGr2alSOA_oje3JqN2Ajeh7qjlCkyIk7mRueHSiu9mvdVc1wq-nRuwP6ALm1c9P0gjOLYk1zOS-XZXHA0CgXoyFxXD85dzgStm68WOKoS4vdUrXy-JY1BrmTePExfsVlt3IFrIDq1lN3oxGFz_yW8p66ozTFt2SdbRR2_oqpm5T9nUbawDyj9hoqJx4BfggYGw6q4d0pi8-MGtPDhAxM-un_Uymsrmn2BNcxVzclSVSOi_ZKtI4eTDfVOFcTu7Qvvr1uyFRS-nDuUfQV0Tx4i-H6puiRzc7hu2xXJi_Vz2-IOzGhaY_S1kjvWvyGArxMQuK-t4s3hVNuahnbb23S04XUkzFBttNNBhnBL6MpnZbOvPORSlA2H6fdgq46hWIefLWJaeCSGDPYHJ-8saca8QB8dJnKmUkVIiXKs0w9EcAok9tS-8q3t9n_I1txW0hb6yeDOHheRL83GWxPKwBXg3c8i897Fp8ZbTWK9lzv_3Y5m7OpEiCt2zeOlYdmgVowwXw5JnrCi4Koa65Af0qhHY86FnaGgcSIISj_YuP6-nljhV-Q7lhHuePIYz-vbIeSyS9geaPC3kGFBGuj85KyU9NOcYzn29WNWddEuElYQOJXG8VZcbxoWJKpBgTD3b5PNYbXhDYJogz1lw1V9RSv5GCPJ1Mbmy3alHoNMT7qHmcvcOzOSbe1hwfMRq6bRD5PJ3KGPHF3QSGL8cJW15HZYcG-aq0hIalVZELP5nD1u0VhknB_46uN20_kFBdnVTNtgLvry78cqznyMtLU0-NUciFdtsqOJ4GvyUnUCpFEky7xJrigNLV4xgxUC3ZziIoen9BgrVgFRgm3AosxDXjUgjUFakVsItOiLkohL_LIfV2BGWrJM_fUbXSTmZ7QXYMSe_qTltLqhHwisFtwZtghVxeE6z1r7cQ_0i0
+
+Instituto de Tecnologia e Liderança. (2023). Adalove. https://adalove.inteli.edu.br/feed
+
+Instituto de Tecnologia e Liderança. (2026). Projeto parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 [Documento de escopo de projeto].
+
+Instituto Nacional da Propriedade Industrial. (2025, 18 de setembro). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep
+
+Microsoft. (2026). Dynamics 365 Customer Insights. https://www.microsoft.com/pt-br/dynamics-365/products/customer-insights
+
+Ministério da Agricultura e Pecuária. (2025, 23 de janeiro). Plano de Transformação Digital — PTD. https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd
+
+Modesto, F., Farina, M., & colaboradores. (2011). Psicodinâmica das cores em comunicação. Blucher. https://search.worldcat.org/pt/title/1295699137
 
 NPagro. (2024). Investimentos em usinas de etanol de milho somam R$ 23 bilhões no país. https://www.npagro.com.br/materias/investimentos-em-usinas-de-etanol-de-milho-somam-r-23-bilhoes-no-pais/
+
+Osterwalder, A., Pigneur, Y., Bernarda, G., & Smith, A. (2014). Value proposition design: How to create products and services customers want. John Wiley & Sons.
 
 Portal da Indústria. (2023). Setor sucroenergético precisa de investimentos de US$ 31 bilhões para contribuir com metas de redução de emissões de CO₂. Confederação Nacional da Indústria. https://noticias.portaldaindustria.com.br/noticias/economia/setor-sucroenergetico-precisa-de-investimentos-de-us-31-bilhoes-para-contribuir-com-metas-de-reducao-de-emissoes-de-co2/
 
@@ -3265,6 +3438,7 @@ Porter, M. E. (1979). How competitive forces shape strategy. Harvard Business Re
 
 Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review, 86(1), 78–93.
 
+<<<<<<< HEAD
 UDOP. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. União Nacional da Bioenergia. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
 
 INTELI — INSTITUTO DE TECNOLOGIA E LIDERANÇA. Projeto Parceiro ATVOS: 1AMD2 — Aplicação Web. São Paulo, 2026.
@@ -3292,7 +3466,10 @@ Instituto de Tecnologia e Liderança [Inteli]. (2026). Projeto Parceiro ATVOS: A
 
 INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
 
-<<<<<<< HEAD
+Kotler, P., & Armstrong, G. (2015). Princípios de marketing (15a ed.). Pearson Education.
+
+Kotler, P., & Keller, K. L. (2012). Administração de marketing (14a ed.). Pearson Education.
+
 AEGRO. Aegro: sistema de gestão rural. Porto Alegre: Aegro, 2026. Disponível em: https://aegro.com.br/. Acesso em: 8 jun. 2026.
 
 BUNGE. Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. St. Louis: Bunge, 2024. Disponível em: https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil. Acesso em: 8 jun. 2026.
@@ -3306,14 +3483,20 @@ SALESFORCE. What is CRM Software? San Francisco: Salesforce, 2026. Disponível e
 SAP. Customer Experience and Customer Relationship Management. Walldorf: SAP, 2026. Disponível em: https://www.sap.com/products/crm.html. Acesso em: 8 jun. 2026.
 
 SÃO MARTINHO. São Martinho. São Paulo: São Martinho, 2026. Disponível em: https://www.saomartinho.com.br/. Acesso em: 8 jun. 2026.
-
 =======
-MINISTÉRIO DA AGRICULTURA E PECUÁRIA (MAPA). Plano de Transformação Digital — PTD. Brasília, DF: MAPA, 23 jan. 2025. Disponível em: https://www.gov.br/agricultura/pt-br/acesso-a-informacao/tecnologia-da-informacao/plano-de-transformacao-digital-ptd. Acesso em: 2 jun. 2026.
-
-Osterwalder, A., Pigneur, Y., Bernarda, G., & Smith, A. (2014). Value Proposition Design: How to create products and services customers want. John Wiley & Sons.
+Raízen. (2026). Sobre a Raízen. https://www.raizen.com.br/sobre-a-raizen
 
 Ries, A., & Trout, J. (2001). Positioning: The battle for your mind (20th anniversary ed.). McGraw-Hill.
->>>>>>> 332c7424bb95dfdd907ebfcb7c8b434127d02bc3
+
+Salesforce. (2026). What is CRM software? https://www.salesforce.com/crm/what-is-crm/software/
+
+SAP. (2026). Customer experience and customer relationship management. https://www.sap.com/products/crm.html
+
+São Martinho. (2026). São Martinho. https://www.saomartinho.com.br/
+
+União Nacional da Bioenergia. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
+>>>>>>> 800ed0a1d13753481425f5c3beea963ff1aed89e
+
 # <a name="c9"></a>Anexos
 
 ## Classificação de Impacto, Probabilidade e Matriz de Risco

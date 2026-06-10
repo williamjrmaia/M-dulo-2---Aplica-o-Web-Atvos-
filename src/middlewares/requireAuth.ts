@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { AUTH_TOKEN_COOKIE, getJwtSecret } from '../config/auth';
+import type { NomePerfilAcesso } from '../models/PerfilAcesso';
 import { AuthSessionRepository } from '../repositories/authSessionRepository';
 import { UserRepository } from '../repositories/userRepository';
 
@@ -8,9 +9,11 @@ type UsuarioAutenticado = {
   id: string;
   nome: string;
   email: string;
-  perfil?: string;
+  perfil?: NomePerfilAcesso;
   sessaoId: string;
 };
+
+type RequestComUsuario = Request & { usuario?: UsuarioAutenticado };
 
 function extrairCookie(req: Request, nome: string): string | undefined {
   const cookies = req.headers.cookie;
@@ -54,6 +57,14 @@ function responderNaoAutenticado(req: Request, res: Response) {
 const authSessionRepository = new AuthSessionRepository();
 const userRepository = new UserRepository();
 
+function responderNaoAutorizado(req: Request, res: Response) {
+  if (deveRetornarHtml(req)) {
+    return res.status(403).render('errors/404');
+  }
+
+  return res.status(403).json({ error: 'Usuário sem permissão para acessar este recurso' });
+}
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction) {
   if (process.env.NODE_ENV === 'test') {
     return next();
@@ -90,7 +101,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
     };
 
     res.locals.usuarioAutenticado = usuarioAutenticado;
-    (req as Request & { usuario?: UsuarioAutenticado }).usuario = usuarioAutenticado;
+    (req as RequestComUsuario).usuario = usuarioAutenticado;
     return next();
   } catch (error) {
     if (error instanceof Error && error.message === 'JWT_SECRET nao configurado') {
@@ -99,4 +110,19 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
 
     return responderNaoAutenticado(req, res);
   }
+}
+
+export function authorizeRoles(...roles: NomePerfilAcesso[]) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (process.env.NODE_ENV === 'test') {
+      return next();
+    }
+
+    const perfil = (req as RequestComUsuario).usuario?.perfil;
+    if (!perfil || !roles.includes(perfil)) {
+      return responderNaoAutorizado(req, res);
+    }
+
+    return next();
+  };
 }

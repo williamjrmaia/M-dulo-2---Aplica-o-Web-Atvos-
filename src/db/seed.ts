@@ -9,7 +9,9 @@ async function seed(): Promise<void> {
       ('analista',      TRUE,  'Analista de negócios agrícolas'),
       ('coordenador',   FALSE, 'Coordenador de parceiros'),
       ('administrador', FALSE, 'Administrador do sistema')
-    ON CONFLICT (nome) DO NOTHING;
+    ON CONFLICT (nome) DO UPDATE
+      SET requer_aprovacao = EXCLUDED.requer_aprovacao,
+          descricao = EXCLUDED.descricao;
   `);
 
   const senhaHash = bcrypt.hashSync('demo123', 10);

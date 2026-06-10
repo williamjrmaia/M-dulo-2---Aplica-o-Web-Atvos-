@@ -5,12 +5,13 @@ import {
   aprovarParceiroViaFormulario,
   devolverParceiroViaFormulario,
 } from '../controllers/parceiroController';
-import { requireAuth } from '../middlewares/requireAuth';
+import { authorizeRoles, requireAuth } from '../middlewares/requireAuth';
 
 // ─── Views HTML: validação de registros (montado na raiz) ────────────────────
 const router = Router();
 
 router.use(requireAuth);
+router.use(authorizeRoles('coordenador', 'administrador'));
 
 router.get('/validacao', renderValidacao);
 router.get('/validacao/:id', renderRevisar);
