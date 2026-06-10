@@ -19,6 +19,16 @@ function vazioComoNull(value: string | undefined): string | null {
   return text.length > 0 ? text : null;
 }
 
+function possuiDadosComerciais(data: VincularTerraAoParceiroInput): boolean {
+  return Boolean(
+    data.tipo_parceiro ||
+      data.modalidade_contrato ||
+      data.data_inicio ||
+      data.data_fim ||
+      data.observacoes
+  );
+}
+
 export async function createParceiro(data: CreateParceiroInput): Promise<Parceiro> {
   const client = await pool.connect();
 
@@ -560,6 +570,33 @@ export async function createParceiroTerra(
        RETURNING *`,
       [parceiroId, data.terra_id, data.tipo_vinculo ?? null]
     );
+
+    if (possuiDadosComerciais(data)) {
+      await client.query(
+        `INSERT INTO vinculo_comercial
+           (
+            parceiro_id,
+            terra_id,
+            tipo_parceiro,
+            tipo_vinculo,
+            modalidade_contrato,
+            data_inicio,
+            data_fim,
+            observacoes
+           )
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [
+          parceiroId,
+          data.terra_id,
+          data.tipo_parceiro ?? 'arrendador',
+          data.tipo_vinculo ?? 'vinculo comercial',
+          vazioComoNull(data.modalidade_contrato),
+          data.data_inicio ?? null,
+          data.data_fim ?? null,
+          vazioComoNull(data.observacoes),
+        ]
+      );
+    }
 
     await client.query('COMMIT');
     return rows[0];
