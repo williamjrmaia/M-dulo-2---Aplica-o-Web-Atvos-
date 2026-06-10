@@ -1154,7 +1154,7 @@ No fluxo principal, o parceiro é validado e salvo (201). Alternativamente, o si
 
 <div align="center">
   <sub>Figura 3.2.4.5- Quinto fluxo: Cadastro de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_05_cadastro_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_05_cadastro_parceiros_atualizado.png" width="100%" alt="Diagrama de Sequencia 5"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
