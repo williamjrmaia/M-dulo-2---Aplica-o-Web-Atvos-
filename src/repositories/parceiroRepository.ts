@@ -8,6 +8,7 @@ import {
   HistoricoParceiro,
   ListarParceirosFiltros,
   ParceiroTerra,
+  ParceiroRascunhoDevolvido,
   TerraDoParceiro,
   UpdateParceiroInput,
   VincularTerraAoParceiroInput,
@@ -288,6 +289,33 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
       ORDER BY p.criado_em DESC`,
     valores
   );
+  return rows;
+}
+
+export async function listarRascunhosDevolvidosDoAnalista(
+  analistaId: string
+): Promise<ParceiroRascunhoDevolvido[]> {
+  const { rows } = await pool.query<ParceiroRascunhoDevolvido>(
+    `SELECT
+        p.*,
+        ultima_devolucao.comentario AS comentario_devolucao,
+        ultima_devolucao.data_alteracao AS data_devolucao
+       FROM parceiros p
+       LEFT JOIN LATERAL (
+         SELECT ra.comentario, ra.data_alteracao
+           FROM registro_alteracao ra
+          WHERE ra.entidade_id = p.id
+            AND LOWER(ra.entidade_afetada) IN ('parceiro', 'parceiros')
+            AND ra.tipo_operacao = 'devolucao'
+          ORDER BY ra.data_alteracao DESC
+          LIMIT 1
+       ) ultima_devolucao ON TRUE
+      WHERE p.criado_por = $1
+        AND p.status IN ('rascunho', 'devolvido')
+      ORDER BY p.atualizado_em DESC NULLS LAST, p.criado_em DESC`,
+    [analistaId]
+  );
+
   return rows;
 }
 

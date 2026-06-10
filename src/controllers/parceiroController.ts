@@ -7,6 +7,7 @@ import {
   editarParceiro as editarParceiroService,
   enviarParceiroParaValidacao as enviarParceiroParaValidacaoService,
   obterHistoricoParceiro,
+  obterRascunhosDevolvidosDoAnalista,
   obterTerrasDoParceiro,
   obterParceiros,
   obterParceiroPorId as obterParceiroPorIdService,
@@ -20,6 +21,10 @@ import { devolverParceiroSchema } from '../schemas/parceiroDevolucao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
+
+type RequestComUsuario = Request & {
+  usuario?: { id?: string };
+};
 
 function textoOpcional(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
@@ -161,6 +166,16 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
   }
 
   const parceiros = await obterParceiros(parsed.data);
+  res.status(200).json(parceiros);
+});
+
+export const listarRascunhosDevolvidosAnalista = asyncHandler(async (req: Request, res: Response) => {
+  const usuarioAutenticadoId =
+    (req as RequestComUsuario).usuario?.id ??
+    res.locals.usuarioAutenticado?.id ??
+    (typeof req.query.analista_id === 'string' ? req.query.analista_id : undefined);
+
+  const parceiros = await obterRascunhosDevolvidosDoAnalista(usuarioAutenticadoId ?? '');
   res.status(200).json(parceiros);
 });
 
