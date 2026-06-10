@@ -1145,7 +1145,7 @@ O fluxo principal desativa o usuário com sucesso (200). Alternativas barram IDs
 
 <div align="center">
   <sub>Figura 3.2.4.4 - Quarto fluxo: Inativação usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_04_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_04_inativa_usuario_atualizado.png" width="100%" alt="Diagrama de Sequencia 4"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
