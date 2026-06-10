@@ -33,6 +33,63 @@ afterAll(async () => {
   await pool.end();
 });
 
+describe('UserService.listarPerfis / listarUsuarios / buscarUsuario', () => {
+  it('lista os perfis de acesso cadastrados', async () => {
+    const lista = await service.listarPerfis();
+    expect(Array.isArray(lista)).toBe(true);
+    expect(lista.length).toBeGreaterThan(0);
+  });
+
+  it('lista os usuarios cadastrados incluindo o usuario criado', async () => {
+    const lista = await service.listarUsuarios();
+    expect(Array.isArray(lista)).toBe(true);
+    expect(lista.some((u) => u.id === usuarioId)).toBe(true);
+  });
+
+  it('retorna usuario existente por id', async () => {
+    const resultado = await service.buscarUsuario(usuarioId);
+    expect(resultado).not.toBeNull();
+    expect(resultado?.id).toBe(usuarioId);
+  });
+
+  it('retorna null para usuario inexistente', async () => {
+    const resultado = await service.buscarUsuario(ids.inexistente);
+    expect(resultado).toBeNull();
+  });
+});
+
+describe('UserService.cadastraUsuario — validacoes de entrada', () => {
+  it('rejeita cadastro com email invalido', async () => {
+    await expect(
+      service.cadastraUsuario({
+        nome: 'Teste',
+        email: 'email-invalido',
+        perfil_acesso_id: perfis.analista,
+      })
+    ).rejects.toThrow('Dados de entrada invalidos');
+  });
+});
+
+describe('UserService.atualizaUsuario — branches de validacao', () => {
+  it('rejeita quando nenhum campo for informado', async () => {
+    await expect(
+      service.atualizaUsuario(usuarioId, {})
+    ).rejects.toThrow('Dados de entrada invalidos');
+  });
+
+  it('rejeita quando nome for string vazia', async () => {
+    await expect(
+      service.atualizaUsuario(usuarioId, { nome: '' })
+    ).rejects.toThrow('Dados de entrada invalidos');
+  });
+
+  it('rejeita quando ativo nao for boolean', async () => {
+    await expect(
+      service.atualizaUsuario(usuarioId, { ativo: 'sim' as unknown as boolean })
+    ).rejects.toThrow('Dados de entrada invalidos');
+  });
+});
+
 describe('UserService.atualizaPerfilDeAcesso (integração com banco real)', () => {
   it('atualiza o perfil quando o perfil existe e persiste no banco', async () => {
     const resultado = await service.atualizaPerfilDeAcesso(usuarioId, perfis.coordenador);
