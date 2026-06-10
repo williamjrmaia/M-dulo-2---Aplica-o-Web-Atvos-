@@ -19,7 +19,20 @@ import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
 import { devolverParceiroSchema } from '../schemas/parceiroDevolucao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 
-const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
+type RequestComUsuario = Request & {
+  usuario?: {
+    id: string;
+  };
+};
+
+function obterUsuarioAutenticadoId(req: Request): string {
+  const usuarioId = (req as RequestComUsuario).usuario?.id;
+  if (!usuarioId) {
+    throw new ValidationError('Usuário autenticado não identificado');
+  }
+
+  return usuarioId;
+}
 
 function textoOpcional(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
@@ -267,6 +280,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
     acao,
   } = req.body;
   const enviarParaValidacao = acao === 'validacao';
+  const usuarioId = obterUsuarioAutenticadoId(req);
 
   try {
     if (!nome || !tipo_pessoa || !cpf_cnpj) {
@@ -283,7 +297,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
       nome,
       tipo_pessoa,
       cpf_cnpj,
-      criado_por: SEED_USER_ID,
+      criado_por: usuarioId,
       apelido: textoOpcional(apelido),
       email: textoOpcional(email),
       data_nascimento: textoOpcional(data_nascimento),
@@ -360,6 +374,7 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
     observacoes,
     status,
   } = req.body;
+  const usuarioId = obterUsuarioAutenticadoId(req);
 
   const camposEditaveis: Record<string, unknown> = {};
   if (nome) camposEditaveis.nome = nome;
@@ -387,7 +402,7 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
       throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
     }
 
-    await editarParceiroService(id, { ...camposEditaveis, atualizado_por: SEED_USER_ID });
+    await editarParceiroService(id, { ...camposEditaveis, atualizado_por: usuarioId });
 
     res.redirect('/parceiros');
   } catch (err) {
@@ -426,9 +441,10 @@ export const renderRevisar = asyncHandler(async (req: Request, res: Response) =>
 export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
   const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  const usuarioId = obterUsuarioAutenticadoId(req);
   try {
     await aprovarParceiroService(id, {
-      aprovado_por: SEED_USER_ID,
+      aprovado_por: usuarioId,
       ...(comentario ? { comentario } : {}),
     });
     res.redirect('/validacao');
@@ -448,9 +464,10 @@ export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, re
 export const devolverParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
   const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  const usuarioId = obterUsuarioAutenticadoId(req);
   try {
     await devolverParceiroService(id, {
-      devolvido_por: SEED_USER_ID,
+      devolvido_por: usuarioId,
       ...(comentario ? { comentario } : {}),
     });
     res.redirect('/validacao');
