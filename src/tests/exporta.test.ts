@@ -6,6 +6,7 @@ import { ExportaRepository } from '../repositories/exportaRepository';
 // ─── Controle de dados criados nos testes ───
 const usuariosCriados = new Set<string>();
 const parceirosCriados = new Set<string>();
+const terrasCriadas = new Set<string>();
 
 // ─── Helpers ────────────────────────────────
 const criarUsuario = async (): Promise<string> => {
@@ -28,22 +29,74 @@ const criarUsuario = async (): Promise<string> => {
 
 const criarParceiro = async (usuario_id: string): Promise<string> => {
   const result = await pool.query<{ id: string }>(
-    `INSERT INTO parceiros (nome, tipo_pessoa, cpf_cnpj, status, criado_por)
-     VALUES ($1, $2, $3, $4, $5)
+    `INSERT INTO parceiros
+       (nome, nome_acompanhante, tipo_pessoa, cpf_cnpj, email, regiao, status, criado_por)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
      RETURNING id`,
-    ['Parceiro Exporta Teste', 'fisica', `${Date.now()}`, 'ativo', usuario_id],
+    [
+      'Parceiro Exporta Teste',
+      'Contato Exporta',
+      'fisica',
+      `${Date.now()}`,
+      `parceiro_exporta_${Date.now()}@atvos.com`,
+      'Ribeirão Preto',
+      'ativo',
+      usuario_id,
+    ],
   );
 
   const id = result.rows[0].id;
   parceirosCriados.add(id);
+
+  await pool.query(
+    `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
+     VALUES ($1, $2, 'celular', TRUE, $3)`,
+    [id, '(16) 99999-0000', usuario_id]
+  );
+
   return id;
+};
+
+const vincularTerra = async (parceiroId: string, usuarioId: string): Promise<void> => {
+  const terraResult = await pool.query<{ id: string }>(
+    `INSERT INTO terras (nome, area_contratada_ha, cidade, estado, status, criado_por)
+     VALUES ($1, 100, 'Ribeirão Preto', 'SP', 'ativo', $2)
+     RETURNING id`,
+    ['Terra Exporta Teste', usuarioId]
+  );
+  const terraId = terraResult.rows[0].id;
+  terrasCriadas.add(terraId);
+
+  await pool.query(
+    `INSERT INTO parceiro_terra (parceiro_id, terra_id, tipo_vinculo)
+     VALUES ($1, $2, 'arrendamento')`,
+    [parceiroId, terraId]
+  );
 };
 
 const limparDadosDeTeste = async (): Promise<void> => {
   const parceiroIds = Array.from(parceirosCriados);
+  const terraIds = Array.from(terrasCriadas);
   if (parceiroIds.length > 0) {
+    await pool.query(`DELETE FROM telefone_parceiro WHERE parceiro_id = ANY($1::uuid[])`, [parceiroIds]);
+    await pool.query(
+      `DELETE FROM parceiro_terra
+        WHERE parceiro_id = ANY($1::uuid[])
+           OR terra_id = ANY($2::uuid[])`,
+      [parceiroIds, terraIds]
+    );
+    await pool.query(
+      `DELETE FROM vinculo_comercial
+        WHERE parceiro_id = ANY($1::uuid[])
+           OR terra_id = ANY($2::uuid[])`,
+      [parceiroIds, terraIds]
+    );
     await pool.query(`DELETE FROM parceiros WHERE id = ANY($1::uuid[])`, [parceiroIds]);
     parceirosCriados.clear();
+  }
+  if (terraIds.length > 0) {
+    await pool.query(`DELETE FROM terras WHERE id = ANY($1::uuid[])`, [terraIds]);
+    terrasCriadas.clear();
   }
 
   const usuarioIds = Array.from(usuariosCriados);
@@ -69,7 +122,8 @@ describe('GET /parceiros/exportar — Fluxo 16 Exportar Dados de Parceiros', () 
 
   // T01 — Fluxo principal: sucesso com dados
   it('deve retornar 200 e o arquivo CSV quando houver parceiros cadastrados', async () => {
-    await criarParceiro(usuarioId);
+    const parceiroId = await criarParceiro(usuarioId);
+    await vincularTerra(parceiroId, usuarioId);
 
     const response = await request(app)
       .get('/parceiros/exportar')
@@ -77,8 +131,11 @@ describe('GET /parceiros/exportar — Fluxo 16 Exportar Dados de Parceiros', () 
 
     expect(response.headers['content-type']).toMatch(/text\/csv/);
     expect(response.headers['content-disposition']).toMatch(/dados_parceiros_ativos\.csv/);
-    expect(response.text).toContain('id,nome,tipo_pessoa,cpf_cnpj,email,status,criado_em');
+    expect(response.text).toContain('nome,contato,tipo_parceiro,regiao,telefone_principal,email,terra_unidade');
     expect(response.text).toContain('Parceiro Exporta Teste');
+    expect(response.text).toContain('Contato Exporta');
+    expect(response.text).toContain('(16) 99999-0000');
+    expect(response.text).toContain('Terra Exporta Teste');
   });
 
   // T02 — Fluxo alternativo 1: nenhum parceiro ativo para exportar
@@ -106,15 +163,18 @@ describe('GET /parceiros/exportar — Fluxo 16 Exportar Dados de Parceiros', () 
 
   // T03 — Verificação do conteúdo do CSV
   it('deve retornar CSV com os dados corretos do parceiro criado', async () => {
-    await criarParceiro(usuarioId);
+    const parceiroId = await criarParceiro(usuarioId);
+    await vincularTerra(parceiroId, usuarioId);
 
     const response = await request(app)
       .get('/parceiros/exportar')
       .expect(200);
 
     const linhas = response.text.split('\n');
-    expect(linhas[0]).toBe('id,nome,tipo_pessoa,cpf_cnpj,email,status,criado_em');
+    expect(linhas[0]).toBe('nome,contato,tipo_parceiro,regiao,telefone_principal,email,terra_unidade');
     expect(linhas.length).toBeGreaterThan(1);
+    expect(response.text).toContain('fisica');
+    expect(response.text).toContain('Ribeirão Preto');
   });
 
   // T04 — Verificação de múltiplos parceiros no CSV

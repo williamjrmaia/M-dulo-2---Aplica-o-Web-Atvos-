@@ -124,6 +124,11 @@ export interface ParceiroPendenteValidacao extends Parceiro {
     data_envio?: Date | null;
 }
 
+export interface ParceiroRascunhoDevolvido extends Parceiro {
+    comentario_devolucao?: string | null;
+    data_devolucao?: Date | null;
+}
+
 export interface EnviarParceiroValidacaoInput {
     atualizado_por: string;
     comentario?: string;

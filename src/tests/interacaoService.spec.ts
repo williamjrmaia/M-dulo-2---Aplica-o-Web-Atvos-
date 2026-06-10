@@ -82,3 +82,53 @@ describe('InteracaoService.registrarInteracao (unitário, banco real)', () => {
     ).rejects.toThrow('Parceiro não localizado para registro');
   });
 });
+
+describe('InteracaoService.listarInteracoesPorParceiro (unitário, banco real)', () => {
+  it('lista interações do parceiro em ordem decrescente por data e criação', async () => {
+    const parceiro = await criarParceiroNoBanco();
+
+    const antiga = await service.registrarInteracao(parceiro.id, {
+      registrado_por: usuarioId,
+      tipo: 'email',
+      descricao: 'Interação antiga',
+      data: '2026-06-08',
+    });
+    const primeiraDoDia = await service.registrarInteracao(parceiro.id, {
+      registrado_por: usuarioId,
+      tipo: 'ligacao',
+      descricao: 'Primeira interação do dia',
+      data: '2026-06-09',
+    });
+    const segundaDoDia = await service.registrarInteracao(parceiro.id, {
+      registrado_por: usuarioId,
+      tipo: 'visita',
+      descricao: 'Segunda interação do dia',
+      data: '2026-06-09',
+    });
+
+    await pool.query(
+      `UPDATE interacao
+          SET criado_em = CASE id
+            WHEN $1 THEN '2026-06-08T10:00:00Z'::timestamp
+            WHEN $2 THEN '2026-06-09T10:00:00Z'::timestamp
+            WHEN $3 THEN '2026-06-09T11:00:00Z'::timestamp
+          END
+        WHERE id IN ($1, $2, $3)`,
+      [antiga.id, primeiraDoDia.id, segundaDoDia.id]
+    );
+
+    const interacoes = await service.listarInteracoesPorParceiro(parceiro.id);
+
+    expect(interacoes.map((interacao) => interacao.id)).toEqual([
+      segundaDoDia.id,
+      primeiraDoDia.id,
+      antiga.id,
+    ]);
+  });
+
+  it('bloqueia listagem de interações para parceiro inexistente', async () => {
+    await expect(service.listarInteracoesPorParceiro(ids.inexistente)).rejects.toThrow(
+      'Parceiro não localizado para consulta'
+    );
+  });
+});

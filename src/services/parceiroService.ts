@@ -7,6 +7,7 @@ import {
   listarHistoricoParceiro,
   listarPendentesValidacao,
   listarParceiros,
+  listarRascunhosDevolvidosDoAnalista,
   listarTerrasDoParceiro,
   returnParceiroForAdjustment,
   sendParceiroToValidation,
@@ -22,6 +23,7 @@ import {
   ListarParceirosFiltros,
   Parceiro,
   ParceiroPendenteValidacao,
+  ParceiroRascunhoDevolvido,
   ParceiroTerra,
   TerraDoParceiro,
   UpdateParceiroInput,
@@ -74,6 +76,16 @@ export async function obterParceiros(filtros: ListarParceirosFiltros = {}): Prom
 
 export async function obterPendentesValidacao(): Promise<ParceiroPendenteValidacao[]> {
   return listarPendentesValidacao();
+}
+
+export async function obterRascunhosDevolvidosDoAnalista(
+  analistaId: string
+): Promise<ParceiroRascunhoDevolvido[]> {
+  if (!analistaId) {
+    throw new ValidationError('Analista logado não identificado');
+  }
+
+  return listarRascunhosDevolvidosDoAnalista(analistaId);
 }
 
 export async function obterParceiroPorId(id: string): Promise<Parceiro> {

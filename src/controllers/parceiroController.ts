@@ -9,6 +9,7 @@ import {
   excluirParceiro as excluirParceiroService,
   obterHistoricoParceiro,
   obterPendentesValidacao,
+  obterRascunhosDevolvidosDoAnalista,
   obterTerrasDoParceiro,
   obterParceiros,
   obterParceiroPorId as obterParceiroPorIdService,
@@ -35,6 +36,10 @@ function obterUsuarioAutenticadoId(req: Request): string {
 
   return usuarioId;
 }
+
+type RequestComUsuario = Request & {
+  usuario?: { id?: string };
+};
 
 function textoOpcional(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
@@ -176,6 +181,16 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
   }
 
   const parceiros = await obterParceiros(parsed.data);
+  res.status(200).json(parceiros);
+});
+
+export const listarRascunhosDevolvidosAnalista = asyncHandler(async (req: Request, res: Response) => {
+  const usuarioAutenticadoId =
+    (req as RequestComUsuario).usuario?.id ??
+    res.locals.usuarioAutenticado?.id ??
+    (typeof req.query.analista_id === 'string' ? req.query.analista_id : undefined);
+
+  const parceiros = await obterRascunhosDevolvidosDoAnalista(usuarioAutenticadoId ?? '');
   res.status(200).json(parceiros);
 });
 
