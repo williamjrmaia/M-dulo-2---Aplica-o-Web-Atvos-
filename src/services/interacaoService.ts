@@ -19,4 +19,15 @@ export class InteracaoService {
     console.log('[SERVICE] Interação registrada com sucesso');
     return interacao;
   }
+
+  async listarInteracoesPorParceiro(parceiro_id: string): Promise<Interacao[]> {
+    console.log(`[SERVICE] listarInteracoesPorParceiro: ${parceiro_id}`);
+
+    const parceiroExiste = await this.interacaoRepository.verificarExistenciaParceiro(parceiro_id);
+    if (!parceiroExiste) {
+      throw new Error('Parceiro não localizado para consulta');
+    }
+
+    return this.interacaoRepository.listarPorParceiro(parceiro_id);
+  }
 }
