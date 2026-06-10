@@ -24,6 +24,10 @@ export class AuthService {
       throw new Error('Credenciais inválidas');
     }
 
+    if (!usuario.ativo) {
+      throw new Error('Credenciais inválidas');
+    }
+
     const senhaValida = await bcrypt.compare(senha, usuario.senha_hash ?? '');
     if (!senhaValida) {
       throw new Error('Credenciais inválidas');

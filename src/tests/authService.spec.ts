@@ -76,6 +76,20 @@ describe('AuthService.autenticar (unitário, com stub)', () => {
       'Credenciais inválidas'
     );
   });
+
+  it('rejeita o login de usuário inativo com mensagem genérica', async () => {
+    const criarSessao = jest.fn();
+    const usuarioInativo: Usuario = { ...usuarioValido, ativo: false };
+    const service = new AuthService(
+      userRepoStub(usuarioInativo),
+      sessionRepoStub({ criarSessao })
+    );
+
+    await expect(service.autenticar(usuarioInativo.email, SENHA_CORRETA)).rejects.toThrow(
+      'Credenciais inválidas'
+    );
+    expect(criarSessao).not.toHaveBeenCalled();
+  });
 });
 
 describe('AuthService.encerrarSessao (unitário, com stub)', () => {
