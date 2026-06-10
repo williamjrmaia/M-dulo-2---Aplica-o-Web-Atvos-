@@ -3281,10 +3281,9 @@ Como a plataforma foi projetada para ser uma solução somente corporativa e vol
 Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar os riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
 #### 6.6.3 Praça
-*Apresente os canais digitais utilizados para distribuir e entregar a aplicação ao público.*
+Tendo como base uma estratégia de Canal Direto Icorporativo, focado de forma exclusiva no ambiente digital fechado apara definir a Praça. O sistema web será disponibilizado através de servidores de nuvem privada integrados a estrutura tecnológica interna da companhia. 
 
-#### Promoção 
-*Descreva as estratégias digitais planejadas, como SEO, redes sociais, marketing de conteúdo e campanhas pagas.*
+
 
 # <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
 
