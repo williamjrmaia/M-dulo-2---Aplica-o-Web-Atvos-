@@ -1190,7 +1190,7 @@ No fluxo principal, o analista cadastra a área e o sistema a vincula à unidade
 
 <div align="center">
   <sub>Figura 3.2.4.9 - Nono fluxo: Cadastro de dados das terras</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_09_cadastro_terras.png" width="100%" alt="Diagrama de Sequencia 9"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_09_cadastro_terras_atualizado.png" width="100%" alt="Diagrama de Sequencia 9"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
