@@ -1136,7 +1136,7 @@ No fluxo principal, o usuário acessa o sistema após validar credenciais (200).
 
 <div align="center">
   <sub>Figura 3.2.4.3 - Terceiro fluxo: Login de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_03_login.png" width="100%" alt="Diagrama de Sequencia 3"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_03_login_atualizado.png" width="100%" alt="Diagrama de Sequencia 3"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
