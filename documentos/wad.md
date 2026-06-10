@@ -1116,7 +1116,7 @@ No fluxo principal, o sistema valida e salva o novo usuário (201). Alternativam
 
 <div align="center">
   <sub>Figura 3.2.4.1 - Primeiro fluxo: Cadastro de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_01_cadastro_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_01_cadastro_de_usuarios_atualizado.png" width="100%" alt="Diagrama de Sequencia 1"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
