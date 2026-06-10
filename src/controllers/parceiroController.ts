@@ -36,10 +36,6 @@ function obterUsuarioAutenticadoId(req: Request): string {
   return usuarioId;
 }
 
-type RequestComUsuario = Request & {
-  usuario?: { id?: string };
-};
-
 function textoOpcional(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
   const text = value.trim();
