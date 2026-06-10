@@ -27,6 +27,12 @@ afterEach(async () => {
 
   if (parceiroIds.length > 0 || terraIds.length > 0) {
     await pool.query(
+      `DELETE FROM vinculo_comercial
+        WHERE parceiro_id = ANY($1::uuid[])
+           OR terra_id = ANY($2::uuid[])`,
+      [parceiroIds, terraIds]
+    );
+    await pool.query(
       `DELETE FROM parceiro_terra
         WHERE parceiro_id = ANY($1::uuid[])
            OR terra_id = ANY($2::uuid[])`,
@@ -163,6 +169,42 @@ describe('POST /api/parceiros/:id/terras', () => {
 
     expect(rows).toHaveLength(1);
     expect(rows[0].tipo_vinculo).toBe('coproprietario');
+  });
+
+  it('Caso 7 — persiste dados comerciais expandidos quando informados', async () => {
+    const parceiro = await criarParceiro();
+    const terra = await criarTerra();
+
+    const res = await request(app).post(`/api/parceiros/${parceiro.id}/terras`).send({
+      terra_id: terra.id,
+      tipo_vinculo: 'contrato de fornecimento',
+      tipo_parceiro: 'fornecedor',
+      modalidade_contrato: 'Fornecimento de cana',
+      data_inicio: '2026-06-01',
+      data_fim: '2027-05-31',
+      observacoes: 'Contrato previsto para a safra atual',
+    });
+
+    expect(res.status).toBe(201);
+
+    const { rows } = await pool.query(
+      `SELECT tipo_parceiro, tipo_vinculo, modalidade_contrato, data_inicio, data_fim, observacoes
+         FROM vinculo_comercial
+        WHERE parceiro_id = $1 AND terra_id = $2`,
+      [parceiro.id, terra.id]
+    );
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toEqual(
+      expect.objectContaining({
+        tipo_parceiro: 'fornecedor',
+        tipo_vinculo: 'contrato de fornecimento',
+        modalidade_contrato: 'Fornecimento de cana',
+        observacoes: 'Contrato previsto para a safra atual',
+      })
+    );
+    expect(rows[0].data_inicio.toISOString().slice(0, 10)).toBe('2026-06-01');
+    expect(rows[0].data_fim.toISOString().slice(0, 10)).toBe('2027-05-31');
   });
 });
 

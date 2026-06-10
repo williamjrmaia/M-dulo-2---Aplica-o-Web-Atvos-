@@ -127,6 +127,12 @@ CREATE TABLE IF NOT EXISTS vinculo_comercial (
   observacoes TEXT
 );
 
+ALTER TABLE vinculo_comercial ADD COLUMN IF NOT EXISTS tipo_parceiro VARCHAR NOT NULL DEFAULT 'arrendador';
+ALTER TABLE vinculo_comercial ADD COLUMN IF NOT EXISTS modalidade_contrato VARCHAR;
+ALTER TABLE vinculo_comercial ADD COLUMN IF NOT EXISTS data_inicio DATE;
+ALTER TABLE vinculo_comercial ADD COLUMN IF NOT EXISTS data_fim DATE;
+ALTER TABLE vinculo_comercial ADD COLUMN IF NOT EXISTS observacoes TEXT;
+
 CREATE INDEX IF NOT EXISTS idx_vinculo_parceiro ON vinculo_comercial(parceiro_id);
 CREATE INDEX IF NOT EXISTS idx_vinculo_terra ON vinculo_comercial(terra_id);
 CREATE INDEX IF NOT EXISTS idx_vinculo_tipo_parceiro ON vinculo_comercial(tipo_parceiro);

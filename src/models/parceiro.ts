@@ -67,6 +67,11 @@ export interface ParceiroTerra {
     parceiro_id: string;
     terra_id: string;
     tipo_vinculo?: string | null;
+    tipo_parceiro?: 'arrendador' | 'fornecedor' | null;
+    modalidade_contrato?: string | null;
+    data_inicio?: string | null;
+    data_fim?: string | null;
+    observacoes?: string | null;
 }
 
 export interface TerraDoParceiro {
@@ -83,6 +88,11 @@ export interface TerraDoParceiro {
 export interface VincularTerraAoParceiroInput {
     terra_id: string;
     tipo_vinculo?: string;
+    tipo_parceiro?: 'arrendador' | 'fornecedor';
+    modalidade_contrato?: string;
+    data_inicio?: string;
+    data_fim?: string;
+    observacoes?: string;
 }
 
 export interface ListarParceirosFiltros {
