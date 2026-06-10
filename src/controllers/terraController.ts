@@ -3,6 +3,7 @@ import asyncHandler from '../helpers/asyncHandler';
 import {
   cadastrarTerra,
   editarTerra,
+  excluirTerra as excluirTerraService,
   obterParceirosDaTerra,
   obterTerras,
   vincularParceiroATerra as vincularParceiroATerraService,
@@ -41,6 +42,22 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const terra = await editarTerra(id, parsed.data);
+
+  res.status(200).json(terra);
+});
+
+export const excluirTerra = asyncHandler(async (req: Request, res: Response) => {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const { atualizado_por, comentario } = req.body;
+
+  if (!atualizado_por) {
+    throw new ValidationError('Campos obrigatórios: atualizado_por');
+  }
+
+  const terra = await excluirTerraService(id, {
+    atualizado_por,
+    comentario: typeof comentario === 'string' && comentario.trim() ? comentario.trim() : undefined,
+  });
 
   res.status(200).json(terra);
 });

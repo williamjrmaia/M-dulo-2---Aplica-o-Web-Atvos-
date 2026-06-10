@@ -1,12 +1,15 @@
 import {
   createTerra,
   createTerraParceiro,
+  deactivateTerra,
+  getTerraById,
   listarParceirosDaTerra,
   listarTerras,
   updateTerra,
 } from '../repositories/terraRepository';
 import {
   CreateTerraInput,
+  ExcluirTerraInput,
   ParceiroDaTerra,
   Terra,
   TerraParceiro,
@@ -43,6 +46,37 @@ export async function editarTerra(id: string, data: UpdateTerraInput): Promise<T
       throw err;
     }
     // 23503 = foreign_key_violation: atualizado_por não existe em usuarios
+    if ((err as { code?: string }).code === '23503') {
+      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
+    }
+    throw err;
+  }
+}
+
+export async function excluirTerra(id: string, data: ExcluirTerraInput): Promise<Terra> {
+  try {
+    const terraAtual = await getTerraById(id);
+    if (!terraAtual) {
+      throw new NotFoundError('Terra não encontrada');
+    }
+
+    if (terraAtual.status === 'inativo') {
+      throw new ConflictError('Terra já está inativa');
+    }
+
+    const terra = await deactivateTerra(id, data, terraAtual);
+    if (!terra) {
+      throw new ConflictError('Terra já está inativa');
+    }
+
+    return terra;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError || err instanceof ConflictError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Terra não encontrada');
+    }
     if ((err as { code?: string }).code === '23503') {
       throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
     }
