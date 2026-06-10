@@ -1181,7 +1181,7 @@ No fluxo principal, o administrador edita os dados e o sistema salva as alteraç
 
 <div align="center">
   <sub>Figura 3.2.4.8 - Oitavo fluxo: Edição dos dados dos parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_08_atualiza_parceiros.png" width="100%" alt="Diagrama de Sequencia 8"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_08_atualiza_parceiros_atualizado.png" width="100%" alt="Diagrama de Sequencia 8"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
