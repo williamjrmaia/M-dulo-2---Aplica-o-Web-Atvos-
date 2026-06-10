@@ -1,11 +1,19 @@
 import { Request, Response } from 'express';
+import {
+  definirSenhaPrimeiroAcessoSchema,
+  solicitarPrimeiroAcessoSchema,
+} from '../schemas/primeiroAcesso.schema';
 import { PrimeiroAcessoService } from '../services/primeiroAcessoService';
 
 export class PrimeiroAcessoController {
   constructor(private readonly primeiroAcessoService: PrimeiroAcessoService) {}
 
   solicitarToken = async (req: Request, res: Response) => {
-    const { email } = req.body;
+    const parsed = solicitarPrimeiroAcessoSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'E-mail obrigatório' });
+    }
+    const { email } = parsed.data;
 
     try {
       const convite = await this.primeiroAcessoService.solicitarToken(email);
@@ -23,11 +31,18 @@ export class PrimeiroAcessoController {
   };
 
   definirSenha = async (req: Request, res: Response) => {
-    const { token, senha, confirmacao_senha } = req.body;
-
-    if (senha !== confirmacao_senha) {
-      return res.status(400).json({ error: 'Senhas não coincidem' });
+    const parsed = definirSenhaPrimeiroAcessoSchema.safeParse(req.body);
+    if (!parsed.success) {
+      const mensagem = parsed.error.issues[0]?.message ?? 'Dados de entrada invalidos';
+      if (mensagem === 'Senhas não coincidem') {
+        return res.status(400).json({ error: mensagem });
+      }
+      if (mensagem.includes('senha')) {
+        return res.status(400).json({ error: 'Senha deve ter pelo menos 8 caracteres' });
+      }
+      return res.status(400).json({ error: 'Token obrigatório' });
     }
+    const { token, senha } = parsed.data;
 
     try {
       await this.primeiroAcessoService.definirSenha(token, senha);

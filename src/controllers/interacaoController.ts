@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { criarInteracaoSchema } from '../schemas/interacao.schema';
 import { InteracaoService } from '../services/interacaoService';
 
 export class InteracaoController {
@@ -6,12 +7,12 @@ export class InteracaoController {
 
   registrar = async (req: Request, res: Response) => {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const { registrado_por, tipo, descricao, data } = req.body;
+    const parsed = criarInteracaoSchema.safeParse(req.body);
 
-    // Validação de payload
-    if (!registrado_por || !tipo || !descricao || !data) {
+    if (!parsed.success) {
       return res.status(400).json({ error: 'Dados de interação inválidos' });
     }
+    const { registrado_por, tipo, descricao, data } = parsed.data;
 
     console.log(`[CONTROLLER] Registro de interação para parceiro: ${id}`);
 
