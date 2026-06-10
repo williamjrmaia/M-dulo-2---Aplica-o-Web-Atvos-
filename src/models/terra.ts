@@ -29,6 +29,11 @@ export interface UpdateTerraInput {
   atualizado_por: string;
 }
 
+export interface ExcluirTerraInput {
+  atualizado_por: string;
+  comentario?: string;
+}
+
 export interface TerraParceiro {
   id: string;
   parceiro_id: string;

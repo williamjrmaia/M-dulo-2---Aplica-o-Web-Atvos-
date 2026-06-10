@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   createTerra,
+  excluirTerra,
   listarParceirosDaTerra,
   listarTerras,
   updateTerra,
@@ -17,3 +18,4 @@ apiRouter.get('/', authorizeRoles('analista', 'coordenador', 'administrador'), l
 apiRouter.get('/:id/parceiros', authorizeRoles('analista', 'coordenador', 'administrador'), listarParceirosDaTerra);
 apiRouter.post('/:id/parceiros', authorizeRoles('analista', 'administrador'), vincularParceiroATerra);
 apiRouter.put('/:id', authorizeRoles('analista', 'administrador'), updateTerra);
+apiRouter.delete('/:id', authorizeRoles('analista', 'administrador'), excluirTerra);

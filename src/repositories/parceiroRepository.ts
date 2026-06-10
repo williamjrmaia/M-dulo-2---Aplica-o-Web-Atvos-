@@ -5,6 +5,7 @@ import {
   CreateParceiroInput,
   DevolverParceiroInput,
   EnviarParceiroValidacaoInput,
+  ExcluirParceiroInput,
   HistoricoParceiro,
   ListarParceirosFiltros,
   ParceiroTerra,
@@ -499,6 +500,56 @@ export async function returnParceiroForAdjustment(
         JSON.stringify(dadosAnteriores),
         JSON.stringify(parceiro),
         data.comentario ?? null,
+      ]
+    );
+
+    await client.query('COMMIT');
+    return parceiro;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function deactivateParceiro(
+  id: string,
+  data: ExcluirParceiroInput,
+  dadosAnteriores: Parceiro
+): Promise<Parceiro | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query<Parceiro>(
+      `UPDATE parceiros
+          SET status = 'inativo',
+              atualizado_por = $1,
+              atualizado_em = NOW()
+        WHERE id = $2
+          AND status != 'inativo'
+        RETURNING *`,
+      [data.atualizado_por, id]
+    );
+
+    const parceiro = rows[0] ?? null;
+    if (!parceiro) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'exclusao', $3::jsonb, $4::jsonb, 'aprovado', $5)`,
+      [
+        data.atualizado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(parceiro),
+        data.comentario ?? 'Parceiro inativado',
       ]
     );
 
