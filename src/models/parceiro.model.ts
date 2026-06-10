@@ -1,9 +1,9 @@
 export interface ParceiroExportacao {
-  id: string;
   nome: string;
-  tipo_pessoa: string;
-  cpf_cnpj: string;
+  contato: string | null;
+  tipo_parceiro: string | null;
+  regiao: string | null;
+  telefone_principal: string | null;
   email: string | null;
-  status: string;
-  criado_em: Date;
+  terra_unidade: string | null;
 }

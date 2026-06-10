@@ -9,13 +9,13 @@ function repoStub(impl: () => Promise<ParceiroExportacao[]>): ExportaRepository 
 }
 
 const parceiroAmostra: ParceiroExportacao = {
-  id: '11111111-1111-1111-1111-111111111111',
   nome: 'Fazenda Modelo',
-  tipo_pessoa: 'fisica',
-  cpf_cnpj: '12345678900',
+  contato: 'Contato Modelo',
+  tipo_parceiro: 'arrendador',
+  regiao: 'Ribeirão Preto',
+  telefone_principal: '(16) 99999-0000',
   email: 'modelo@atvos.test',
-  status: 'ativo',
-  criado_em: new Date('2026-06-09T00:00:00Z'),
+  terra_unidade: 'Terra Modelo',
 };
 
 describe('ExportaService.processarExportacaoParceiros (unitário, com stub)', () => {
@@ -26,9 +26,12 @@ describe('ExportaService.processarExportacaoParceiros (unitário, com stub)', ()
     const buffer = await service.processarExportacaoParceiros();
     const csv = buffer.toString('utf-8');
 
-    expect(csv).toContain('id,nome,tipo_pessoa,cpf_cnpj,email,status,criado_em');
+    expect(csv).toContain('nome,contato,tipo_parceiro,regiao,telefone_principal,email,terra_unidade');
     expect(csv).toContain('Fazenda Modelo');
+    expect(csv).toContain('Contato Modelo');
+    expect(csv).toContain('(16) 99999-0000');
     expect(csv).toContain('modelo@atvos.test');
+    expect(csv).toContain('Terra Modelo');
   });
 
   // CT02 → RN04 (RF017): sem parceiros, lança EmptyDataException (vira 404 no controller)
