@@ -77,4 +77,20 @@ export class AuthSessionRepository {
 
     return rows[0] ?? null;
   }
+
+  async encerrarSessoesAtivasDoUsuario(usuarioId: string, revogadaPor?: string): Promise<number> {
+    await garantirTabelaSessoes();
+
+    const result = await pool.query(
+      `UPDATE auth_sessoes
+          SET ativa = FALSE,
+              revogada_em = NOW(),
+              revogada_por = $2
+        WHERE usuario_id = $1
+          AND ativa = TRUE`,
+      [usuarioId, revogadaPor ?? null]
+    );
+
+    return result.rowCount ?? 0;
+  }
 }
