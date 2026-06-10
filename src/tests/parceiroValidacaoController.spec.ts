@@ -44,7 +44,7 @@ afterAll(async () => {
   await pool.end();
 });
 
-async function criarParceiro(status = 'rascunho') {
+async function criarParceiro(status = 'rascunho', email: string | null = `parceiro_${randomUUID()}@atvos.test`) {
   const { rows } = await pool.query<{ id: string; status: string }>(
     `INSERT INTO parceiros (nome, tipo_pessoa, cpf_cnpj, email, status, criado_por)
      VALUES ($1, $2, $3, $4, $5::status_validacao, $6)
@@ -53,7 +53,7 @@ async function criarParceiro(status = 'rascunho') {
       `Parceiro Validacao ${randomUUID()}`,
       'fisica',
       randomUUID(),
-      `parceiro_${randomUUID()}@atvos.test`,
+      email,
       status,
       testUserId,
     ]
@@ -104,7 +104,21 @@ describe('PUT /api/parceiros/:id/validacao', () => {
     expect(res.body.status).toBe('pendente');
   });
 
-  it('Caso 3 — parceiro ativo ou já pendente não pode ser reenviado', async () => {
+  it('Caso 3 — rascunho aceita parceiro sem email, mas envio para validação exige email', async () => {
+    const parceiro = await criarParceiro('rascunho', null);
+
+    expect(parceiro.status).toBe('rascunho');
+
+    const res = await request(app).put(`/api/parceiros/${parceiro.id}/validacao`).send({
+      atualizado_por: testUserId,
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toContain('Campos obrigatórios para envio à validação');
+    expect(res.body.error).toContain('email');
+  });
+
+  it('Caso 4 — parceiro ativo ou já pendente não pode ser reenviado', async () => {
     const ativo = await criarParceiro('ativo');
     const pendente = await criarParceiro('pendente');
 
@@ -121,7 +135,7 @@ describe('PUT /api/parceiros/:id/validacao', () => {
     expect(resPendente.body.error).toMatch(/rascunho ou devolvido/);
   });
 
-  it('Caso 4 — rejeita payload inválido, parceiro inexistente e usuário inexistente', async () => {
+  it('Caso 5 — rejeita payload inválido, parceiro inexistente e usuário inexistente', async () => {
     const parceiro = await criarParceiro('rascunho');
 
     const semUsuario = await request(app).put(`/api/parceiros/${parceiro.id}/validacao`).send({});
