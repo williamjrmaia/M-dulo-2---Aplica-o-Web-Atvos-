@@ -134,4 +134,15 @@ export class UserRepository {
     );
     return result.rows[0] ?? null;
   }
+
+  async definirSenha(id: string, senhaHash: string): Promise<Usuario | null> {
+    const result = await pool.query<Usuario>(
+      `UPDATE usuarios
+          SET senha_hash = $2
+        WHERE id = $1
+        RETURNING id, nome, email, senha_hash, ativo, perfil_acesso_id`,
+      [id, senhaHash],
+    );
+    return result.rows[0] ?? null;
+  }
 }
