@@ -1208,7 +1208,7 @@ No fluxo principal, o analista registra o contato e o sistema vincula o históri
 
 <div align="center">
   <sub>Figura 3.2.4.11 - Fluxo 11: Registro de interações</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_11_registra_interacoes_atualizado.png width="100%" alt="Diagrama de Sequencia 11"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_11_registra_interacoes_atualizado.png " width="100%" alt="Diagrama de Sequencia 11"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1217,7 +1217,7 @@ No fluxo principal, o administrador consulta o perfil detalhado do parceiro e se
 
 <div align="center">
   <sub>Figura 3.2.4.12 - Fluxo 12: Visualização dos dados dos parceiros</sub><br>
-  <img src="./assets/diagrama_de_sequencia/fluxo_12_visualiza_dados_parceiros.png" width="100%" alt="Diagrama de Sequência 12"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_12_visualiza_dados_parceiros_atualizado.png" width="100%" alt="Diagrama de Sequência 12"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
