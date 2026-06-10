@@ -2,9 +2,11 @@ import {
   approveParceiro,
   createParceiro,
   createParceiroTerra,
+  deactivateParceiro,
   getParceiroById,
   listarHistoricoParceiro,
   listarParceiros,
+  listarRascunhosDevolvidosDoAnalista,
   listarTerrasDoParceiro,
   returnParceiroForAdjustment,
   sendParceiroToValidation,
@@ -15,9 +17,11 @@ import {
   CreateParceiroInput,
   DevolverParceiroInput,
   EnviarParceiroValidacaoInput,
+  ExcluirParceiroInput,
   HistoricoParceiro,
   ListarParceirosFiltros,
   Parceiro,
+  ParceiroRascunhoDevolvido,
   ParceiroTerra,
   TerraDoParceiro,
   UpdateParceiroInput,
@@ -66,6 +70,16 @@ export async function editarParceiro(id: string, data: UpdateParceiroInput): Pro
 
 export async function obterParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
   return await listarParceiros(filtros);
+}
+
+export async function obterRascunhosDevolvidosDoAnalista(
+  analistaId: string
+): Promise<ParceiroRascunhoDevolvido[]> {
+  if (!analistaId) {
+    throw new ValidationError('Analista logado não identificado');
+  }
+
+  return listarRascunhosDevolvidosDoAnalista(analistaId);
 }
 
 export async function obterParceiroPorId(id: string): Promise<Parceiro> {
@@ -194,6 +208,37 @@ export async function devolverParceiro(id: string, data: DevolverParceiroInput):
     }
     if ((err as { code?: string }).code === '23503') {
       throw new UnprocessableEntityError('devolvido_por não referencia um usuário existente');
+    }
+    throw err;
+  }
+}
+
+export async function excluirParceiro(id: string, data: ExcluirParceiroInput): Promise<Parceiro> {
+  try {
+    const parceiroAtual = await getParceiroById(id);
+    if (!parceiroAtual) {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+
+    if (parceiroAtual.status === 'inativo') {
+      throw new ConflictError('Parceiro já está inativo');
+    }
+
+    const parceiro = await deactivateParceiro(id, data, parceiroAtual);
+    if (!parceiro) {
+      throw new ConflictError('Parceiro já está inativo');
+    }
+
+    return parceiro;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError || err instanceof ConflictError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    if ((err as { code?: string }).code === '23503') {
+      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
     }
     throw err;
   }

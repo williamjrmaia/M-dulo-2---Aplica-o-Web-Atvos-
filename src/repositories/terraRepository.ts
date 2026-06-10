@@ -2,6 +2,7 @@ import pool from '../config/connection';
 import {
   Terra,
   CreateTerraInput,
+  ExcluirTerraInput,
   ParceiroDaTerra,
   TerraParceiro,
   UpdateTerraInput,
@@ -33,6 +34,11 @@ export async function listarTerras(): Promise<Terra[]> {
       ORDER BY criado_em DESC`
   );
   return rows;
+}
+
+export async function getTerraById(id: string): Promise<Terra | null> {
+  const { rows } = await pool.query<Terra>('SELECT * FROM terras WHERE id = $1', [id]);
+  return rows[0] ?? null;
 }
 
 export async function updateTerra(id: string, data: UpdateTerraInput): Promise<Terra | null> {
@@ -80,6 +86,56 @@ export async function updateTerra(id: string, data: UpdateTerraInput): Promise<T
   );
 
   return rows[0] ?? null;
+}
+
+export async function deactivateTerra(
+  id: string,
+  data: ExcluirTerraInput,
+  dadosAnteriores: Terra
+): Promise<Terra | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query<Terra>(
+      `UPDATE terras
+          SET status = 'inativo',
+              atualizado_por = $1,
+              atualizado_em = NOW()
+        WHERE id = $2
+          AND status != 'inativo'
+        RETURNING *`,
+      [data.atualizado_por, id]
+    );
+
+    const terra = rows[0] ?? null;
+    if (!terra) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'terra', $2, 'exclusao', $3::jsonb, $4::jsonb, 'aprovado', $5)`,
+      [
+        data.atualizado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(terra),
+        data.comentario ?? 'Terra inativada',
+      ]
+    );
+
+    await client.query('COMMIT');
+    return terra;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 export async function listarParceirosDaTerra(terraId: string): Promise<ParceiroDaTerra[] | null> {

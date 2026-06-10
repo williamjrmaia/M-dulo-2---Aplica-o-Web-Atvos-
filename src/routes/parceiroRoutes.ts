@@ -5,8 +5,10 @@ import {
   devolverParceiro,
   editarParceiro,
   enviarParceiroParaValidacao,
+  excluirParceiro,
   listarHistoricoParceiro,
   listarParceiros,
+  listarRascunhosDevolvidosAnalista,
   listarTerrasDoParceiro,
   obterParceiroPorId,
   renderFormCadastro,
@@ -25,7 +27,9 @@ export const apiRouter = Router();
 apiRouter.use(requireAuth);
 apiRouter.post('/', authorizeRoles('analista', 'administrador'), createParceiro);
 apiRouter.patch('/:id', authorizeRoles('analista', 'administrador'), editarParceiro);
+apiRouter.delete('/:id', authorizeRoles('analista', 'administrador'), excluirParceiro);
 apiRouter.get('/', authorizeRoles('analista', 'coordenador', 'administrador'), listarParceiros);
+apiRouter.get('/rascunhos-devolvidos', authorizeRoles('analista', 'administrador'), listarRascunhosDevolvidosAnalista);
 apiRouter.put('/:id/aprovar', authorizeRoles('coordenador', 'administrador'), aprovarParceiro);
 apiRouter.put('/:id/devolver', authorizeRoles('coordenador', 'administrador'), devolverParceiro);
 apiRouter.put('/:id/validacao', authorizeRoles('analista', 'administrador'), enviarParceiroParaValidacao);

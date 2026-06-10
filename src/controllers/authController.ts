@@ -4,6 +4,7 @@ import {
   AUTH_TOKEN_COOKIE,
   getAuthCookieOptions,
 } from '../config/auth';
+import { encerrarSessaoSchema, loginSchema } from '../schemas/auth.schema';
 import { AuthService } from '../services/authService';
 
 function isFormWeb(req: Request): boolean {
@@ -32,10 +33,23 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   login = async (req: Request, res: Response) => {
-    const { email, senha } = req.body;
     const loginWeb = isFormWeb(req);
+    const parsed = loginSchema.safeParse(req.body);
 
-    if (!email || !senha) {
+    if (!parsed.success) {
+      const email = typeof req.body?.email === 'string' ? req.body.email : undefined;
+      const senha = typeof req.body?.senha === 'string' ? req.body.senha : undefined;
+
+      if (email && senha) {
+        if (loginWeb) {
+          return res.status(400).render('login/index', {
+            error: 'Formato de e-mail inválido',
+            email,
+          });
+        }
+        return res.status(400).json({ error: 'Formato de e-mail inválido' });
+      }
+
       if (loginWeb) {
         return res.status(400).render('login/index', {
           error: 'E-mail e senha são obrigatórios',
@@ -45,16 +59,7 @@ export class AuthController {
       return res.status(400).json({ error: 'E-mail e senha são obrigatórios' });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      if (loginWeb) {
-        return res.status(400).render('login/index', {
-          error: 'Formato de e-mail inválido',
-          email,
-        });
-      }
-      return res.status(400).json({ error: 'Formato de e-mail inválido' });
-    }
+    const { email, senha } = parsed.data;
 
     try {
       const resultado = await this.authService.autenticar(email, senha);
@@ -89,7 +94,11 @@ export class AuthController {
 
   encerrarSessao = async (req: Request, res: Response) => {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const revogadaPor = req.body?.revogada_por;
+    const parsed = encerrarSessaoSchema.safeParse(req.body ?? {});
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Dados de entrada invalidos' });
+    }
+    const revogadaPor = parsed.data.revogada_por;
 
     try {
       const sessao = await this.authService.encerrarSessao(id, revogadaPor);

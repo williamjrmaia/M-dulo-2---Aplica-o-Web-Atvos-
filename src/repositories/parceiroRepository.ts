@@ -5,9 +5,11 @@ import {
   CreateParceiroInput,
   DevolverParceiroInput,
   EnviarParceiroValidacaoInput,
+  ExcluirParceiroInput,
   HistoricoParceiro,
   ListarParceirosFiltros,
   ParceiroTerra,
+  ParceiroRascunhoDevolvido,
   TerraDoParceiro,
   UpdateParceiroInput,
   VincularTerraAoParceiroInput,
@@ -17,6 +19,16 @@ function vazioComoNull(value: string | undefined): string | null {
   if (value === undefined) return null;
   const text = value.trim();
   return text.length > 0 ? text : null;
+}
+
+function possuiDadosComerciais(data: VincularTerraAoParceiroInput): boolean {
+  return Boolean(
+    data.tipo_parceiro ||
+      data.modalidade_contrato ||
+      data.data_inicio ||
+      data.data_fim ||
+      data.observacoes
+  );
 }
 
 export async function createParceiro(data: CreateParceiroInput): Promise<Parceiro> {
@@ -77,8 +89,22 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
       );
     }
 
+    const parceiroCriado = { ...parceiro, telefone: data.telefone?.trim() || null };
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'criacao', NULL, $3::jsonb, 'aprovado', $4)`,
+      [
+        data.criado_por,
+        parceiro.id,
+        JSON.stringify(parceiroCriado),
+        data.status === 'pendente' ? 'Parceiro criado e enviado para validação' : 'Parceiro criado como rascunho',
+      ]
+    );
+
     await client.query('COMMIT');
-    return { ...parceiro, telefone: data.telefone?.trim() || null };
+    return parceiroCriado;
   } catch (err) {
     await client.query('ROLLBACK');
     throw err;
@@ -172,34 +198,91 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
   contador++;
   valores.push(id);
 
-  const result = await pool.query<Parceiro>(
-    `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
-    valores
-  );
-  const parceiro = result.rows[0] ?? null;
+  const client = await pool.connect();
 
-  if (parceiro && data.telefone !== undefined) {
-    const telefone = vazioComoNull(data.telefone);
-    await pool.query(
-      `UPDATE telefone_parceiro
-          SET principal = FALSE,
-              atualizado_por = $2,
-              atualizado_em = NOW()
-        WHERE parceiro_id = $1
-          AND principal = TRUE`,
-      [id, data.atualizado_por]
+  try {
+    await client.query('BEGIN');
+
+    const { rows: anteriores } = await client.query<Parceiro>(
+      `SELECT p.*,
+              (
+                SELECT numero
+                  FROM telefone_parceiro
+                 WHERE parceiro_id = p.id
+                   AND principal = TRUE
+                 ORDER BY criado_em DESC
+                 LIMIT 1
+              ) AS telefone
+         FROM parceiros p
+        WHERE p.id = $1
+        FOR UPDATE`,
+      [id]
     );
 
-    if (telefone) {
-      await pool.query(
-        `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
-         VALUES ($1, $2, 'celular', TRUE, $3)`,
-        [id, telefone, data.atualizado_por]
-      );
+    const dadosAnteriores = anteriores[0] ?? null;
+    if (!dadosAnteriores) {
+      await client.query('ROLLBACK');
+      return null;
     }
-  }
 
-  return parceiro ? { ...parceiro, telefone: data.telefone ?? null } : null;
+    const result = await client.query<Parceiro>(
+      `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
+      valores
+    );
+    const parceiro = result.rows[0] ?? null;
+
+    if (!parceiro) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    if (data.telefone !== undefined) {
+      const telefone = vazioComoNull(data.telefone);
+      await client.query(
+        `UPDATE telefone_parceiro
+            SET principal = FALSE,
+                atualizado_por = $2,
+                atualizado_em = NOW()
+          WHERE parceiro_id = $1
+            AND principal = TRUE`,
+        [id, data.atualizado_por]
+      );
+
+      if (telefone) {
+        await client.query(
+          `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
+           VALUES ($1, $2, 'celular', TRUE, $3)`,
+          [id, telefone, data.atualizado_por]
+        );
+      }
+    }
+
+    const parceiroAtualizado = {
+      ...parceiro,
+      telefone: data.telefone !== undefined ? vazioComoNull(data.telefone) : dadosAnteriores.telefone ?? null,
+    };
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'edicao', $3::jsonb, $4::jsonb, 'aprovado', $5)`,
+      [
+        data.atualizado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(parceiroAtualizado),
+        'Parceiro atualizado',
+      ]
+    );
+
+    await client.query('COMMIT');
+    return parceiroAtualizado;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
@@ -288,6 +371,33 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
       ORDER BY p.criado_em DESC`,
     valores
   );
+  return rows;
+}
+
+export async function listarRascunhosDevolvidosDoAnalista(
+  analistaId: string
+): Promise<ParceiroRascunhoDevolvido[]> {
+  const { rows } = await pool.query<ParceiroRascunhoDevolvido>(
+    `SELECT
+        p.*,
+        ultima_devolucao.comentario AS comentario_devolucao,
+        ultima_devolucao.data_alteracao AS data_devolucao
+       FROM parceiros p
+       LEFT JOIN LATERAL (
+         SELECT ra.comentario, ra.data_alteracao
+           FROM registro_alteracao ra
+          WHERE ra.entidade_id = p.id
+            AND LOWER(ra.entidade_afetada) IN ('parceiro', 'parceiros')
+            AND ra.tipo_operacao = 'devolucao'
+          ORDER BY ra.data_alteracao DESC
+          LIMIT 1
+       ) ultima_devolucao ON TRUE
+      WHERE p.criado_por = $1
+        AND p.status IN ('rascunho', 'devolvido')
+      ORDER BY p.atualizado_em DESC NULLS LAST, p.criado_em DESC`,
+    [analistaId]
+  );
+
   return rows;
 }
 
@@ -512,6 +622,56 @@ export async function returnParceiroForAdjustment(
   }
 }
 
+export async function deactivateParceiro(
+  id: string,
+  data: ExcluirParceiroInput,
+  dadosAnteriores: Parceiro
+): Promise<Parceiro | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query<Parceiro>(
+      `UPDATE parceiros
+          SET status = 'inativo',
+              atualizado_por = $1,
+              atualizado_em = NOW()
+        WHERE id = $2
+          AND status != 'inativo'
+        RETURNING *`,
+      [data.atualizado_por, id]
+    );
+
+    const parceiro = rows[0] ?? null;
+    if (!parceiro) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'exclusao', $3::jsonb, $4::jsonb, 'aprovado', $5)`,
+      [
+        data.atualizado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(parceiro),
+        data.comentario ?? 'Parceiro inativado',
+      ]
+    );
+
+    await client.query('COMMIT');
+    return parceiro;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 export async function listarTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[] | null> {
   const parceiro = await pool.query<{ id: string }>('SELECT id FROM parceiros WHERE id = $1', [parceiroId]);
   if (parceiro.rows.length === 0) {
@@ -565,6 +725,33 @@ export async function createParceiroTerra(
     );
 
     const vinculo = rows[0];
+
+    if (possuiDadosComerciais(data)) {
+      await client.query(
+        `INSERT INTO vinculo_comercial
+           (
+            parceiro_id,
+            terra_id,
+            tipo_parceiro,
+            tipo_vinculo,
+            modalidade_contrato,
+            data_inicio,
+            data_fim,
+            observacoes
+           )
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [
+          parceiroId,
+          data.terra_id,
+          data.tipo_parceiro ?? 'arrendador',
+          data.tipo_vinculo ?? 'vinculo comercial',
+          vazioComoNull(data.modalidade_contrato),
+          data.data_inicio ?? null,
+          data.data_fim ?? null,
+          vazioComoNull(data.observacoes),
+        ]
+      );
+    }
 
     await client.query(
       `INSERT INTO registro_alteracao

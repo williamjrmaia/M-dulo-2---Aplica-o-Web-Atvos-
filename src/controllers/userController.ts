@@ -1,4 +1,9 @@
 import { Request, Response } from 'express';
+import {
+  atualizarPerfilUsuarioSchema,
+  atualizarUsuarioSchema,
+  criarUsuarioSchema,
+} from '../schemas/usuario.schema';
 import { UserService } from '../services/userService';
 
 export class UserController {
@@ -22,7 +27,11 @@ export class UserController {
   }
 
   criaUsuario = async (req: Request, res: Response) => {
-    const { nome, email, perfil_acesso_id } = req.body;
+    const parsed = criarUsuarioSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Dados de entrada invalidos' });
+    }
+    const { nome, email, perfil_acesso_id } = parsed.data;
     console.log(`[CONTROLLER] Cadastro de usuario recebido: ${email}`);
     try {
       const usuario = await this.userService.cadastraUsuario({ nome, email, perfil_acesso_id });
@@ -66,8 +75,17 @@ export class UserController {
     const { nome, email } = req.body;
     const perfil_acesso_id = req.body.perfil_acesso_id ?? req.body.role_id;
     console.log(`[CONTROLLER] POST formulario novo usuario: ${email}`);
+    const parsed = criarUsuarioSchema.safeParse({ nome, email, perfil_acesso_id });
+    if (!parsed.success) {
+      const perfis = await this.userService.listarPerfis().catch(() => []);
+      return res.status(400).render('usuarios/new', {
+        error: 'Dados de entrada invalidos',
+        perfis,
+        dados: { nome, email, perfil_acesso_id },
+      });
+    }
     try {
-      await this.userService.cadastraUsuario({ nome, email, perfil_acesso_id });
+      await this.userService.cadastraUsuario(parsed.data);
       return res.redirect('/usuarios');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Erro interno do servidor';
@@ -97,10 +115,13 @@ export class UserController {
 
   atualizaUsuario = async (req: Request, res: Response) => {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const { nome, email, ativo, perfil_acesso_id } = req.body;
+    const parsed = atualizarUsuarioSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Dados de entrada invalidos' });
+    }
     console.log(`[CONTROLLER] Atualizacao de usuario recebida: ${id}`);
     try {
-      const usuario = await this.userService.atualizaUsuario(id, { nome, email, ativo, perfil_acesso_id });
+      const usuario = await this.userService.atualizaUsuario(id, parsed.data);
       console.log('[CONTROLLER] Retornando 200');
       return res.status(200).json({ success: 'Dados atualizados com governanca', usuario });
     } catch (error) {
@@ -119,12 +140,15 @@ export class UserController {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const { nome, email, ativo, perfil_acesso_id } = req.body;
     console.log(`[CONTROLLER] POST formulario edicao usuario: ${id}`);
-    try {
-      await this.userService.atualizaUsuario(id, {
-        nome, email,
-        ativo: ativo === 'true' ? true : ativo === 'false' ? false : ativo,
-        perfil_acesso_id,
+    const parsed = atualizarUsuarioSchema.safeParse({ nome, email, ativo, perfil_acesso_id });
+    if (!parsed.success) {
+      return res.status(400).render('usuarios/edit', {
+        error: 'Dados de entrada invalidos',
+        usuario: { id, nome, email, ativo, perfil_acesso_id },
       });
+    }
+    try {
+      await this.userService.atualizaUsuario(id, parsed.data);
       return res.redirect(`/usuarios/${id}/editar`);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Erro interno do servidor';
@@ -200,7 +224,11 @@ export class UserController {
 
   atualizaPerfilDeAcesso = async (req: Request, res: Response) => {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const role_id = req.body.role_id ?? req.body.perfil_acesso_id;
+    const parsed = atualizarPerfilUsuarioSchema.safeParse(req.body);
+    if (!parsed.success || !parsed.data.role_id) {
+      return res.status(400).json({ error: 'Dados obrigatorios ausentes' });
+    }
+    const role_id = parsed.data.role_id;
     console.log(`[CONTROLLER] Atualizacao de perfil recebida para usuario: ${id}`);
     try {
       const usuario = await this.userService.atualizaPerfilDeAcesso(id, role_id);
@@ -218,8 +246,16 @@ export class UserController {
 
   atualizaPerfilDeAcessoViaFormulario = async (req: Request, res: Response) => {
     const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const role_id = req.body.role_id ?? req.body.perfil_acesso_id;
+    const parsed = atualizarPerfilUsuarioSchema.safeParse(req.body);
+    const role_id = parsed.success ? parsed.data.role_id : req.body.role_id ?? req.body.perfil_acesso_id;
     console.log(`[CONTROLLER] POST formulario perfil para usuario: ${id}`);
+    if (!parsed.success || !role_id) {
+      return res.status(400).render('usuarios/perfil', {
+        error: 'Dados obrigatorios ausentes',
+        usuario: { id, perfil_acesso_id: role_id },
+        perfis: await this.userService.listarPerfis(),
+      });
+    }
     try {
       await this.userService.atualizaPerfilDeAcesso(id, role_id);
       return res.redirect(`/usuarios/${id}/perfil`);

@@ -23,4 +23,16 @@ export class InteracaoRepository {
     );
     return result.rows[0];
   }
+
+  async listarPorParceiro(parceiro_id: string): Promise<Interacao[]> {
+    console.log(`[REPOSITORY] listar interacoes para parceiro: ${parceiro_id}`);
+    const result = await pool.query<Interacao>(
+      `SELECT *
+         FROM interacao
+        WHERE parceiro_id = $1
+        ORDER BY data DESC, criado_em DESC`,
+      [parceiro_id]
+    );
+    return result.rows;
+  }
 }
