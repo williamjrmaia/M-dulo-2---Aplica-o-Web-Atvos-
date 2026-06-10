@@ -6,6 +6,7 @@ import {
   getParceiroById,
   listarHistoricoParceiro,
   listarParceiros,
+  listarRascunhosDevolvidosDoAnalista,
   listarTerrasDoParceiro,
   returnParceiroForAdjustment,
   sendParceiroToValidation,
@@ -20,6 +21,7 @@ import {
   HistoricoParceiro,
   ListarParceirosFiltros,
   Parceiro,
+  ParceiroRascunhoDevolvido,
   ParceiroTerra,
   TerraDoParceiro,
   UpdateParceiroInput,
@@ -68,6 +70,16 @@ export async function editarParceiro(id: string, data: UpdateParceiroInput): Pro
 
 export async function obterParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
   return await listarParceiros(filtros);
+}
+
+export async function obterRascunhosDevolvidosDoAnalista(
+  analistaId: string
+): Promise<ParceiroRascunhoDevolvido[]> {
+  if (!analistaId) {
+    throw new ValidationError('Analista logado não identificado');
+  }
+
+  return listarRascunhosDevolvidosDoAnalista(analistaId);
 }
 
 export async function obterParceiroPorId(id: string): Promise<Parceiro> {
