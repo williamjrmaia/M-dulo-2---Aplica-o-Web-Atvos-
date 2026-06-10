@@ -548,7 +548,10 @@ export async function createParceiroTerra(
   try {
     await client.query('BEGIN');
 
-    const parceiro = await client.query<{ id: string }>('SELECT id FROM parceiros WHERE id = $1', [parceiroId]);
+    const parceiro = await client.query<{ id: string; criado_por: string }>(
+      'SELECT id, criado_por FROM parceiros WHERE id = $1',
+      [parceiroId]
+    );
     if (parceiro.rows.length === 0) {
       await client.query('ROLLBACK');
       return null;
@@ -561,8 +564,22 @@ export async function createParceiroTerra(
       [parceiroId, data.terra_id, data.tipo_vinculo ?? null]
     );
 
+    const vinculo = rows[0];
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro_terra', $2, 'criacao', NULL, $3::jsonb, 'aprovado', $4)`,
+      [
+        parceiro.rows[0].criado_por,
+        vinculo.id,
+        JSON.stringify(vinculo),
+        'Vínculo parceiro-terra criado',
+      ]
+    );
+
     await client.query('COMMIT');
-    return rows[0];
+    return vinculo;
   } catch (err) {
     await client.query('ROLLBACK');
     throw err;

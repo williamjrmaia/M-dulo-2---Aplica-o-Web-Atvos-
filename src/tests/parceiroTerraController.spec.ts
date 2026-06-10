@@ -25,6 +25,8 @@ afterEach(async () => {
   const parceiroIds = Array.from(parceirosCriados);
   const terraIds = Array.from(terrasCriadas);
 
+  await pool.query(`DELETE FROM registro_alteracao WHERE usuario_id = $1 OR aprovado_por = $1`, [testUserId]);
+
   if (parceiroIds.length > 0 || terraIds.length > 0) {
     await pool.query(
       `DELETE FROM parceiro_terra
@@ -97,6 +99,31 @@ describe('POST /api/parceiros/:id/terras', () => {
     expect(res.body.parceiro_id).toBe(parceiro.id);
     expect(res.body.terra_id).toBe(terra.id);
     expect(res.body.tipo_vinculo).toBe('arrendamento');
+
+    const { rows } = await pool.query(
+      `SELECT usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario
+         FROM registro_alteracao
+        WHERE entidade_id = $1
+          AND tipo_operacao = 'criacao'`,
+      [res.body.id]
+    );
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      usuario_id: testUserId,
+      entidade_afetada: 'parceiro_terra',
+      entidade_id: res.body.id,
+      tipo_operacao: 'criacao',
+      dados_anteriores: null,
+      status: 'aprovado',
+      comentario: 'Vínculo parceiro-terra criado',
+    });
+    expect(rows[0].dados_novos).toMatchObject({
+      id: res.body.id,
+      parceiro_id: parceiro.id,
+      terra_id: terra.id,
+      tipo_vinculo: 'arrendamento',
+    });
   });
 
   it('Caso 2 — payload sem terra_id → 400', async () => {
