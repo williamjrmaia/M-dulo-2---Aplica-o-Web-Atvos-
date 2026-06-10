@@ -44,10 +44,10 @@ afterAll(async () => {
 
 // Arrange auxiliar: cria um parceiro num status controlado, direto no banco.
 async function criarParceiroNoBanco(status = 'rascunho') {
-  const { rows } = await pool.query<{ id: string; status: string }>(
+  const { rows } = await pool.query<{ id: string; nome: string; status: string }>(
     `INSERT INTO parceiros (nome, tipo_pessoa, cpf_cnpj, email, status, criado_por)
      VALUES ($1, 'fisica', $2, $3, $4::status_validacao, $5)
-     RETURNING id, status`,
+     RETURNING id, nome, status`,
     [`Parceiro ${randomUUID()}`, randomUUID(), `p_${randomUUID()}@atvos.test`, status, usuarioId]
   );
   parceirosCriados.add(rows[0].id);
@@ -127,6 +127,36 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     const { rows } = await pool.query('SELECT nome, apelido FROM parceiros WHERE id = $1', [parceiro.id]);
     expect(rows[0].nome).toBe('Fazenda Renomeada');
     expect(rows[0].apelido).toBe('Sítio Novo');
+
+    const { rows: historico } = await pool.query(
+      `SELECT usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario
+         FROM registro_alteracao
+        WHERE entidade_id = $1
+          AND tipo_operacao = 'edicao'`,
+      [parceiro.id]
+    );
+
+    expect(historico).toHaveLength(1);
+    expect(historico[0]).toMatchObject({
+      usuario_id: usuarioId,
+      entidade_afetada: 'parceiro',
+      entidade_id: parceiro.id,
+      tipo_operacao: 'edicao',
+      status: 'aprovado',
+      comentario: 'Parceiro atualizado',
+    });
+    expect(historico[0].dados_anteriores).toMatchObject({
+      id: parceiro.id,
+      nome: parceiro.nome,
+      status: 'rascunho',
+      criado_por: usuarioId,
+    });
+    expect(historico[0].dados_novos).toMatchObject({
+      id: parceiro.id,
+      nome: 'Fazenda Renomeada',
+      apelido: 'Sítio Novo',
+      atualizado_por: usuarioId,
+    });
   });
 
   // CT03 → RN04 (RF008): consulta de parceiro por id

@@ -196,34 +196,91 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
   contador++;
   valores.push(id);
 
-  const result = await pool.query<Parceiro>(
-    `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
-    valores
-  );
-  const parceiro = result.rows[0] ?? null;
+  const client = await pool.connect();
 
-  if (parceiro && data.telefone !== undefined) {
-    const telefone = vazioComoNull(data.telefone);
-    await pool.query(
-      `UPDATE telefone_parceiro
-          SET principal = FALSE,
-              atualizado_por = $2,
-              atualizado_em = NOW()
-        WHERE parceiro_id = $1
-          AND principal = TRUE`,
-      [id, data.atualizado_por]
+  try {
+    await client.query('BEGIN');
+
+    const { rows: anteriores } = await client.query<Parceiro>(
+      `SELECT p.*,
+              (
+                SELECT numero
+                  FROM telefone_parceiro
+                 WHERE parceiro_id = p.id
+                   AND principal = TRUE
+                 ORDER BY criado_em DESC
+                 LIMIT 1
+              ) AS telefone
+         FROM parceiros p
+        WHERE p.id = $1
+        FOR UPDATE`,
+      [id]
     );
 
-    if (telefone) {
-      await pool.query(
-        `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
-         VALUES ($1, $2, 'celular', TRUE, $3)`,
-        [id, telefone, data.atualizado_por]
-      );
+    const dadosAnteriores = anteriores[0] ?? null;
+    if (!dadosAnteriores) {
+      await client.query('ROLLBACK');
+      return null;
     }
-  }
 
-  return parceiro ? { ...parceiro, telefone: data.telefone ?? null } : null;
+    const result = await client.query<Parceiro>(
+      `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
+      valores
+    );
+    const parceiro = result.rows[0] ?? null;
+
+    if (!parceiro) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    if (data.telefone !== undefined) {
+      const telefone = vazioComoNull(data.telefone);
+      await client.query(
+        `UPDATE telefone_parceiro
+            SET principal = FALSE,
+                atualizado_por = $2,
+                atualizado_em = NOW()
+          WHERE parceiro_id = $1
+            AND principal = TRUE`,
+        [id, data.atualizado_por]
+      );
+
+      if (telefone) {
+        await client.query(
+          `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
+           VALUES ($1, $2, 'celular', TRUE, $3)`,
+          [id, telefone, data.atualizado_por]
+        );
+      }
+    }
+
+    const parceiroAtualizado = {
+      ...parceiro,
+      telefone: data.telefone !== undefined ? vazioComoNull(data.telefone) : dadosAnteriores.telefone ?? null,
+    };
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'edicao', $3::jsonb, $4::jsonb, 'aprovado', $5)`,
+      [
+        data.atualizado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(parceiroAtualizado),
+        'Parceiro atualizado',
+      ]
+    );
+
+    await client.query('COMMIT');
+    return parceiroAtualizado;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
 }
 
 export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
