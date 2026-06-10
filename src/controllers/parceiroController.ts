@@ -6,6 +6,7 @@ import {
   devolverParceiro as devolverParceiroService,
   editarParceiro as editarParceiroService,
   enviarParceiroParaValidacao as enviarParceiroParaValidacaoService,
+  excluirParceiro as excluirParceiroService,
   obterHistoricoParceiro,
   obterTerrasDoParceiro,
   obterParceiros,
@@ -216,6 +217,22 @@ export const devolverParceiro = asyncHandler(async (req: Request, res: Response)
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const parceiro = await devolverParceiroService(id, parsed.data);
+
+  res.status(200).json(parceiro);
+});
+
+export const excluirParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const { atualizado_por, comentario } = req.body;
+
+  if (!atualizado_por) {
+    throw new ValidationError('Campos obrigatórios: atualizado_por');
+  }
+
+  const parceiro = await excluirParceiroService(id, {
+    atualizado_por,
+    comentario: textoOpcional(comentario),
+  });
 
   res.status(200).json(parceiro);
 });
