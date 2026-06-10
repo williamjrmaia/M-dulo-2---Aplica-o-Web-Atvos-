@@ -19,6 +19,13 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
+  await pool.query(
+    `DELETE FROM registro_alteracao
+      WHERE entidade_id = $1
+         OR usuario_id = $1
+         OR aprovado_por = $1`,
+    [usuarioId]
+  );
   await removerUsuarioPorEmail(EMAIL);
 });
 
