@@ -93,4 +93,52 @@ describe('PrimeiroAcessoService', () => {
       'Token inválido ou expirado'
     );
   });
+
+  it('rejeita email vazio em solicitarToken', async () => {
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({}),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(service.solicitarToken('')).rejects.toThrow('E-mail obrigatório');
+  });
+
+  it('rejeita token vazio em definirSenha', async () => {
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({}),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(service.definirSenha('', 'Senha@123')).rejects.toThrow('Token obrigatório');
+  });
+
+  it('rejeita senha com menos de 8 caracteres em definirSenha', async () => {
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({}),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(service.definirSenha('token-valido', '1234567')).rejects.toThrow(
+      'Senha deve ter pelo menos 8 caracteres'
+    );
+  });
+
+  it('rejeita quando usuario ja possui senha apos validar token', async () => {
+    const tokenRegistro = {
+      id: '44444444-4444-4444-4444-444444444444',
+      usuario_id: usuarioSemSenha.id,
+      token_hash: 'hash-token',
+      criado_em: new Date(),
+      expira_em: new Date(Date.now() + 60_000),
+      usado_em: null,
+    };
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({
+        buscarPorId: jest.fn().mockResolvedValue({ ...usuarioSemSenha, senha_hash: 'hash-existente' }),
+      }),
+      primeiroAcessoRepositoryStub({
+        buscarTokenValido: jest.fn().mockResolvedValue(tokenRegistro),
+      })
+    );
+    await expect(service.definirSenha('token-valido', 'Senha@123')).rejects.toThrow(
+      'Token inválido ou expirado'
+    );
+  });
 });
