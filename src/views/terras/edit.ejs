@@ -1,0 +1,60 @@
+<%- include('../partials/header', { title: 'Editar Terra', active: 'terras' }) %>
+
+<% const base = typeof dados !== 'undefined' && dados ? dados : terra; %>
+
+<section aria-labelledby="titulo-editar-terra">
+  <div class="page-header">
+    <div class="page-back">
+      <a href="/terras" class="back-btn" aria-label="Voltar para terras">←</a>
+      <div class="page-header-text">
+        <h1 id="titulo-editar-terra" class="page-title">Editar Terra</h1>
+        <p class="subtitle"><%= base && base.nome ? base.nome : 'Atualização cadastral' %></p>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/flash', { error: locals.error }) %>
+
+  <form action="/terras/<%= base.id %>/editar" method="POST" novalidate>
+    <div class="form-card">
+      <div class="form-card-header">
+        <h2 class="section-title">Dados da Terra</h2>
+      </div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="nome">Nome</label>
+            <input class="form-control" id="nome" name="nome" value="<%= base.nome || '' %>" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="area_contratada_ha">Área contratada (ha)</label>
+            <input class="form-control" type="number" step="0.01" min="0.01" id="area_contratada_ha" name="area_contratada_ha" value="<%= base.area_contratada_ha || '' %>" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cidade">Cidade</label>
+            <input class="form-control" id="cidade" name="cidade" value="<%= base.cidade || '' %>" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="estado">Estado</label>
+            <input class="form-control" id="estado" name="estado" value="<%= base.estado || '' %>" maxlength="2" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="status">Status</label>
+            <select class="form-select" id="status" name="status">
+              <option value="rascunho" <%= base.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
+              <option value="pendente" <%= base.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
+              <option value="ativo" <%= base.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
+              <option value="devolvido" <%= base.status === 'devolvido' ? 'selected' : '' %>>Devolvido</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/terras" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>
