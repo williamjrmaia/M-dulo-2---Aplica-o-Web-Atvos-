@@ -1199,7 +1199,7 @@ No fluxo principal, o sistema atualiza as métricas da terra e valida a unidade 
 
 <div align="center">
   <sub>Figura 3.2.4.10 - Decimo fluxo: Edição de dados das terras</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_10_edicao_de_terras.png" width="100%" alt="Diagrama de Sequencia 10"><br>
+  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_10_edicao_de_terras_atualizado.png" width="100%" alt="Diagrama de Sequencia 10"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
