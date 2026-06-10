@@ -57,12 +57,12 @@ describe('PUT /usuarios/:id/perfil (integração com banco real)', () => {
     expect(res.body.error).toBe('Usuario nao encontrado');
   });
 
-  it('responde 500 quando ocorre erro inesperado de banco (uuid malformado)', async () => {
+  it('responde 400 quando role_id e malformado (schema rejeita antes do banco)', async () => {
     const res = await request(app)
       .put(`/usuarios/${usuarioId}/perfil`)
       .send({ role_id: ids.malformado });
 
-    expect(res.status).toBe(500);
-    expect(res.body.error).toBe('Erro interno do servidor');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Dados obrigatorios ausentes');
   });
 });
