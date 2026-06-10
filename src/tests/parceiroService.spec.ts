@@ -7,6 +7,7 @@ import {
   enviarParceiroParaValidacao,
   aprovarParceiro,
   devolverParceiro,
+  excluirParceiro,
   obterHistoricoParceiro,
   obterTerrasDoParceiro,
   vincularTerraAoParceiro,
@@ -230,6 +231,52 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     // Assert — persistência
     const { rows } = await pool.query('SELECT status FROM parceiros WHERE id = $1', [parceiro.id]);
     expect(rows[0].status).toBe('devolvido');
+  });
+
+  it('inativa um parceiro e registra a exclusão lógica no histórico', async () => {
+    const parceiro = await criarParceiroNoBanco('ativo');
+
+    const inativado = await excluirParceiro(parceiro.id, {
+      atualizado_por: usuarioId,
+      comentario: 'Removido do cadastro operacional',
+    });
+
+    expect(inativado.id).toBe(parceiro.id);
+    expect(inativado.status).toBe('inativo');
+
+    const { rows } = await pool.query('SELECT status, atualizado_por FROM parceiros WHERE id = $1', [parceiro.id]);
+    expect(rows[0]).toMatchObject({
+      status: 'inativo',
+      atualizado_por: usuarioId,
+    });
+
+    const { rows: historico } = await pool.query(
+      `SELECT usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario
+         FROM registro_alteracao
+        WHERE entidade_id = $1
+          AND tipo_operacao = 'exclusao'`,
+      [parceiro.id]
+    );
+
+    expect(historico).toHaveLength(1);
+    expect(historico[0]).toMatchObject({
+      usuario_id: usuarioId,
+      entidade_afetada: 'parceiro',
+      entidade_id: parceiro.id,
+      tipo_operacao: 'exclusao',
+      status: 'aprovado',
+      comentario: 'Removido do cadastro operacional',
+    });
+    expect(historico[0].dados_anteriores).toMatchObject({
+      id: parceiro.id,
+      status: 'ativo',
+      criado_por: usuarioId,
+    });
+    expect(historico[0].dados_novos).toMatchObject({
+      id: parceiro.id,
+      status: 'inativo',
+      atualizado_por: usuarioId,
+    });
   });
 });
 

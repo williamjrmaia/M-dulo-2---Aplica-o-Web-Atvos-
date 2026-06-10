@@ -134,3 +134,8 @@ export interface DevolverParceiroInput {
     devolvido_por: string;
     comentario?: string;
 }
+
+export interface ExcluirParceiroInput {
+    atualizado_por: string;
+    comentario?: string;
+}
