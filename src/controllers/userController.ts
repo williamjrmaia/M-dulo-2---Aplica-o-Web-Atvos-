@@ -5,6 +5,11 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   private validarPermissaoAdmin(req: Request): 'autorizado' | 'nao-autenticado' | 'proibido' {
+    const usuarioAutenticado = (req as Request & { usuario?: { perfil?: string } }).usuario;
+    if (usuarioAutenticado) {
+      return usuarioAutenticado.perfil === 'administrador' ? 'autorizado' : 'proibido';
+    }
+
     const authorization = req.headers.authorization;
     const perfil =
       req.headers['x-user-role'] ??
@@ -34,6 +39,45 @@ export class UserController {
         return res.status(409).json({ error: message });
       }
       return res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  };
+
+  listarUsuariosView = async (_req: Request, res: Response) => {
+    console.log('[CONTROLLER] Renderizando gestao de usuarios');
+    try {
+      const usuarios = await this.userService.listarUsuarios();
+      return res.render('usuarios/index', { usuarios, error: null });
+    } catch (error) {
+      return res.status(500).render('usuarios/index', { usuarios: [], error: 'Erro interno do servidor' });
+    }
+  };
+
+  novoUsuarioView = async (_req: Request, res: Response) => {
+    console.log('[CONTROLLER] Renderizando formulario de novo usuario');
+    try {
+      const perfis = await this.userService.listarPerfis();
+      return res.render('usuarios/new', { perfis, dados: {}, error: null });
+    } catch (error) {
+      return res.status(500).render('usuarios/new', { perfis: [], dados: {}, error: 'Erro interno do servidor' });
+    }
+  };
+
+  criarUsuarioViaFormulario = async (req: Request, res: Response) => {
+    const { nome, email } = req.body;
+    const perfil_acesso_id = req.body.perfil_acesso_id ?? req.body.role_id;
+    console.log(`[CONTROLLER] POST formulario novo usuario: ${email}`);
+    try {
+      await this.userService.cadastraUsuario({ nome, email, perfil_acesso_id });
+      return res.redirect('/usuarios');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+      const status = message === 'Erro interno do servidor' ? 500 : 400;
+      const perfis = await this.userService.listarPerfis().catch(() => []);
+      return res.status(status).render('usuarios/new', {
+        error: message,
+        perfis,
+        dados: { nome, email, perfil_acesso_id },
+      });
     }
   };
 

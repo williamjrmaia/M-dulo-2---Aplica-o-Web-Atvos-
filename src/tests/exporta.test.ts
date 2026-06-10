@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from '../server';
 import pool from '../config/connection';
+import { ExportaRepository } from '../repositories/exportaRepository';
 
 // ─── Controle de dados criados nos testes ───
 const usuariosCriados = new Set<string>();
@@ -80,22 +81,27 @@ describe('GET /parceiros/exportar — Fluxo 16 Exportar Dados de Parceiros', () 
     expect(response.text).toContain('Parceiro Exporta Teste');
   });
 
-  // T02 — Fluxo alternativo 1: nenhum dado criado por este teste
+  // T02 — Fluxo alternativo 1: nenhum parceiro ativo para exportar
+  // A exportação lê todos os parceiros ativo do banco inteiro, então não dá
+  // para garantir o cenário "vazio" apagando linhas em uma suíte que roda em
+  // paralelo. Forçamos o repository a devolver lista vazia para testar de forma
+  // determinística o caminho EmptyDataException → 404.
   it('deve retornar 404 quando não houver parceiros cadastrados', async () => {
-    // limpa apenas os parceiros criados por este teste (já feito no beforeEach)
-    // e garante que não criamos nenhum parceiro neste caso
-    await pool.query(
-      `DELETE FROM parceiros WHERE criado_por = $1`,
-      [usuarioId],
-    );
+    const spy = jest
+      .spyOn(ExportaRepository.prototype, 'buscarTodosDadosParceiros')
+      .mockResolvedValue([]);
 
-    const response = await request(app)
-      .get('/parceiros/exportar')
-      .expect(404);
+    try {
+      const response = await request(app)
+        .get('/parceiros/exportar')
+        .expect(404);
 
-    expect(response.body).toEqual({
-      erro: 'Nenhum dado disponível para exportar',
-    });
+      expect(response.body).toEqual({
+        erro: 'Nenhum dado disponível para exportar',
+      });
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   // T03 — Verificação do conteúdo do CSV

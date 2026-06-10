@@ -2,7 +2,7 @@
 
 ## 1. Justificativa
 
-O endpoint `GET /api/parceiros/:id` foi implementado para atender ao RF008, que exige que o sistema permita consultar o perfil detalhado de um parceiro agricola especifico. Este endpoint e o ponto central do fluxo de visualizacao individual: sem ele, o observador e o analista so teriam acesso a lista geral, sem conseguir ver os dados completos de um parceiro especifico para embasar decisoes de negocio.
+O endpoint `GET /api/parceiros/:id` foi implementado para atender ao RF008, que exige que o sistema permita consultar o perfil detalhado de um parceiro agricola especifico. Este endpoint e o ponto central do fluxo de visualizacao individual: sem ele, o coordenador e o analista so teriam acesso a lista geral, sem conseguir ver os dados completos de um parceiro especifico para embasar decisoes de negocio.
 
 A regra de negocio principal aplicada e a RN08: registros com status `inativo` nao devem aparecer em consultas do sistema. Ao buscar por ID, se o parceiro existir mas estiver inativo, o sistema retorna 404, tratando o registro como inexistente para fins operacionais. Isso preserva a exclusao logica sem expor dados descontinuados.
 

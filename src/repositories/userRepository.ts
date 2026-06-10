@@ -13,7 +13,6 @@ export interface Usuario {
 
 export class UserRepository {
   async buscarPorEmail(email: string): Promise<Usuario | null> {
-    console.log(`[REPOSITORY] buscarPorEmail: ${email}`);
     const result = await pool.query<Usuario>(
       'SELECT id, nome, email, senha_hash, ativo, perfil_acesso_id FROM usuarios WHERE email = $1',
       [email],
@@ -28,6 +27,18 @@ export class UserRepository {
       [role_id],
     );
     return result.rows.length > 0;
+  }
+
+  async listarUsuarios(): Promise<UsuarioComPerfil[]> {
+    console.log('[REPOSITORY] listarUsuarios');
+    const result = await pool.query<UsuarioComPerfil>(
+      `SELECT u.id, u.perfil_acesso_id, u.nome, u.email, u.senha_hash, u.ativo, u.criado_em,
+              pa.nome AS perfil
+         FROM usuarios u
+         JOIN perfil_acesso pa ON pa.id = u.perfil_acesso_id
+        ORDER BY u.nome`,
+    );
+    return result.rows;
   }
 
   async buscarPorId(id: string): Promise<UsuarioComPerfil | null> {
@@ -52,7 +63,6 @@ export class UserRepository {
   }
 
   async criaUsuario(data: CriarUsuarioInput): Promise<UsuarioComPerfil> {
-    console.log(`[REPOSITORY] criaUsuario: ${data.email}`);
     const result = await pool.query<UsuarioComPerfil>(
       `INSERT INTO usuarios (perfil_acesso_id, nome, email, senha_hash, ativo)
        VALUES ($1, $2, LOWER($3), NULL, TRUE)

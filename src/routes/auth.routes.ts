@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/authController';
+import { requireAuth } from '../middlewares/requireAuth';
 import { UserRepository } from '../repositories/userRepository';
 import { AuthService } from '../services/authService';
 
@@ -13,14 +14,10 @@ router.get('/login', (req, res) => {
   res.render('login/index');
 });
 
-router.post('/login', (req, res) => {
-  console.log(`[ROUTE] POST /login recebida para: ${req.body?.email}`);
-  return controller.login(req, res);
-});
+router.post('/login', controller.login);
 
-router.put('/auth/sessoes/:id', (req, res) => {
-  console.log(`[ROUTE] PUT /auth/sessoes/${req.params.id} recebida`);
-  return controller.encerrarSessao(req, res);
-});
+router.post('/logout', requireAuth, controller.logout);
+
+router.put('/auth/sessoes/:id', requireAuth, controller.encerrarSessao);
 
 export default router;

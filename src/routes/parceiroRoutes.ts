@@ -17,27 +17,30 @@ import {
   processarEdicao,
   vincularTerraAoParceiro,
 } from '../controllers/parceiroController';
+import { authorizeRoles, requireAuth } from '../middlewares/requireAuth';
 
 // ─── API JSON (montado em /api/parceiros) ────────────────────────────────────
 export const apiRouter = Router();
 
-apiRouter.post('/', createParceiro);
-apiRouter.patch('/:id', editarParceiro);
-apiRouter.get('/', listarParceiros);
-apiRouter.put('/:id/aprovar', aprovarParceiro);
-apiRouter.put('/:id/devolver', devolverParceiro);
-apiRouter.put('/:id/validacao', enviarParceiroParaValidacao);
-apiRouter.get('/:id/historico', listarHistoricoParceiro);
-apiRouter.get('/:id/terras', listarTerrasDoParceiro);
-apiRouter.post('/:id/terras', vincularTerraAoParceiro);
-apiRouter.get('/:id', obterParceiroPorId);
+apiRouter.use(requireAuth);
+apiRouter.post('/', authorizeRoles('analista', 'administrador'), createParceiro);
+apiRouter.patch('/:id', authorizeRoles('analista', 'administrador'), editarParceiro);
+apiRouter.get('/', authorizeRoles('analista', 'coordenador', 'administrador'), listarParceiros);
+apiRouter.put('/:id/aprovar', authorizeRoles('coordenador', 'administrador'), aprovarParceiro);
+apiRouter.put('/:id/devolver', authorizeRoles('coordenador', 'administrador'), devolverParceiro);
+apiRouter.put('/:id/validacao', authorizeRoles('analista', 'administrador'), enviarParceiroParaValidacao);
+apiRouter.get('/:id/historico', authorizeRoles('analista', 'coordenador', 'administrador'), listarHistoricoParceiro);
+apiRouter.get('/:id/terras', authorizeRoles('analista', 'coordenador', 'administrador'), listarTerrasDoParceiro);
+apiRouter.post('/:id/terras', authorizeRoles('analista', 'administrador'), vincularTerraAoParceiro);
+apiRouter.get('/:id', authorizeRoles('analista', 'coordenador', 'administrador'), obterParceiroPorId);
 
 // ─── Views HTML (montado em /parceiros) ──────────────────────────────────────
 export const viewRouter = Router();
 
-viewRouter.get('/novo', renderFormCadastro);
-viewRouter.post('/', processarCadastro);
-viewRouter.get('/', renderListaParceiros);
-viewRouter.get('/:id/editar', renderFormEdicao);
-viewRouter.post('/:id/editar', processarEdicao);
-viewRouter.get('/:id', renderDetalheParceiro);
+viewRouter.use(requireAuth);
+viewRouter.get('/novo', authorizeRoles('analista', 'administrador'), renderFormCadastro);
+viewRouter.post('/', authorizeRoles('analista', 'administrador'), processarCadastro);
+viewRouter.get('/', authorizeRoles('analista', 'coordenador', 'administrador'), renderListaParceiros);
+viewRouter.get('/:id/editar', authorizeRoles('analista', 'administrador'), renderFormEdicao);
+viewRouter.post('/:id/editar', authorizeRoles('analista', 'administrador'), processarEdicao);
+viewRouter.get('/:id', authorizeRoles('analista', 'coordenador', 'administrador'), renderDetalheParceiro);
