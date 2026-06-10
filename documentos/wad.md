@@ -1254,7 +1254,7 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 <div align="center">
   <sub>Figura 3.2.4.16 - Fluxo 16: Exportação de dados</sub><br>
-  <img src="./assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequência 16"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros_atualizado.png" width="100%" alt="Diagrama de Sequência 16"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
