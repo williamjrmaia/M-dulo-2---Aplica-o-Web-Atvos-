@@ -1244,7 +1244,7 @@ No fluxo principal, o coordenador visualiza o engajamento e métricas de produti
 
 <div align="center">
   <sub>Figura 3.2.4.15 - Fluxo 15: Visualização do painel de dados das interações com os parceiros</sub><br>
-  <img src="./assets/diagrama_de_sequencia/fluxo_15_visualizacao_dashboard_de_interacoes.png" width="100%" alt="Diagrama de Sequência 15"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_15_visualizacao_dashboard_de_interacoes_atualizado.png" width="100%" alt="Diagrama de Sequência 15"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
