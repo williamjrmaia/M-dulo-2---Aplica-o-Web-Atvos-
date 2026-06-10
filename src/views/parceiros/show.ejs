@@ -81,8 +81,40 @@
                 <p class="value"><%= parceiro.nome_acompanhante || '—' %></p>
               </div>
               <div class="definition-list">
+                <p class="term">Telefone</p>
+                <p class="value"><%= parceiro.telefone || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">Região</p>
+                <p class="value"><%= parceiro.regiao || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">Inscrição Estadual</p>
+                <p class="value"><%= parceiro.inscricao_estadual || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">Usina de Referência</p>
+                <p class="value"><%= parceiro.usina_referencia || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">Área Plantada</p>
+                <p class="value"><%= parceiro.area_plantada || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">TCH Médio</p>
+                <p class="value"><%= parceiro.tch_medio || '—' %></p>
+              </div>
+              <div class="definition-list">
+                <p class="term">ATR Médio</p>
+                <p class="value"><%= parceiro.atr_medio || '—' %></p>
+              </div>
+              <div class="definition-list">
                 <p class="term">Status</p>
                 <p class="value"><span class="badge badge-<%= parceiro.status %>"><%= parceiro.status %></span></p>
+              </div>
+              <div class="definition-list span-2">
+                <p class="term">Observações</p>
+                <p class="value"><%= parceiro.observacoes || '—' %></p>
               </div>
             </div>
           </div>

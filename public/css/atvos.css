@@ -234,11 +234,60 @@ h2,
   box-shadow: 0 2px 6px rgba(255, 104, 26, 0.35);
 }
 
+.brand-mark-cane {
+  position: relative;
+  overflow: hidden;
+  color: transparent;
+  background: #fff;
+  border: 1px solid rgba(255, 104, 26, 0.18);
+}
+
+.brand-mark-cane::before,
+.brand-mark-cane::after,
+.brand-mark-cane span {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  border-radius: 10px 10px 2px 2px;
+  transform-origin: bottom center;
+}
+
+.brand-mark-cane::before {
+  left: 10px;
+  width: 8px;
+  height: 23px;
+  background: var(--color-yellow-atvos);
+  transform: rotate(-24deg);
+}
+
+.brand-mark-cane span {
+  left: 17px;
+  width: 9px;
+  height: 29px;
+  background: var(--color-orange-dark);
+  transform: rotate(7deg);
+}
+
+.brand-mark-cane::after {
+  right: 9px;
+  width: 8px;
+  height: 25px;
+  background: var(--color-blue-atvos);
+  transform: rotate(-18deg);
+}
+
 .brand-text {
   font-size: 16px;
   font-weight: 700;
   color: var(--color-blue-atvos);
   white-space: nowrap;
+}
+
+.brand-wordmark {
+  color: var(--color-blue-atvos);
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: lowercase;
 }
 
 .nav-links {
@@ -362,6 +411,33 @@ button.logout-link {
   height: 60px;
   font-size: 24px;
   border-radius: var(--radius-md);
+}
+
+.login-brand .brand-mark-cane {
+  width: 96px;
+  height: 96px;
+  box-shadow: none;
+}
+
+.login-brand .brand-mark-cane::before {
+  left: 25px;
+  bottom: 18px;
+  width: 16px;
+  height: 48px;
+}
+
+.login-brand .brand-mark-cane span {
+  left: 41px;
+  bottom: 18px;
+  width: 18px;
+  height: 60px;
+}
+
+.login-brand .brand-mark-cane::after {
+  right: 24px;
+  bottom: 18px;
+  width: 16px;
+  height: 52px;
 }
 
 .login-brand-name {
@@ -955,6 +1031,26 @@ button.logout-link {
   flex: 1 1 320px;
 }
 
+.filters-toolbar {
+  align-items: stretch;
+}
+
+.filter-search {
+  flex: 2 1 360px;
+}
+
+.filter-control {
+  flex: 1 1 180px;
+  min-height: var(--btn-height);
+}
+
+.filter-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex: 0 0 auto;
+}
+
 .search-bar .search-icon {
   position: absolute;
   left: 12px;
@@ -1122,6 +1218,10 @@ button.logout-link {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4) var(--space-5);
+}
+
+.info-grid .span-2 {
+  grid-column: 1 / -1;
 }
 
 .definition-list {

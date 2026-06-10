@@ -7,6 +7,14 @@ export interface Parceiro {
     email: string;
     data_nascimento: string | null;
     nome_acompanhante?: string | null;
+    telefone?: string | null;
+    regiao?: string | null;
+    inscricao_estadual?: string | null;
+    usina_referencia?: string | null;
+    area_plantada?: string | null;
+    tch_medio?: string | null;
+    atr_medio?: string | null;
+    observacoes?: string | null;
     status: string;
     criado_por: string;
     atualizado_por?: string | null;
@@ -22,6 +30,15 @@ export interface CreateParceiroInput {
     email?: string;
     data_nascimento?: string;
     nome_acompanhante?: string;
+    telefone?: string;
+    regiao?: string;
+    inscricao_estadual?: string;
+    usina_referencia?: string;
+    area_plantada?: string;
+    tch_medio?: string;
+    atr_medio?: string;
+    observacoes?: string;
+    status?: 'rascunho' | 'pendente';
     criado_por: string;
 }
 
@@ -33,6 +50,14 @@ export interface UpdateParceiroInput {
     email?: string;
     data_nascimento?: string;
     nome_acompanhante?: string;
+    telefone?: string;
+    regiao?: string;
+    inscricao_estadual?: string;
+    usina_referencia?: string;
+    area_plantada?: string;
+    tch_medio?: string;
+    atr_medio?: string;
+    observacoes?: string;
     status?: string;
     atualizado_por: string;
 }
@@ -65,6 +90,8 @@ export interface ListarParceirosFiltros {
     regiao?: string;
     area?: number;
     tipo?: 'fisica' | 'juridica' | 'arrendador' | 'fornecedor';
+    status?: 'rascunho' | 'pendente' | 'ativo' | 'devolvido';
+    usina_referencia?: string;
 }
 
 export interface HistoricoParceiro {

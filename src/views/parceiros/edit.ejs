@@ -67,6 +67,41 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label" for="telefone">Telefone</label>
+            <input class="form-control" type="text" id="telefone" name="telefone" value="<%= dados.telefone || '' %>" data-mask="telefone" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regiao">Região</label>
+            <input class="form-control" type="text" id="regiao" name="regiao" value="<%= dados.regiao || '' %>" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inscricao_estadual">Inscrição Estadual</label>
+            <input class="form-control" type="text" id="inscricao_estadual" name="inscricao_estadual" value="<%= dados.inscricao_estadual || '' %>" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="usina_referencia">Usina de Referência</label>
+            <input class="form-control" type="text" id="usina_referencia" name="usina_referencia" value="<%= dados.usina_referencia || '' %>" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="area_plantada">Área Plantada</label>
+            <input class="form-control" type="text" id="area_plantada" name="area_plantada" value="<%= dados.area_plantada || '' %>" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="tch_medio">TCH Médio</label>
+            <input class="form-control" type="text" id="tch_medio" name="tch_medio" value="<%= dados.tch_medio || '' %>" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="atr_medio">ATR Médio</label>
+            <input class="form-control" type="text" id="atr_medio" name="atr_medio" value="<%= dados.atr_medio || '' %>" />
+          </div>
+
+          <div class="form-group">
             <label class="form-label" for="status">Status</label>
             <select class="form-select" id="status" name="status">
               <option value="">(não alterar)</option>
@@ -75,6 +110,11 @@
               <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
               <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
             </select>
+          </div>
+
+          <div class="form-group span-2">
+            <label class="form-label" for="observacoes">Observações</label>
+            <textarea class="form-textarea" id="observacoes" name="observacoes"><%= dados.observacoes || '' %></textarea>
           </div>
         </div>
       </div>
