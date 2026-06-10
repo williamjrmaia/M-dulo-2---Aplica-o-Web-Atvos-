@@ -79,6 +79,31 @@ describe('parceiroService (unitário, banco real) — caminhos de sucesso', () =
     const { rows } = await pool.query('SELECT nome, status FROM parceiros WHERE id = $1', [parceiro.id]);
     expect(rows[0].nome).toBe('Fazenda São João');
     expect(rows[0].status).toBe('rascunho');
+
+    const { rows: historico } = await pool.query(
+      `SELECT usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario
+         FROM registro_alteracao
+        WHERE entidade_id = $1
+          AND tipo_operacao = 'criacao'`,
+      [parceiro.id]
+    );
+
+    expect(historico).toHaveLength(1);
+    expect(historico[0]).toMatchObject({
+      usuario_id: usuarioId,
+      entidade_afetada: 'parceiro',
+      entidade_id: parceiro.id,
+      tipo_operacao: 'criacao',
+      dados_anteriores: null,
+      status: 'aprovado',
+      comentario: 'Parceiro criado como rascunho',
+    });
+    expect(historico[0].dados_novos).toMatchObject({
+      id: parceiro.id,
+      nome: 'Fazenda São João',
+      status: 'rascunho',
+      criado_por: usuarioId,
+    });
   });
 
   // CT02 → RN05 (RF005): edição de parceiro

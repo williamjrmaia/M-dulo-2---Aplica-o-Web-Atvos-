@@ -77,8 +77,22 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
       );
     }
 
+    const parceiroCriado = { ...parceiro, telefone: data.telefone?.trim() || null };
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'parceiro', $2, 'criacao', NULL, $3::jsonb, 'aprovado', $4)`,
+      [
+        data.criado_por,
+        parceiro.id,
+        JSON.stringify(parceiroCriado),
+        data.status === 'pendente' ? 'Parceiro criado e enviado para validação' : 'Parceiro criado como rascunho',
+      ]
+    );
+
     await client.query('COMMIT');
-    return { ...parceiro, telefone: data.telefone?.trim() || null };
+    return parceiroCriado;
   } catch (err) {
     await client.query('ROLLBACK');
     throw err;
