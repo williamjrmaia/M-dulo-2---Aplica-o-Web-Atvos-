@@ -94,6 +94,7 @@ describe('PrimeiroAcessoService', () => {
     );
   });
 
+  // CT40 → RN02 (RF011): e-mail é obrigatório para solicitar o token de primeiro acesso
   it('rejeita email vazio em solicitarToken', async () => {
     const service = new PrimeiroAcessoService(
       userRepositoryStub({}),
@@ -102,6 +103,7 @@ describe('PrimeiroAcessoService', () => {
     await expect(service.solicitarToken('')).rejects.toThrow('E-mail obrigatório');
   });
 
+  // CT41 → RN02 (RF011): token é obrigatório para definir a senha
   it('rejeita token vazio em definirSenha', async () => {
     const service = new PrimeiroAcessoService(
       userRepositoryStub({}),
@@ -110,6 +112,7 @@ describe('PrimeiroAcessoService', () => {
     await expect(service.definirSenha('', 'Senha@123')).rejects.toThrow('Token obrigatório');
   });
 
+  // CT42 → RN02 (RF011): senha do primeiro acesso deve ter pelo menos 8 caracteres
   it('rejeita senha com menos de 8 caracteres em definirSenha', async () => {
     const service = new PrimeiroAcessoService(
       userRepositoryStub({}),
@@ -120,6 +123,7 @@ describe('PrimeiroAcessoService', () => {
     );
   });
 
+  // CT43 → RN01 (RF011): usuário que já possui senha não é elegível ao primeiro acesso
   it('rejeita quando usuario ja possui senha apos validar token', async () => {
     const tokenRegistro = {
       id: '44444444-4444-4444-4444-444444444444',
