@@ -1368,6 +1368,16 @@ O fluxo principal permite que analistas ou administradores realizem a exclusão 
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### Vincula parceiro a terra
+
+O fluxo principal permite que um analista ou administrador vincule um parceiro existente a uma terra, persistindo o relacionamento e retornando 201 Created. Alternativamente, a operação falha por dados inválidos (400), terra inexistente (404), vínculo duplicado (409) ou parceiro inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.28 - Fluxo 28: Vincula parceiro a terra </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_28_vincula_parceiro_terra.png" width="100%" alt="Diagrama de Sequência 28"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
