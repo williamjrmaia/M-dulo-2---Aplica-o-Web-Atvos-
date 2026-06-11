@@ -1298,6 +1298,16 @@ O fluxo principal permite que coordenadores ou administradores devolvam um parce
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### Envio para validação
+
+O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.21 - Fluxo 21: DEnvio para validação </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_21_envio_para_validacao.png" width="100%" alt="Diagrama de Sequência 21"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
