@@ -1358,6 +1358,16 @@ O fluxo principal permite que analistas ou administradores realizem a exclusão 
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### Inativa terras
+
+O fluxo principal permite que analistas ou administradores realizem a exclusão lógica de uma terra, alterando seu status para inativo e registrando a auditoria (200). Alternativamente, a operação pode falhar por ausência do responsável (400), terra inexistente (404), terra já inativa (409) ou responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.27 - Fluxo 27: Inativa terras </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_27_inativa_terras.png" width="100%" alt="Diagrama de Sequência 27"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
