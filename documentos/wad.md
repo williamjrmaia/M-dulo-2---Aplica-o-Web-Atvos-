@@ -1300,7 +1300,7 @@ O fluxo principal permite que coordenadores ou administradores devolvam um parce
 
 #### Envio para validação
 
-O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente (422).
+O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404),O fluxo principal permite que analistas ou administradores enviem um parceiro em rascunho ou devolvido para validação, alterando seu status para pendente e registrando o envio no histórico (200). Alternativamente, a operação falha por payload ou cadastro incompleto (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente ( status incompatível (409) ou usuário responsável inexistente (422).
 
 <div align="center">
   <sub>Figura 3.2.4.21 - Fluxo 21: DEnvio para validação </sub><br>
