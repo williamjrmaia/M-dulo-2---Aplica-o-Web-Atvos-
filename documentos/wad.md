@@ -1283,8 +1283,18 @@ O fluxo principal permite que analistas, coordenadores e administradores consult
 O fluxo principal permite que coordenadores ou administradores aprovem um parceiro pendente, alterando seu status para ativo e registrando a aprovação no histórico (200). Alternativamente, a operação falha por payload inválido (400), status incompatível (409), parceiro inexistente (404) ou aprovador inexistente (422).
 
 <div align="center">
-  <sub>Figura 3.2.4.19 - Fluxo 19: Visualiza dados de pareciros</sub><br>
+  <sub>Figura 3.2.4.19 - Fluxo 19: Aprova dados de pareciros pendentes</sub><br>
   <img src="./assets/diagrama_de_sequencia/fluxo_19_aprova_parceiro_pendente.png" width="100%" alt="Diagrama de Sequência 19"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Devolve dados de Parceiro
+
+O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.20 - Fluxo 20: Devolve dados de pareciros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_20_devolve_parceiro.png" width="100%" alt="Diagrama de Sequência 20"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
