@@ -1318,6 +1318,16 @@ O fluxo principal permite que analistas ou administradores consultem os parceiro
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### Vincula terra á parceiros
+
+OO fluxo principal permite que analistas ou administradores vinculem uma terra existente a um parceiro, registrem dados comerciais opcionais e gravem a operação no histórico (201). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), vínculo duplicado (409) ou terra inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.23 - Fluxo 23: Vincula terra a parceiros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_23_vincula_terra_parceiro.png" width="100%" alt="Diagrama de Sequência 22"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
