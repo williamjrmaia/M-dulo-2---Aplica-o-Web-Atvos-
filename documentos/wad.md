@@ -1278,6 +1278,16 @@ O fluxo principal permite que analistas, coordenadores e administradores consult
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### Aprovação de Parceiro Pendente
+
+O fluxo principal permite que coordenadores ou administradores aprovem um parceiro pendente, alterando seu status para ativo e registrando a aprovação no histórico (200). Alternativamente, a operação falha por payload inválido (400), status incompatível (409), parceiro inexistente (404) ou aprovador inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.19 - Fluxo 19: Visualiza dados de pareciros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_19_aprova_parceiro_pendente.png" width="100%" alt="Diagrama de Sequência 19"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
