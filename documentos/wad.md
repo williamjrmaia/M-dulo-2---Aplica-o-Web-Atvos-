@@ -1303,8 +1303,18 @@ O fluxo principal permite que coordenadores ou administradores devolvam um parce
 O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404),O fluxo principal permite que analistas ou administradores enviem um parceiro em rascunho ou devolvido para validação, alterando seu status para pendente e registrando o envio no histórico (200). Alternativamente, a operação falha por payload ou cadastro incompleto (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente ( status incompatível (409) ou usuário responsável inexistente (422).
 
 <div align="center">
-  <sub>Figura 3.2.4.21 - Fluxo 21: DEnvio para validação </sub><br>
+  <sub>Figura 3.2.4.21 - Fluxo 21: Envio para validação </sub><br>
   <img src="./assets/diagrama_de_sequencia/fluxo_21_envio_para_validacao.png" width="100%" alt="Diagrama de Sequência 21"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta rascunhos devolvidos
+
+O fluxo principal permite que analistas ou administradores consultem os parceiros em rascunho ou devolvidos pertencentes ao analista, incluindo o comentário mais recente de devolução (200). Alternativamente, a consulta falha quando o analista não está identificado (400). Se não houver registros, o endpoint retorna uma lista vazia com 200.
+
+<div align="center">
+  <sub>Figura 3.2.4.22 - Fluxo 22: Consulta rascunhos devolvidos</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_21_envio_para_validacao.png" width="100%" alt="Diagrama de Sequência 22"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
