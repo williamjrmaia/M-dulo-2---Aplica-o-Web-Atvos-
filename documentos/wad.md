@@ -1253,8 +1253,138 @@ No fluxo principal, o coordenador visualiza o engajamento e métricas de produti
 O fluxo principal permite que o coordenador gere e exporte uma planilha com os dados dos parceiros (200). Alternativamente, a exportação falha se a lista estiver vazia (404) ou por erro técnico (500).
 
 <div align="center">
-  <sub>Figura 3.2.4.16 - Fluxo 16: Exportação de dados</sub><br>
+  <sub>Figura 3.2.4.16 - Fluxo 16: exporta dados</sub><br>
   <img src="./assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequência 16"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Encerra Sessão
+
+O fluxo principal permite encerrar uma sessão ativa e persistir a revogação no banco (200). Alternativamente, a operação falha se a sessão já estiver encerrada (409), se a sessão não existir ou o ID for inválido (404), ou se o usuário revogador informado não existir (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.17 - Fluxo 17: Encerra sessão</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_17_encerra_secao.png" width="100%" alt="Diagrama de Sequência 17"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Visualiza dados de pareciros
+
+O fluxo principal permite que analistas, coordenadores e administradores consultem um parceiro existente pelo ID (200). Alternativamente, a consulta falha quando o parceiro não existe, está inativo ou o ID possui formato inválido (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.18 - Fluxo 18: Visualiza dados de pareciros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_18_consultas.png" width="100%" alt="Diagrama de Sequência 18"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Aprovação de Parceiro Pendente
+
+O fluxo principal permite que coordenadores ou administradores aprovem um parceiro pendente, alterando seu status para ativo e registrando a aprovação no histórico (200). Alternativamente, a operação falha por payload inválido (400), status incompatível (409), parceiro inexistente (404) ou aprovador inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.19 - Fluxo 19: Aprova dados de pareciros pendentes</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_19_aprova_parceiro_pendente.png" width="100%" alt="Diagrama de Sequência 19"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Devolve dados de Parceiro
+
+O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.20 - Fluxo 20: Devolve dados de pareciros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_20_devolve_parceiro.png" width="100%" alt="Diagrama de Sequência 20"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Envio para validação
+
+O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404),O fluxo principal permite que analistas ou administradores enviem um parceiro em rascunho ou devolvido para validação, alterando seu status para pendente e registrando o envio no histórico (200). Alternativamente, a operação falha por payload ou cadastro incompleto (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente ( status incompatível (409) ou usuário responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.21 - Fluxo 21: Envio para validação </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_21_envio_para_validacao.png" width="100%" alt="Diagrama de Sequência 21"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta rascunhos devolvidos
+
+O fluxo principal permite que analistas ou administradores consultem os parceiros em rascunho ou devolvidos pertencentes ao analista, incluindo o comentário mais recente de devolução (200). Alternativamente, a consulta falha quando o analista não está identificado (400). Se não houver registros, o endpoint retorna uma lista vazia com 200.
+
+<div align="center">
+  <sub>Figura 3.2.4.22 - Fluxo 22: Consulta rascunhos devolvidos</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_21_envio_para_validacao.png" width="100%" alt="Diagrama de Sequência 22"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Vincula terra á parceiros
+
+O fluxo principal permite que analistas ou administradores vinculem uma terra existente a um parceiro, registrem dados comerciais opcionais e gravem a operação no histórico (201). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), vínculo duplicado (409) ou terra inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.23 - Fluxo 23: Vincula terra a parceiros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_23_vincula_terra_parceiro.png" width="100%" alt="Diagrama de Sequência 23"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta das Terras Vinculadas
+
+O fluxo principal permite que analistas, coordenadores ou administradores consultem as terras ativas vinculadas a um parceiro (200). Se o parceiro existir sem vínculos, retorna uma lista vazia (200). Alternativamente, a consulta falha quando o parceiro não existe ou o ID é inválido (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.24 - Fluxo 24: Consulta das Terras Vinculadas</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_24_consulta_terras_vinculadas.png" width="100%" alt="Diagrama de Sequência 24"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta das Terras Existentes
+
+O fluxo principal permite que analistas, coordenadores ou administradores consultem as terras cadastradas que não estejam inativas (200). Quando nenhuma terra estiver disponível, o endpoint retorna uma lista vazia (200), e não 404.
+
+<div align="center">
+  <sub>Figura 3.2.4.25 - Fluxo 25: Consulta das Terras Existentes</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_25_consulta_terras.png" width="100%" alt="Diagrama de Sequência 25"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Inativa Parceiro
+
+O fluxo principal permite que analistas ou administradores realizem a exclusão lógica de um parceiro, alterando seu status para inativo e registrando a operação no histórico (200). Alternativamente, a operação falha por ausência do responsável (400), parceiro inexistente (404), parceiro já inativo (409) ou responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.26 - Fluxo 26: Inativa Parceiro </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_26_inativa_parceiro.png" width="100%" alt="Diagrama de Sequência 26"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Inativa terras
+
+O fluxo principal permite que analistas ou administradores realizem a exclusão lógica de uma terra, alterando seu status para inativo e registrando a auditoria (200). Alternativamente, a operação pode falhar por ausência do responsável (400), terra inexistente (404), terra já inativa (409) ou responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.27 - Fluxo 27: Inativa terras </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_27_inativa_terras.png" width="100%" alt="Diagrama de Sequência 27"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Vincula parceiro a terra
+
+O fluxo principal permite que um analista ou administrador vincule um parceiro existente a uma terra, persistindo o relacionamento e retornando 201 Created. Alternativamente, a operação falha por dados inválidos (400), terra inexistente (404), vínculo duplicado (409) ou parceiro inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.28 - Fluxo 28: Vincula parceiro a terra </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_28_vincula_parceiro_terra.png" width="100%" alt="Diagrama de Sequência 28"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### visualiza parceiro vinculado
+
+O fluxo principal permite que analistas, coordenadores ou administradores visualizem os parceiros ativos vinculados a uma terra (200). Se não houver vínculos ativos, retorna um array vazio, também com 200. Alternativamente, a consulta falha quando a terra não existe ou o ID é malformado (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.29 - Fluxo 29: Visualiza parceiro vinculado</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_29_visualiza_parceiro_vinculado.png" width="100%" alt="Diagrama de Sequência 29"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
