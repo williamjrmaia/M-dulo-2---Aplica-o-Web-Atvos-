@@ -1253,8 +1253,18 @@ No fluxo principal, o coordenador visualiza o engajamento e métricas de produti
 O fluxo principal permite que o coordenador gere e exporte uma planilha com os dados dos parceiros (200). Alternativamente, a exportação falha se a lista estiver vazia (404) ou por erro técnico (500).
 
 <div align="center">
-  <sub>Figura 3.2.4.16 - Fluxo 16: Exportação de dados</sub><br>
+  <sub>Figura 3.2.4.16 - Fluxo 16: exporta dados</sub><br>
   <img src="./assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequência 16"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Encerra Sessão
+
+O fluxo principal permite encerrar uma sessão ativa e persistir a revogação no banco (200). Alternativamente, a operação falha se a sessão já estiver encerrada (409), se a sessão não existir ou o ID for inválido (404), ou se o usuário revogador informado não existir (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.17 - Fluxo 17: Encerra sessão</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_17_encerra_secao.png" width="100%" alt="Diagrama de Sequência 17"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
