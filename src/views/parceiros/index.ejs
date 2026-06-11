@@ -3,24 +3,33 @@
 <%- include('../partials/flash', { error: locals.error, info: locals.info }) %>
 
 <section aria-labelledby="titulo-lista">
+  <%
+    const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
+    const podeCadastrarParceiro = ['analista', 'administrador'].includes(perfilAtual);
+    const podeExportarParceiros = ['coordenador', 'administrador'].includes(perfilAtual);
+  %>
   <div class="page-header">
     <div class="page-header-text">
       <h1 id="titulo-lista" class="page-title">Parceiros</h1>
       <p class="subtitle">Fornecedores de cana e proprietários cedentes da ATVOS</p>
     </div>
     <div class="page-header-actions">
-      <button type="button" class="btn btn-secondary" data-modal-open data-modal-target="modal-exportar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Exportar CSV
-      </button>
-      <a href="/parceiros/novo" class="btn btn-primary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Novo Fornecedor
-      </a>
-      <a href="/parceiros/novo" class="btn btn-primary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Novo Proprietário
-      </a>
+      <% if (podeExportarParceiros) { %>
+        <button type="button" class="btn btn-secondary" data-modal-open data-modal-target="modal-exportar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar CSV
+        </button>
+      <% } %>
+      <% if (podeCadastrarParceiro) { %>
+        <a href="/parceiros/novo" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Novo Fornecedor
+        </a>
+        <a href="/parceiros/novo" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Novo Proprietário
+        </a>
+      <% } %>
     </div>
   </div>
 
@@ -80,7 +89,9 @@
       <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
       <p class="empty-title">Nenhum parceiro encontrado</p>
       <p class="empty-text">Cadastre o primeiro fornecedor ou proprietário, ou ajuste os filtros aplicados.</p>
-      <a href="/parceiros/novo" class="btn btn-primary empty-action">+ Novo Parceiro</a>
+      <% if (podeCadastrarParceiro) { %>
+        <a href="/parceiros/novo" class="btn btn-primary empty-action">+ Novo Parceiro</a>
+      <% } %>
     </div>
   <% } else { %>
     <div class="partner-list" id="lista-parceiros">
@@ -157,25 +168,27 @@
   <% } %>
 </section>
 
-<!-- Modal: Exportar CSV -->
-<div class="modal-backdrop" id="modal-exportar" role="dialog" aria-modal="true" aria-labelledby="modal-exportar-title">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h2 class="modal-title" id="modal-exportar-title">Exportar CSV</h2>
-      <button type="button" class="modal-close" data-modal-close aria-label="Fechar">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p>Será exportado um arquivo CSV com <%= parceiros.length %> parceiro(s) encontrado(s).</p>
-      <p>O arquivo incluirá: nome, tipo, CPF/CNPJ, e-mail, telefone, região e status.</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-modal-close>Cancelar</button>
-      <a href="/parceiros/exportar" class="btn btn-export">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Exportar
-      </a>
+<% if (podeExportarParceiros) { %>
+  <!-- Modal: Exportar CSV -->
+  <div class="modal-backdrop" id="modal-exportar" role="dialog" aria-modal="true" aria-labelledby="modal-exportar-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-exportar-title">Exportar CSV</h2>
+        <button type="button" class="modal-close" data-modal-close aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Será exportado um arquivo CSV com <%= parceiros.length %> parceiro(s) encontrado(s).</p>
+        <p>O arquivo incluirá: nome, tipo, CPF/CNPJ, e-mail, telefone, região e status.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Cancelar</button>
+        <a href="/parceiros/exportar" class="btn btn-export">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar
+        </a>
+      </div>
     </div>
   </div>
-</div>
+<% } %>
 
 <%- include('../partials/footer') %>
