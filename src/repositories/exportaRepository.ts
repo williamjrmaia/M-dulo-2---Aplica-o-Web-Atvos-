@@ -17,7 +17,7 @@ export class ExportaRepository {
                 FROM vinculo_comercial vc
                WHERE vc.parceiro_id = p.id
                  AND vc.status != 'inativo'
-               ORDER BY vc.criado_em DESC
+               ORDER BY vc.id DESC
                LIMIT 1
             ),
             p.tipo_pessoa

@@ -9,9 +9,12 @@ import {
   devolverParceiro,
   excluirParceiro,
   obterHistoricoParceiro,
+  obterRascunhosDevolvidosDoAnalista,
   obterTerrasDoParceiro,
   vincularTerraAoParceiro,
 } from '../services/parceiroService';
+import * as parceiroRepository from '../repositories/parceiroRepository';
+import { Parceiro } from '../models/parceiro';
 import pool from '../config/connection';
 import { garantirPerfis, criarUsuario, removerUsuarioPorEmail, ids } from './helpers/usuarios';
 
@@ -19,6 +22,7 @@ const EMAIL = 'itg.svc.parceiro@atvos.test';
 let perfis: Record<string, string>;
 let usuarioId: string;
 const parceirosCriados = new Set<string>();
+const terrasCriadas = new Set<string>();
 
 beforeAll(async () => {
   perfis = await garantirPerfis();
@@ -30,26 +34,54 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  const ids = Array.from(parceirosCriados);
-  if (ids.length > 0) {
-    await pool.query(`DELETE FROM registro_alteracao WHERE entidade_id = ANY($1::uuid[])`, [ids]);
-    await pool.query(`DELETE FROM parceiros WHERE id = ANY($1::uuid[])`, [ids]);
+  const parceiroIdList = Array.from(parceirosCriados);
+  const terraIdList = Array.from(terrasCriadas);
+  if (parceiroIdList.length > 0 || terraIdList.length > 0) {
+    await pool.query(
+      `DELETE FROM parceiro_terra
+        WHERE parceiro_id = ANY($1::uuid[])
+           OR terra_id = ANY($2::uuid[])`,
+      [parceiroIdList, terraIdList]
+    );
+  }
+  if (parceiroIdList.length > 0) {
+    await pool.query(`DELETE FROM registro_alteracao WHERE entidade_id = ANY($1::uuid[])`, [parceiroIdList]);
+    await pool.query(`DELETE FROM parceiros WHERE id = ANY($1::uuid[])`, [parceiroIdList]);
+  }
+  if (terraIdList.length > 0) {
+    await pool.query(`DELETE FROM terras WHERE id = ANY($1::uuid[])`, [terraIdList]);
   }
   await removerUsuarioPorEmail(EMAIL);
   parceirosCriados.clear();
+  terrasCriadas.clear();
 });
 
 afterAll(async () => {
   await pool.end();
 });
 
+// Arrange auxiliar: cria uma terra ativa direto no banco.
+async function criarTerraNoBanco() {
+  const { rows } = await pool.query<{ id: string }>(
+    `INSERT INTO terras (nome, area_contratada_ha, cidade, estado, status, criado_por)
+     VALUES ($1, $2, $3, $4, 'ativo'::status_validacao, $5)
+     RETURNING id`,
+    [`Terra ${randomUUID()}`, 100, 'Ribeirão Preto', 'SP', usuarioId]
+  );
+  terrasCriadas.add(rows[0].id);
+  return rows[0];
+}
+
 // Arrange auxiliar: cria um parceiro num status controlado, direto no banco.
-async function criarParceiroNoBanco(status = 'rascunho') {
+async function criarParceiroNoBanco(
+  status = 'rascunho',
+  email: string | null = `p_${randomUUID()}@atvos.test`
+) {
   const { rows } = await pool.query<{ id: string; nome: string; status: string }>(
     `INSERT INTO parceiros (nome, tipo_pessoa, cpf_cnpj, email, status, criado_por)
      VALUES ($1, 'fisica', $2, $3, $4::status_validacao, $5)
      RETURNING id, nome, status`,
-    [`Parceiro ${randomUUID()}`, randomUUID(), `p_${randomUUID()}@atvos.test`, status, usuarioId]
+    [`Parceiro ${randomUUID()}`, randomUUID(), email, status, usuarioId]
   );
   parceirosCriados.add(rows[0].id);
   return rows[0];
@@ -464,5 +496,236 @@ describe('parceiroService (unitário, banco real) — id malformado e unicidade'
     await expect(
       devolverParceiro(ids.malformado, { devolvido_por: usuarioId })
     ).rejects.toThrow('Parceiro não encontrado');
+  });
+});
+
+describe('parceiroService (unitário, banco real) — falhas de excluirParceiro', () => {
+  // getParceiroById filtra status != 'inativo', então parceiro inexistente e
+  // parceiro inativo ambos resultam em NotFoundError (retorno null do repository).
+  it('rejeita a exclusão de parceiro inexistente', async () => {
+    await expect(
+      excluirParceiro(ids.inexistente, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Parceiro não encontrado');
+  });
+
+  it('trata id malformado como parceiro não encontrado na exclusão', async () => {
+    await expect(
+      excluirParceiro(ids.malformado, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Parceiro não encontrado');
+  });
+});
+
+describe('parceiroService (unitário, banco real) — vincularTerraAoParceiro edge cases', () => {
+  it('trata terra_id malformado como parceiro não encontrado no vínculo', async () => {
+    const parceiro = await criarParceiroNoBanco('rascunho');
+    await expect(
+      vincularTerraAoParceiro(parceiro.id, { terra_id: ids.malformado })
+    ).rejects.toThrow('Parceiro não encontrado');
+  });
+
+  it('rejeita vínculo duplicado com a mesma terra', async () => {
+    const parceiro = await criarParceiroNoBanco('rascunho');
+    const terra = await criarTerraNoBanco();
+
+    await vincularTerraAoParceiro(parceiro.id, { terra_id: terra.id });
+
+    await expect(
+      vincularTerraAoParceiro(parceiro.id, { terra_id: terra.id })
+    ).rejects.toThrow('Terra já vinculada ao parceiro');
+  });
+
+  it('informa quando o parceiro do vínculo não existe', async () => {
+    const terra = await criarTerraNoBanco();
+    await expect(
+      vincularTerraAoParceiro(ids.inexistente, { terra_id: terra.id })
+    ).rejects.toThrow('Parceiro não encontrado');
+  });
+});
+
+describe('parceiroService (unitário, banco real) — validação de envio e rascunhos devolvidos', () => {
+  // RN16 (RF021): email é obrigatório para enviar à validação
+  it('bloqueia o envio para validação de parceiro sem email preenchido', async () => {
+    const parceiro = await criarParceiroNoBanco('rascunho', null);
+    await expect(
+      enviarParceiroParaValidacao(parceiro.id, { atualizado_por: usuarioId })
+    ).rejects.toThrow('Campos obrigatórios para envio à validação: email');
+  });
+
+  it('rejeita a listagem de rascunhos devolvidos sem analista identificado', async () => {
+    await expect(obterRascunhosDevolvidosDoAnalista('')).rejects.toThrow(
+      'Analista logado não identificado'
+    );
+  });
+
+  it('lista os rascunhos e devolvidos criados pelo analista', async () => {
+    const parceiro = await criarParceiroNoBanco('rascunho');
+    const lista = await obterRascunhosDevolvidosDoAnalista(usuarioId);
+    expect(Array.isArray(lista)).toBe(true);
+    expect(lista.some((p) => p.id === parceiro.id)).toBe(true);
+  });
+});
+
+describe('parceiroService (unitário, banco real) — FKs de auditoria inexistentes', () => {
+  it('repassa o erro de uuid malformado no criado_por do cadastro', async () => {
+    await expect(
+      cadastrarParceiro({
+        nome: 'Parceiro Malformado',
+        tipo_pessoa: 'fisica',
+        cpf_cnpj: randomUUID(),
+        email: `mal_${randomUUID()}@atvos.test`,
+        criado_por: ids.malformado,
+      })
+    ).rejects.toMatchObject({ code: '22P02' });
+  });
+
+  it('rejeita o envio para validação quando atualizado_por não existe (FK)', async () => {
+    const parceiro = await criarParceiroNoBanco('rascunho');
+    await expect(
+      enviarParceiroParaValidacao(parceiro.id, { atualizado_por: ids.inexistente })
+    ).rejects.toThrow('atualizado_por não referencia um usuário existente');
+  });
+
+  it('rejeita a aprovação quando aprovado_por não existe (FK)', async () => {
+    const parceiro = await criarParceiroNoBanco('pendente');
+    await expect(
+      aprovarParceiro(parceiro.id, { aprovado_por: ids.inexistente })
+    ).rejects.toThrow('aprovado_por não referencia um usuário existente');
+  });
+
+  it('rejeita a devolução quando devolvido_por não existe (FK)', async () => {
+    const parceiro = await criarParceiroNoBanco('pendente');
+    await expect(
+      devolverParceiro(parceiro.id, { devolvido_por: ids.inexistente })
+    ).rejects.toThrow('devolvido_por não referencia um usuário existente');
+  });
+
+  it('rejeita a exclusão quando atualizado_por não existe (FK)', async () => {
+    const parceiro = await criarParceiroNoBanco('ativo');
+    await expect(
+      excluirParceiro(parceiro.id, { atualizado_por: ids.inexistente })
+    ).rejects.toThrow('atualizado_por não referencia um usuário existente');
+  });
+});
+
+describe('parceiroService (unitário, com spy no repository) — corrida e erros inesperados', () => {
+  const parceiroFake = (status: string): Parceiro =>
+    ({ id: 'parc-x', status, email: 'fake@atvos.test' } as unknown as Parceiro);
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('repassa erro inesperado do banco ao consultar o histórico', async () => {
+    jest
+      .spyOn(parceiroRepository, 'listarHistoricoParceiro')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(obterHistoricoParceiro(ids.inexistente)).rejects.toThrow(
+      'falha inesperada do banco'
+    );
+  });
+
+  it('trata o envio que perde a corrida como conflito de status', async () => {
+    jest.spyOn(parceiroRepository, 'getParceiroById').mockResolvedValueOnce(parceiroFake('rascunho'));
+    jest.spyOn(parceiroRepository, 'sendParceiroToValidation').mockResolvedValueOnce(null);
+
+    await expect(
+      enviarParceiroParaValidacao('parc-x', { atualizado_por: usuarioId })
+    ).rejects.toThrow('rascunho ou devolvido');
+  });
+
+  it('repassa erro inesperado do banco no envio para validação', async () => {
+    jest
+      .spyOn(parceiroRepository, 'getParceiroById')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(
+      enviarParceiroParaValidacao('parc-x', { atualizado_por: usuarioId })
+    ).rejects.toThrow('falha inesperada do banco');
+  });
+
+  it('trata a aprovação que perde a corrida como conflito de status', async () => {
+    jest.spyOn(parceiroRepository, 'getParceiroById').mockResolvedValueOnce(parceiroFake('pendente'));
+    jest.spyOn(parceiroRepository, 'approveParceiro').mockResolvedValueOnce(null);
+
+    await expect(
+      aprovarParceiro('parc-x', { aprovado_por: usuarioId })
+    ).rejects.toThrow('só pode ser aprovado quando estiver pendente');
+  });
+
+  it('repassa erro inesperado do banco na aprovação', async () => {
+    jest
+      .spyOn(parceiroRepository, 'getParceiroById')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(
+      aprovarParceiro('parc-x', { aprovado_por: usuarioId })
+    ).rejects.toThrow('falha inesperada do banco');
+  });
+
+  it('trata a devolução que perde a corrida como conflito de status', async () => {
+    jest.spyOn(parceiroRepository, 'getParceiroById').mockResolvedValueOnce(parceiroFake('pendente'));
+    jest.spyOn(parceiroRepository, 'returnParceiroForAdjustment').mockResolvedValueOnce(null);
+
+    await expect(
+      devolverParceiro('parc-x', { devolvido_por: usuarioId })
+    ).rejects.toThrow('só pode ser devolvido quando estiver pendente');
+  });
+
+  it('repassa erro inesperado do banco na devolução', async () => {
+    jest
+      .spyOn(parceiroRepository, 'getParceiroById')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(
+      devolverParceiro('parc-x', { devolvido_por: usuarioId })
+    ).rejects.toThrow('falha inesperada do banco');
+  });
+
+  it('rejeita a exclusão de parceiro que já está inativo', async () => {
+    jest.spyOn(parceiroRepository, 'getParceiroById').mockResolvedValueOnce(parceiroFake('inativo'));
+
+    await expect(
+      excluirParceiro('parc-x', { atualizado_por: usuarioId })
+    ).rejects.toThrow('Parceiro já está inativo');
+  });
+
+  it('trata a exclusão que perde a corrida como parceiro já inativo', async () => {
+    jest.spyOn(parceiroRepository, 'getParceiroById').mockResolvedValueOnce(parceiroFake('ativo'));
+    jest.spyOn(parceiroRepository, 'deactivateParceiro').mockResolvedValueOnce(null);
+
+    await expect(
+      excluirParceiro('parc-x', { atualizado_por: usuarioId })
+    ).rejects.toThrow('Parceiro já está inativo');
+  });
+
+  it('repassa erro inesperado do banco na exclusão', async () => {
+    jest
+      .spyOn(parceiroRepository, 'getParceiroById')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(
+      excluirParceiro('parc-x', { atualizado_por: usuarioId })
+    ).rejects.toThrow('falha inesperada do banco');
+  });
+
+  it('repassa erro inesperado do banco ao listar terras do parceiro', async () => {
+    jest
+      .spyOn(parceiroRepository, 'listarTerrasDoParceiro')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(obterTerrasDoParceiro(ids.inexistente)).rejects.toThrow(
+      'falha inesperada do banco'
+    );
+  });
+
+  it('repassa erro inesperado do banco ao vincular terra ao parceiro', async () => {
+    jest
+      .spyOn(parceiroRepository, 'createParceiroTerra')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(
+      vincularTerraAoParceiro(ids.inexistente, { terra_id: ids.inexistente })
+    ).rejects.toThrow('falha inesperada do banco');
   });
 });
