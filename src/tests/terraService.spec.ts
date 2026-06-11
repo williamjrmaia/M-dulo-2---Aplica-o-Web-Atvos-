@@ -8,6 +8,8 @@ import {
   obterParceirosDaTerra,
   vincularParceiroATerra,
 } from '../services/terraService';
+import * as terraRepository from '../repositories/terraRepository';
+import { Terra } from '../models/terra';
 import pool from '../config/connection';
 import { garantirPerfis, criarUsuario, removerUsuarioPorEmail, ids } from './helpers/usuarios';
 
@@ -270,5 +272,95 @@ describe('terraService (unitário, banco real) — caminhos de falha', () => {
     await expect(
       vincularParceiroATerra(terra.id, { parceiro_id: ids.inexistente })
     ).rejects.toThrow('parceiro_id não referencia um parceiro existente');
+  });
+
+  it('rejeita a edição quando atualizado_por não existe no banco (FK)', async () => {
+    const terra = await criarTerraNoBanco();
+    await expect(
+      editarTerra(terra.id, { nome: 'Nome Novo', atualizado_por: ids.inexistente })
+    ).rejects.toThrow('atualizado_por não referencia um usuário existente');
+  });
+
+  it('repassa o erro de uuid malformado no criado_por do cadastro', async () => {
+    await expect(
+      cadastrarTerra({
+        nome: 'Terra Malformada',
+        area_contratada_ha: 10,
+        cidade: 'Bauru',
+        estado: 'SP',
+        criado_por: ids.malformado,
+      })
+    ).rejects.toMatchObject({ code: '22P02' });
+  });
+
+  it('repassa o erro de uuid malformado no id da edição', async () => {
+    await expect(
+      editarTerra(ids.malformado, { nome: 'Qualquer', atualizado_por: usuarioId })
+    ).rejects.toMatchObject({ code: '22P02' });
+  });
+
+  it('rejeita o vínculo duplicado do mesmo parceiro com a terra', async () => {
+    const terra = await criarTerraNoBanco();
+    const parceiro = await criarParceiroNoBanco();
+
+    await vincularParceiroATerra(terra.id, { parceiro_id: parceiro.id });
+
+    await expect(
+      vincularParceiroATerra(terra.id, { parceiro_id: parceiro.id })
+    ).rejects.toThrow('Parceiro já vinculado à terra');
+  });
+});
+
+describe('terraService (unitário, com spy no repository) — corrida e erros inesperados', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('repassa erro inesperado do banco ao buscar terra por id', async () => {
+    jest
+      .spyOn(terraRepository, 'getTerraById')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(obterTerraPorId(ids.inexistente)).rejects.toThrow('falha inesperada do banco');
+  });
+
+  it('trata a exclusão que perde a corrida como terra já inativa', async () => {
+    const terraAtiva = { id: 'terra-x', status: 'rascunho' } as unknown as Terra;
+    jest.spyOn(terraRepository, 'getTerraById').mockResolvedValueOnce(terraAtiva);
+    jest.spyOn(terraRepository, 'deactivateTerra').mockResolvedValueOnce(null);
+
+    await expect(
+      excluirTerra('terra-x', { atualizado_por: usuarioId })
+    ).rejects.toThrow('Terra já está inativa');
+  });
+
+  it('repassa erro inesperado do banco ao excluir terra', async () => {
+    jest
+      .spyOn(terraRepository, 'getTerraById')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(
+      excluirTerra(ids.inexistente, { atualizado_por: usuarioId })
+    ).rejects.toThrow('falha inesperada do banco');
+  });
+
+  it('repassa erro inesperado do banco ao listar parceiros da terra', async () => {
+    jest
+      .spyOn(terraRepository, 'listarParceirosDaTerra')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(obterParceirosDaTerra(ids.inexistente)).rejects.toThrow(
+      'falha inesperada do banco'
+    );
+  });
+
+  it('repassa erro inesperado do banco ao vincular parceiro à terra', async () => {
+    jest
+      .spyOn(terraRepository, 'createTerraParceiro')
+      .mockRejectedValueOnce(new Error('falha inesperada do banco'));
+
+    await expect(
+      vincularParceiroATerra(ids.inexistente, { parceiro_id: ids.inexistente })
+    ).rejects.toThrow('falha inesperada do banco');
   });
 });
