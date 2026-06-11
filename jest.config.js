@@ -1,4 +1,6 @@
 module.exports = {
+  // Os specs de service/controller integram com Postgres real; cadeias de
+  // queries + cleanup por teste estouram os 5s default do Jest.
   testTimeout: 30000,
   testEnvironment: 'node',
   transform: {
