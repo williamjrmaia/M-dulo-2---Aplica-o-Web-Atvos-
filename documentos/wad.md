@@ -1531,8 +1531,8 @@ Este guia padroniza cores, tipografia, espaçamentos, grid, radius, sombras, com
 A paleta visual do **Safra Control** foi definida a partir da identidade institucional da **ATVOS**. Ela combina laranjas, amarelo e azul institucional para diferenciar ações, navegação, estados e informações de apoio. Essa separação ajuda o usuário a identificar rapidamente o que é ação principal, o que é estrutura da interface e o que representa atenção, validação ou status.
 
 <div align="center">
-  <sub>Figura 3.4.1 - Paleta visual derivada da identidade da ATVOS</sub><br>
-  <img src="./assets/guia_de_estilos/guia_cores_institucionais.png" width="100%" alt="Paleta visual do Safra Control derivada da identidade institucional da ATVOS"><br>
+  <sub>Figura 3.4.1.1 - Paleta visual derivada da identidade da ATVOS</sub><br>
+  <img src="./assets/guia_de_estilos/cores_institucionais.png" width="100%" alt="Paleta visual do Safra Control derivada da identidade institucional da ATVOS"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1541,10 +1541,24 @@ O **laranja escuro `#FF681A`** é usado em CTAs, botões primários e ações de
 O **amarelo ATVOS `#FFCD00`** é utilizado com moderação em estados de atenção, indicadores e badges informativos. Sua função é chamar atenção para pendências, prazos ou avisos sem competir com o botão primário. O **azul ATVOS `#3F5B70`** aparece em navbar, botões secundários, avatar, textos de apoio e componentes corporativos, pois transmite confiança, estabilidade e clareza operacional.
 
 <div align="center">
-  <sub>Figura 3.4.2 - Cores neutras, semânticas e status</sub><br>
-  <img src="./assets/guia_de_estilos/guia_cores_neutras_semanticas.png" width="100%" alt="Cores neutras, semânticas e status do design system Safra Control"><br>
+  <sub>Figura 3.4.1.2 - Cores neutras</sub><br>
+  <img src="./assets/guia_de_estilos/cores_neutras.png" width="100%" alt="Cores neutras do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
+
+<div align="center">
+  <sub>Figura 3.4.1.3 - Cores semânticas </sub><br>
+  <img src="./assets/guia_de_estilos/cores_semanticas.png" width="100%" alt="Cores semânticas do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.4.1.4 - Cores de status</sub><br>
+  <img src="./assets/guia_de_estilos/cores_de_status.png" width="100%" alt="Cores de status do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+
 
 As cores neutras estruturam a interface. O fundo principal `#F7F8FA` separa a área da página dos cards brancos `#FFFFFF`; as bordas `#D9DEE3` delimitam inputs, tabelas e cards; os divisores `#E5E7EB` separam linhas e grupos de conteúdo; e os textos `#1F2933`, `#5C6670` e `#9CA3AF` criam hierarquia entre informação principal, apoio e conteúdo desabilitado.
 
@@ -1579,8 +1593,8 @@ As cores semânticas indicam feedbacks do sistema. Sucesso usa `#16803C` com fun
 A fonte principal do Safra Control é **Tahoma**, adotada por sua alta legibilidade, boa compatibilidade em ambientes web, aparência limpa e adequação a sistemas com formulários, tabelas e grande volume de informação. A escolha favorece a leitura contínua em telas operacionais e mantém coerência com a identidade visual definida para o projeto.
 
 <div align="center">
-  <sub>Figura 3.4.3 - Escala tipográfica do Safra Control</sub><br>
-  <img src="./assets/guia_de_estilos/guia_tipografia.png" width="100%" alt="Tipografia do design system Safra Control"><br>
+  <sub>Figura 3.4.2.1 - Escala tipográfica do Safra Control</sub><br>
+  <img src="./assets/guia_de_estilos/tipografia.png" width="100%" alt="Tipografia do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1607,8 +1621,8 @@ A aplicação tipográfica também foi definida para manter contraste em diferen
 O design system utiliza uma estrutura baseada em múltiplos de 4px, com uso recorrente de múltiplos de 8px para compor espaçamentos de interface. Essa escolha melhora alinhamento, consistência e organização visual, especialmente em telas com muitos campos e registros. O grid desktop possui largura de referência de `1440px`, 12 colunas, gutter de `24px` e margem horizontal de `80px`.
 
 <div align="center">
-  <sub>Figura 3.4.4 - Espaçamento, radius, sombras e grid</sub><br>
-  <img src="./assets/guia_de_estilos/guia_espacamento_grid.png" width="100%" alt="Espaçamento, grid, radius e sombras do design system Safra Control"><br>
+  <sub>Figura 3.4.3.1 - Espaçamento, radius, sombras e grid</sub><br>
+  <img src="./assets/guia_de_estilos/espacamento_grid.png" width="100%" alt="Espaçamento, grid, radius e sombras do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1631,8 +1645,8 @@ As sombras são leves e funcionais. Elas não têm papel decorativo principal, m
 Os botões foram padronizados para diferenciar ações principais, secundárias, exportação e ações críticas. Essa distinção é importante porque o **Safra Control** possui fluxos com consequências diferentes, como salvar um fornecedor, cancelar um cadastro, exportar CSV ou inativar um usuário.
 
 <div align="center">
-  <sub>Figura 3.4.5 - Botões e estados de interação</sub><br>
-  <img src="./assets/guia_de_estilos/guia_botoes.png" width="100%" alt="Botões do design system Safra Control"><br>
+  <sub>Figura 3.4.4.1 - Botões e estados de interação</sub><br>
+  <img src="./assets/guia_de_estilos/botoes.png" width="100%" alt="Botões do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1651,8 +1665,14 @@ Os estados documentados são **default**, **hover**, **pressed**, **disabled**, 
 Os formulários foram desenhados para suportar cadastros longos de fornecedores, proprietários e usuários, mantendo legibilidade e validação clara. Como o Safra Control depende de dados cadastrais confiáveis, os campos precisam orientar o preenchimento e indicar erros sem ambiguidade.
 
 <div align="center">
-  <sub>Figura 3.4.6 - Inputs, filtros, searchbar e textarea</sub><br>
-  <img src="./assets/guia_de_estilos/guia_formularios.png" width="100%" alt="Formulários, inputs e filtros do design system Safra Control"><br>
+  <sub>Figura 3.4.5.1 - Inputs e Filtros</sub><br>
+  <img src="./assets/guia_de_estilos/formularios1.png" width="100%" alt="Inputs e filtros do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.4.5.2 - Searchbar e Textarea</sub><br>
+  <img src="./assets/guia_de_estilos/formularios2.png" width="100%" alt="Searchbar e textarea do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1672,8 +1692,20 @@ Os estados previstos são **default**, **focus**, **filled**, **error** e **disa
 A navegação principal organiza os módulos centrais do **Safra Control**: **Fornecedores**, **Proprietários**, **Usuários**, além da área de perfil e saída. A navbar aparece nas telas internas para manter o usuário orientado durante consulta, cadastro, edição e gestão de acesso.
 
 <div align="center">
-  <sub>Figura 3.4.7 - Navbar e cards de informação</sub><br>
-  <img src="./assets/guia_de_estilos/guia_navbar_cards.png" width="100%" alt="Navbar e cards do design system Safra Control"><br>
+  <sub>Figura 3.4.6.1 - Navbar</sub><br>
+  <img src="./assets/guia_de_estilos/navbar.png" width="100%" alt="Navbar do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.4.6.2 - Cards</sub><br>
+  <img src="./assets/guia_de_estilos/cards1.png" width="100%" alt="Cards de parceiro e usuário do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.4.6.3 - Cards</sub><br>
+  <img src="./assets/guia_de_estilos/cards2.png" width="100%" alt="Cards de informação e métrica do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1694,8 +1726,8 @@ Os cards organizam informações em blocos reconhecíveis. O **Card/Partner** re
 Tabelas e listagens são usadas para leitura comparativa de dados, validação de registros, gestão de usuários e acompanhamento de parceiros. Elas aparecem em fluxos nos quais o usuário precisa comparar muitos registros, aplicar filtros e executar ações por linha.
 
 <div align="center">
-  <sub>Figura 3.4.8 - Tabelas, listagens e chips de status</sub><br>
-  <img src="./assets/guia_de_estilos/guia_tabelas_status.png" width="100%" alt="Tabelas, listagens e status do design system Safra Control"><br>
+  <sub>Figura 3.4.7.1 - Chips de status</sub><br>
+  <img src="./assets/guia_de_estilos/status_chips.png" width="100%" alt="Tabelas, listagens e status do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1714,8 +1746,8 @@ As tabelas utilizam cabeçalhos em caixa alta, células compactas e divisórias 
 O histórico de interações é um componente essencial do Safra Control, pois responde diretamente à dor de perda de histórico entre analistas, coordenadores e gestores. Ele transforma contatos, visitas, reuniões e observações em memória institucional consultável.
 
 <div align="center">
-  <sub>Figura 3.4.9 - Histórico de interações em timeline</sub><br>
-  <img src="./assets/guia_de_estilos/guia_historico_interacoes.png" width="100%" alt="Histórico de interações do design system Safra Control"><br>
+  <sub>Figura 3.4.8.1 - Histórico de interações em timeline</sub><br>
+  <img src="./assets/guia_de_estilos/historico_de_interacoes.png" width="100%" alt="Histórico de interações do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1728,8 +1760,8 @@ Esse componente deve ser usado na tela de detalhes do fornecedor, na tela de det
 Modais, alertas e empty states são usados para feedback de ações importantes. Eles ajudam o usuário a entender se uma operação foi concluída, se houve erro, se existe pendência ou se uma lista não possui resultados.
 
 <div align="center">
-  <sub>Figura 3.4.10 - Modais, alertas e estado vazio</sub><br>
-  <img src="./assets/guia_de_estilos/guia_modais_alertas.png" width="100%" alt="Modais, alertas e estados vazios do design system Safra Control"><br>
+  <sub>Figura 3.4.9.1 - Modais, alertas e estado vazio</sub><br>
+  <img src="./assets/guia_de_estilos/modais_e_alertas.png" width="100%" alt="Modais, alertas e estados vazios do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1750,8 +1782,26 @@ Modais devem ser usados apenas quando a ação exige confirmação ou atenção 
 A iconografia usa estilo uniforme, preferencialmente outline/linear, com traço regular, proporção consistente e cor padronizada. O design system adota a família Lucide React, com ícones vetoriais de aparência leve, espessura aproximada de `1.5px` a `2px` e aplicação em botões, inputs, cards, tabelas, modais e timeline. A cor base segue o azul institucional ou tons neutros; cores semânticas são reservadas para sucesso, erro, alerta e informação.
 
 <div align="center">
-  <sub>Figura 3.4.11 - Biblioteca de ícones do Safra Control</sub><br>
-  <img src="./assets/guia_de_estilos/guia_iconografia.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <sub>Figura 3.4.10.1 - Iconografia</sub><br>
+  <img src="./assets/guia_de_estilos/iconografia.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.4.10.2 - Ícones obrigatórios</sub><br>
+  <img src="./assets/guia_de_estilos/icones_obrigatorios.png" width="100%" alt="Ícones obrigatórios do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.4.10.3 - Ícones de suporte</sub><br>
+  <img src="./assets/guia_de_estilos/icones_de_suporte.png" width="100%" alt="Ícones de suporte do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+
+<div align="center">
+  <sub>Figura 3.4.10.4 - Variantes de cor semântica</sub><br>
+  <img src="./assets/guia_de_estilos/variantes_de_cor_semantica.png" width="100%" alt="Variantes de cor semântica dos ícones do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
