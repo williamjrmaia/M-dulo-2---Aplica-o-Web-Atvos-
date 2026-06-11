@@ -1384,19 +1384,19 @@ O **amarelo ATVOS `#FFCD00`** é utilizado com moderação em estados de atenç�
 
 <div align="center">
   <sub>Figura 3.4.1.2 - Cores neutras</sub><br>
-  <img src="./assets/guia_de_estilos/cores_neutras.png" width="100%" alt="Cores neutras, semânticas e status do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/cores_neutras.png" width="100%" alt="Cores neutras do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.4.1.3 - Cores semânticas </sub><br>
-  <img src="./assets/guia_de_estilos/cores_semanticas.png" width="100%" alt="Cores neutras, semânticas e status do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/cores_semanticas.png" width="100%" alt="Cores semânticas do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.4.1.4 - Cores de status</sub><br>
-  <img src="./assets/guia_de_estilos/cores_de_status.png" width="100%" alt="Cores neutras, semânticas e status do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/cores_de_status.png" width="100%" alt="Cores de status do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1508,13 +1508,13 @@ Os formulários foram desenhados para suportar cadastros longos de fornecedores,
 
 <div align="center">
   <sub>Figura 3.4.5.1 - Inputs e Filtros</sub><br>
-  <img src="./assets/guia_de_estilos/formularios1.png" width="100%" alt="Formulários, inputs e filtros do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/formularios1.png" width="100%" alt="Inputs e filtros do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.4.5.2 - Searchbar e Textarea</sub><br>
-  <img src="./assets/guia_de_estilos/formularios2.png" width="100%" alt="Formulários, inputs e filtros do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/formularios2.png" width="100%" alt="Searchbar e textarea do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1535,19 +1535,19 @@ A navegação principal organiza os módulos centrais do **Safra Control**: **Fo
 
 <div align="center">
   <sub>Figura 3.4.6.1 - Navbar</sub><br>
-  <img src="./assets/guia_de_estilos/navbar.png" width="100%" alt="Navbar e cards do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/navbar.png" width="100%" alt="Navbar do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.4.6.2 - Cards</sub><br>
-  <img src="./assets/guia_de_estilos/cards1.png" width="100%" alt="Navbar e cards do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/cards1.png" width="100%" alt="Cards de parceiro e usuário do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.4.6.3 - Cards</sub><br>
-  <img src="./assets/guia_de_estilos/cards2.png" width="100%" alt="Navbar e cards do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/cards2.png" width="100%" alt="Cards de informação e métrica do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1631,19 +1631,19 @@ A iconografia usa estilo uniforme, preferencialmente outline/linear, com traço 
 
 <div align="center">
   <sub>Figura 3.4.10.2 - Ícones obrigatórios</sub><br>
-  <img src="./assets/guia_de_estilos/icones_obrigatorios.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/icones_obrigatorios.png" width="100%" alt="Ícones obrigatórios do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.4.10.3 - Ícones de suporte</sub><br>
-  <img src="./assets/guia_de_estilos/icones_de_suporte.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/icones_de_suporte.png" width="100%" alt="Ícones de suporte do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 3.4.10.4 - Variantes de cor semântica</sub><br>
-  <img src="./assets/guia_de_estilos/variantes_de_cor_semantica.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <img src="./assets/guia_de_estilos/variantes_de_cor_semantica.png" width="100%" alt="Variantes de cor semântica dos ícones do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
