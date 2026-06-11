@@ -1268,6 +1268,16 @@ O fluxo principal permite encerrar uma sessão ativa e persistir a revogação n
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### Visualiza dados de pareciros
+
+O fluxo principal permite que analistas, coordenadores e administradores consultem um parceiro existente pelo ID (200). Alternativamente, a consulta falha quando o parceiro não existe, está inativo ou o ID possui formato inválido (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.18 - Fluxo 18: Visualiza dados de pareciros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_18_consultas.png" width="100%" alt="Diagrama de Sequência 18"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
