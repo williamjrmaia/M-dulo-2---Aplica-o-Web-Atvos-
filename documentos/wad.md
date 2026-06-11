@@ -1324,7 +1324,7 @@ O fluxo principal permite que analistas ou administradores vinculem uma terra ex
 
 <div align="center">
   <sub>Figura 3.2.4.23 - Fluxo 23: Vincula terra a parceiros</sub><br>
-  <img src="./assets/diagrama_de_sequencia/fluxo_23_vincula_terra_parceiro.png" width="100%" alt="Diagrama de Sequência 22"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_23_vincula_terra_parceiro.png" width="100%" alt="Diagrama de Sequência 23"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1334,7 +1334,17 @@ O fluxo principal permite que analistas, coordenadores ou administradores consul
 
 <div align="center">
   <sub>Figura 3.2.4.24 - Fluxo 24: Consulta das Terras Vinculadas</sub><br>
-  <img src="./assets/diagrama_de_sequencia/fluxo_24_consulta_terras_vinculadas.png" width="100%" alt="Diagrama de Sequência 22"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_24_consulta_terras_vinculadas.png" width="100%" alt="Diagrama de Sequência 24"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta das Terras Existentes
+
+O fluxo principal permite que analistas, coordenadores ou administradores consultem as terras cadastradas que não estejam inativas (200). Quando nenhuma terra estiver disponível, o endpoint retorna uma lista vazia (200), e não 404.
+
+<div align="center">
+  <sub>Figura 3.2.4.25 - Fluxo 25: Consulta das Terras Existentes</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_25_consulta_terras.png" width="100%" alt="Diagrama de Sequência 25"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
