@@ -1,8 +1,9 @@
 import { Router } from 'express';
+import { requireAuth } from '../middlewares/requireAuth';
 
 const router = Router();
 
-router.get('/', (_req, res) => {
+router.get('/', requireAuth, (_req, res) => {
   res.render('home/index', { active: 'home' });
 });
 
