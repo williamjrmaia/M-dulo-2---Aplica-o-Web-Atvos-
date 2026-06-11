@@ -14,24 +14,36 @@
         <span class="brand-text brand-wordmark">safra control</span>
       </a>
 
-      <% var navActive = typeof active !== 'undefined' ? active : ''; %>
+      <%
+        var navActive = typeof active !== 'undefined' ? active : '';
+        var perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
+        var podeVerOperacao = ['analista', 'coordenador', 'administrador'].includes(perfilAtual);
+        var podeValidar = ['coordenador', 'administrador'].includes(perfilAtual);
+        var podeGerenciarUsuarios = perfilAtual === 'administrador';
+      %>
       <div class="nav-links">
-        <a class="nav-link <%= navActive === 'parceiros' ? 'active' : '' %>" href="/parceiros">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span class="nav-text">Parceiros</span>
-        </a>
-        <a class="nav-link <%= navActive === 'terras' ? 'active' : '' %>" href="/terras">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>
-          <span class="nav-text">Terras</span>
-        </a>
-        <a class="nav-link <%= navActive === 'validacao' ? 'active' : '' %>" href="/validacao">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <span class="nav-text">Validação</span>
-        </a>
-        <a class="nav-link <%= navActive === 'usuarios' ? 'active' : '' %>" href="/usuarios">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="19" cy="11" r="2"/></svg>
-          <span class="nav-text">Usuários</span>
-        </a>
+        <% if (podeVerOperacao) { %>
+          <a class="nav-link <%= navActive === 'parceiros' ? 'active' : '' %>" href="/parceiros">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="nav-text">Parceiros</span>
+          </a>
+          <a class="nav-link <%= navActive === 'terras' ? 'active' : '' %>" href="/terras">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>
+            <span class="nav-text">Terras</span>
+          </a>
+        <% } %>
+        <% if (podeValidar) { %>
+          <a class="nav-link <%= navActive === 'validacao' ? 'active' : '' %>" href="/validacao">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="nav-text">Validação</span>
+          </a>
+        <% } %>
+        <% if (podeGerenciarUsuarios) { %>
+          <a class="nav-link <%= navActive === 'usuarios' ? 'active' : '' %>" href="/usuarios">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="19" cy="11" r="2"/></svg>
+            <span class="nav-text">Usuários</span>
+          </a>
+        <% } %>
       </div>
 
       <div class="nav-actions">

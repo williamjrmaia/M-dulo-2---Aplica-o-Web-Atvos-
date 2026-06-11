@@ -10,9 +10,7 @@ const repository = new InteracaoRepository();
 const service = new InteracaoService(repository);
 const controller = new InteracaoController(service);
 
-router.use(requireAuth);
-
-router.post('/parceiros/:id/interacoes', (req, res) => {
+router.post('/parceiros/:id/interacoes', requireAuth, (req, res) => {
   console.log(`[ROUTE] POST /parceiros/${req.params.id}/interacoes recebida`);
   return controller.registrar(req, res);
 });
