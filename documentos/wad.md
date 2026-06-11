@@ -3,7 +3,7 @@
 
 # WAD - Web Application Document - Módulo 2 - Inteli
 
-## Grupo Atwatts
+## Grupo Safra Control
 
 #### Integrantes
 
@@ -1524,7 +1524,7 @@ https://excalidraw.com/#json=5HLRZVY2n7lELvcKSG7r3,M0e1IsL3CvTZeFLNSC1-ww
 
 O guia de estilos consolida os padrões visuais do **Safra Control**, sistema voltado à gestão de fornecedores, proprietários de terra, usuários internos e histórico de relacionamento agrícola. Ele serve como referência direta para o protótipo de alta fidelidade apresentado na seção 3.5, garantindo que as telas mantenham consistência visual, previsibilidade de interação e alinhamento com a identidade institucional da **ATVOS**.
 
-Este guia padroniza cores, tipografia, espaçamentos, grid, radius, sombras, componentes, ícones, estados visuais e exemplos de aplicação. A proposta não é apenas registrar a aparência da interface, mas também explicar **onde cada elemento deve ser usado** e **por que aquela escolha visual foi feita** no contexto do **Safra Control**. A identidade visual estruturada pelo grupo **Atwatts** foi alinhada ao contexto operacional da **ATVOS**, preservando a leitura corporativa necessária para uma plataforma de relacionamento agrícola.
+Este guia padroniza cores, tipografia, espaçamentos, grid, radius, sombras, componentes, ícones, estados visuais e exemplos de aplicação. A proposta não é apenas registrar a aparência da interface, mas também explicar **onde cada elemento deve ser usado** e **por que aquela escolha visual foi feita** no contexto do **Safra Control**. A identidade visual estruturada pelo grupo **Safra Control** foi alinhada ao contexto operacional da **ATVOS**, preservando a leitura corporativa necessária para uma plataforma de relacionamento agrícola.
 
 ### 3.4.1. Cores
 
