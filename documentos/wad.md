@@ -1378,6 +1378,16 @@ O fluxo principal permite que um analista ou administrador vincule um parceiro e
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### visualiza parceiro vinculado
+
+O fluxo principal permite que analistas, coordenadores ou administradores visualizem os parceiros ativos vinculados a uma terra (200). Se não houver vínculos ativos, retorna um array vazio, também com 200. Alternativamente, a consulta falha quando a terra não existe ou o ID é malformado (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.29 - Fluxo 29: Visualiza parceiro vinculado</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_29_visualiza_parceiro_vinculado.png" width="100%" alt="Diagrama de Sequência 29"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
