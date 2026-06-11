@@ -1348,6 +1348,16 @@ O fluxo principal permite que analistas, coordenadores ou administradores consul
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
+#### Inativa Parceiro
+
+O fluxo principal permite que analistas ou administradores realizem a exclusão lógica de um parceiro, alterando seu status para inativo e registrando a operação no histórico (200). Alternativamente, a operação falha por ausência do responsável (400), parceiro inexistente (404), parceiro já inativo (409) ou responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.26 - Fluxo 26: Inativa Parceiro </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_26_inativa_parceiro.png" width="100%" alt="Diagrama de Sequência 26"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
 ### 3.2.5. Diagrama de Atividades ou Estados (sprint 3)
 
 *Ao menos um fluxo relevante em UML ou BPMN. Use a notação da ferramenta escolhida de forma consistente (sem misturar convenções).*
