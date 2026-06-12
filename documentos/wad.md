@@ -1394,35 +1394,37 @@ O fluxo principal permite que analistas, coordenadores ou administradores visual
 
 ### 3.2.6. Diagrama de Implantação (sprints 4 e 5)
 
-*Diagrama UML de deployment mostrando nós físicos, artefatos e canais de comunicação. Representa a visão Engineering + Technology do RM-ODP.*
-
-A seguir, apresenta-se a topologia de implantação inferida a partir do código-fonte disponível, considerando os nós e canais realmente mencionados no repositório.
-
 ```mermaid
-graph TD
-  subgraph CLIENT["🖥️ Cliente — Navegador Web"]
-    BROWSER["Navegador Web\n(HTML / CSS / JS)"]
-  end
+flowchart TB
 
-  subgraph APP["☁️ Servidor de Aplicação"]
-    SERVER["Backend\n(Node.js / Express / EJS)"]
-  end
+    USER["<<device>><br/>Navegador Web<br/>Administrador / Coordenador / Analista"]
 
-  subgraph DATA["💾 Banco de Dados"]
-    DB["PostgreSQL\n(PostgreSQL / pg)"]
-  end
+    subgraph APP["<<node>> Servidor de Aplicação Node.js"]
+        WEB["<<artifact>><br/>Aplicação Web<br/>Express.js + EJS"]
+        JWT["<<artifact>><br/>Middleware de Autenticação JWT<br/>requireAuth.ts"]
+    end
 
-  BROWSER -- "HTTP :3000\nHTML / REST" --> SERVER
-  SERVER -- "TCP :5432\nSQL" --> DB
+    subgraph CLOUD["<<node>> Supabase Cloud"]
+        PG["<<artifact>><br/>Banco de Dados PostgreSQL"]
+    end
+
+    subgraph DEV["<<node>> Ambiente de Desenvolvimento"]
+        TESTS["<<artifact>><br/>Testes Automatizados<br/>Jest + Supertest"]
+        MIG["<<artifact>><br/>Migrations e Seeds<br/>src/db/migrate.ts<br/>src/db/seed.ts"]
+    end
+
+    USER -->|"HTTP/HTTPS"| WEB
+
+    WEB -->|"Validação de Token JWT"| JWT
+
+    WEB -->|"Consultas SQL<br/>TCP 5432"| PG
+
+    JWT -->|"Consulta de Usuários e Sessões<br/>TCP 5432"| PG
+
+    TESTS -.->|"Validação da Aplicação"| WEB
+
+    MIG -.->|"DDL / Seed de Dados<br/>TCP 5432"| PG
 ```
-
-<div align="center">
-  <sub>Figura 3.2.6.1 - Diagrama de Implantação</sub><br>
-  <img src="./assets/diagrama_implantacao.png" width="100%" alt="Diagrama de Implantação UML"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
-
-O diagrama de implantação representa a arquitetura de execução inferida do repositório: o navegador web consome a aplicação Node.js/Express que serve páginas EJS e ativos estáticos, enquanto o backend conecta-se a um banco PostgreSQL para persistência de dados. Essa descrição foi baseada nos arquivos `src/app.ts`, `src/server.ts` e `src/config/connection.ts`; não foi encontrada configuração de deploy explícita como Dockerfile ou YAML de orquestração, portanto o diagrama concentra-se na topologia de runtime observada.
 
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
