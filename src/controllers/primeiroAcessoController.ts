@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  definirSenhaPrimeiroAcessoWebSchema,
   definirSenhaPrimeiroAcessoSchema,
   solicitarPrimeiroAcessoSchema,
 } from '../schemas/primeiroAcesso.schema';
@@ -7,6 +8,55 @@ import { PrimeiroAcessoService } from '../services/primeiroAcessoService';
 
 export class PrimeiroAcessoController {
   constructor(private readonly primeiroAcessoService: PrimeiroAcessoService) {}
+
+  renderFormPrimeiroAcesso = (_req: Request, res: Response) => {
+    return res.render('login/primeiro-acesso', {
+      error: null,
+      success: null,
+      email: '',
+    });
+  };
+
+  definirSenhaViaFormulario = async (req: Request, res: Response) => {
+    const parsed = definirSenhaPrimeiroAcessoWebSchema.safeParse(req.body);
+    const email = typeof req.body?.email === 'string' ? req.body.email : '';
+
+    if (!parsed.success) {
+      const mensagem = parsed.error.issues[0]?.message ?? 'Dados inválidos';
+      const error = mensagem.includes('senha')
+        ? 'Senha deve ter pelo menos 8 caracteres'
+        : mensagem;
+
+      return res.status(400).render('login/primeiro-acesso', {
+        error,
+        success: null,
+        email,
+      });
+    }
+
+    try {
+      await this.primeiroAcessoService.definirSenhaPorEmail(parsed.data.email, parsed.data.senha);
+      return res.status(200).render('login/primeiro-acesso', {
+        error: null,
+        success: 'Senha cadastrada com sucesso. Volte para a tela de login para acessar o sistema.',
+        email: parsed.data.email,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+      const status =
+        message === 'Usuário já acessou o sistema anteriormente'
+          ? 409
+          : message === 'Usuário não elegível para primeiro acesso'
+            ? 404
+            : 400;
+
+      return res.status(status).render('login/primeiro-acesso', {
+        error: message,
+        success: null,
+        email,
+      });
+    }
+  };
 
   solicitarToken = async (req: Request, res: Response) => {
     const parsed = solicitarPrimeiroAcessoSchema.safeParse(req.body);
