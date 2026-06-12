@@ -1394,37 +1394,47 @@ O fluxo principal permite que analistas, coordenadores ou administradores visual
 
 ### 3.2.6. Diagrama de Implantação (sprints 4 e 5)
 
+*Diagrama UML de deployment mostrando nós físicos, artefatos e canais de comunicação. Representa a visão Engineering + Technology do RM-ODP.*
+
 ```mermaid
 flowchart TB
+    classDef device fill:#AED6F1,stroke:#2E86C1,color:#1a1a1a,font-weight:bold
+    classDef artifact fill:#D6EAF8,stroke:#2E75B6,color:#1a1a1a
+    classDef db fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef nodebg fill:#FFFDE7,stroke:#D4AC0D,color:#1a1a1a
 
-    USER["<<device>><br/>Navegador Web<br/>Administrador / Coordenador / Analista"]
-
-    subgraph APP["<<node>> Servidor de Aplicação Node.js"]
-        WEB["<<artifact>><br/>Aplicação Web<br/>Express.js + EJS"]
-        JWT["<<artifact>><br/>Middleware de Autenticação JWT<br/>requireAuth.ts"]
+    subgraph LEGEND["Legenda de Estereótipos UML"]
+        direction LR
+        L1["Device<br/>(dispositivo físico do usuário)"]:::device
+        L2["Node<br/>(ambiente de execução)"]:::nodebg
+        L3["Artifact<br/>(artefato de software)"]:::artifact
+        L4["Artifact - Persistência<br/>(banco de dados)"]:::db
     end
 
-    subgraph CLOUD["<<node>> Supabase Cloud"]
-        PG["<<artifact>><br/>Banco de Dados PostgreSQL"]
+    USER["Navegador Web<br/>(Administrador / Coordenador / Analista)"]:::device
+
+    subgraph APP["Servidor de Aplicação - Node.js (porta 3000)"]
+        direction TB
+        WEB["safra-control<br/>(app.ts / server.ts)<br/>Bootstrap Express.js"]:::artifact
+        CTRL["Controllers / Services /<br/>Repositories"]:::artifact
+        PRES["Camada de Apresentação<br/>Views EJS (src/views/*.ejs)<br/>Assets Estáticos (public/)"]:::artifact
+        JWT["Middleware de Autenticação JWT<br/>(requireAuth.ts)"]:::artifact
     end
 
-    subgraph DEV["<<node>> Ambiente de Desenvolvimento"]
-        TESTS["<<artifact>><br/>Testes Automatizados<br/>Jest + Supertest"]
-        MIG["<<artifact>><br/>Migrations e Seeds<br/>src/db/migrate.ts<br/>src/db/seed.ts"]
+    subgraph CLOUD["Supabase Cloud - PostgreSQL DBaaS"]
+        direction TB
+        PG["Instância PostgreSQL<br/>Banco de Dados CRM<br/>(usuarios, parceiros, terras,<br/>interacoes, sessoes, perfil_acesso)"]:::db
     end
 
-    USER -->|"HTTP/HTTPS"| WEB
-
-    WEB -->|"Validação de Token JWT"| JWT
-
-    WEB -->|"Consultas SQL<br/>TCP 5432"| PG
-
-    JWT -->|"Consulta de Usuários e Sessões<br/>TCP 5432"| PG
-
-    TESTS -.->|"Validação da Aplicação"| WEB
-
-    MIG -.->|"DDL / Seed de Dados<br/>TCP 5432"| PG
+    USER <==>|"Requisição HTTP/HTTPS<br/>porta 3000 / Resposta HTML ou JSON"| WEB
+    WEB ==>|"Conexão SQL via Pool (pg)<br/>TCP/SSL - porta 5432"| PG
 ```
+
+O diagrama de implantação utiliza um esquema de cores para representar os estereótipos UML, conforme indicado na legenda: azul claro representa o dispositivo do usuário (`device`), amarelo claro representa um nó de execução (`node`), azul acinzentado representa artefatos de software (`artifact`) e azul-marinho representa o artefato de persistência de dados. Essa convenção evita a dependência de símbolos de estereótipo (`<<>>`/`«»`) cuja renderização varia entre visualizadores Mermaid, mantendo a leitura fiel à notação UML por meio de codificação visual consistente.
+
+O acesso é realizado pelos perfis Administrador, Coordenador e Analista por meio de um navegador web (device), que se comunica de forma bidirecional com o nó "Servidor de Aplicação" — um ambiente de execução Node.js na porta 3000 — enviando requisições HTTP/HTTPS e recebendo como resposta páginas HTML renderizadas (rotas de navegação) ou dados em JSON (rotas `/api/...`). Esse nó concentra quatro artefatos implantados a partir do mesmo pacote `safra-control`: o módulo de inicialização (`app.ts`/`server.ts`), responsável por configurar o Express e registrar as rotas; a camada de Controllers/Services/Repositories, que contém as regras de negócio e o acesso a dados; a camada de apresentação, que reúne as views EJS (`src/views/*.ejs`) e os assets estáticos servidos via `express.static` a partir de `public/` (CSS, JS, imagens); e o middleware de autenticação JWT (`requireAuth.ts`), responsável pela validação de sessões. Todos esses artefatos coexistem no mesmo runtime e processo, sem necessidade de canais de rede entre si.
+
+A persistência ocorre em uma instância PostgreSQL hospedada no Supabase Cloud, acessada pelo servidor de aplicação por meio de uma conexão SQL sobre TCP/SSL na porta 5432, via biblioteca `pg` (`config/connection.ts`). Esse canal único atende tanto às consultas de negócio quanto às consultas de autenticação (usuários e sessões), já que ambas partem do mesmo pool de conexão dentro do nó de aplicação.
 
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
