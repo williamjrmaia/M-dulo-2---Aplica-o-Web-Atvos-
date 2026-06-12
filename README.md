@@ -235,8 +235,14 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 
 * 0.5.0 - XX/XX/2024
     * 
-* 0.4.0 - XX/XX/2024
-    * 
+* 0.4.0 - 10/06/2026
+    * Segunda versão web com frontend renderizado no servidor (EJS) integrado ao backend
+    * Autenticação com login, logout, primeiro acesso/definição de senha e proteção de rotas por perfil
+    * Gestão de usuários com perfis, alteração de perfil, inativação lógica e revogação de sessões
+    * Cadastro, edição, listagem, detalhe e inativação lógica de parceiros, com filtros e fluxo de rascunho, validação, aprovação e devolução
+    * Cadastro, edição, listagem e inativação lógica de terras e vínculos parceiro-terra
+    * Histórico de alterações, registro de interações e exportação CSV de parceiros
+    * Validação de entrada com Zod e métricas agregadas de interações (dashboard JSON)
 * 0.3.0 - 29/05/2024
     * Backend funcional com WebAPI e endpoints operantes
     * Protótipo de alta fidelidade e guia de estilos elaborados
