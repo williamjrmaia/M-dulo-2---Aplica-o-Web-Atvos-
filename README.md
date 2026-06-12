@@ -235,7 +235,7 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 
 * 0.5.0 - XX/XX/2024
     * 
-* 0.4.0 - 10/06/2026
+* 0.4.0 - 12/06/2026
     * Segunda versão web com frontend renderizado no servidor (EJS) integrado ao backend
     * Autenticação com login, logout, primeiro acesso/definição de senha e proteção de rotas por perfil
     * Gestão de usuários com perfis, alteração de perfil, inativação lógica e revogação de sessões
