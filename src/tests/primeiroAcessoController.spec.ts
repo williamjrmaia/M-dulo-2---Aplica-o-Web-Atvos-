@@ -82,3 +82,70 @@ describe('POST /primeiro-acesso/definir-senha (integração com banco real)', ()
     expect(tokenSalvo.rows[0].usado_em).not.toBeNull();
   });
 });
+
+describe('primeiro acesso — falhas de contrato (400)', () => {
+  // CT59 → RN02 (RF011): payload malformado é barrado pelo schema antes de tocar o banco
+  it('rejeita solicitação sem e-mail e não emite token', async () => {
+    const res = await request(app).post('/primeiro-acesso/solicitar').send({});
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('E-mail obrigatório');
+
+    const { rows } = await pool.query(
+      'SELECT COUNT(*)::int AS total FROM primeiro_acesso_tokens WHERE usuario_id = $1',
+      [usuarioId]
+    );
+    expect(rows[0].total).toBe(0);
+  });
+
+  it('rejeita senha com menos de 8 caracteres e mantém o usuário sem senha', async () => {
+    const solicitacao = await request(app).post('/primeiro-acesso/solicitar').send({ email: EMAIL });
+
+    const res = await request(app).post('/primeiro-acesso/definir-senha').send({
+      token: solicitacao.body.token,
+      senha: '1234567',
+      confirmacao_senha: '1234567',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Senha deve ter pelo menos 8 caracteres');
+
+    const usuario = await pool.query('SELECT senha_hash FROM usuarios WHERE id = $1', [usuarioId]);
+    expect(usuario.rows[0].senha_hash).toBeNull();
+  });
+
+  it('rejeita quando senha e confirmação não coincidem', async () => {
+    const solicitacao = await request(app).post('/primeiro-acesso/solicitar').send({ email: EMAIL });
+
+    const res = await request(app).post('/primeiro-acesso/definir-senha').send({
+      token: solicitacao.body.token,
+      senha: 'NovaSenha@123',
+      confirmacao_senha: 'OutraSenha@123',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Senhas não coincidem');
+  });
+
+  it('rejeita definição de senha sem token', async () => {
+    const res = await request(app).post('/primeiro-acesso/definir-senha').send({
+      senha: 'NovaSenha@123',
+      confirmacao_senha: 'NovaSenha@123',
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('Token obrigatório');
+  });
+});
+
+describe('primeiro acesso — usuário não encontrado (404)', () => {
+  // CT67 → RN02 (RF011): e-mail bem formado porém sem usuário elegível retorna não encontrado
+  it('responde 404 ao solicitar token para e-mail sem usuário cadastrado', async () => {
+    const res = await request(app)
+      .post('/primeiro-acesso/solicitar')
+      .send({ email: 'fantasma.inexistente@atvos.test' });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe('Usuário não elegível para primeiro acesso');
+  });
+});
