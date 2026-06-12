@@ -3053,150 +3053,93 @@ Com isso, a primeira versão entrega a base técnica do sistema: banco integrado
 
 ## 4.2. Segunda versão da aplicação web (sprint 4)
 
-Na sprint 4, a aplicação evoluiu da primeira versão centrada em backend para uma versão web navegável, com telas renderizadas no servidor, navegação entre módulos, autenticação por sessão e integração parcial dos fluxos principais com os services e repositories já implementados. O objetivo desta segunda versão foi transformar os endpoints e regras de negócio consolidados na sprint anterior em uma experiência operacional mínima para os perfis internos da ATVOS, permitindo visualizar, cadastrar, editar, validar e administrar registros a partir de páginas HTML.
+### 4.2.1. Objetivo e evolução
 
-A implementação utilizou Express com EJS para renderização server-side, mantendo a arquitetura em camadas já adotada no backend. As rotas de interface chamam os mesmos controllers e services usados pela API, evitando duplicidade de regra de negócio entre frontend e backend. Também foram adicionados arquivos públicos de estilo e comportamento (`public/css/atvos.css` e `public/js/app.js`), responsáveis por padronizar componentes visuais, navegação, formulários, busca client-side, máscaras de CPF/CNPJ e telefone, modais e mensagens de feedback.
+A segunda versão transforma a WebAPI da sprint anterior em uma aplicação web navegável e integrada. O objetivo foi disponibilizar os fluxos prioritários por páginas EJS e formulários HTML sem duplicar regras de negócio: tanto as rotas JSON quanto as rotas de interface reutilizam controllers, services, repositories e schemas do backend.
 
-### 4.2.1. Melhorias em relação à primeira versão
+Em relação à primeira versão, foram acrescentados autenticação por navegador, cookies HttpOnly, navegação por perfil, telas de parceiros, usuários, terras e validação, estados vazios, feedbacks, máscaras, busca client-side e ações conectadas ao PostgreSQL/Supabase.
 
-A principal melhoria em relação à sprint 3 foi a criação de uma camada visual funcional. Na primeira versão, o sistema estava estruturado principalmente como WebAPI, com endpoints, testes automatizados e integração com banco. Na segunda versão, esses recursos passaram a ser acessíveis por telas, formulários e fluxos de navegação.
+### 4.2.2. Arquitetura técnica e integração
 
-| Aspecto | Primeira versão (sprint 3) | Segunda versão (sprint 4) |
-| --- | --- | --- |
-| Experiência do usuário | Predominantemente API e backend. | Interface web navegável com páginas EJS. |
-| Acesso ao sistema | Login implementado no backend. | Tela de login, criação de sessão, cookie HttpOnly e logout. |
-| Parceiros | Endpoints de cadastro, listagem, edição e detalhe. | Telas de listagem, cadastro, edição e detalhe conectadas aos services. |
-| Validação | Transições de status implementadas por API. | Fila de validação com revisão, aprovação e devolução via formulário. |
-| Usuários | Endpoints e services de gestão. | Telas de listagem, cadastro, edição, alteração de perfil e inativação. |
-| Exportação | Service e endpoint de CSV. | Ação de exportar CSV disponível na tela de parceiros. |
-| Usabilidade | Sem experiência visual consolidada. | Guia visual aplicado com navegação, botões, cards, estados vazios, badges e feedbacks. |
+A aplicação utiliza TypeScript, Express, EJS, CSS próprio, JavaScript próprio e PostgreSQL/Supabase. `src/app.ts` registra os middlewares, arquivos públicos, rotas HTML e APIs. As routes recebem a requisição; controllers validam e escolhem resposta HTML ou JSON; services aplicam regras de negócio; repositories executam SQL; schemas Zod validam entradas; models descrevem o domínio.
 
-### 4.2.2. Fluxos funcionais disponíveis
+O login cria um JWT e uma sessão persistida. O middleware `requireAuth` valida token, sessão e usuário ativo. `authorizeRoles` aplica as permissões de `analista`, `coordenador` e `administrador` no backend. Views protegidas redirecionam visitantes para `/login`, enquanto APIs respondem com status HTTP e JSON.
 
-Os fluxos implementados nesta segunda versão cobrem os módulos mais importantes para a operação inicial do CRM:
+### 4.2.3. Fluxos funcionais disponíveis
 
-| Fluxo | Telas/rotas envolvidas | Integração com backend | RFs relacionados | User Stories / casos de uso relacionados |
-| --- | --- | --- | --- | --- |
-| Autenticação e sessão | `/login`, `/logout` | `AuthController`, `AuthService`, `AuthSessionRepository`, JWT e cookie `auth_token`. | RF011, RF020 | UC09 |
-| Navegação inicial | `/` | Renderização EJS com links para os módulos principais. | RF007, RF011, RF022 | US04, US06, US08, US11 |
-| Listagem e busca de parceiros | `/parceiros` | Consulta de parceiros pelo `ParceiroService`; busca visual client-side sobre a lista carregada. | RF007, RF012, RF016, RF017 | US04, US06, US07 |
-| Cadastro de parceiros | `/parceiros/novo`, `POST /parceiros` | Persistência via `cadastrarParceiro`, com validação de campos obrigatórios e duplicidade. | RF004, RF009, RF010, RF018, RF019 | US01, US02 |
-| Edição e detalhe de parceiros | `/parceiros/:id`, `/parceiros/:id/editar` | Consulta e atualização via `obterParceiroPorId` e `editarParceiro`. | RF005, RF008, RF013, RF018, RF019 | US04, US05 |
-| Validação de registros | `/validacao`, `/validacao/:id`, ações de aprovar/devolver | Transições de status usando services de aprovação e devolução. | RF021, RF022, RF023 | US11, US12 |
-| Gestão de usuários | `/usuarios`, `/usuarios/novo`, `/usuarios/:id/editar`, `/usuarios/:id/perfil`, `/usuarios/:id/inativar` | `UserController` e `UserService` para CRUD, perfil e inativação lógica. | RF001, RF002, RF003, RF009, RF010, RF020 | US08, US09, US10 |
-| Exportação CSV | `/parceiros/exportar` | `ExportaController`, `ExportaService` e `ExportaRepository`. | RF017 | US07 |
-| Dashboard de interações | `/dashboards/interacoes` | Endpoint JSON com métricas agregadas de interações. | Fluxo 15, RF006, RF018, RF019 | US03 |
+| Fluxo | Tela inicial | Endpoint/rota principal | Backend usado | Status |
+|---|---|---|---|---|
+| Login e logout | `/login` | `POST /login`, `POST /logout` | AuthController, AuthService e AuthSessionRepository | Implementado |
+| Primeiro acesso | `/primeiro-acesso` | `POST /primeiro-acesso` e endpoints de token | PrimeiroAcessoController, Service e Repository | Implementado |
+| Parceiros | `/parceiros` | Views em `/parceiros...` e API `/api/parceiros...` | parceiroController, parceiroService e parceiroRepository | Implementado |
+| Histórico e interações | `/parceiros/:id` | `GET /api/parceiros/:id/historico`, `POST /parceiros/:id/interacoes` | Módulos de parceiro e interação | Implementado |
+| Validação | `/validacao` | Views `/validacao...` e APIs `/api/parceiros/:id/...` | parceiroController, parceiroService e parceiroRepository | Implementado |
+| Usuários e perfis | `/usuarios` | Views `/usuarios...` e `POST /api/usuarios` | UserController, UserService e UserRepository | Implementado |
+| Terras | `/terras` | Views `/terras...` e API `/api/terras...` | TerraController, terraService e terraRepository | Implementado |
+| Vínculo parceiro-terra | `/terras/:id/vincular-parceiro` | APIs bidirecionais de parceiros e terras | Módulos de parceiro e terra | Implementado |
+| Exportação CSV | `/parceiros` | `GET /parceiros/exportar` | ExportaController, Service e Repository | Implementado |
+| Dashboard de interações | Sem tela específica | `GET /dashboards/interacoes` | DashboardController, Service e Repository | Parcial: somente JSON |
+| Exclusão lógica | Sem botão dedicado | `DELETE /api/parceiros/:id`, `DELETE /api/terras/:id` | Services e repositories correspondentes | Parcial na interface |
+| Upload de arquivos | Não existe | Não existe | Não implementado | Pendente |
+| Notificação periódica | Não existe | Não existe | Não implementado | Pendente |
 
-### 4.2.3. Telas atualizadas e evidências visuais
+### 4.2.4. Telas implementadas
 
-As evidências abaixo foram capturadas com a aplicação em execução local na porta `3100`, em `NODE_ENV=test`, para permitir a navegação pelas views sem depender de uma sessão manual durante a geração dos prints. As páginas principais retornaram status `200` durante a verificação manual: `/login`, `/`, `/parceiros`, `/parceiros/novo`, `/validacao` e `/usuarios`.
+- login e primeiro acesso;
+- página inicial com atalhos por permissão;
+- listagem, cadastro, edição e detalhe de parceiros;
+- fila e revisão de parceiros pendentes;
+- listagem, cadastro, edição, perfil e inativação de usuários;
+- listagem, cadastro, edição e vínculo de terras;
+- estados vazios, mensagens de erro e sucesso, badges, cards, tabelas e formulários responsivos.
 
-<div align="center">
-  <sub>Figura 4.2.3.1 - Tela de login do Safra Control</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/login.png" width="100%" alt="Tela de login do Safra Control"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+O protótipo de alta fidelidade apresenta um logotipo completo em imagem. A implementação atual não possui esse arquivo em `public/`; por isso, usa uma marca vetorial construída em CSS com as cores institucionais. Essa decisão evita referenciar um ativo inexistente, mas permanece como diferença visual conhecida em relação ao Figma.
 
-A tela de login centraliza o acesso por e-mail e senha e exibe usuários de demonstração, facilitando a validação acadêmica do fluxo. No backend, o login cria uma sessão persistida e retorna token/cookie para acesso às rotas protegidas.
+### 4.2.5. Evidências visuais e de execução
 
-<div align="center">
-  <sub>Figura 4.2.3.2 - Tela inicial com atalhos para os módulos</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/home.png" width="100%" alt="Tela inicial do Safra Control"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+Os arquivos em `documentos/assets/aplicacao_web_sprint4/` registram uma captura histórica da interface durante a sprint. Eles não são usados como prova do fluxo autenticado porque foram produzidos anteriormente em ambiente de teste. O arquivo `login.png`, que estava vazio, foi removido para impedir a publicação de uma evidência inválida.
 
-A tela inicial funciona como ponto de entrada para os principais fluxos: parceiros, novo cadastro, validação e usuários. Ela substitui a necessidade de navegar diretamente por endpoints e organiza a aplicação de acordo com as tarefas dos usuários internos.
+Não foi possível produzir novas capturas neste ambiente porque não há navegador headless funcional instalado. Em vez de simular imagens, a validação foi feita com servidor real, banco configurado e sessão criada pelo endpoint de login.
 
-<div align="center">
-  <sub>Figura 4.2.3.3 - Listagem de parceiros com busca e exportação</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/parceiros.png" width="100%" alt="Listagem de parceiros do Safra Control"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+| Evidência executada | Resultado observado |
+|---|---|
+| `npm install` | Dependências atualizadas; auditoria sem vulnerabilidades. |
+| `npm run migrate` | `migration.sql` e migrations complementares aplicadas com sucesso. |
+| `npm run seed` | Perfis e três usuários de demonstração preparados com sucesso. |
+| `GET /login` | `200`. |
+| `GET /` sem sessão | `302` para `/login`. |
+| `POST /login` com administrador de demonstração | `302` para `/parceiros`, com cookies de sessão. |
+| `GET /`, `/parceiros`, `/parceiros/novo`, `/validacao`, `/usuarios` e `/terras` autenticado | `200` em todas as páginas. |
+| `GET /api/parceiros` e `GET /api/terras` autenticado | `200` em ambas as APIs. |
+| `POST /logout` | `302` para `/login`, com encerramento da sessão. |
 
-A listagem de parceiros apresenta busca por nome ou CPF/CNPJ, ações de cadastro de fornecedor ou proprietário e exportação CSV. No ambiente usado para a captura, a base não possuía parceiros ativos, portanto a tela exibe corretamente o estado vazio e orienta o usuário a cadastrar o primeiro parceiro.
+Para a apresentação final, as capturas devem ser refeitas em navegador convencional depois do login, usando dados de demonstração sem informações sensíveis. Os PNGs históricos restantes podem orientar enquadramento, mas não substituem essa evidência autenticada.
 
-<div align="center">
-  <sub>Figura 4.2.3.4 - Formulário de cadastro de novo parceiro</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/novo-parceiro.png" width="100%" alt="Formulário de cadastro de parceiro"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+### 4.2.6. Decisões técnicas relevantes
 
-O formulário de parceiro permite cadastrar fornecedores e proprietários, usando campos padronizados e máscaras no frontend para reduzir erros de digitação. A submissão é processada pelo backend e reaproveita as validações de campos obrigatórios e unicidade já cobertas pelos testes.
+1. EJS foi mantido para renderização server-side, reduzindo complexidade de infraestrutura e preservando a stack do projeto.
+2. API e formulários compartilham regras de negócio e persistência, evitando versões divergentes do mesmo fluxo.
+3. Autorização é aplicada nas rotas do backend, não apenas pela ocultação de botões.
+4. Cookies de autenticação são HttpOnly, `sameSite=lax` e `secure` em produção.
+5. Exclusões de parceiros e terras são lógicas, preservando auditoria e referências.
+6. CSS e JavaScript próprios concentram identidade, responsividade, máscaras, busca, modais e feedbacks sem bibliotecas externas.
 
-<div align="center">
-  <sub>Figura 4.2.3.5 - Fila de validação de registros</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/validacao.png" width="100%" alt="Tela de validação de registros pendentes"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+### 4.2.7. Testes e validações
 
-A tela de validação apresenta os registros pendentes e permite acessar a revisão individual para aprovar ou devolver cadastros. No ambiente da evidência não havia registros pendentes, por isso o estado vazio confirma o comportamento previsto para uma fila sem itens.
+A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na revisão do Artefato 10, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 36 suítes e 276 testes. A execução completa levou 837,53 segundos devido ao uso de banco remoto em parte dos testes.
 
-<div align="center">
-  <sub>Figura 4.2.3.6 - Gestão de usuários</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/usuarios.png" width="100%" alt="Tela de gestão de usuários"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+### 4.2.8. Limitações conhecidas e próximos passos
 
-A gestão de usuários exibe colaboradores cadastrados, status ativo, perfil de acesso, data de cadastro e ações de edição e inativação. Esse fluxo atende à necessidade de governança de acesso, permitindo que o administrador mantenha os perfis coerentes com as responsabilidades de cada colaborador.
+| Limitação | Próximo passo recomendado |
+|---|---|
+| Dashboard disponível somente em JSON | Criar view com indicadores acessíveis e responsivos. |
+| Exclusão lógica sem ação dedicada nas views | Adicionar confirmação e botão apenas para perfis autorizados. |
+| Ausência do arquivo oficial de logotipo no diretório público | Incorporar ativo aprovado pela equipe e revisar contraste e dimensões. |
+| Upload de arquivos não implementado | Definir armazenamento, autorização, limites e auditoria antes da implementação. |
+| Notificação periódica não implementada | Definir scheduler, período e canal de notificação. |
+| Capturas autenticadas não geradas neste ambiente | Refazer evidências em navegador com sessão real antes da entrega final. |
 
-### 4.2.4. Decisões técnicas relevantes
-
-A segunda versão manteve a decisão de arquitetura em camadas. As views não acessam o banco diretamente; elas passam por rotas, controllers, services e repositories. Essa escolha reduz o risco de divergência entre comportamento da API e comportamento da interface, pois os dois pontos de entrada compartilham as mesmas regras de negócio.
-
-Outra decisão relevante foi o uso de renderização server-side com EJS. Para esta fase do projeto, essa abordagem reduziu a complexidade de infraestrutura, dispensou a criação de uma aplicação frontend separada e permitiu entregar rapidamente telas funcionais conectadas ao backend Express. Os arquivos públicos de CSS e JavaScript ficaram concentrados em `public/`, mantendo a interface simples de servir e compatível com a estrutura atual.
-
-Também foi consolidado o middleware `requireAuth` para proteger rotas internas. O middleware valida token JWT, consulta a sessão ativa no banco, verifica se o usuário continua ativo e diferencia respostas HTML e JSON: páginas web redirecionam para `/login`, enquanto chamadas de API recebem `401`. Essa separação é importante para manter coerência entre uso por navegador e uso por cliente HTTP.
-
-### 4.2.5. O que foi implementado
-
-Foram implementadas as seguintes entregas de aplicação web:
-
-| Entrega | Descrição |
-| --- | --- |
-| Layout e navegação global | Cabeçalho com marca Safra Control, links para parceiros, validação e usuários, além de ação de logout. |
-| Tela de login | Formulário de acesso com e-mail e senha, mensagens de erro e usuários de demonstração. |
-| Home operacional | Página inicial com atalhos para módulos centrais do sistema. |
-| Módulo de parceiros | Listagem, busca client-side, estado vazio, cadastro, edição, detalhe e exportação CSV. |
-| Módulo de validação | Fila de pendentes, revisão de registro, aprovação e devolução com comentário. |
-| Módulo de usuários | Listagem, cadastro, edição, alteração de perfil e inativação lógica. |
-| Componentes de interface | Botões, cards, badges de status, formulários, modais, flash messages, máscaras e busca em listas. |
-| Integração com backend | Reuso dos controllers/services/repositories existentes para persistência, validação, autenticação e exportação. |
-
-### 4.2.6. O que não foi concluído
-
-Apesar de a aplicação já estar navegável, alguns pontos permanecem incompletos para a versão final:
-
-| Pendência | Impacto |
-| --- | --- |
-| Autorização por perfil mais granular nas views | O backend já autentica o usuário, mas a restrição fina por perfil ainda precisa ser consolidada em todas as rotas e ações da interface. |
-| Telas completas de terras e vínculos | Os endpoints de terras e relacionamento parceiro-terra existem, mas ainda não há uma experiência web completa para cadastro, edição e associação diretamente pela interface. |
-| Dashboard visual | O endpoint de dashboard de interações existe em JSON, porém ainda não foi transformado em uma tela com gráficos e indicadores. |
-| Histórico/auditoria em tela | A API de histórico está implementada, mas a visualização amigável do histórico de alterações ainda deve ser integrada ao perfil do parceiro. |
-| Notificações e processo periódico | O RF025 permanece como evolução futura, sem tela ou rotina operacional final nesta versão. |
-| Base de demonstração para parceiros | Na captura das evidências, a base local não possuía parceiros ativos nem pendentes, resultando em estados vazios nas telas de parceiros e validação. |
-
-### 4.2.7. Dificuldades técnicas enfrentadas
-
-Uma dificuldade relevante foi integrar a interface EJS aos services existentes sem duplicar regras de validação. Como parte da API já estava testada, a solução foi reutilizar os controllers e services para as ações de formulário, adaptando apenas os retornos para HTML, redirecionamentos e mensagens de erro.
-
-Outro desafio foi conciliar autenticação, sessão e renderização por navegador. A aplicação precisa responder de forma diferente para rotas HTML e endpoints JSON, pois uma falha de autenticação em tela deve redirecionar para o login, enquanto uma falha em API deve retornar status HTTP adequado. O middleware `requireAuth` foi ajustado para tratar esses dois contextos.
-
-Também houve complexidade na documentação das evidências visuais, porque algumas telas dependem do estado do banco. Para manter a transparência, os prints foram registrados com a base disponível no ambiente local, incluindo estados vazios quando não havia parceiros ou registros pendentes.
-
-### 4.2.8. Próximos ajustes
-
-Para a versão final da aplicação web, os próximos ajustes recomendados são:
-
-| Próximo ajuste | Objetivo |
-| --- | --- |
-| Consolidar autorização por perfil | Garantir que analistas, coordenadores e administradores acessem apenas as ações permitidas. |
-| Criar telas de terras e vínculos | Permitir a gestão completa do relacionamento entre parceiros e terras pela interface web. |
-| Adicionar dashboard visual | Transformar o endpoint de métricas de interações em uma tela com indicadores e gráficos. |
-| Integrar histórico ao perfil do parceiro | Exibir alterações anteriores e responsáveis diretamente na interface. |
-| Popular uma base de demonstração | Facilitar validação acadêmica e apresentação com parceiros, pendências e interações de exemplo. |
-| Revisar responsividade e acessibilidade | Validar a experiência em telas menores, navegação por teclado, contraste e textos alternativos. |
-
-Com isso, a segunda versão atende ao objetivo da sprint 4: entregar uma aplicação web funcional mínima, integrada ao backend em seus fluxos principais, com evidências visuais, rastreabilidade para RFs e User Stories e registro transparente das limitações que devem ser endereçadas na versão final.
+A segunda versão atende ao objetivo de integrar backend e frontend nos fluxos centrais sem mocks de produção. As limitações acima são registradas como evolução, não como funcionalidades concluídas.
 
 ## 4.3. Versão final da aplicação web (sprint 5)
 
