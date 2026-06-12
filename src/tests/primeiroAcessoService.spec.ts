@@ -145,4 +145,128 @@ describe('PrimeiroAcessoService', () => {
       'Token inválido ou expirado'
     );
   });
+
+  // CT44 → RN02 (RF011): usuário inexistente ou inativo não gera token de primeiro acesso
+  it('não gera token para usuário inexistente ou inativo', async () => {
+    const serviceInexistente = new PrimeiroAcessoService(
+      userRepositoryStub({ buscarPorEmail: jest.fn().mockResolvedValue(null) }),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(serviceInexistente.solicitarToken('fantasma@atvos.test')).rejects.toThrow(
+      'Usuário não elegível para primeiro acesso'
+    );
+
+    const serviceInativo = new PrimeiroAcessoService(
+      userRepositoryStub({
+        buscarPorEmail: jest.fn().mockResolvedValue({ ...usuarioSemSenha, ativo: false }),
+      }),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(serviceInativo.solicitarToken(usuarioSemSenha.email)).rejects.toThrow(
+      'Usuário não elegível para primeiro acesso'
+    );
+  });
+
+  // CT45 → RN02 (RF011): token cujo usuário não existe mais ou está inativo é rejeitado
+  it('rejeita token cujo usuário não existe ou está inativo', async () => {
+    const tokenRegistro = {
+      id: '55555555-5555-5555-5555-555555555555',
+      usuario_id: usuarioSemSenha.id,
+      token_hash: 'hash-token',
+      criado_em: new Date(),
+      expira_em: new Date(Date.now() + 60_000),
+      usado_em: null,
+    };
+    const serviceUsuarioInexistente = new PrimeiroAcessoService(
+      userRepositoryStub({ buscarPorId: jest.fn().mockResolvedValue(null) }),
+      primeiroAcessoRepositoryStub({ buscarTokenValido: jest.fn().mockResolvedValue(tokenRegistro) })
+    );
+    await expect(serviceUsuarioInexistente.definirSenha('token-valido', 'Senha@123')).rejects.toThrow(
+      'Token inválido ou expirado'
+    );
+
+    const serviceUsuarioInativo = new PrimeiroAcessoService(
+      userRepositoryStub({
+        buscarPorId: jest.fn().mockResolvedValue({ ...usuarioSemSenha, ativo: false }),
+      }),
+      primeiroAcessoRepositoryStub({ buscarTokenValido: jest.fn().mockResolvedValue(tokenRegistro) })
+    );
+    await expect(serviceUsuarioInativo.definirSenha('token-valido', 'Senha@123')).rejects.toThrow(
+      'Token inválido ou expirado'
+    );
+  });
+
+  // CT46 → RN02 (RF011): e-mail é obrigatório para definir a senha por e-mail
+  it('rejeita email vazio em definirSenhaPorEmail', async () => {
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({}),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(service.definirSenhaPorEmail('', 'Senha@123')).rejects.toThrow(
+      'E-mail obrigatório'
+    );
+  });
+
+  // CT47 → RN02 (RF011): senha do primeiro acesso por e-mail deve ter pelo menos 8 caracteres
+  it('rejeita senha com menos de 8 caracteres em definirSenhaPorEmail', async () => {
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({}),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(service.definirSenhaPorEmail(usuarioSemSenha.email, '1234567')).rejects.toThrow(
+      'Senha deve ter pelo menos 8 caracteres'
+    );
+  });
+
+  // CT48 → RN02 (RF011): apenas usuário cadastrado e ativo define senha por e-mail
+  it('rejeita usuário inexistente ou inativo em definirSenhaPorEmail', async () => {
+    const serviceInexistente = new PrimeiroAcessoService(
+      userRepositoryStub({ buscarPorEmail: jest.fn().mockResolvedValue(null) }),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(
+      serviceInexistente.definirSenhaPorEmail('fantasma@atvos.test', 'Senha@123')
+    ).rejects.toThrow('Usuário não elegível para primeiro acesso');
+
+    const serviceInativo = new PrimeiroAcessoService(
+      userRepositoryStub({
+        buscarPorEmail: jest.fn().mockResolvedValue({ ...usuarioSemSenha, ativo: false }),
+      }),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(
+      serviceInativo.definirSenhaPorEmail(usuarioSemSenha.email, 'Senha@123')
+    ).rejects.toThrow('Usuário não elegível para primeiro acesso');
+  });
+
+  // CT49 → RN01 (RF011): usuário que já possui senha não redefine pelo primeiro acesso
+  it('rejeita usuário que já possui senha em definirSenhaPorEmail', async () => {
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({
+        buscarPorEmail: jest.fn().mockResolvedValue({ ...usuarioSemSenha, senha_hash: 'hash-existente' }),
+      }),
+      primeiroAcessoRepositoryStub({})
+    );
+    await expect(service.definirSenhaPorEmail(usuarioSemSenha.email, 'Senha@123')).rejects.toThrow(
+      'Usuário já acessou o sistema anteriormente'
+    );
+  });
+
+  // CT50 → RN02 (RF011): senha por e-mail é gravada como hash bcrypt e e-mail é normalizado
+  it('define senha por e-mail com hash bcrypt e normaliza e-mail para minúsculas', async () => {
+    const buscarPorEmail = jest.fn().mockResolvedValue(usuarioSemSenha);
+    const definirSenha = jest.fn().mockResolvedValue({ ...usuarioSemSenha, senha_hash: 'hash' });
+    const service = new PrimeiroAcessoService(
+      userRepositoryStub({ buscarPorEmail, definirSenha }),
+      primeiroAcessoRepositoryStub({})
+    );
+
+    await service.definirSenhaPorEmail('PRIMEIRO@ATVOS.TEST', 'Senha@123');
+
+    expect(buscarPorEmail).toHaveBeenCalledWith('primeiro@atvos.test');
+    expect(definirSenha).toHaveBeenCalledWith(usuarioSemSenha.id, expect.any(String));
+    const senhaHashGravada = definirSenha.mock.calls[0][1] as string;
+    expect(senhaHashGravada).not.toBe('Senha@123');
+    expect(await bcrypt.compare('Senha@123', senhaHashGravada)).toBe(true);
+  });
 });
