@@ -572,58 +572,47 @@ Além dos oito eixos de RNF, o projeto possui restrições de design que delimit
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
-| RF | US relacionada | RN associadas | Endpoint | Método |
-|---|---|---|---|---|
-| RF001 | US08 | RN01, RN03 | `/api/usuarios` | POST |
-| RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id` | PUT |
-| RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id/inativar` | PUT |
-| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | PUT |
-| RF004 | US01, US02 | RN05, RN10 | `/api/parceiros` | POST |
-| RF005 | US05 | RN10, RN19, RN20 | `/api/parceiros/:id` | PATCH |
-| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF007 | US04, US06 | RN04, RN08 | `/api/parceiros` | GET |
-| RF008 | US04 | RN04, RN08 | `/api/parceiros/:id` | GET |
-| RF009 | US01, US02, US08 | RN09 | `/api/usuarios` | POST |
-| RF009 | US01, US02, US08 | RN09 | `/api/parceiros` | POST |
-| RF009 | US01, US02, US08 | RN09 | `/api/parceiros/:id` | PATCH |
-| RF010 | US01, US02, US08 | RN10 | `/api/usuarios` | POST |
-| RF010 | US01, US02, US08 | RN10 | `/api/parceiros` | POST |
-| RF010 | US01, US02, US08 | RN10 | `/api/parceiros/:id` | PATCH |
-| RF010 | US01, US02, US08 | RN10 | `/api/terras` | POST |
-| RF010 | US01, US02, US08 | RN10 | `/api/terras/:id` | PUT |
-| RF011 | US08, US09 | RN02 | `/login` | POST |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/api/parceiros` | GET |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/api/parceiros/:id` | GET |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/api/terras` | GET |
-| RF013 | US05 | RN12 | `/api/parceiros/:id/historico` | GET |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/usuarios/:id/inativar` | PUT |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/api/parceiros/:id` | PATCH |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/api/terras/:id` | PUT |
-| RF015 | US01, US02 | RN13, RN14 | `/api/parceiros/:id/terras` | GET, POST |
-| RF015 | US01, US02 | RN13, RN14 | `/api/terras/:id/parceiros` | GET, POST |
-| RF016 | US06 | RN04, RN08 | `/api/parceiros?nome=&regiao=&area=&tipo=` | GET |
-| RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
-| RF020 | US09 | RN15 | `/usuarios/:id/inativar` | PUT |
-| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT |
-| RF021 | US01, US02 | RN16 | `/api/parceiros/:id/validacao` | PUT |
-| RF022 | US11 | RN17 | `/api/parceiros/:id/aprovar` | PUT |
-| RF023 | US11 | RN17 | `/api/parceiros/:id/devolver` | PUT |
-| RF024 | Sem US prioritária associada nesta Sprint | — | — | — |
-| RF025 | Sem US prioritária associada nesta Sprint | RN18 | — | — |
+A matriz diferencia contratos JSON, páginas renderizadas e submissões de formulário. O status considera a segunda versão disponível no repositório e não presume funcionalidades sem rota implementada.
+
+| RF | US relacionada | RN associadas | Endpoint/Rota | Método | Tipo | Status | Observação |
+|---|---|---|---|---|---|---|---|
+| RF001, RF009, RF010 | US08 | RN01, RN03, RN09, RN10 | `/api/usuarios` | POST | API JSON | Implementado | Cadastro administrativo; valida e-mail e perfil. |
+| RF001, RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios`, `/usuarios/novo` | GET, POST | View HTML / Form HTML | Implementado | Lista e cria usuários pela interface. |
+| RF002, RF018, RF019 | US09, US10 | RN01, RN06, RN11 | `/usuarios/:id/editar`, `/usuarios/:id` | GET, POST, PUT | View HTML / Form HTML / API JSON | Implementado | A interface usa POST; o contrato programático usa PUT. |
+| RF002, RF020 | US09 | RN06, RN15 | `/usuarios/:id/inativar` | GET, POST, PUT | View HTML / Form HTML / API JSON | Implementado | Inativação revoga sessões ativas. |
+| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | GET, POST, PUT | View HTML / Form HTML / API JSON | Implementado | Alteração restrita ao administrador. |
+| RF004, RF009, RF010, RF018, RF019 | US01, US02 | RN04, RN09, RN10, RN11 | `/api/parceiros` | POST | API JSON | Implementado | Cria rascunho ou pendente conforme payload válido. |
+| RF004, RF010, RF018, RF019 | US01, US02 | RN04, RN10, RN11 | `/parceiros/novo`, `/parceiros` | GET, POST | View HTML / Form HTML | Implementado | Formulário integrado ao mesmo service de parceiros. |
+| RF005, RF009, RF010, RF018, RF019 | US05 | RN04, RN09, RN10, RN11, RN19, RN20 | `/api/parceiros/:id` | PATCH | API JSON | Implementado | Rejeita corpo vazio, duplicidade e parceiro inexistente. |
+| RF005, RF008 | US04, US05 | RN04, RN05 | `/parceiros/:id`, `/parceiros/:id/editar` | GET, POST | View HTML / Form HTML | Implementado | Detalhe e edição navegáveis pela interface. |
+| RF006, RF018, RF019 | US03 | RN04, RN11 | `/parceiros/:id/interacoes` | POST | API JSON | Implementado | Responde JSON; o detalhe envia a interação por JavaScript. |
+| RF006 | US03 | RN11 | `/dashboards/interacoes` | GET | API JSON | Parcial | Métricas implementadas, sem view EJS específica. |
+| RF007, RF012, RF016 | US04, US06 | RN04, RN05, RN08 | `/api/parceiros` | GET | API JSON | Implementado | Aceita filtros reais por query string e omite inativos. |
+| RF007, RF008, RF016, RF017 | US04, US06, US07 | RN04, RN05, RN08 | `/parceiros` | GET | View HTML | Implementado | Lista, filtros, busca e acesso à exportação. |
+| RF008, RF012 | US04 | RN04, RN05, RN08 | `/api/parceiros/:id` | GET | API JSON | Implementado | Retorna 404 para inexistente, inválido ou inativo. |
+| RF011 | US08, US09 | RN02 | `/login` | GET, POST | View HTML / Form HTML | Implementado | Cria JWT e sessão persistida em login válido. |
+| RF011, RF020 | US09 | RN02, RN15 | `/logout` | POST | Form HTML | Implementado | Revoga a sessão atual e limpa cookies. |
+| RF011 | US08 | RN02 | `/primeiro-acesso` | GET, POST | View HTML / Form HTML | Implementado | Define senha para usuário ativo ainda sem senha. |
+| RF011 | US08 | RN02 | `/primeiro-acesso/solicitar`, `/primeiro-acesso/definir-senha` | POST | API JSON | Implementado | Token temporário de 24 horas e uso único. |
+| RF012 | US04, US06 | RN07, RN08 | `/api/terras` | GET | API JSON | Implementado | A consulta padrão omite terras inativas. |
+| RF013 | US05 | RN12 | `/api/parceiros/:id/historico` | GET | API JSON | Implementado | Expõe alterações persistidas do parceiro. |
+| RF013 | US05 | RN12 | `/parceiros/:id` | GET | View HTML | Implementado | A tela reúne histórico e interações do parceiro. |
+| RF014 | Sem US prioritária | RN06, RN07, RN08 | `/api/parceiros/:id` | DELETE | API JSON | Implementado | Exclusão lógica; não remove fisicamente o registro. |
+| RF014 | Sem US prioritária | RN06, RN07, RN08 | `/api/terras/:id` | DELETE | API JSON | Implementado | Exclusão lógica; não remove fisicamente o registro. |
+| RF015 | US01, US02 | RN13, RN14 | `/api/parceiros/:id/terras` | GET, POST | API JSON | Implementado | Lista e cria vínculo a partir do parceiro. |
+| RF015 | US01, US02 | RN13, RN14 | `/api/terras/:id/parceiros` | GET, POST | API JSON | Implementado | Lista e cria vínculo a partir da terra. |
+| RF015 | US01, US02 | RN13, RN14 | `/terras/:id/vincular-parceiro`, `/terras/:id/parceiros` | GET, POST | View HTML / Form HTML | Implementado | Fluxo de vínculo disponível na interface de terras. |
+| RF017 | US07 | RN04 | `/parceiros/exportar` | GET | Download CSV | Implementado | Restrito a coordenador e administrador. |
+| RF018, RF019 | US01, US02 | RN11 | `/api/terras`, `/api/terras/:id` | POST, PUT | API JSON | Implementado | Persiste timestamps e responsável informado. |
+| RF018, RF019 | US01, US02 | RN11 | `/terras`, `/terras/nova`, `/terras/:id/editar` | GET, POST | View HTML / Form HTML | Implementado | Usa o usuário autenticado como responsável. |
+| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT | API JSON | Implementado | Permite revogação explícita de sessão. |
+| RF021 | US01, US02 | RN16 | `/api/parceiros/:id/validacao` | PUT | API JSON | Implementado | Transição de rascunho/devolvido para pendente. |
+| RF022 | US11 | RN17 | `/validacao` | GET | View HTML | Implementado | Exibe somente parceiros pendentes. |
+| RF022, RF023 | US11 | RN17 | `/validacao/:id` | GET | View HTML | Implementado | Tela de revisão do registro pendente. |
+| RF023 | US11 | RN17 | `/api/parceiros/:id/aprovar`, `/api/parceiros/:id/devolver` | PUT | API JSON | Implementado | Aprovação e devolução exigem parceiro pendente. |
+| RF023 | US11 | RN17 | `/validacao/:id/aprovar`, `/validacao/:id/devolver` | POST | Form HTML | Implementado | A devolução exige comentário na interface. |
+| RF024 | Sem US prioritária | — | — | — | — | Pendente | Não há upload, armazenamento ou rota de arquivo nesta versão. |
+| RF025 | Sem US prioritária | RN18 | — | — | — | Pendente | Não há scheduler nem serviço de notificação automática. |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
