@@ -3299,6 +3299,20 @@ CT29 Atualização de perfil de acesso. Regra coberta RN03. Caminho feliz. Este 
 
 Os cinco casos cobrem os três fluxos críticos citados na 5.1.1 e equilibram caminho feliz e caminho de falha. Os casos de sucesso provam a persistência lendo o banco depois da ação, e os casos de falha provam o bloqueio verificando a exceção correta, sem efeito no banco. Dessa forma, a seção mostra que cada regra de negócio central tem um teste que a defende.
 
+### 5.1.3 Testes de Integração de Endpoints (black-box)
+
+Os testes de integração verificam o sistema do ponto de vista de quem consome a API. Cada caso envia uma requisição HTTP de verdade para um endpoint e confere três coisas: o status retornado, o corpo da resposta e o efeito gravado no banco. Diferente dos testes unitários da 5.1.2, que chamam o service direto e conhecem a implementação, esses testes tratam a aplicação como uma caixa preta, em que só importa o contrato que o endpoint promete cumprir. Esta subseção apresenta como o ambiente desses testes foi montado. Os casos cobertos por endpoint são detalhados na sequência.
+
+#### Ambiente de integração
+
+A ferramenta usada é o Supertest, em conjunto com o Jest. O Supertest recebe a aplicação Express exportada por src/app.ts e simula as requisições dentro do próprio processo de teste, sem abrir porta de rede. Para isso funcionar, o app.ts apenas monta middlewares e rotas e exporta o objeto da aplicação. Quem sobe o servidor de verdade é o src/server.ts, que chama listen somente quando executado de forma direta. Essa separação permite que cada spec importe o app e faça chamadas com request(app) como se fosse um cliente externo.
+
+O banco usado pelos testes é definido pela variável de ambiente DATABASE_URL_TEST. Quando o Jest executa, a variável NODE_ENV recebe o valor test de forma automática, e o arquivo src/config/connection.ts passa a usar a URL de teste no lugar da URL principal. Assim, a conexão dos testes fica separada da configuração usada pelo servidor em operação normal. O arquivo src/tests/jest.setup.ts completa o ambiente carregando o .env e definindo valores padrão para as variáveis que os testes precisam, como o segredo de assinatura dos tokens de sessão.
+
+O isolamento entre os casos segue o mesmo padrão da camada de service. Os helpers de src/tests/helpers criam os usuários e registros que cada teste precisa no beforeEach e os removem no afterEach, para que um caso não dependa do que outro deixou no banco. Ao final de cada arquivo, o afterAll encerra o pool de conexões, garantindo que a suíte termine sem conexões abertas.
+
+A validação do ambiente é feita pela própria suíte. Os specs de controller em src/tests usam request(app), percorrem o fluxo completo de rota, controller, service, repository e banco, e executam com sucesso no npm test.
+
 ## 5.2. Testes de usabilidade (sprint 5)
 
 ### 5.2.1. Relatório de testes de guerrilha
