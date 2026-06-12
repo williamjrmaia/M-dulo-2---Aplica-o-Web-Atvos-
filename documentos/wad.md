@@ -1428,6 +1428,7 @@ flowchart TB
 
 O diagrama de implantação apresenta a distribuição dos principais componentes da solução em seus respectivos ambientes de execução, evidenciando os nós, artefatos e mecanismos de comunicação utilizados pela aplicação. A modelagem foi elaborada sob a perspectiva de Engenharia e Tecnologia do RM-ODP, permitindo compreender como os elementos de software são implantados e interagem durante a operação do sistema.
 
+O acesso ao sistema é realizado por meio de um navegador web utilizado pelos perfis de Administrador, Coordenador e Analista. As requisições são encaminhadas via HTTP/HTTPS para o servidor de aplicação Node.js, responsável por hospedar a aplicação web desenvolvida com Express.js e EJS. Nesse ambiente também está implantado o middleware de autenticação baseado em JWT, encarregado da validação de sessões e controle de acesso aos recursos da plataforma.
 
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
