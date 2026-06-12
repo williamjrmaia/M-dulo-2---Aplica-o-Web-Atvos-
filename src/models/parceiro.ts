@@ -104,8 +104,13 @@ export interface ListarParceirosFiltros {
     regiao?: string;
     area?: number;
     tipo?: 'fisica' | 'juridica' | 'arrendador' | 'fornecedor';
-    status?: 'rascunho' | 'pendente' | 'ativo' | 'devolvido';
+    status?: 'rascunho' | 'pendente' | 'ativo' | 'devolvido' | 'inativo';
     usina_referencia?: string;
+}
+
+export interface ConsultaParceirosOpcoes {
+    incluirInativos?: boolean;
+    rascunhosUsuarioId?: string;
 }
 
 export interface HistoricoParceiro {

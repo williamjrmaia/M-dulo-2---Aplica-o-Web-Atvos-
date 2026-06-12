@@ -42,8 +42,8 @@ export const listarParceirosFiltrosSchema = z.object({
       return texto.length > 0 ? texto : undefined;
     },
     z
-      .enum(['rascunho', 'pendente', 'ativo', 'devolvido'], {
-        message: 'status deve ser rascunho, pendente, ativo ou devolvido',
+      .enum(['rascunho', 'pendente', 'ativo', 'devolvido', 'inativo'], {
+        message: 'status deve ser rascunho, pendente, ativo, devolvido ou inativo',
       })
       .optional()
   ),

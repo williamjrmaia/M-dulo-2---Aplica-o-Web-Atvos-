@@ -6,6 +6,7 @@ import {
   listarTerras,
   processarCadastroTerra,
   processarEdicaoTerra,
+  processarInativacaoTerra,
   processarVinculoTerra,
   renderFormCadastroTerra,
   renderFormEdicaoTerra,
@@ -36,5 +37,6 @@ viewRouter.get('/nova', authorizeRoles('analista', 'administrador'), renderFormC
 viewRouter.post('/', authorizeRoles('analista', 'administrador'), processarCadastroTerra);
 viewRouter.get('/:id/editar', authorizeRoles('analista', 'coordenador', 'administrador'), renderFormEdicaoTerra);
 viewRouter.post('/:id/editar', authorizeRoles('analista', 'coordenador', 'administrador'), processarEdicaoTerra);
+viewRouter.post('/:id/inativar', authorizeRoles('administrador'), processarInativacaoTerra);
 viewRouter.get('/:id/vincular-parceiro', authorizeRoles('analista', 'administrador'), renderFormVinculoTerra);
 viewRouter.post('/:id/parceiros', authorizeRoles('analista', 'administrador'), processarVinculoTerra);

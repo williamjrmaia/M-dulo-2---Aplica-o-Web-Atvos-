@@ -9,6 +9,7 @@ import {
 } from '../repositories/terraRepository';
 import {
   CreateTerraInput,
+  ConsultaTerrasOpcoes,
   ExcluirTerraInput,
   ParceiroDaTerra,
   Terra,
@@ -30,13 +31,16 @@ export async function cadastrarTerra(data: CreateTerraInput): Promise<Terra> {
   }
 }
 
-export async function obterTerras(): Promise<Terra[]> {
-  return listarTerras();
+export async function obterTerras(opcoes: ConsultaTerrasOpcoes = {}): Promise<Terra[]> {
+  return listarTerras(opcoes);
 }
 
-export async function obterTerraPorId(id: string): Promise<Terra> {
+export async function obterTerraPorId(
+  id: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<Terra> {
   try {
-    const terra = await getTerraById(id);
+    const terra = await getTerraById(id, opcoes);
     if (!terra) {
       throw new NotFoundError('Terra não encontrada');
     }
@@ -102,9 +106,12 @@ export async function excluirTerra(id: string, data: ExcluirTerraInput): Promise
   }
 }
 
-export async function obterParceirosDaTerra(terraId: string): Promise<ParceiroDaTerra[]> {
+export async function obterParceirosDaTerra(
+  terraId: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<ParceiroDaTerra[]> {
   try {
-    const parceiros = await listarParceirosDaTerra(terraId);
+    const parceiros = await listarParceirosDaTerra(terraId, opcoes);
     if (parceiros === null) {
       throw new NotFoundError('Terra não encontrada');
     }
