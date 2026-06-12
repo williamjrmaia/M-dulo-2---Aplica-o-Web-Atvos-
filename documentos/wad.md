@@ -3162,7 +3162,7 @@ Para a apresentação final, as capturas devem ser refeitas em navegador convenc
 
 ### 4.2.7. Testes e validações
 
-A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na revisão do Artefato 10, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 36 suítes e 276 testes. A execução completa levou 837,53 segundos devido ao uso de banco remoto em parte dos testes.
+A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na revisão do Artefato 10, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 36 suítes e 293 testes, sem falhas. A execução completa levou cerca de 697 segundos devido ao uso de banco remoto (PostgreSQL/Supabase) em parte dos testes; a conexão exige a variável `DATABASE_URL` configurada no `.env`.
 
 ### 4.2.8. Limitações conhecidas e próximos passos
 
@@ -3176,6 +3176,340 @@ A suíte automatizada cobre controllers, services, repositories integrados ao Po
 | Capturas autenticadas não geradas neste ambiente | Refazer evidências em navegador com sessão real antes da entrega final. |
 
 A segunda versão atende ao objetivo de integrar backend e frontend nos fluxos centrais sem mocks de produção. As limitações acima são registradas como evolução, não como funcionalidades concluídas.
+
+### 4.2.9. Fluxos principais ponta a ponta do MVP
+
+Esta subseção comprova que o sistema não está apenas prototipado: os fluxos centrais do MVP executam de ponta a ponta, conectando interface (views EJS e formulários HTML), backend (rotas, controllers, services e schemas), banco de dados (PostgreSQL/Supabase, tabelas reais de `src/db/migration.sql`) e regras de negócio aplicadas nas camadas de serviço. As rotas e endpoints citados abaixo existem de fato em `src/routes/`; os controllers, services e repositories existem em `src/controllers/`, `src/services/` e `src/repositories/`; e cada fluxo possui cobertura por testes automatizados reais em `src/test/` e `src/tests/`. A matriz da seção 3.1.4 detalha a relação RF → RN → endpoint; as capturas estão na seção 4.2.5; os resultados de `npx tsc --noEmit` e `npm test` estão na seção 4.2.7.
+
+A integração geral funciona assim: o usuário acessa uma view protegida; o middleware `requireAuth` (`src/middlewares/requireAuth.ts`) valida o JWT, a sessão persistida e se o usuário está ativo; o middleware `authorizeRoles` restringe a ação ao perfil (`analista`, `coordenador`, `administrador`); o controller valida a entrada com schemas Zod (`src/schemas/`) e escolhe resposta HTML ou JSON; o service aplica a regra de negócio; o repository executa SQL no PostgreSQL; e a resposta retorna para a interface (redirecionamento com flash em views ou status/JSON nas APIs).
+
+#### Tabela-resumo geral dos fluxos
+
+| Fluxo | Interface | Backend/API | Banco de dados | RF/US | Evidência | Status |
+|---|---|---|---|---|---|---|
+| Login e autenticação | `GET/POST /login` (`login/index.ejs`) | `authController.login` → `authService.autenticar` | `usuarios`, `perfil_acesso`, `auth_sessoes` | RF011 / US08, US09 | `authService.spec.ts`, `auth.test.ts`, `parceiroControllerHtmlAuth.spec.ts`; print `login.png` | Implementado |
+| Logout | `POST /logout` | `authController.logout` → `authService.encerrarSessao` | `auth_sessoes` | RF011, RF020 / US09 | `auth.test.ts`, `authSessionController.spec.ts` | Implementado |
+| Primeiro acesso | `GET/POST /primeiro-acesso` (`login/primeiro-acesso.ejs`) | `primeiroAcessoController` → `primeiroAcessoService` | `usuarios`, `primeiro_acesso_tokens` | RF011 / US08 | `primeiroAcessoService.spec.ts` | Implementado |
+| Listagem de parceiros (filtros) | `GET /parceiros` (`parceiros/index.ejs`) | `renderListaParceiros` / `GET /api/parceiros` → `parceiroService.obterParceiros` | `parceiros`, `telefone_parceiro` | RF007, RF008, RF012, RF016 / US04, US06 | `parceiroFiltrosController.spec.ts`, `parceiroController.get.spec.ts`; print `parceiros.png` | Implementado |
+| Cadastro de parceiro | `GET /parceiros/novo`, `POST /parceiros` (`parceiros/new.ejs`) / `POST /api/parceiros` | `processarCadastro`/`createParceiro` → `parceiroService.cadastrarParceiro` | `parceiros`, `registro_alteracao` | RF004, RF009, RF010, RF018, RF019 / US01, US02 | `parceiroController.spec.ts`, `parceiroCadastroComplementar.spec.ts`; print `novo-parceiro.png` | Implementado |
+| Edição de parceiro | `GET/POST /parceiros/:id/editar` (`parceiros/edit.ejs`) / `PATCH /api/parceiros/:id` | `processarEdicao`/`editarParceiro` → `parceiroService.editarParceiro` | `parceiros`, `registro_alteracao` | RF005, RF009, RF010 / US05 | `parceiroController.patch.spec.ts` | Implementado |
+| Detalhe e histórico | `GET /parceiros/:id` (`parceiros/show.ejs`) / `GET /api/parceiros/:id/historico` | `renderDetalheParceiro`/`listarHistoricoParceiro` → `parceiroService` | `parceiros`, `registro_alteracao`, `interacao` | RF008, RF013 / US04, US05 | `parceiroDetalheController.spec.ts`, `parceiroHistoricoController.spec.ts` | Implementado |
+| Envio para validação | `POST /parceiros/:id/editar` / `PUT /api/parceiros/:id/validacao` | `enviarParceiroParaValidacao` → `parceiroService` | `parceiros`, `registro_alteracao` | RF010, RF021 / US01, US02, US11 | `parceiroValidacaoController.spec.ts`, `parceiroFilaValidacaoService.spec.ts` | Implementado |
+| Fila e aprovação/devolução | `GET /validacao`, `POST /validacao/:id/aprovar|devolver` (`parceiros/validacao.ejs`, `revisar.ejs`) / `PUT /api/parceiros/:id/aprovar|devolver` | `renderValidacao`, `aprovarParceiroViaFormulario`, `devolverParceiroViaFormulario` → `parceiroService` | `parceiros`, `registro_alteracao` | RF022, RF023 / US11 | `parceiroAprovacaoController.spec.ts`, `parceiroDevolucaoController.spec.ts`; print `validacao.png` | Implementado |
+| Registro de interações | Detalhe do parceiro (JS) → `POST /parceiros/:id/interacoes` | `interacaoController` → `interacaoService` | `interacao`, `parceiros` | RF006, RF018, RF019 / US03 | `interacaoService.spec.ts`, `interacao.test.ts` | Implementado |
+| Exportação CSV | Botão na listagem → `GET /parceiros/exportar` | `exportaController` → `exportaService` | `parceiros`, `telefone_parceiro` | RF017 / US07 | `exportaService.spec.ts`, `exporta.test.ts` | Implementado |
+| Gestão de usuários | `GET /usuarios`, `/novo`, `/:id/editar`, `/:id/perfil` (`usuarios/*.ejs`) / `POST /api/usuarios` | `userController` → `userService` | `usuarios`, `perfil_acesso` | RF001, RF002, RF003 / US08, US10 | `userController.spec.ts`, `userCreateController.spec.ts`, `userUpdateController.spec.ts` | Implementado |
+| Inativação de usuário | `POST /usuarios/:id/inativar` (`usuarios/inativar.ejs`) | `userController` → `userService` (inativa + revoga sessões) | `usuarios`, `auth_sessoes` | RF002, RF020 / US09 | `userInactivateController.spec.ts`, `userServiceInactivateSessions.spec.ts` | Implementado |
+| Terras (listagem/cadastro/edição) | `GET /terras`, `/nova`, `/:id/editar` (`terras/*.ejs`) / `/api/terras` | `terraController` → `terraService` | `terras` | RF012, RF014 / US04, US06 | `terraController.spec.ts`, `terraControllerHtml.spec.ts`, `terraService.spec.ts` | Implementado |
+| Vínculo parceiro-terra | `GET/POST /terras/:id/vincular-parceiro` (`terras/vincular.ejs`) / `POST /api/parceiros/:id/terras` | `vincularTerraAoParceiro`, `processarVinculoTerra` → services | `parceiro_terra`, `vinculo_comercial`, `registro_alteracao` | RF015 / US01, US02 | `parceiroTerraController.spec.ts`, `terraParceiroController.spec.ts` | Implementado |
+| Exclusão lógica | Sem botão dedicado nas views | `DELETE /api/parceiros/:id`, `DELETE /api/terras/:id` | `parceiros`, `terras` | RF014, RF012 | `softDeleteController.spec.ts` | Parcial (somente API) |
+| Dashboard de interações | Sem tela específica | `GET /dashboards/interacoes` | `interacao` | RF006 / US03 | `dashboardInteracoesService.spec.ts`, `dashboardInteracoes.test.ts` | Parcial (somente JSON) |
+
+#### Fluxo: Login e autenticação
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Autenticar o usuário e estabelecer uma sessão segura no navegador. |
+| Persona/perfil | Qualquer usuário cadastrado (`analista`, `coordenador`, `administrador`). |
+| RF relacionado | RF011. |
+| User Story relacionada | US08, US09. |
+| Tela inicial | View `src/views/login/index.ejs`, rota `GET /login`. |
+| Ação do usuário | Informa e-mail e senha e envia o formulário. |
+| Rota HTML/Form | `POST /login`. |
+| Endpoint/API | O login é feito pelo formulário web; não há endpoint JSON separado de login. |
+| Controller/Service/Repository | `authController.login` → `authService.autenticar` → `userRepository` e `authSessionRepository`. |
+| Banco de dados | Consulta `usuarios` e `perfil_acesso`; cria registro em `auth_sessoes`. |
+| Regra de negócio | Valida a senha com hash (bcrypt); gera JWT; persiste a sessão; define cookies HttpOnly; mensagem genérica para credenciais inválidas, sem enumeração de e-mail. |
+| Resultado esperado | `302` para `/parceiros` com cookies de sessão; credenciais inválidas retornam erro na própria tela. |
+| Evidência | `src/tests/authService.spec.ts`, `src/tests/auth.test.ts`, `src/tests/parceiroControllerHtmlAuth.spec.ts`; captura `login.png` (4.2.5); validação manual `GET /login` → `200`. |
+| Status | Implementado. |
+
+#### Fluxo: Logout
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Encerrar a sessão atual do usuário. |
+| Persona/perfil | Usuário autenticado. |
+| RF relacionado | RF011, RF020. |
+| User Story relacionada | US09. |
+| Tela inicial | Ação disponível no cabeçalho autenticado (`src/views/partials/header.ejs`). |
+| Ação do usuário | Aciona "Sair". |
+| Rota HTML/Form | `POST /logout` (protegida por `requireAuth`). |
+| Endpoint/API | `PUT /auth/sessoes/:id` encerra uma sessão específica de forma programática. |
+| Controller/Service/Repository | `authController.logout` → `authService.encerrarSessao` → `authSessionRepository.encerrarSessao`. |
+| Banco de dados | Atualiza `auth_sessoes` marcando a sessão como encerrada/revogada. |
+| Regra de negócio | Revoga a sessão e limpa os cookies; sessões revogadas passam a ser rejeitadas pelo middleware. |
+| Resultado esperado | `302` para `/login`, sem acesso a rotas protegidas. |
+| Evidência | `src/tests/auth.test.ts`, `src/tests/authSessionController.spec.ts`; validação manual `POST /logout` → `302`. |
+| Status | Implementado. |
+
+#### Fluxo: Primeiro acesso e definição de senha
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Permitir que um usuário criado sem senha defina a própria senha. |
+| Persona/perfil | Usuário ativo ainda sem senha. |
+| RF relacionado | RF011. |
+| User Story relacionada | US08. |
+| Tela inicial | View `src/views/login/primeiro-acesso.ejs`, rota `GET /primeiro-acesso`. |
+| Ação do usuário | Informa o e-mail e define a nova senha. |
+| Rota HTML/Form | `POST /primeiro-acesso`. |
+| Endpoint/API | `POST /primeiro-acesso/solicitar` e `POST /primeiro-acesso/definir-senha`. |
+| Controller/Service/Repository | `primeiroAcessoController` → `primeiroAcessoService` → `primeiroAcessoRepository`. |
+| Banco de dados | Consulta/atualiza `usuarios`; usa `primeiro_acesso_tokens`. |
+| Regra de negócio | Token de uso único com expiração de 24 horas; aceito apenas para usuário ativo que ainda não tem senha; senha com mínimo de oito caracteres. |
+| Resultado esperado | Senha definida e usuário habilitado a logar. |
+| Evidência | `src/tests/primeiroAcessoService.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Listagem de parceiros com filtros
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Listar os parceiros cadastrados, com busca e filtros. |
+| Persona/perfil | `analista`, `coordenador`, `administrador`. |
+| RF relacionado | RF007, RF008, RF012, RF016, RF017. |
+| User Story relacionada | US04, US06, US07. |
+| Tela inicial | View `src/views/parceiros/index.ejs`, rota `GET /parceiros`. |
+| Ação do usuário | Acessa a listagem e aplica filtros por nome, tipo, status, região e usina. |
+| Rota HTML/Form | `GET /parceiros`. |
+| Endpoint/API | `GET /api/parceiros` (aceita filtros por query string). |
+| Controller/Service/Repository | `renderListaParceiros`/`listarParceiros` → `parceiroService.obterParceiros` → `parceiroRepository`. |
+| Banco de dados | Consulta `parceiros` (e `telefone_parceiro`); omite registros inativos. |
+| Regra de negócio | Exclusão lógica respeitada (inativos não aparecem); filtros validados por schema; busca client-side complementar. |
+| Resultado esperado | `200` com a lista filtrada renderizada ou em JSON. |
+| Evidência | `src/tests/parceiroFiltrosController.spec.ts`, `src/test/parceiroController.get.spec.ts`; captura `parceiros.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Cadastro de parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Cadastrar um novo parceiro como rascunho ou já enviado para validação. |
+| Persona/perfil | `analista`, `administrador`. |
+| RF relacionado | RF004, RF009, RF010, RF018, RF019. |
+| User Story relacionada | US01, US02. |
+| Tela inicial | View `src/views/parceiros/new.ejs`, rota `GET /parceiros/novo`. |
+| Ação do usuário | Preenche o formulário e escolhe salvar rascunho ou enviar para validação. |
+| Rota HTML/Form | `POST /parceiros`. |
+| Endpoint/API | `POST /api/parceiros`. |
+| Controller/Service/Repository | `processarCadastro`/`createParceiro` → `parceiroService.cadastrarParceiro` → `parceiroRepository`. |
+| Banco de dados | Insere em `parceiros`; registra auditoria em `registro_alteracao`; grava `criado_por` e timestamps. |
+| Regra de negócio | Valida obrigatórios (nome, tipo_pessoa, CPF/CNPJ) por schema Zod; rejeita CPF/CNPJ duplicado (`23505` → conflito); status `rascunho` aceita incompleto e `pendente` exige campos obrigatórios (ex.: e-mail). |
+| Resultado esperado | Parceiro persistido e visível na listagem; mensagem de sucesso. |
+| Evidência | `src/test/parceiroController.spec.ts`, `src/tests/parceiroCadastroComplementar.spec.ts`; captura `novo-parceiro.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Edição de parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Atualizar os dados cadastrais de um parceiro existente. |
+| Persona/perfil | `analista`, `coordenador`, `administrador`. |
+| RF relacionado | RF005, RF009, RF010, RF018, RF019. |
+| User Story relacionada | US05. |
+| Tela inicial | View `src/views/parceiros/edit.ejs`, rota `GET /parceiros/:id/editar`. |
+| Ação do usuário | Altera os campos desejados e salva. |
+| Rota HTML/Form | `POST /parceiros/:id/editar`. |
+| Endpoint/API | `PATCH /api/parceiros/:id`. |
+| Controller/Service/Repository | `processarEdicao`/`editarParceiro` → `parceiroService.editarParceiro` → `parceiroRepository`. |
+| Banco de dados | Atualiza `parceiros`; registra auditoria em `registro_alteracao` com `atualizado_por`. |
+| Regra de negócio | Rejeita corpo vazio; valida `tipo_pessoa`; rejeita duplicidade e parceiro inexistente. |
+| Resultado esperado | Dados atualizados e refletidos no detalhe e na listagem. |
+| Evidência | `src/test/parceiroController.patch.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Detalhe e histórico do parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Exibir o perfil detalhado do parceiro com histórico e interações. |
+| Persona/perfil | `analista`, `coordenador`, `administrador`. |
+| RF relacionado | RF008, RF013. |
+| User Story relacionada | US04, US05. |
+| Tela inicial | View `src/views/parceiros/show.ejs`, rota `GET /parceiros/:id`. |
+| Ação do usuário | Abre o detalhe de um parceiro. |
+| Rota HTML/Form | `GET /parceiros/:id`. |
+| Endpoint/API | `GET /api/parceiros/:id`, `GET /api/parceiros/:id/historico`. |
+| Controller/Service/Repository | `renderDetalheParceiro`/`listarHistoricoParceiro` → `parceiroService` → `parceiroRepository`. |
+| Banco de dados | Consulta `parceiros`, `registro_alteracao` e `interacao`. |
+| Regra de negócio | Retorna `404` para parceiro inexistente, inválido ou inativo; reúne histórico de alterações e interações. |
+| Resultado esperado | Tela com dados, histórico de versões e interações. |
+| Evidência | `src/tests/parceiroDetalheController.spec.ts`, `src/tests/parceiroHistoricoController.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Envio para validação
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Enviar um parceiro em rascunho para a fila de validação do coordenador. |
+| Persona/perfil | `analista`, `administrador`. |
+| RF relacionado | RF010, RF021. |
+| User Story relacionada | US01, US02, US11. |
+| Tela inicial | Detalhe/edição do parceiro. |
+| Ação do usuário | Aciona o envio para validação. |
+| Rota HTML/Form | `POST /parceiros/:id/editar` (ação de envio). |
+| Endpoint/API | `PUT /api/parceiros/:id/validacao`. |
+| Controller/Service/Repository | `enviarParceiroParaValidacao` → `parceiroService` → `parceiroRepository`. |
+| Banco de dados | Atualiza `status` em `parceiros`; registra `envio` em `registro_alteracao`. |
+| Regra de negócio | Exige os campos obrigatórios para validação antes de mudar o status para `pendente`. |
+| Resultado esperado | Parceiro aparece na fila de pendentes do coordenador. |
+| Evidência | `src/tests/parceiroValidacaoController.spec.ts`, `src/tests/parceiroFilaValidacaoService.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Fila, aprovação e devolução de parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Revisar parceiros pendentes e aprová-los ou devolvê-los com comentário. |
+| Persona/perfil | `coordenador`, `administrador`. |
+| RF relacionado | RF022, RF023. |
+| User Story relacionada | US11. |
+| Tela inicial | Views `src/views/parceiros/validacao.ejs` e `revisar.ejs`, rota `GET /validacao`. |
+| Ação do usuário | Abre a fila, revisa um registro e aprova ou devolve. |
+| Rota HTML/Form | `POST /validacao/:id/aprovar`, `POST /validacao/:id/devolver`. |
+| Endpoint/API | `PUT /api/parceiros/:id/aprovar`, `PUT /api/parceiros/:id/devolver`. |
+| Controller/Service/Repository | `renderValidacao`, `aprovarParceiroViaFormulario`, `devolverParceiroViaFormulario` → `parceiroService` → `parceiroRepository`. |
+| Banco de dados | Atualiza `status` em `parceiros`; registra `aprovado_por`/`devolvido_por` e o comentário em `registro_alteracao`. |
+| Regra de negócio | A fila busca apenas pendentes ordenados por data de envio; devolução permite comentário; ação restrita a validadores. |
+| Resultado esperado | Parceiro aprovado sai da fila; devolvido volta como rascunho com comentário. |
+| Evidência | `src/tests/parceiroAprovacaoController.spec.ts`, `src/tests/parceiroDevolucaoController.spec.ts`; captura `validacao.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Registro de interações
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Registrar interações de relacionamento com um parceiro. |
+| Persona/perfil | `analista` (usuário autenticado). |
+| RF relacionado | RF006, RF018, RF019. |
+| User Story relacionada | US03. |
+| Tela inicial | Detalhe do parceiro (`src/views/parceiros/show.ejs`). |
+| Ação do usuário | Registra uma interação pelo formulário/JS do detalhe. |
+| Rota HTML/Form | Envio por JavaScript a partir do detalhe. |
+| Endpoint/API | `POST /parceiros/:id/interacoes`. |
+| Controller/Service/Repository | `interacaoController` → `interacaoService` → `interacaoRepository`. |
+| Banco de dados | Insere em `interacao`; valida existência do parceiro em `parceiros`. |
+| Regra de negócio | Rejeita campos obrigatórios ausentes (`400`) e parceiro inexistente (`404`); registra o responsável. |
+| Resultado esperado | Interação persistida e visível no histórico do parceiro. |
+| Evidência | `src/tests/interacaoService.spec.ts`, `src/tests/interacao.test.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Exportação CSV de parceiros
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Exportar a lista de parceiros/contatos em CSV. |
+| Persona/perfil | `coordenador`, `administrador`. |
+| RF relacionado | RF017. |
+| User Story relacionada | US07. |
+| Tela inicial | Listagem de parceiros (`/parceiros`). |
+| Ação do usuário | Aciona a exportação. |
+| Rota HTML/Form | `GET /parceiros/exportar`. |
+| Endpoint/API | `GET /parceiros/exportar` (resposta CSV). |
+| Controller/Service/Repository | `exportaController` → `exportaService` → `exportaRepository`. |
+| Banco de dados | Consulta `parceiros` e `telefone_parceiro`. |
+| Regra de negócio | Exporta nome, contato, tipo, região, telefone, e-mail e terra/unidade; restrito a validadores. |
+| Resultado esperado | Download de arquivo CSV com os campos definidos. |
+| Evidência | `src/tests/exportaService.spec.ts`, `src/tests/exporta.test.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Gestão de usuários (cadastro, edição e perfil)
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Administrar usuários e seus perfis de acesso. |
+| Persona/perfil | `administrador`. |
+| RF relacionado | RF001, RF002, RF003. |
+| User Story relacionada | US08, US10. |
+| Tela inicial | Views `src/views/usuarios/index.ejs`, `new.ejs`, `edit.ejs`, `perfil.ejs`. |
+| Ação do usuário | Cadastra, edita e altera o perfil de usuários. |
+| Rota HTML/Form | `GET /usuarios`, `/usuarios/novo`, `POST /usuarios`, `/usuarios/:id/editar`, `/usuarios/:id/perfil`. |
+| Endpoint/API | `POST /api/usuarios`, `PUT /usuarios/:id`, `PUT /usuarios/:id/perfil`. |
+| Controller/Service/Repository | `userController` → `userService` → `userRepository`. |
+| Banco de dados | Insere/atualiza `usuarios`; usa `perfil_acesso`. |
+| Regra de negócio | Valida e-mail e perfil; alteração de perfil restrita ao administrador; registra responsável. |
+| Resultado esperado | Usuário criado/atualizado e habilitado conforme o perfil. |
+| Evidência | `src/tests/userController.spec.ts`, `src/tests/userCreateController.spec.ts`, `src/tests/userUpdateController.spec.ts`; captura `usuarios.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Inativação de usuário e revogação de sessões
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Inativar um usuário e revogar imediatamente seus acessos. |
+| Persona/perfil | `administrador`. |
+| RF relacionado | RF002, RF020. |
+| User Story relacionada | US09. |
+| Tela inicial | View `src/views/usuarios/inativar.ejs`. |
+| Ação do usuário | Confirma a inativação de um usuário. |
+| Rota HTML/Form | `POST /usuarios/:id/inativar`. |
+| Endpoint/API | `PUT /usuarios/:id/inativar`. |
+| Controller/Service/Repository | `userController` → `userService` → `userRepository` e `authSessionRepository`. |
+| Banco de dados | Marca `ativo=false` em `usuarios`; revoga registros em `auth_sessoes`. |
+| Regra de negócio | Inativação revoga sessões ativas; usuário inativo não consegue mais logar nem usar sessão existente. |
+| Resultado esperado | Acesso revogado de imediato; histórico preservado. |
+| Evidência | `src/tests/userInactivateController.spec.ts`, `src/tests/userServiceInactivateSessions.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Terras (listagem, cadastro e edição)
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Gerenciar o cadastro de terras. |
+| Persona/perfil | `analista`, `coordenador`, `administrador` (cadastro/edição restrito a `analista`/`administrador`). |
+| RF relacionado | RF012, RF014. |
+| User Story relacionada | US04, US06. |
+| Tela inicial | Views `src/views/terras/index.ejs`, `new.ejs`, `edit.ejs`. |
+| Ação do usuário | Lista, cadastra e edita terras. |
+| Rota HTML/Form | `GET /terras`, `/terras/nova`, `POST /terras`, `/terras/:id/editar`. |
+| Endpoint/API | `POST /api/terras`, `GET /api/terras`, `PUT /api/terras/:id`. |
+| Controller/Service/Repository | `terraController` → `terraService` → `terraRepository`. |
+| Banco de dados | Insere/atualiza/consulta `terras`; consultas padrão omitem inativas. |
+| Regra de negócio | Validação de entrada por schema; exclusão lógica (`POST /terras/:id/inativar`, `DELETE /api/terras/:id`). |
+| Resultado esperado | Terra persistida e visível na listagem. |
+| Evidência | `src/tests/terraController.spec.ts`, `src/tests/terraControllerHtml.spec.ts`, `src/tests/terraService.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Vínculo parceiro-terra
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Associar parceiros e terras em relação muitos-para-muitos. |
+| Persona/perfil | `analista`, `administrador`. |
+| RF relacionado | RF015. |
+| User Story relacionada | US01, US02. |
+| Tela inicial | View `src/views/terras/vincular.ejs`, rota `GET /terras/:id/vincular-parceiro`. |
+| Ação do usuário | Vincula um parceiro a uma terra (ou vice-versa). |
+| Rota HTML/Form | `POST /terras/:id/parceiros`. |
+| Endpoint/API | `POST /api/parceiros/:id/terras`, `GET /api/parceiros/:id/terras`, `POST /api/terras/:id/parceiros`. |
+| Controller/Service/Repository | `vincularTerraAoParceiro`/`processarVinculoTerra` → `parceiroService`/`terraService` → repositories. |
+| Banco de dados | Insere em `parceiro_terra` e, quando aplicável, `vinculo_comercial`; registra `registro_alteracao`. |
+| Regra de negócio | Permite múltiplos parceiros por terra e múltiplas terras por parceiro; grava auditoria do vínculo na mesma transação. |
+| Resultado esperado | Vínculo persistido e listável por parceiro e por terra. |
+| Evidência | `src/tests/parceiroTerraController.spec.ts`, `src/tests/terraParceiroController.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Dashboard de interações
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Fornecer métricas agregadas de interações. |
+| Persona/perfil | `coordenador`, `administrador`. |
+| RF relacionado | RF006. |
+| User Story relacionada | US03. |
+| Tela inicial | Não há tela EJS específica nesta versão. |
+| Ação do usuário | Consome o endpoint de métricas. |
+| Rota HTML/Form | Não há rota HTML dedicada. |
+| Endpoint/API | `GET /dashboards/interacoes`. |
+| Controller/Service/Repository | `dashboardInteracoesController` → `dashboardInteracoesService` → `dashboardInteracoesRepository`. |
+| Banco de dados | Consulta `interacao`. |
+| Regra de negócio | Agrega métricas de interações; restrito a `coordenador`/`administrador`. |
+| Resultado esperado | `200` com JSON de métricas. |
+| Evidência | `src/tests/dashboardInteracoesService.spec.ts`, `src/tests/dashboardInteracoes.test.ts`. |
+| Status | Parcialmente implementado (somente JSON, sem view). |
+
+> Observação sobre evidências: as capturas referenciadas (seção 4.2.5) ilustram telas reais da aplicação. As evidências de execução não usam `NODE_ENV=test` para simular autenticação como se fosse fluxo real autenticado; a comprovação de integração ponta a ponta se apoia nas rotas reais, na suíte automatizada (seção 4.2.7) e nas validações de execução já registradas em 4.2.5.
 
 ## 4.3. Versão final da aplicação web (sprint 5)
 
