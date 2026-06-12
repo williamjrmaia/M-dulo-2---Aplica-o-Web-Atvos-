@@ -63,4 +63,17 @@ describe('DashboardService.processarDashboardInteracoes (unitário, com stub)', 
       ServiceUnavailableException
     );
   });
+
+  // CT05 → RN11 (RF006): branch defensivo do KPI — sem tipos de interação, engajamento é zero.
+  // Inalcançável pelo fluxo público (lista vazia lança NoContentException antes); teste
+  // white-box chama o método privado direto para cobrir o ramo.
+  it('retorna KPI de engajamento zero quando não há tipos de interação', () => {
+    const service = new DashboardService(repoStub(async () => estatisticas));
+
+    const dto = (service as unknown as {
+      calcularKPIEngajamento(dados: InteracoesListEntity[]): { kpi_engajamento: number };
+    }).calcularKPIEngajamento([]);
+
+    expect(dto.kpi_engajamento).toBe(0);
+  });
 });
