@@ -1438,29 +1438,62 @@ A persistência ocorre em uma instância PostgreSQL hospedada no Supabase Cloud,
 
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
-No desenvolvimento do backend, foram adotados padrões de projeto voltados à separação de responsabilidades, organização da regra de negócio e redução de acoplamento entre a API, o banco de dados e os fluxos de validação. A escolha desses padrões ocorreu a partir de necessidades reais do projeto, principalmente a complexidade do domínio de parceiros agrícolas, terras, usuários, interações e histórico de alterações.
+Durante o desenvolvimento da solução foram adotados padrões arquiteturais e de projeto com o objetivo de promover separação de responsabilidades, reutilização de código, manutenibilidade, escalabilidade e redução de acoplamento entre os componentes da aplicação. A adoção desses padrões foi motivada pela necessidade de centralizar o gerenciamento de parceiros agrícolas, terras, interações e usuários em uma plataforma única, confiável e preparada para evoluções futuras.
 
-No contexto da ATVOS, o problema central envolve a substituição de controles dispersos em planilhas, e-mails e registros manuais por uma base única, auditável e confiável para consulta e manutenção de dados de parceiros agrícolas. Por isso, o backend precisava ser organizado de forma que novas regras de governança, validação, rastreabilidade e autorização por perfil pudessem ser adicionadas sem comprometer os fluxos já existentes. Os padrões abaixo foram aplicados para responder diretamente a essa necessidade de padronização, controle e evolução gradual do sistema.
+A arquitetura implementada segue o modelo **Layered Architecture (Arquitetura em Camadas)**, organizado segundo o fluxo **Route → Controller → Service → Repository → Banco de Dados**. Essa estrutura permite que cada camada possua responsabilidades bem definidas, facilitando a manutenção, a realização de testes e a implementação de novas funcionalidades sem impactos significativos nos demais módulos do sistema.
 
-| Padrão aplicado | Onde aparece no backend | Justificativa de adoção |
-| --- | --- | --- |
-| **Repository** | `src/repositories`, como `userRepository.ts`, `parceiroRepository.ts`, `terraRepository.ts`, `interacaoRepository.ts`, `exportaRepository.ts` e `dashboardInteracoesRepository.ts`. | O sistema depende de várias consultas e operações SQL sobre entidades diferentes. O Repository foi usado para concentrar o acesso ao PostgreSQL/Supabase e evitar que controllers e services manipulassem SQL diretamente. No problema da ATVOS, isso é importante porque os dados de parceiros, terras, vínculos e interações precisam formar uma base única e consistente, substituindo consultas manuais em fontes espalhadas. |
-| **Service Layer** | `src/services`, como `userService.ts`, `parceiroService.ts`, `terraService.ts`, `authService.ts` e `interacaoService.ts`. | As regras de negócio não ficam nas rotas. Validações como existência de perfil, usuário inexistente, duplicidade, vínculo entre parceiro e terra, inativação lógica e tratamento de erros de banco são coordenadas nos services. Essa camada reflete a necessidade da ATVOS de aplicar governança sobre cadastros e alterações, garantindo que operações críticas não dependam apenas da interface ou de decisões manuais do usuário. |
-| **Controller** | `src/controllers`, como `userController.ts`, `parceiroController.ts`, `terraController.ts`, `authController.ts` e `dashboardInteracoesController.ts`. | Os controllers foram usados para receber requisições HTTP, chamar os services e devolver respostas com status codes adequados. Essa separação evita misturar regra de negócio com detalhes de Express, como `Request`, `Response`, headers e renderização. |
-| **DTO / Schema de Validação** | `src/schemas`, com schemas Zod como `terra.schema.ts`, `parceiroFiltros.schema.ts`, `parceiroTerra.schema.ts` e `terraParceiro.schema.ts`; também nos tipos de entrada em `src/models`. | O backend recebe dados de cadastro, edição, filtros e vínculos. Os schemas funcionam como contratos de entrada, validando campos obrigatórios, enums, UUIDs e formatos antes de acessar o banco. Isso reduz inconsistência nos dados, uma dor relevante para a ATVOS, já que informações cadastrais divergentes prejudicam a análise de parceiros e a tomada de decisão operacional. |
-| **Middleware de Tratamento de Erros** | `src/middlewares/errorHandler.ts` e `src/errors/AppError.ts`. | Como a API possui muitos cenários de falha (`400`, `404`, `409`, `422` e `500`), foi criado um tratamento centralizado para converter erros da aplicação em respostas HTTP consistentes. Em um sistema de uso interno e recorrente, isso ajuda a tornar falhas de cadastro, consulta e permissão mais previsíveis para os usuários e mais rastreáveis pela equipe técnica. |
-| **Wrapper para handlers assíncronos** | `src/helpers/asyncHandler.ts`, usado em controllers como `terraController.ts`. | Rotas assíncronas podem lançar exceções durante validações, consultas ou persistência. O helper evita blocos repetitivos de `try/catch` e encaminha erros para o middleware central, simplificando os controllers. |
-| **Composição de dependências** | Instanciação de repository, service e controller nas rotas, como em `user.routes.ts`, `auth.routes.ts`, `interacao.routes.ts`, `exporta.routes.ts` e `dashboardInteracoes.routes.ts`. | Cada rota monta explicitamente a cadeia necessária para executar seu módulo. Isso deixa claro o fluxo `Route -> Controller -> Service -> Repository` e reduz dependências globais escondidas. |
+Ao longo das sprints, a arquitetura foi consolidada com a inclusão de mecanismos de autenticação JWT, validações estruturadas utilizando Zod, tratamento centralizado de exceções, testes automatizados e integração com PostgreSQL hospedado no Supabase. Os padrões apresentados a seguir sustentam essas decisões arquiteturais e contribuem diretamente para os atributos de qualidade definidos para a solução.
 
-Esses padrões também apoiam princípios SOLID no backend:
+#### Arquitetura em Camadas (Layered Architecture)
 
-| Princípio | Aplicação no projeto |
-| --- | --- |
-| **SRP - Single Responsibility Principle** | Rotas definem endpoints, controllers lidam com HTTP, services concentram regras de negócio, repositories acessam o banco e schemas validam entradas. |
-| **OCP - Open/Closed Principle** | Novos módulos podem ser adicionados seguindo a mesma estrutura de camadas sem reescrever os módulos já existentes. Por exemplo, os fluxos de dashboard e exportação seguem a organização já usada em usuários e interações. |
-| **DIP - Dependency Inversion Principle** | Services recebem repositories por construtor em módulos como usuários, autenticação e interações, reduzindo o acoplamento direto entre regra de negócio e implementação de persistência. |
+A aplicação foi estruturada de forma que cada camada execute uma responsabilidade específica:
 
-Com isso, a arquitetura do backend ficou preparada para evolução nas próximas sprints, principalmente para integração com o frontend, ampliação dos testes automatizados e refinamento das regras de autorização por perfil.
+* **Routes:** definem os endpoints da API e realizam o direcionamento das requisições.
+* **Controllers:** recebem as requisições HTTP e coordenam o fluxo de execução.
+* **Services:** concentram as regras de negócio e validações do domínio.
+* **Repositories:** encapsulam o acesso ao banco de dados e as consultas SQL.
+* **Persistência:** composta pelo banco PostgreSQL hospedado no Supabase.
+
+Essa organização reduz o acoplamento entre componentes e favorece a evolução gradual do sistema à medida que novas funcionalidades são incorporadas.
+
+#### Padrões de Projeto Utilizados
+
+| Padrão aplicado                         | Onde aparece no backend                                                                                                                                                             | Justificativa de adoção                                                                                                                           |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Layered Architecture**                | Estrutura geral do projeto organizada em `routes`, `controllers`, `services`, `repositories` e banco de dados.                                                                      | Define uma separação clara de responsabilidades, facilitando manutenção, testes e evolução da aplicação.                                          |
+| **Repository Pattern**                  | `src/repositories`, como `userRepository.ts`, `parceiroRepository.ts`, `terraRepository.ts`, `interacaoRepository.ts`, `exportaRepository.ts` e `dashboardInteracoesRepository.ts`. | Centraliza o acesso ao PostgreSQL/Supabase, isolando consultas SQL da lógica de negócio e reduzindo o acoplamento entre persistência e aplicação. |
+| **Service Layer Pattern**               | `src/services`, como `userService.ts`, `parceiroService.ts`, `terraService.ts`, `authService.ts`, `interacaoService.ts`, `exportaService.ts` e `dashboardInteracoesService.ts`.     | Concentra regras de negócio, validações de domínio e fluxos operacionais, evitando que controladores assumam responsabilidades excessivas.        |
+| **Controller Pattern**                  | `src/controllers`, como `userController.ts`, `parceiroController.ts`, `terraController.ts`, `authController.ts` e `dashboardInteracoesController.ts`.                               | Atua como camada de interface entre as requisições HTTP e os serviços da aplicação, promovendo separação entre protocolo e negócio.               |
+| **Validation Pattern**                  | Schemas localizados em `src/schemas`, incluindo validações de parceiros, terras e filtros.                                                                                          | Garante integridade dos dados recebidos pela API antes que eles alcancem a camada de negócio, reduzindo inconsistências e falhas operacionais.    |
+| **Middleware Pattern**                  | `src/middlewares/requireAuth.ts` e `src/middlewares/errorHandler.ts`.                                                                                                               | Permite implementar autenticação, autorização e tratamento de erros de forma centralizada, evitando duplicação de código.                         |
+| **Centralized Exception Handling**      | `src/errors/AppError.ts` e middleware global de erros.                                                                                                                              | Padroniza respostas de falha, melhora a rastreabilidade de problemas e simplifica a manutenção da aplicação.                                      |
+| **Async Handler Pattern**               | `src/helpers/asyncHandler.ts`, utilizado pelos controladores.                                                                                                                       | Elimina repetições de blocos `try/catch`, simplificando o tratamento de operações assíncronas e integrando-as ao fluxo central de exceções.       |
+| **Autenticação Baseada em Token (JWT)** | Middleware `requireAuth.ts` e serviços de autenticação.                                                                                                                             | Garante controle de acesso baseado em sessão autenticada, protegendo rotas e funcionalidades restritas da plataforma.                             |
+
+#### Relação com os Atributos de Qualidade
+
+Os padrões adotados foram selecionados não apenas pela organização estrutural que proporcionam, mas também pela contribuição direta aos atributos de qualidade definidos para o projeto.
+
+| Atributo de Qualidade | Contribuição dos Padrões                                                                                                             |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Manutenibilidade**  | A separação em camadas permite modificar regras de negócio, persistência ou endpoints sem afetar toda a aplicação.                   |
+| **Escalabilidade**    | Novos módulos podem ser adicionados seguindo a mesma estrutura arquitetural já consolidada.                                          |
+| **Confiabilidade**    | Validações estruturadas, autenticação JWT e tratamento centralizado de erros reduzem falhas operacionais e inconsistências de dados. |
+| **Testabilidade**     | A separação entre controllers, services e repositories facilita a execução de testes unitários e de integração.                      |
+| **Reutilização**      | Serviços, repositórios e middlewares podem ser reutilizados em diferentes fluxos do sistema.                                         |
+
+#### Princípios de Projeto Evidenciados
+
+Além dos padrões apresentados, a implementação demonstra aderência a princípios fundamentais de arquitetura de software:
+
+| Princípio                                 | Aplicação no Projeto                                                                                                                               |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SRP (Single Responsibility Principle)** | Cada camada possui uma responsabilidade específica dentro da arquitetura.                                                                          |
+| **OCP (Open/Closed Principle)**           | Novas funcionalidades podem ser incorporadas seguindo a estrutura existente, sem necessidade de alterar componentes consolidados.                  |
+| **Separation of Concerns (SoC)**          | Responsabilidades de autenticação, validação, persistência, negócio e apresentação permanecem desacopladas e organizadas em módulos independentes. |
+
+Dessa forma, os padrões adotados fornecem uma base arquitetural sólida para a continuidade do desenvolvimento da plataforma, garantindo que futuras evoluções possam ser realizadas de maneira controlada, consistente e alinhada aos requisitos de qualidade definidos para o projeto.
+
 
 ## 3.3. Wireframes (sprint 2)
 
