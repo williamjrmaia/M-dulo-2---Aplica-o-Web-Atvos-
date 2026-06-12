@@ -67,7 +67,7 @@
 
   /* Layout */
   --container-max: 1280px;
-  --header-height: 64px;
+  --header-height: 72px;
 
   /* Botões — alturas do guia */
   --btn-height: 40px;
@@ -206,7 +206,7 @@ h2,
   padding: 0 var(--space-5);
   display: flex;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
 
 .brand {
@@ -221,8 +221,8 @@ h2,
 }
 
 .brand-mark {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 40px;
   border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
@@ -239,7 +239,8 @@ h2,
   overflow: hidden;
   color: transparent;
   background: #fff;
-  border: 1px solid rgba(255, 104, 26, 0.18);
+  border: 1px solid rgba(255, 104, 26, 0.22);
+  box-shadow: 0 3px 10px rgba(63, 91, 112, 0.12);
 }
 
 .brand-mark-cane::before,
@@ -256,7 +257,7 @@ h2,
   left: 10px;
   width: 8px;
   height: 23px;
-  background: var(--color-yellow-atvos);
+  background: linear-gradient(180deg, var(--color-yellow-atvos), #F5A800);
   transform: rotate(-24deg);
 }
 
@@ -264,7 +265,7 @@ h2,
   left: 17px;
   width: 9px;
   height: 29px;
-  background: var(--color-orange-dark);
+  background: linear-gradient(180deg, var(--color-orange-dark), var(--color-orange-medium));
   transform: rotate(7deg);
 }
 
@@ -272,12 +273,12 @@ h2,
   right: 9px;
   width: 8px;
   height: 25px;
-  background: var(--color-blue-atvos);
+  background: linear-gradient(180deg, #54748C, var(--color-blue-atvos));
   transform: rotate(-18deg);
 }
 
 .brand-text {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--color-blue-atvos);
   white-space: nowrap;
@@ -306,7 +307,8 @@ h2,
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
-  border-bottom: 2px solid transparent;
+  border: 1px solid transparent;
+  border-bottom-width: 2px;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -325,6 +327,9 @@ h2,
   color: var(--color-orange-dark);
   background: var(--status-devolvido-bg);
   border-bottom-color: var(--color-orange-dark);
+  border-left-color: rgba(255, 104, 26, 0.08);
+  border-right-color: rgba(255, 104, 26, 0.08);
+  border-top-color: rgba(255, 104, 26, 0.08);
 }
 
 .nav-actions {
@@ -355,6 +360,13 @@ h2,
   text-decoration: none;
 }
 
+.logout-link:focus-visible,
+.nav-link:focus-visible,
+.brand:focus-visible {
+  outline: 2px solid var(--color-orange-dark);
+  outline-offset: 3px;
+}
+
 .logout-form {
   margin: 0;
 }
@@ -371,6 +383,10 @@ button.logout-link {
   color: var(--color-text-secondary);
   font-size: 13px;
   font-weight: 600;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* =========================================================
@@ -389,7 +405,7 @@ button.logout-link {
 
 .login-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 448px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -414,8 +430,8 @@ button.logout-link {
 }
 
 .login-brand .brand-mark-cane {
-  width: 96px;
-  height: 96px;
+  width: 112px;
+  height: 112px;
   box-shadow: none;
 }
 
@@ -441,7 +457,7 @@ button.logout-link {
 }
 
 .login-brand-name {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--color-blue-atvos);
 }
@@ -1037,15 +1053,18 @@ button.logout-link {
 }
 
 .filters-toolbar {
+  display: grid;
+  grid-template-columns: minmax(320px, 2fr) repeat(2, minmax(180px, 1fr));
   align-items: stretch;
+  padding: var(--space-5);
 }
 
 .filter-search {
-  flex: 2 1 360px;
+  min-width: 0;
 }
 
 .filter-control {
-  flex: 1 1 180px;
+  width: 100%;
   min-height: var(--btn-height);
 }
 
@@ -1054,6 +1073,7 @@ button.logout-link {
   gap: var(--space-2);
   align-items: center;
   flex: 0 0 auto;
+  justify-content: flex-end;
 }
 
 .search-bar .search-icon {
@@ -1588,6 +1608,14 @@ button.logout-link {
   .detail-layout {
     grid-template-columns: 1fr;
   }
+
+  .filters-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-search {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1608,6 +1636,14 @@ button.logout-link {
     padding: var(--space-2);
   }
 
+  .app-nav {
+    gap: var(--space-3);
+  }
+
+  .user-chip {
+    display: none;
+  }
+
   .list-item-head {
     flex-wrap: wrap;
   }
@@ -1615,6 +1651,20 @@ button.logout-link {
   .list-item-actions {
     margin-left: 0;
     width: 100%;
+  }
+
+  .filters-toolbar {
+    grid-template-columns: 1fr;
+    padding: var(--space-4);
+  }
+
+  .filter-search,
+  .filter-actions {
+    grid-column: auto;
+  }
+
+  .filter-actions .btn {
+    flex: 1 1 0;
   }
 }
 
