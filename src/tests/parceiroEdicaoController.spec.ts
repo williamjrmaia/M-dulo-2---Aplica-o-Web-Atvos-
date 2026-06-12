@@ -108,3 +108,45 @@ describe('PATCH /api/parceiros/:id — falhas de contrato (400)', () => {
     expect(res.body.error).toBe('Pelo menos um campo deve ser fornecido para atualização');
   });
 });
+
+describe('PATCH /api/parceiros/:id — regra de negócio (409) e não encontrado (404)', () => {
+  // CT64 → RN20 (RF005): edição de parceiro inexistente retorna não encontrado
+  it('responde 404 ao editar parceiro com uuid válido porém inexistente', async () => {
+    const res = await request(app)
+      .patch(`/api/parceiros/${ids.inexistente}`)
+      .send({ nome: 'Qualquer Nome', atualizado_por: usuarioId });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe('Parceiro não encontrado');
+  });
+
+  // CT65 → RN20 (RF005): id malformado é tratado como não encontrado, não como erro interno
+  it('responde 404 ao editar parceiro com id malformado', async () => {
+    const res = await request(app)
+      .patch(`/api/parceiros/${ids.malformado}`)
+      .send({ nome: 'Qualquer Nome', atualizado_por: usuarioId });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe('Parceiro não encontrado');
+  });
+
+  // CT66 → RN09 (RF005): edição que deixaria cpf_cnpj duplicado fere a unicidade e retorna conflito
+  it('bloqueia edição que deixaria cpf_cnpj duplicado e preserva o registro original', async () => {
+    const cpfOriginal = randomUUID();
+    await criarParceiroViaApi('Parceiro Dono do CPF', cpfOriginal);
+    const alvoId = await criarParceiroViaApi('Parceiro Que Tenta Duplicar');
+
+    const res = await request(app)
+      .patch(`/api/parceiros/${alvoId}`)
+      .send({ cpf_cnpj: cpfOriginal, atualizado_por: usuarioId });
+
+    expect(res.status).toBe(409);
+    expect(res.body.error).toBe('cpf_cnpj ou email já cadastrado');
+
+    const { rows } = await pool.query(
+      'SELECT COUNT(*)::int AS total FROM parceiros WHERE cpf_cnpj = $1',
+      [cpfOriginal]
+    );
+    expect(rows[0].total).toBe(1);
+  });
+});

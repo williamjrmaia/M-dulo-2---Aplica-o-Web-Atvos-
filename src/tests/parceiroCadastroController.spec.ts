@@ -65,3 +65,33 @@ describe('POST /api/parceiros — falhas de contrato (400)', () => {
     expect(await contarParceirosDoUsuario()).toBe(0);
   });
 });
+
+describe('POST /api/parceiros — regra de negócio (409)', () => {
+  // CT63 → RN09 (RF004): cpf_cnpj é único; duplicidade é conflito de negócio, não erro de contrato
+  it('bloqueia cadastro com cpf_cnpj duplicado e mantém um único registro', async () => {
+    const cpfCnpj = randomUUID();
+    const payload = {
+      nome: 'Parceiro Original',
+      tipo_pessoa: 'fisica',
+      cpf_cnpj: cpfCnpj,
+      criado_por: usuarioId,
+    };
+
+    const primeiro = await request(app).post('/api/parceiros').send(payload);
+    expect(primeiro.status).toBe(201);
+    parceirosCriados.add(primeiro.body.id);
+
+    const duplicado = await request(app)
+      .post('/api/parceiros')
+      .send({ ...payload, nome: 'Parceiro Clonado' });
+
+    expect(duplicado.status).toBe(409);
+    expect(duplicado.body.error).toBe('cpf_cnpj já cadastrado');
+
+    const { rows } = await pool.query(
+      'SELECT COUNT(*)::int AS total FROM parceiros WHERE cpf_cnpj = $1',
+      [cpfCnpj]
+    );
+    expect(rows[0].total).toBe(1);
+  });
+});

@@ -137,3 +137,15 @@ describe('primeiro acesso — falhas de contrato (400)', () => {
     expect(res.body.error).toBe('Token obrigatório');
   });
 });
+
+describe('primeiro acesso — usuário não encontrado (404)', () => {
+  // CT67 → RN02 (RF011): e-mail bem formado porém sem usuário elegível retorna não encontrado
+  it('responde 404 ao solicitar token para e-mail sem usuário cadastrado', async () => {
+    const res = await request(app)
+      .post('/primeiro-acesso/solicitar')
+      .send({ email: 'fantasma.inexistente@atvos.test' });
+
+    expect(res.status).toBe(404);
+    expect(res.body.error).toBe('Usuário não elegível para primeiro acesso');
+  });
+});
