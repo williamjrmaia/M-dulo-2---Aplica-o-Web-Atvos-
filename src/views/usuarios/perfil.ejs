@@ -3,10 +3,10 @@
 <section aria-labelledby="titulo-perfil-usuario">
   <div class="page-header">
     <div class="page-back">
-      <a href="/parceiros" class="back-btn" aria-label="Voltar">←</a>
+      <a href="/usuarios" class="back-btn" aria-label="Voltar">←</a>
       <div class="page-header-text">
         <h1 id="titulo-perfil-usuario" class="page-title">Perfil de Acesso do Usuário</h1>
-        <p class="subtitle">Defina o nível de permissão do usuário no sistema</p>
+        <p class="subtitle"><%= usuario && usuario.nome ? usuario.nome : 'Defina o nível de permissão do usuário no sistema' %></p>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
       </div>
 
       <div class="form-actions">
-        <a href="/parceiros" class="btn btn-secondary">Cancelar</a>
+        <a href="/usuarios" class="btn btn-secondary">Cancelar</a>
         <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
       </div>
     </form>

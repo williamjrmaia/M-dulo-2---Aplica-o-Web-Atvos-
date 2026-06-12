@@ -17,7 +17,11 @@ export interface Parceiro {
     observacoes?: string | null;
     status: string;
     criado_por: string;
+    criado_por_nome?: string | null;
     atualizado_por?: string | null;
+    atualizado_por_nome?: string | null;
+    comentario_devolucao?: string | null;
+    data_devolucao?: Date | null;
     criado_em: Date;
     atualizado_em?: Date | null;
 }

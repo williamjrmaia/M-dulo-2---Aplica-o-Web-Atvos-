@@ -1,5 +1,10 @@
 <%- include('../partials/header', { title: 'Editar Parceiro', active: 'parceiros' }) %>
 
+<%
+  const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
+  const analistaAtual = perfilAtual === 'analista';
+%>
+
 <section aria-labelledby="titulo-edicao">
   <div class="page-header">
     <div class="page-back">
@@ -22,7 +27,7 @@
     <div class="form-card">
       <div class="form-card-header">
         <h2 class="section-title">Dados do Parceiro</h2>
-        <p class="card-subtitle">Editando o parceiro <span class="code"><%= id %></span></p>
+        <p class="card-subtitle"><%= dados.nome ? 'Editando ' + dados.nome : 'Atualização cadastral do parceiro' %></p>
       </div>
       <div class="form-card-body">
         <div class="form-grid">
@@ -105,10 +110,17 @@
             <label class="form-label" for="status">Status</label>
             <select class="form-select" id="status" name="status">
               <option value="">(não alterar)</option>
-              <option value="rascunho" <%= dados.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
-              <option value="pendente" <%= dados.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
-              <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
-              <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+              <% if (analistaAtual) { %>
+                <% if (['rascunho', 'devolvido'].includes(dados.status)) { %>
+                  <option value="pendente">Enviar para validação</option>
+                <% } %>
+              <% } else { %>
+                <option value="rascunho" <%= dados.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
+                <option value="pendente" <%= dados.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
+                <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
+                <option value="devolvido" <%= dados.status === 'devolvido' ? 'selected' : '' %>>Devolvido</option>
+                <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+              <% } %>
             </select>
           </div>
 
@@ -116,6 +128,15 @@
             <label class="form-label" for="observacoes">Observações</label>
             <textarea class="form-textarea" id="observacoes" name="observacoes"><%= dados.observacoes || '' %></textarea>
           </div>
+
+          <% if (analistaAtual && dados.status === 'devolvido' && dados.comentario_devolucao) { %>
+            <div class="form-group span-2">
+              <label class="form-label">Comentário da devolução</label>
+              <div class="flash flash-warning" role="note">
+                <span class="flash-text"><%= dados.comentario_devolucao %></span>
+              </div>
+            </div>
+          <% } %>
         </div>
       </div>
     </div>

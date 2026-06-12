@@ -17,8 +17,13 @@ import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
 type RequestComUsuario = Request & {
-  usuario?: { id?: string };
+  usuario?: { id?: string; perfil?: string };
 };
+
+function perfilAtual(req: Request, res: Response): string | undefined {
+  const perfil = (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+  return typeof perfil === 'string' ? perfil.trim().toLowerCase() : undefined;
+}
 
 function usuarioAtualId(req: Request, res: Response): string {
   return (
@@ -28,6 +33,14 @@ function usuarioAtualId(req: Request, res: Response): string {
     req.body.atualizado_por ??
     SEED_USER_ID
   );
+}
+
+function validarAlteracaoStatusAnalista(statusAtual: string, statusNovo: unknown): void {
+  if (statusNovo === undefined || statusNovo === statusAtual) return;
+
+  if (!(['rascunho', 'devolvido'].includes(statusAtual) && statusNovo === 'pendente')) {
+    throw new ValidationError('Analista só pode enviar rascunhos ou devolvidos para validação');
+  }
 }
 
 export const createTerra = asyncHandler(async (req: Request, res: Response) => {
@@ -59,6 +72,11 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  if (perfilAtual(req, res) === 'analista' && parsed.data.status !== undefined) {
+    const terraAtual = await obterTerraPorId(id);
+    validarAlteracaoStatusAnalista(terraAtual.status, parsed.data.status);
+  }
+
   const terra = await editarTerra(id, parsed.data);
 
   res.status(200).json(terra);
@@ -153,6 +171,7 @@ export const processarEdicaoTerra = asyncHandler(async (req: Request, res: Respo
   const id = req.params.id as string;
   const payload = {
     ...req.body,
+    status: req.body.status || undefined,
     atualizado_por: usuarioAtualId(req, res),
   };
   const parsed = updateTerraSchema.safeParse(payload);
@@ -168,6 +187,11 @@ export const processarEdicaoTerra = asyncHandler(async (req: Request, res: Respo
   }
 
   try {
+    if (perfilAtual(req, res) === 'analista' && parsed.data.status !== undefined) {
+      const terraAtual = await obterTerraPorId(id);
+      validarAlteracaoStatusAnalista(terraAtual.status, parsed.data.status);
+    }
+
     await editarTerra(id, parsed.data);
     return res.redirect('/terras?info=Terra%20atualizada%20com%20sucesso');
   } catch (err) {

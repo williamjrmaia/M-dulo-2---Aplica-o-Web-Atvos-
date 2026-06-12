@@ -15,7 +15,7 @@ import { obterParceiros } from '../services/parceiroService';
 jest.mock('../services/terraService', () => ({
   cadastrarTerra: jest.fn().mockResolvedValue({}),
   editarTerra: jest.fn().mockResolvedValue({}),
-  obterTerraPorId: jest.fn().mockResolvedValue({ id: 'terra-id', nome: 'Terra Teste' }),
+  obterTerraPorId: jest.fn().mockResolvedValue({ id: 'terra-id', nome: 'Terra Teste', status: 'rascunho' }),
   obterTerras: jest.fn().mockResolvedValue([]),
   vincularParceiroATerra: jest.fn().mockResolvedValue({}),
 }));
@@ -78,6 +78,82 @@ describe('controllers HTML de terras', () => {
     expect(editarTerra).toHaveBeenCalledWith(
       terraId,
       expect.objectContaining({ nome: 'Terra Editada', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('bloqueia analista ao alterar status de terra fora de rascunho para pendente', async () => {
+    const usuarioId = randomUUID();
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      body: {
+        status: 'ativo',
+      },
+      usuario: { id: usuarioId, perfil: 'analista' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicaoTerra(req as any, res as any, next);
+
+    expect(obterTerraPorId).toHaveBeenCalledWith(terraId);
+    expect(editarTerra).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.render).toHaveBeenCalledWith(
+      'terras/edit',
+      expect.objectContaining({
+        error: 'Analista só pode enviar rascunhos ou devolvidos para validação',
+      })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('permite analista enviar rascunho de terra para pendente', async () => {
+    const usuarioId = randomUUID();
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      body: {
+        status: 'pendente',
+      },
+      usuario: { id: usuarioId, perfil: 'analista' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicaoTerra(req as any, res as any, next);
+
+    expect(editarTerra).toHaveBeenCalledWith(
+      terraId,
+      expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('permite analista reenviar terra devolvida para pendente', async () => {
+    (obterTerraPorId as jest.Mock).mockResolvedValueOnce({
+      id: 'terra-id',
+      nome: 'Terra Teste',
+      status: 'devolvido',
+    });
+    const usuarioId = randomUUID();
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      body: {
+        status: 'pendente',
+      },
+      usuario: { id: usuarioId, perfil: 'analista' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicaoTerra(req as any, res as any, next);
+
+    expect(editarTerra).toHaveBeenCalledWith(
+      terraId,
+      expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
     );
     expect(next).not.toHaveBeenCalled();
   });

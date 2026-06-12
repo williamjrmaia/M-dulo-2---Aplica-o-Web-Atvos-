@@ -6,7 +6,9 @@ export interface Terra {
   estado: string;
   status: string;
   criado_por: string;
+  criado_por_nome?: string | null;
   atualizado_por?: string | null;
+  atualizado_por_nome?: string | null;
   criado_em: Date;
   atualizado_em?: Date | null;
 }

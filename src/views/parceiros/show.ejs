@@ -164,8 +164,8 @@
           </div>
           <div class="card-body stack-4">
             <div class="definition-list">
-              <p class="term">ID</p>
-              <p class="value"><span class="code"><%= parceiro.id %></span></p>
+              <p class="term">Parceiro</p>
+              <p class="value"><%= parceiro.nome %></p>
             </div>
             <div class="definition-list">
               <p class="term">Criado em</p>
@@ -173,7 +173,7 @@
             </div>
             <div class="definition-list">
               <p class="term">Criado por</p>
-              <p class="value"><span class="code"><%= parceiro.criado_por %></span></p>
+              <p class="value"><%= parceiro.criado_por_nome || parceiro.criado_por || '—' %></p>
             </div>
             <div class="definition-list">
               <p class="term">Atualizado em</p>
@@ -181,7 +181,7 @@
             </div>
             <div class="definition-list">
               <p class="term">Atualizado por</p>
-              <p class="value"><%= parceiro.atualizado_por || '—' %></p>
+              <p class="value"><%= parceiro.atualizado_por_nome || parceiro.atualizado_por || '—' %></p>
             </div>
           </div>
         </article>

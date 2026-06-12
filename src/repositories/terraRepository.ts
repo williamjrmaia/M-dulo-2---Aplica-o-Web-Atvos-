@@ -28,16 +28,29 @@ export async function createTerra(data: CreateTerraInput): Promise<Terra> {
 
 export async function listarTerras(): Promise<Terra[]> {
   const { rows } = await pool.query<Terra>(
-    `SELECT *
-       FROM terras
-      WHERE status != 'inativo'
-      ORDER BY criado_em DESC`
+    `SELECT t.*,
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome
+       FROM terras t
+       LEFT JOIN usuarios criador ON criador.id = t.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = t.atualizado_por
+      WHERE t.status != 'inativo'
+      ORDER BY t.criado_em DESC`
   );
   return rows;
 }
 
 export async function getTerraById(id: string): Promise<Terra | null> {
-  const { rows } = await pool.query<Terra>('SELECT * FROM terras WHERE id = $1', [id]);
+  const { rows } = await pool.query<Terra>(
+    `SELECT t.*,
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome
+       FROM terras t
+       LEFT JOIN usuarios criador ON criador.id = t.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = t.atualizado_por
+      WHERE t.id = $1`,
+    [id]
+  );
   return rows[0] ?? null;
 }
 

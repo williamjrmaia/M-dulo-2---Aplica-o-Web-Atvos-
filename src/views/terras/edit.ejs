@@ -1,6 +1,10 @@
 <%- include('../partials/header', { title: 'Editar Terra', active: 'terras' }) %>
 
-<% const base = typeof dados !== 'undefined' && dados ? dados : terra; %>
+<%
+  const base = typeof dados !== 'undefined' && dados ? dados : terra;
+  const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
+  const analistaAtual = perfilAtual === 'analista';
+%>
 
 <section aria-labelledby="titulo-editar-terra">
   <div class="page-header">
@@ -41,10 +45,18 @@
           <div class="form-group">
             <label class="form-label" for="status">Status</label>
             <select class="form-select" id="status" name="status">
-              <option value="rascunho" <%= base.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
-              <option value="pendente" <%= base.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
-              <option value="ativo" <%= base.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
-              <option value="devolvido" <%= base.status === 'devolvido' ? 'selected' : '' %>>Devolvido</option>
+              <option value="">(não alterar)</option>
+              <% if (analistaAtual) { %>
+                <% if (['rascunho', 'devolvido'].includes(base.status)) { %>
+                  <option value="pendente">Enviar para validação</option>
+                <% } %>
+              <% } else { %>
+                <option value="rascunho" <%= base.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
+                <option value="pendente" <%= base.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
+                <option value="ativo" <%= base.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
+                <option value="devolvido" <%= base.status === 'devolvido' ? 'selected' : '' %>>Devolvido</option>
+                <option value="inativo" <%= base.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+              <% } %>
             </select>
           </div>
         </div>
