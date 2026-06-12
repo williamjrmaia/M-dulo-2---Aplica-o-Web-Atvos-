@@ -1,6 +1,7 @@
 import pool from '../config/connection';
 import {
   Terra,
+  ConsultaTerrasOpcoes,
   CreateTerraInput,
   ExcluirTerraInput,
   ParceiroDaTerra,
@@ -26,7 +27,19 @@ export async function createTerra(data: CreateTerraInput): Promise<Terra> {
   return rows[0];
 }
 
-export async function listarTerras(): Promise<Terra[]> {
+export async function listarTerras(opcoes: ConsultaTerrasOpcoes = {}): Promise<Terra[]> {
+  const where: string[] = [];
+  const valores: unknown[] = [];
+
+  if (!opcoes.incluirInativos) {
+    where.push(`t.status != 'inativo'`);
+  }
+
+  if (opcoes.rascunhosUsuarioId) {
+    valores.push(opcoes.rascunhosUsuarioId);
+    where.push(`(t.status != 'rascunho' OR t.criado_por = $${valores.length})`);
+  }
+
   const { rows } = await pool.query<Terra>(
     `SELECT t.*,
             criador.nome AS criado_por_nome,
@@ -34,13 +47,25 @@ export async function listarTerras(): Promise<Terra[]> {
        FROM terras t
        LEFT JOIN usuarios criador ON criador.id = t.criado_por
        LEFT JOIN usuarios atualizador ON atualizador.id = t.atualizado_por
-      WHERE t.status != 'inativo'
-      ORDER BY t.criado_em DESC`
+      ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
+      ORDER BY t.criado_em DESC`,
+    valores
   );
   return rows;
 }
 
-export async function getTerraById(id: string): Promise<Terra | null> {
+export async function getTerraById(
+  id: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<Terra | null> {
+  const valores: unknown[] = [id];
+  const where: string[] = ['t.id = $1'];
+
+  if (opcoes.rascunhosUsuarioId) {
+    valores.push(opcoes.rascunhosUsuarioId);
+    where.push(`(t.status != 'rascunho' OR t.criado_por = $${valores.length})`);
+  }
+
   const { rows } = await pool.query<Terra>(
     `SELECT t.*,
             criador.nome AS criado_por_nome,
@@ -48,8 +73,8 @@ export async function getTerraById(id: string): Promise<Terra | null> {
        FROM terras t
        LEFT JOIN usuarios criador ON criador.id = t.criado_por
        LEFT JOIN usuarios atualizador ON atualizador.id = t.atualizado_por
-      WHERE t.id = $1`,
-    [id]
+      WHERE ${where.join(' AND ')}`,
+    valores
   );
   return rows[0] ?? null;
 }
@@ -151,7 +176,10 @@ export async function deactivateTerra(
   }
 }
 
-export async function listarParceirosDaTerra(terraId: string): Promise<ParceiroDaTerra[] | null> {
+export async function listarParceirosDaTerra(
+  terraId: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<ParceiroDaTerra[] | null> {
   const terra = await pool.query<{ id: string }>('SELECT id FROM terras WHERE id = $1', [terraId]);
   if (terra.rows.length === 0) {
     return null;
@@ -171,7 +199,7 @@ export async function listarParceirosDaTerra(terraId: string): Promise<ParceiroD
        FROM parceiro_terra pt
        JOIN parceiros p ON p.id = pt.parceiro_id
       WHERE pt.terra_id = $1
-        AND p.status != 'inativo'
+        ${opcoes.incluirInativos ? '' : "AND p.status != 'inativo'"}
       ORDER BY p.criado_em DESC`,
     [terraId]
   );

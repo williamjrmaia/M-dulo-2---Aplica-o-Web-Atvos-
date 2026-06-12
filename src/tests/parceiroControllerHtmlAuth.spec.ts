@@ -3,8 +3,10 @@ import {
   aprovarParceiroViaFormulario,
   devolverParceiroViaFormulario,
   excluirParceiro as excluirParceiroController,
+  listarTerrasDoParceiro,
   processarCadastro,
   processarEdicao,
+  renderListaParceiros,
 } from '../controllers/parceiroController';
 import {
   aprovarParceiro,
@@ -13,6 +15,8 @@ import {
   editarParceiro,
   excluirParceiro,
   obterParceiroPorId,
+  obterParceiros,
+  obterTerrasDoParceiro,
 } from '../services/parceiroService';
 
 jest.mock('../services/parceiroService', () => ({
@@ -24,13 +28,14 @@ jest.mock('../services/parceiroService', () => ({
   enviarParceiroParaValidacao: jest.fn(),
   obterHistoricoParceiro: jest.fn(),
   obterParceiroPorId: jest.fn().mockResolvedValue({ status: 'rascunho' }),
-  obterParceiros: jest.fn(),
+  obterParceiros: jest.fn().mockResolvedValue([]),
   obterTerrasDoParceiro: jest.fn(),
   vincularTerraAoParceiro: jest.fn(),
 }));
 
 function criarResposta() {
   return {
+    json: jest.fn(),
     redirect: jest.fn(),
     render: jest.fn(),
     status: jest.fn().mockReturnThis(),
@@ -94,7 +99,10 @@ describe('controllers HTML de parceiros usam usuário autenticado', () => {
 
     await processarEdicao(req as any, res as any, next);
 
-    expect(obterParceiroPorId).toHaveBeenCalledWith(parceiroId);
+    expect(obterParceiroPorId).toHaveBeenCalledWith(parceiroId, {
+      incluirInativos: false,
+      rascunhosUsuarioId: usuarioId,
+    });
     expect(editarParceiro).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.render).toHaveBeenCalledWith(
@@ -210,6 +218,70 @@ describe('controllers HTML de parceiros usam usuário autenticado', () => {
         error: 'Coordenador não pode inativar registros',
       })
     );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista parceiros incluindo inativos para administrador', async () => {
+    const usuarioId = randomUUID();
+    const req = {
+      query: {},
+      usuario: { id: usuarioId, perfil: 'administrador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await renderListaParceiros(req as any, res as any, next);
+
+    expect(obterParceiros).toHaveBeenCalledWith({}, { incluirInativos: true, rascunhosUsuarioId: usuarioId });
+    expect(res.render).toHaveBeenCalledWith('parceiros/index', expect.objectContaining({ parceiros: [] }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista parceiros ocultando inativos para coordenador', async () => {
+    const usuarioId = randomUUID();
+    const req = {
+      query: {},
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await renderListaParceiros(req as any, res as any, next);
+
+    expect(obterParceiros).toHaveBeenCalledWith({}, { incluirInativos: false, rascunhosUsuarioId: usuarioId });
+    expect(res.render).toHaveBeenCalledWith('parceiros/index', expect.objectContaining({ parceiros: [] }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista terras vinculadas incluindo inativas para administrador', async () => {
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      usuario: { id: randomUUID(), perfil: 'administrador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await listarTerrasDoParceiro(req as any, res as any, next);
+
+    expect(obterTerrasDoParceiro).toHaveBeenCalledWith(parceiroId, { incluirInativos: true });
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista terras vinculadas ocultando inativas para coordenador', async () => {
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      usuario: { id: randomUUID(), perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await listarTerrasDoParceiro(req as any, res as any, next);
+
+    expect(obterTerrasDoParceiro).toHaveBeenCalledWith(parceiroId, { incluirInativos: false });
+    expect(res.status).toHaveBeenCalledWith(200);
     expect(next).not.toHaveBeenCalled();
   });
 

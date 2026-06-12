@@ -7,6 +7,8 @@
     const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
     const podeManterTerras = ['analista', 'coordenador', 'administrador'].includes(perfilAtual);
     const podeCadastrarTerras = ['analista', 'administrador'].includes(perfilAtual);
+    const podeVincularParceiros = ['analista', 'administrador'].includes(perfilAtual);
+    const podeInativarTerras = perfilAtual === 'administrador';
   %>
   <div class="page-header">
     <div class="page-header-text">
@@ -40,8 +42,15 @@
             <span class="badge badge-<%= t.status %>"><%= t.status %></span>
             <% if (podeManterTerras) { %>
               <div class="list-item-actions">
-                <a href="/terras/<%= t.id %>/vincular-parceiro" class="btn btn-secondary btn-sm">Vincular parceiro</a>
+                <% if (podeVincularParceiros) { %>
+                  <a href="/terras/<%= t.id %>/vincular-parceiro" class="btn btn-secondary btn-sm">Vincular parceiro</a>
+                <% } %>
                 <a href="/terras/<%= t.id %>/editar" class="btn btn-primary btn-sm">Editar</a>
+                <% if (podeInativarTerras && t.status !== 'inativo') { %>
+                  <form method="POST" action="/terras/<%= t.id %>/inativar">
+                    <button type="submit" class="btn btn-danger-outline btn-sm">Inativar</button>
+                  </form>
+                <% } %>
               </div>
             <% } %>
           </div>

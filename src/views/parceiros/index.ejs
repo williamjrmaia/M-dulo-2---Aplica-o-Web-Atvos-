@@ -5,6 +5,7 @@
 <section aria-labelledby="titulo-lista">
   <%
     const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
+    const administradorAtual = perfilAtual === 'administrador';
     const podeCadastrarParceiro = ['analista', 'administrador'].includes(perfilAtual);
     const podeExportarParceiros = ['coordenador', 'administrador'].includes(perfilAtual);
   %>
@@ -61,6 +62,9 @@
       <option value="pendente" <%= filtrosAtivos.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
       <option value="ativo" <%= filtrosAtivos.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
       <option value="devolvido" <%= filtrosAtivos.status === 'devolvido' ? 'selected' : '' %>>Devolvido</option>
+      <% if (administradorAtual) { %>
+        <option value="inativo" <%= filtrosAtivos.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+      <% } %>
     </select>
     <input
       class="form-control filter-control"

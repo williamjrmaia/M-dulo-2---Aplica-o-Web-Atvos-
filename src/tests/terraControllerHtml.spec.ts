@@ -1,15 +1,20 @@
 import { randomUUID } from 'crypto';
 import {
   excluirTerra as excluirTerraController,
+  listarParceirosDaTerra,
+  renderListaTerras,
   processarCadastroTerra,
   processarEdicaoTerra,
+  processarInativacaoTerra,
   processarVinculoTerra,
 } from '../controllers/terraController';
 import {
   cadastrarTerra,
   editarTerra,
   excluirTerra,
+  obterParceirosDaTerra,
   obterTerraPorId,
+  obterTerras,
   vincularParceiroATerra,
 } from '../services/terraService';
 import { obterParceiros } from '../services/parceiroService';
@@ -18,6 +23,7 @@ jest.mock('../services/terraService', () => ({
   cadastrarTerra: jest.fn().mockResolvedValue({}),
   editarTerra: jest.fn().mockResolvedValue({}),
   excluirTerra: jest.fn().mockResolvedValue({}),
+  obterParceirosDaTerra: jest.fn().mockResolvedValue([]),
   obterTerraPorId: jest.fn().mockResolvedValue({ id: 'terra-id', nome: 'Terra Teste', status: 'rascunho' }),
   obterTerras: jest.fn().mockResolvedValue([]),
   vincularParceiroATerra: jest.fn().mockResolvedValue({}),
@@ -30,6 +36,7 @@ jest.mock('../services/parceiroService', () => ({
 function criarResposta() {
   return {
     locals: {},
+    json: jest.fn(),
     redirect: jest.fn(),
     render: jest.fn(),
     status: jest.fn().mockReturnThis(),
@@ -100,7 +107,9 @@ describe('controllers HTML de terras', () => {
 
     await processarEdicaoTerra(req as any, res as any, next);
 
-    expect(obterTerraPorId).toHaveBeenCalledWith(terraId);
+    expect(obterTerraPorId).toHaveBeenCalledWith(terraId, {
+      rascunhosUsuarioId: usuarioId,
+    });
     expect(editarTerra).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.render).toHaveBeenCalledWith(
@@ -228,6 +237,94 @@ describe('controllers HTML de terras', () => {
         error: 'Coordenador não pode inativar registros',
       })
     );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('inativa terra pelo formulário usando usuário administrador autenticado', async () => {
+    const usuarioId = randomUUID();
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      body: {},
+      usuario: { id: usuarioId, perfil: 'administrador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarInativacaoTerra(req as any, res as any, next);
+
+    expect(excluirTerra).toHaveBeenCalledWith(
+      terraId,
+      expect.objectContaining({
+        atualizado_por: usuarioId,
+        comentario: 'Terra inativada pelo administrador',
+      })
+    );
+    expect(res.redirect).toHaveBeenCalledWith('/terras?info=Terra%20inativada%20com%20sucesso');
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista terras incluindo inativas para administrador', async () => {
+    const usuarioId = randomUUID();
+    const req = {
+      query: {},
+      usuario: { id: usuarioId, perfil: 'administrador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await renderListaTerras(req as any, res as any, next);
+
+    expect(obterTerras).toHaveBeenCalledWith({ incluirInativos: true, rascunhosUsuarioId: usuarioId });
+    expect(res.render).toHaveBeenCalledWith('terras/index', expect.objectContaining({ terras: [] }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista terras ocultando inativas para coordenador', async () => {
+    const usuarioId = randomUUID();
+    const req = {
+      query: {},
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await renderListaTerras(req as any, res as any, next);
+
+    expect(obterTerras).toHaveBeenCalledWith({ incluirInativos: false, rascunhosUsuarioId: usuarioId });
+    expect(res.render).toHaveBeenCalledWith('terras/index', expect.objectContaining({ terras: [] }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista parceiros vinculados incluindo inativos para administrador', async () => {
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      usuario: { id: randomUUID(), perfil: 'administrador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await listarParceirosDaTerra(req as any, res as any, next);
+
+    expect(obterParceirosDaTerra).toHaveBeenCalledWith(terraId, { incluirInativos: true });
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('lista parceiros vinculados ocultando inativos para coordenador', async () => {
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      usuario: { id: randomUUID(), perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await listarParceirosDaTerra(req as any, res as any, next);
+
+    expect(obterParceirosDaTerra).toHaveBeenCalledWith(terraId, { incluirInativos: false });
+    expect(res.status).toHaveBeenCalledWith(200);
     expect(next).not.toHaveBeenCalled();
   });
 

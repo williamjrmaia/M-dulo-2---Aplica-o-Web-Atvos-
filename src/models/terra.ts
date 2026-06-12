@@ -59,3 +59,8 @@ export interface VincularParceiroATerraInput {
   parceiro_id: string;
   tipo_vinculo?: string;
 }
+
+export interface ConsultaTerrasOpcoes {
+  incluirInativos?: boolean;
+  rascunhosUsuarioId?: string;
+}
