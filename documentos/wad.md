@@ -1264,7 +1264,37 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 ### 3.2.6. Diagrama de Implantação (sprints 4 e 5)
 
-*Diagrama UML de deployment mostrando nós físicos, artefatos e canais de comunicação. Representa a visão Engineering + Technology do RM-ODP.*
+```mermaid
+flowchart TB
+
+    USER["<<device>><br/>Navegador Web<br/>Administrador / Coordenador / Analista"]
+
+    subgraph APP["<<node>> Servidor de Aplicação Node.js"]
+        WEB["<<artifact>><br/>Aplicação Web<br/>Express.js + EJS"]
+        JWT["<<artifact>><br/>Middleware de Autenticação JWT<br/>requireAuth.ts"]
+    end
+
+    subgraph CLOUD["<<node>> Supabase Cloud"]
+        PG["<<artifact>><br/>Banco de Dados PostgreSQL"]
+    end
+
+    subgraph DEV["<<node>> Ambiente de Desenvolvimento"]
+        TESTS["<<artifact>><br/>Testes Automatizados<br/>Jest + Supertest"]
+        MIG["<<artifact>><br/>Migrations e Seeds<br/>src/db/migrate.ts<br/>src/db/seed.ts"]
+    end
+
+    USER -->|"HTTP/HTTPS"| WEB
+
+    WEB -->|"Validação de Token JWT"| JWT
+
+    WEB -->|"Consultas SQL<br/>TCP 5432"| PG
+
+    JWT -->|"Consulta de Usuários e Sessões<br/>TCP 5432"| PG
+
+    TESTS -.->|"Validação da Aplicação"| WEB
+
+    MIG -.->|"DDL / Seed de Dados<br/>TCP 5432"| PG
+```
 
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
