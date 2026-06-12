@@ -1426,6 +1426,9 @@ flowchart TB
     MIG -.->|"DDL / Seed de Dados<br/>TCP 5432"| PG
 ```
 
+O diagrama de implantação apresenta a distribuição dos principais componentes da solução em seus respectivos ambientes de execução, evidenciando os nós, artefatos e mecanismos de comunicação utilizados pela aplicação. A modelagem foi elaborada sob a perspectiva de Engenharia e Tecnologia do RM-ODP, permitindo compreender como os elementos de software são implantados e interagem durante a operação do sistema.
+
+
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
 No desenvolvimento do backend, foram adotados padrões de projeto voltados à separação de responsabilidades, organização da regra de negócio e redução de acoplamento entre a API, o banco de dados e os fluxos de validação. A escolha desses padrões ocorreu a partir de necessidades reais do projeto, principalmente a complexidade do domínio de parceiros agrícolas, terras, usuários, interações e histórico de alterações.
