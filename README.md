@@ -150,11 +150,11 @@ Por padrão, a aplicação fica disponível em `http://localhost:3000`. A porta 
 
 | E-mail | Perfil |
 |---|---|
-| `juliano.soares@atvos.com` | analista |
-| `bianca.souza@atvos.com` | coordenador |
-| `marcelo.andrade@atvos.com` | administrador |
+| `juliano.soares@atvos.com` | Analista |
+| `bianca.souza@atvos.com` | Coordenadora |
+| `marcelo.andrade@atvos.com` | Administrador |
 
-A senha criada pelo seed para os três usuários é `demo123`. Essas contas são destinadas apenas ao ambiente acadêmico de demonstração.
+A senha para todos os usuários é `demo123` (criada pelo seed). Essas contas são destinadas apenas ao ambiente acadêmico de demonstração.
 
 ### Primeiro acesso
 
