@@ -12,7 +12,7 @@ import {
 import { obterParceiros } from '../services/parceiroService';
 import { createTerraSchema, updateTerraSchema } from '../schemas/terra.schema';
 import { vincularParceiroATerraSchema } from '../schemas/terraParceiro.schema';
-import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
+import { AppError, ForbiddenError, NotFoundError, ValidationError } from '../errors/AppError';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -40,6 +40,12 @@ function validarAlteracaoStatusAnalista(statusAtual: string, statusNovo: unknown
 
   if (!(['rascunho', 'devolvido'].includes(statusAtual) && statusNovo === 'pendente')) {
     throw new ValidationError('Analista só pode enviar rascunhos ou devolvidos para validação');
+  }
+}
+
+function validarStatusInativoCoordenador(perfil: string | undefined, statusNovo: unknown): void {
+  if (perfil === 'coordenador' && statusNovo === 'inativo') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
   }
 }
 
@@ -72,7 +78,10 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-  if (perfilAtual(req, res) === 'analista' && parsed.data.status !== undefined) {
+  const perfilAutenticado = perfilAtual(req, res);
+  validarStatusInativoCoordenador(perfilAutenticado, parsed.data.status);
+
+  if (perfilAutenticado === 'analista' && parsed.data.status !== undefined) {
     const terraAtual = await obterTerraPorId(id);
     validarAlteracaoStatusAnalista(terraAtual.status, parsed.data.status);
   }
@@ -85,6 +94,10 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
 export const excluirTerra = asyncHandler(async (req: Request, res: Response) => {
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const { atualizado_por, comentario } = req.body;
+
+  if (perfilAtual(req, res) === 'coordenador') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
+  }
 
   if (!atualizado_por) {
     throw new ValidationError('Campos obrigatórios: atualizado_por');
@@ -187,7 +200,10 @@ export const processarEdicaoTerra = asyncHandler(async (req: Request, res: Respo
   }
 
   try {
-    if (perfilAtual(req, res) === 'analista' && parsed.data.status !== undefined) {
+    const perfilAutenticado = perfilAtual(req, res);
+    validarStatusInativoCoordenador(perfilAutenticado, parsed.data.status);
+
+    if (perfilAutenticado === 'analista' && parsed.data.status !== undefined) {
       const terraAtual = await obterTerraPorId(id);
       validarAlteracaoStatusAnalista(terraAtual.status, parsed.data.status);
     }

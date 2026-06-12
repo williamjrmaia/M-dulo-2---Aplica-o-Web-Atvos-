@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import {
   aprovarParceiroViaFormulario,
   devolverParceiroViaFormulario,
+  excluirParceiro as excluirParceiroController,
   processarCadastro,
   processarEdicao,
 } from '../controllers/parceiroController';
@@ -10,6 +11,7 @@ import {
   cadastrarParceiro,
   devolverParceiro,
   editarParceiro,
+  excluirParceiro,
   obterParceiroPorId,
 } from '../services/parceiroService';
 
@@ -18,6 +20,7 @@ jest.mock('../services/parceiroService', () => ({
   cadastrarParceiro: jest.fn().mockResolvedValue({}),
   devolverParceiro: jest.fn().mockResolvedValue({}),
   editarParceiro: jest.fn().mockResolvedValue({}),
+  excluirParceiro: jest.fn().mockResolvedValue({}),
   enviarParceiroParaValidacao: jest.fn(),
   obterHistoricoParceiro: jest.fn(),
   obterParceiroPorId: jest.fn().mockResolvedValue({ status: 'rascunho' }),
@@ -140,6 +143,72 @@ describe('controllers HTML de parceiros usam usuário autenticado', () => {
     expect(editarParceiro).toHaveBeenCalledWith(
       parceiroId,
       expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('bloqueia coordenador ao tentar inativar parceiro', async () => {
+    const usuarioId = randomUUID();
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      body: { atualizado_por: usuarioId },
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await excluirParceiroController(req as any, res as any, next);
+
+    expect(excluirParceiro).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith(
+      expect.objectContaining({
+        statusCode: 403,
+        message: 'Coordenador não pode inativar registros',
+      })
+    );
+  });
+
+  it('permite coordenador editar parceiro sem inativar', async () => {
+    const usuarioId = randomUUID();
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      body: { nome: 'Parceiro Revisado' },
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicao(req as any, res as any, next);
+
+    expect(editarParceiro).toHaveBeenCalledWith(
+      parceiroId,
+      expect.objectContaining({ nome: 'Parceiro Revisado', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('bloqueia coordenador ao alterar status de parceiro para inativo na edição', async () => {
+    const usuarioId = randomUUID();
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      body: { status: 'inativo' },
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicao(req as any, res as any, next);
+
+    expect(editarParceiro).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.render).toHaveBeenCalledWith(
+      'parceiros/edit',
+      expect.objectContaining({
+        error: 'Coordenador não pode inativar registros',
+      })
     );
     expect(next).not.toHaveBeenCalled();
   });

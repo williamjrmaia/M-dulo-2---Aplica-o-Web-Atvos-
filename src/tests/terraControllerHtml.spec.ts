@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import {
+  excluirTerra as excluirTerraController,
   processarCadastroTerra,
   processarEdicaoTerra,
   processarVinculoTerra,
@@ -7,6 +8,7 @@ import {
 import {
   cadastrarTerra,
   editarTerra,
+  excluirTerra,
   obterTerraPorId,
   vincularParceiroATerra,
 } from '../services/terraService';
@@ -15,6 +17,7 @@ import { obterParceiros } from '../services/parceiroService';
 jest.mock('../services/terraService', () => ({
   cadastrarTerra: jest.fn().mockResolvedValue({}),
   editarTerra: jest.fn().mockResolvedValue({}),
+  excluirTerra: jest.fn().mockResolvedValue({}),
   obterTerraPorId: jest.fn().mockResolvedValue({ id: 'terra-id', nome: 'Terra Teste', status: 'rascunho' }),
   obterTerras: jest.fn().mockResolvedValue([]),
   vincularParceiroATerra: jest.fn().mockResolvedValue({}),
@@ -154,6 +157,76 @@ describe('controllers HTML de terras', () => {
     expect(editarTerra).toHaveBeenCalledWith(
       terraId,
       expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('bloqueia coordenador ao tentar inativar terra', async () => {
+    const usuarioId = randomUUID();
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      body: { atualizado_por: usuarioId },
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await excluirTerraController(req as any, res as any, next);
+
+    expect(excluirTerra).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith(
+      expect.objectContaining({
+        statusCode: 403,
+        message: 'Coordenador não pode inativar registros',
+      })
+    );
+  });
+
+  it('permite coordenador editar terra sem inativar', async () => {
+    const usuarioId = randomUUID();
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      body: {
+        nome: 'Terra Revisada',
+      },
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicaoTerra(req as any, res as any, next);
+
+    expect(editarTerra).toHaveBeenCalledWith(
+      terraId,
+      expect.objectContaining({ nome: 'Terra Revisada', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('bloqueia coordenador ao alterar status de terra para inativo na edição', async () => {
+    const usuarioId = randomUUID();
+    const terraId = randomUUID();
+    const req = {
+      params: { id: terraId },
+      body: {
+        status: 'inativo',
+      },
+      usuario: { id: usuarioId, perfil: 'coordenador' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicaoTerra(req as any, res as any, next);
+
+    expect(editarTerra).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.render).toHaveBeenCalledWith(
+      'terras/edit',
+      expect.objectContaining({
+        error: 'Coordenador não pode inativar registros',
+      })
     );
     expect(next).not.toHaveBeenCalled();
   });

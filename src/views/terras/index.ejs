@@ -5,7 +5,8 @@
 <section aria-labelledby="titulo-terras">
   <%
     const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
-    const podeManterTerras = ['analista', 'administrador'].includes(perfilAtual);
+    const podeManterTerras = ['analista', 'coordenador', 'administrador'].includes(perfilAtual);
+    const podeCadastrarTerras = ['analista', 'administrador'].includes(perfilAtual);
   %>
   <div class="page-header">
     <div class="page-header-text">
@@ -13,7 +14,7 @@
       <p class="subtitle">Áreas rurais vinculadas aos parceiros do Safra Control</p>
     </div>
     <div class="page-header-actions">
-      <% if (podeManterTerras) { %>
+      <% if (podeCadastrarTerras) { %>
         <a href="/terras/nova" class="btn btn-primary">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Nova Terra
@@ -26,7 +27,7 @@
     <div class="empty-state">
       <p class="empty-title">Nenhuma terra cadastrada</p>
       <p class="empty-text">Cadastre uma área para iniciar os vínculos com parceiros.</p>
-      <% if (podeManterTerras) { %>
+      <% if (podeCadastrarTerras) { %>
         <a href="/terras/nova" class="btn btn-primary empty-action">Nova Terra</a>
       <% } %>
     </div>
