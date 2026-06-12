@@ -3097,7 +3097,25 @@ O protótipo de alta fidelidade apresenta um logotipo completo em imagem. A impl
 
 ### 4.2.5. Evidências visuais e de execução
 
-Os arquivos em `documentos/assets/aplicacao_web_sprint4/` registram uma captura histórica da interface durante a sprint. Eles não são usados como prova do fluxo autenticado porque foram produzidos anteriormente em ambiente de teste. O arquivo `login.png`, que estava vazio, foi removido para impedir a publicação de uma evidência inválida.
+As capturas da interface da segunda versão web estão em `documentos/assets/aplicacao_web_sprint4/` e são apresentadas abaixo como evidência visual dos principais fluxos implementados.
+
+![Tela de login](./assets/aplicacao_web_sprint4/login.png)
+*Tela de login.*
+
+![Página inicial autenticada](./assets/aplicacao_web_sprint4/home.png)
+*Página inicial com atalhos por permissão.*
+
+![Listagem de parceiros](./assets/aplicacao_web_sprint4/parceiros.png)
+*Listagem de parceiros com busca e filtros.*
+
+![Cadastro de novo parceiro](./assets/aplicacao_web_sprint4/novo-parceiro.png)
+*Formulário de cadastro de parceiro.*
+
+![Fila de validação](./assets/aplicacao_web_sprint4/validacao.png)
+*Fila de parceiros pendentes de validação.*
+
+![Gestão de usuários](./assets/aplicacao_web_sprint4/usuarios.png)
+*Listagem e gestão de usuários.*
 
 Não foi possível produzir novas capturas neste ambiente porque não há navegador headless funcional instalado. Em vez de simular imagens, a validação foi feita com servidor real, banco configurado e sessão criada pelo endpoint de login.
 
