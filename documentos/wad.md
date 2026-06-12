@@ -1810,13 +1810,15 @@ A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **m
 
 ### Notação e visão geral
 
-A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas **14 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
+A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Considerando o banco implementado em `src/db/migration.sql`, foram identificadas **16 tabelas reais** distribuídas em quatro grupos lógicos, conforme apresentado a seguir:
 
-- **Núcleo do parceiro externo**: Parceiro, Interacao, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+- **Núcleo do parceiro externo**: `parceiros`, `interacao`, `telefone_parceiro`, `vinculo_comercial`, `terras` e `parceiro_terra`. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Esse papel é controlado por `vinculo_comercial.tipo_parceiro`, sem tabelas especializadas para fornecedor ou arrendador. `interacao` centraliza o histórico de contatos com cada parceiro, e `parceiro_terra` é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
 
-- **Núcleo de operação interna**: Usuario, Cargo e Unidade. Representa os colaboradores internos da ATVOS, sua estrutura organizacional e as unidades industriais onde a operação acontece.
+- **Núcleo de operação interna**: `usuarios`, `perfil_acesso` e `unidades`. Representa os colaboradores internos da ATVOS, seus perfis de acesso e as unidades industriais onde a operação acontece.
 
-- **Auditoria e associações**: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade e UsuarioUnidade. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros dois grupos. RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável, tornando todos os elos de rastreabilidade visíveis no próprio diagrama conceitual.
+- **Autenticação e primeiro acesso**: `auth_sessoes` e `primeiro_acesso_tokens`. Implementa o controle de sessões autenticadas, revogação de sessões e fluxo de definição de senha para usuários criados sem senha inicial.
+
+- **Auditoria e associações**: `registro_alteracao`, `parceiro_coordenador`, `parceiro_unidade`, `usuario_unidade` e `terra_unidade`. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros grupos. `registro_alteracao` identifica a entidade auditada por `entidade_afetada` e `entidade_id`, sem chave estrangeira direta para a entidade auditável.
 
 
 ### Decisões estruturais relevantes
@@ -1825,11 +1827,11 @@ Quatro decisões de modelagem merecem destaque por serem fundamentais para a rob
 
 1. **Separação entre identidade e papel comercial.** Uma mesma pessoa física ou jurídica pode atuar simultaneamente como Fornecedor e Arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, contatos), enquanto VinculoComercial concretiza cada papel exercido. Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
 
-2. **Especialização para vínculos com atributos próprios.** As entidades DadosFornecedor e DadosArrendador são especializações de VinculoComercial: existem apenas quando o vínculo é do tipo correspondente. DadosFornecedor concentra atributos específicos de fornecimento de cana (modalidade contratual, embaixador, guardião). DadosArrendador, neste momento, está modelada como entidade preparada para receber atributos próprios conforme retorno da ATVOS. A separação foi mantida por solicitação do cliente, prevendo divergência de atributos em iterações futuras.
+2. **Papel comercial no próprio vínculo.** O banco real não possui entidades separadas para dados de fornecedor ou arrendador. O papel exercido pelo parceiro em cada relação é representado pelo campo `tipo_parceiro` em `vinculo_comercial`, com valores controlados para `arrendador` e `fornecedor`. A tabela também concentra atributos do vínculo, como `tipo_vinculo`, `status`, `modalidade_contrato`, `data_inicio`, `data_fim` e `observacoes`.
 
-3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Chen adotada. A implementação física desta restrição, via cinco chaves estrangeiras opcionais individuais para cada entidade auditável, está detalhada na seção 3.6.3.
+3. **Auditoria por identificação polimórfica.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No banco real, cada registro aponta para a entidade auditada por meio de `entidade_afetada VARCHAR` e `entidade_id UUID`, sem FKs opcionais individuais para cada tabela auditável. Além disso, `usuario_id` identifica o solicitante e `aprovado_por` identifica, quando aplicável, o usuário responsável pela aprovação.
 
-4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos mínimos identificados: `tipo` (visita, ligação, WhatsApp, reunião), `data`, `texto` e `nome_responsavel`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo". Os atributos definitivos de Interacao serão validados com a ATVOS e poderão incluir campos adicionais como resultado, próximo passo ou duração, dependendo das necessidades operacionais levantadas com o cliente.
+4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com os atributos reais `parceiro_id`, `registrado_por`, `tipo`, `descricao`, `data`, `criado_em` e `status`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo".
 
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
@@ -1881,9 +1883,15 @@ flowchart TB
     USUA[USUARIOS]:::entity
     PERF[PERFIL ACESSO]:::entity
     UNID[UNIDADES]:::entity
+    AUTH[AUTH SESSOES]:::entity
+    PAT[PRIMEIRO ACESSO TOKENS]:::entity
 
     Rclass{classifica}:::rel
+    Rsess{mantem}:::rel
+    Rprim{gera}:::rel
     PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    USUA -- "1,1" --- Rsess -- "0,N" --- AUTH
+    USUA -- "1,1" --- Rprim -- "0,N" --- PAT
 ```
 
 **Grupo 3 — Auditoria e associações**
@@ -1903,14 +1911,12 @@ flowchart TB
 
     Rsol{solicita}:::rel
     Rapr{aprova}:::rel
-    Raud{audita}:::rel
     Rcoord{coordena}:::rel
     Ropun{opera em}:::rel
     Ratun{atua em}:::rel
 
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
-    RA -- "0,N" --- Raud -- "0,1" --- PARC
     PARC -- "1,1" --- Rcoord
     USUA -- "1,1" --- Rcoord
     Rcoord --- PCOORD
@@ -1939,6 +1945,8 @@ flowchart TB
     TEL[TELEFONE PARCEIRO]:::entity
     USUA[USUARIOS]:::entity
     PERF[PERFIL ACESSO]:::entity
+    AUTH[AUTH SESSOES]:::entity
+    PAT[PRIMEIRO ACESSO TOKENS]:::entity
     RA[REGISTRO ALTERACAO]:::entity
     PCOORD[PARCEIRO COORDENADOR]:::entity
     PUNID[PARCEIRO UNIDADE]:::entity
@@ -1951,9 +1959,10 @@ flowchart TB
     Rpert{pertence a}:::rel
     Rtu{pertence a}:::rel
     Rclass{classifica}:::rel
+    Rsess{mantem}:::rel
+    Rprim{gera}:::rel
     Rsol{solicita}:::rel
     Rapr{aprova}:::rel
-    Raud{audita}:::rel
     Rcoord{coordena}:::rel
     Ropun{opera em}:::rel
     Ratun{atua em}:::rel
@@ -1969,9 +1978,10 @@ flowchart TB
     UNID -- "1,1" --- Rtu
     Rtu --- TU
     PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    USUA -- "1,1" --- Rsess -- "0,N" --- AUTH
+    USUA -- "1,1" --- Rprim -- "0,N" --- PAT
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
-    RA -- "0,N" --- Raud -- "0,1" --- PARC
     PARC -- "1,1" --- Rcoord
     USUA -- "1,1" --- Rcoord
     Rcoord --- PCOORD
@@ -1983,9 +1993,7 @@ flowchart TB
     Ratun --- UUNID
 ```
 
-
-
-> **Nota sobre relacionamentos entre grupos:** Os relacionamentos entre Usuario e VinculoComercial (embaixador e guardião) vinculam entidades do Grupo 2 (Usuario) ao Grupo 1 (VinculoComercial). Por atravessarem dois grupos distintos, não são representados graficamente nos diagramas acima — estão detalhados na tabela a seguir e poderão ser implementados como chaves estrangeiras opcionais em VinculoComercial em iteração futura, conforme validação com a ATVOS.
+> **Nota sobre auditoria:** `registro_alteracao` identifica a entidade auditada por `entidade_afetada` e `entidade_id`. Por isso, o banco real não possui relacionamentos FK diretos entre essa tabela e cada entidade auditável.
 
 ### Resumo dos relacionamentos
 
@@ -2000,20 +2008,22 @@ flowchart TB
 | 5a | Terra / TerraUnidade | `[1..1] :: [0..N]` | Cada registro de TerraUnidade pertence a exatamente uma Terra; uma Terra pode estar associada a zero ou muitas Unidades. |
 | 5b | Unidade / TerraUnidade | `[1..1] :: [0..N]` | Cada registro de TerraUnidade pertence a exatamente uma Unidade; uma Unidade pode ter zero ou muitas Terras vinculadas. |
 | 6 | PerfilAcesso / Usuario | `[1..1] :: [0..N]` | Cada usuário possui exatamente um perfil de acesso. Um perfil pode classificar zero ou muitos usuários. |
-| 7 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação possui um solicitante obrigatório. Um usuário pode solicitar zero ou muitas alterações. |
-| 8 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional — permanece NULL enquanto a solicitação está pendente. |
-| 9 | RegistroAlteracao / Parceiro | `[0..N] :: [0..1]` | Um RegistroAlteracao pode auditar zero ou um Parceiro; um Parceiro pode ter zero ou muitos registros de auditoria. |
-| 10 | RegistroAlteracao / VinculoComercial | `[0..N] :: [0..1]` | Idem para VinculoComercial. |
-| 11 | RegistroAlteracao / Terra | `[0..N] :: [0..1]` | Idem para Terra. |
-| ★ | Constraint 9 a 11 | exclusividade | Exatamente um dos três relacionamentos acima é não-nulo por registro de RegistroAlteracao. Validada em camada de aplicação (Service); os demais ficam NULL. |
-| 12 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
-| 13 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
-| 14 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
+| 7 | Usuario / AuthSessoes | `[1..1] :: [0..N]` | Um usuário pode ter zero ou muitas sessões registradas. Toda sessão pertence a exatamente um usuário. |
+| 8 | Usuario / PrimeiroAcessoTokens | `[1..1] :: [0..N]` | Um usuário pode ter zero ou muitos tokens de primeiro acesso. Todo token pertence a exatamente um usuário. |
+| 9 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação possui um solicitante obrigatório. Um usuário pode solicitar zero ou muitas alterações. |
+| 10 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional — permanece NULL enquanto a solicitação está pendente. |
+| 11 | RegistroAlteracao / Entidade auditada | polimórfico | A entidade auditada é identificada por `entidade_afetada` e `entidade_id`, sem FK formal para a tabela auditada. |
+| 12 | Usuario / Parceiro (criação/atualização) | `[1..1] :: [0..N]` | `criado_por` é obrigatório e `atualizado_por` é opcional em Parceiro. |
+| 13 | Usuario / Terra (criação/atualização) | `[1..1] :: [0..N]` | `criado_por` é obrigatório e `atualizado_por` é opcional em Terra. |
+| 14 | Usuario / TelefoneParceiro (criação/atualização) | `[1..1] :: [0..N]` | `criado_por` é obrigatório e `atualizado_por` é opcional em TelefoneParceiro. |
+| 15 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
+| 16 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
+| 17 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
 
 
 ### Boas práticas aplicadas no modelo
 
-- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, descricao) foram identificados com base no uso atual das planilhas, e os atributos adicionais aguardam validação com a ATVOS antes de serem incorporados.
+- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. A entidade Interacao segue o mesmo princípio: os atributos implementados (`parceiro_id`, `registrado_por`, `tipo`, `descricao`, `data`, `criado_em` e `status`) refletem o uso atual do sistema e permanecem abertos a evolução conforme validação com a ATVOS.
 
 - **Normalização até a Terceira Forma Normal.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. A entidade é referenciada por uma chave estrangeira para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
 
@@ -2021,7 +2031,7 @@ flowchart TB
 
 - **Perfil de acesso como entidade.** A entidade PerfilAcesso define os três níveis de permissão do sistema: analista, coordenador e administrador. O campo `requer_aprovacao` determina se alterações feitas por usuários daquele perfil precisam de aprovação antes de se tornarem ativas, internalizando a regra de negócio no dado em vez de no código. Isso permite que a ATVOS altere a política de aprovação no futuro sem necessidade de redeploy.
 
-- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No modelo conceitual, RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável (Parceiro, VinculoComercial e Terra), com a constraint de que exatamente um desses vínculos é não-nulo por registro. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `pendente` e aguardam aprovação de Coordenador; registros originados de Administrador recebem `aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
+- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No banco real, RegistroAlteracao aponta para a entidade auditada por `entidade_afetada` e `entidade_id`, sem FK formal para cada tabela auditável. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `pendente` e aguardam aprovação de Coordenador; registros originados de Administrador recebem `aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
 
 - **Histórico modelado apenas onde tem valor de negócio.** Optou-se por manter histórico (`data_inicio`/`data_fim`) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra) guardam apenas o estado atual ou o momento de associação, evitando complexidade desnecessária.
 
@@ -2038,7 +2048,7 @@ A separação entre Parceiro e VinculoComercial é o que permite que **uma mesma
 
 A entidade ParceiroTerra, introduzida como associativa N:N entre Parceiro e Terra, resolve diretamente a contradição que existiria em um modelo 1:N diante das regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Ambos os sentidos do relacionamento precisam ser "muitos para muitos".
 
-A entidade RegistroAlteracao concretiza diretamente as regras RN11 (auditoria), RN12 (versionamento) e o fluxo de aprovação obrigatória: alterações de Analistas vão para fila, são revisadas por Coordenadores, e o histórico é preservado. Os relacionamentos explícitos e opcionais com cada entidade auditável, representados no diagrama conceitual com cardinalidade `[0..1]` em cada elo, permitem que **uma única estrutura** atenda todo o domínio auditável do sistema, sem multiplicação de entidades de auditoria.
+A entidade RegistroAlteracao concretiza diretamente as regras RN11 (auditoria), RN12 (versionamento) e o fluxo de aprovação obrigatória: alterações de Analistas vão para fila, são revisadas por Coordenadores, e o histórico é preservado. A identificação da entidade auditada por `entidade_afetada` e `entidade_id` permite que **uma única estrutura** atenda todo o domínio auditável do sistema, sem multiplicação de entidades de auditoria.
 
 A entidade ParceiroCoordenador com histórico responde ao caso, observado em campo, de coordenadores que se aposentam, mudam de função ou são realocados, preservando a memória institucional de "quem cuidou de quem e quando". As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
 
@@ -2058,13 +2068,13 @@ A importância do DER em qualquer projeto de software está na clareza e na prev
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
-No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER é especialmente relevante por se tratar de um domínio com relacionamentos complexos e múltiplos perfis de usuário. Ele torna explícita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores, e garante que a rastreabilidade de alterações — central para a integridade do sistema — esteja corretamente estruturada desde a concepção do banco de dados.
+No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER é especialmente relevante por se tratar de um domínio com relacionamentos complexos e múltiplos perfis de usuário. Ele torna explícita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores, e documenta que a rastreabilidade de alterações é feita por `registro_alteracao.entidade_afetada` e `registro_alteracao.entidade_id`, sem FK formal para a entidade auditada. O DER deve refletir o banco real definido em `src/db/migration.sql`, incluindo `auth_sessoes` e `primeiro_acesso_tokens`, e removendo entidades que não existem na implementação física.
 
 ### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
 <br>
 O modelo relacional tem como objetivo representar de forma lógica as entidades do sistema, seus atributos e os relacionamentos existentes entre elas. Nessa etapa, as entidades foram convertidas em tabelas relacionais, com definição de chaves primárias e estrangeiras, além da normalização necessária para reduzir redundâncias e garantir maior integridade dos dados.
 
-A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional.
+A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional. O modelo relacional deve acompanhar o banco real descrito em `src/db/migration.sql`, incluindo as tabelas `auth_sessoes` e `primeiro_acesso_tokens`.
 
 <div align="center">
   <sub>Figura 3.6.3.1.1</sub><br>
@@ -2141,7 +2151,53 @@ CREATE INDEX idx_usuario_nome ON usuarios(nome);
 ```
 <br><br>
 
-#### 03. TABELA unidades
+#### 03. TABELA auth_sessoes
+<br>
+A tabela auth_sessoes armazena as sessões autenticadas dos usuários. Ela permite controlar expiração, revogação e encerramento de sessões, mantendo vínculo direto com a tabela usuarios.
+<br><br>
+Os índices escolhidos foram relacionados ao usuario_id e ao status de atividade da sessão.
+<br><br>
+
+```SQL
+CREATE TABLE auth_sessoes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  token TEXT NOT NULL,
+  ativa BOOLEAN NOT NULL DEFAULT TRUE,
+  criada_em TIMESTAMP NOT NULL DEFAULT NOW(),
+  expira_em TIMESTAMP NOT NULL,
+  revogada_em TIMESTAMP,
+  revogada_por UUID REFERENCES usuarios(id) ON DELETE SET NULL
+);
+
+CREATE INDEX idx_auth_sessoes_usuario ON auth_sessoes(usuario_id);
+CREATE INDEX idx_auth_sessoes_ativa ON auth_sessoes(ativa);
+```
+<br><br>
+
+#### 04. TABELA primeiro_acesso_tokens
+<br>
+A tabela primeiro_acesso_tokens armazena tokens temporários usados no fluxo de primeiro acesso. Ela permite que usuários criados sem senha definam sua senha inicial de forma controlada, com expiração e marcação de uso.
+<br><br>
+Os índices escolhidos foram relacionados ao usuario_id e ao token_hash.
+<br><br>
+
+```SQL
+CREATE TABLE primeiro_acesso_tokens (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  token_hash TEXT NOT NULL UNIQUE,
+  criado_em TIMESTAMP NOT NULL DEFAULT NOW(),
+  expira_em TIMESTAMP NOT NULL,
+  usado_em TIMESTAMP
+);
+
+CREATE INDEX idx_primeiro_acesso_usuario ON primeiro_acesso_tokens(usuario_id);
+CREATE INDEX idx_primeiro_acesso_token_hash ON primeiro_acesso_tokens(token_hash);
+```
+<br><br>
+
+#### 05. TABELA unidades
 <br>
 A tabela unidade representa as unidades operacionais - as usinas - da ATVOS. O campo codigo é único e identifica a unidade internamente.
 <br><br>
@@ -2156,11 +2212,11 @@ CREATE TABLE unidades (
 ```
 <br><br>
 
-#### 04. TABELA parceiros
+#### 06. TABELA parceiros
 <br>
 A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador.
 <br><br>
-Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome e ao tipo_pessoa.
+Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome, ao tipo_pessoa, à região e à usina de referência.
 <br>
 
 ```SQL
@@ -2174,6 +2230,13 @@ CREATE TABLE parceiros (
   email            VARCHAR,
   data_nascimento  DATE,
   nome_acompanhante VARCHAR,
+  regiao           VARCHAR,
+  inscricao_estadual VARCHAR,
+  usina_referencia VARCHAR,
+  area_plantada    VARCHAR,
+  tch_medio        VARCHAR,
+  atr_medio        VARCHAR,
+  observacoes      TEXT,
   status           status_validacao NOT NULL DEFAULT 'rascunho',
   criado_em        TIMESTAMP NOT NULL DEFAULT NOW(),
   atualizado_em    TIMESTAMP,
@@ -2185,10 +2248,12 @@ CREATE INDEX idx_parceiro_status   ON parceiros(status);
 CREATE INDEX idx_parceiro_cpf_cnpj ON parceiros(cpf_cnpj);
 CREATE INDEX idx_parceiro_nome ON parceiros(nome);
 CREATE INDEX idx_parceiro_tipo_pessoa ON parceiros(tipo_pessoa);
+CREATE INDEX idx_parceiro_regiao ON parceiros(regiao);
+CREATE INDEX idx_parceiro_usina_referencia ON parceiros(usina_referencia);
 ```
 <br><br>
 
-#### 05. TABELA terras
+#### 07. TABELA terras
 <br>
 A tabela terra armazena os dados das propriedades rurais. Assim como parceiro, passa pelo mesmo ciclo de validação via status. O campo area_contratada_ha representa a área física da terra disponível para contrato. Note algumas considerações, como estado aceitar apenas dois caracteres, para que seja forçada a padronização (SP, MG, RJ etc) e como a area_contratada_ha poder ter até 12 dígitos com até 4 casas decimais.
 <br><br>
@@ -2217,7 +2282,7 @@ CREATE INDEX idx_terra_estado ON terras(estado);
 
 <br><br>
 
-#### 06. TABELA vinculo_comercial
+#### 08. TABELA vinculo_comercial
 <br>
 A tabela vinculo_comercial representa o contrato formal entre um parceiro e uma terra. Um parceiro pode ter múltiplos vínculos com terras diferentes, e uma terra pode ter múltiplos vínculos com parceiros diferentes. O campo tipo_parceiro define se o parceiro atua como arrendador ou fornecedor naquele vínculo específico.
 <br><br>
@@ -2247,7 +2312,7 @@ CREATE INDEX idx_vinculo_tipo_parceiro    ON vinculo_comercial(tipo_parceiro);
 
 <br><br>
 
-#### 07. TABELA parceiro_terra
+#### 09. TABELA parceiro_terra
 <br>
 A tabela parceiro_terra resolve a relação N:M entre parceiros e terras, isso sem necessidade de vínculo comercial formal, isto é, de um contrato. Um parceiro pode estar associado a uma terra sem contrato com a Atvos, e uma terra pode ter múltiplos parceiros associados.
 <br><br>
@@ -2266,7 +2331,7 @@ CREATE TABLE parceiro_terra (
 
 <br><br>
 
-#### 08. TABELA terra_unidade
+#### 10. TABELA terra_unidade
 <br>
 Essa tabela resolve a relação N:M entre terras e unidades operacionais da ATVOS (Uma terra pode ter mais de uma unidade e vice-versa).
 <br><br>
@@ -2283,7 +2348,7 @@ CREATE TABLE terra_unidade (
 
 <br><br>
 
-#### 09. TABELA parceiro_unidade
+#### 11. TABELA parceiro_unidade
 <br>
 A tabela parceiro_unidade associa parceiros às unidades operacionais da ATVOS com as quais se relacionam.
 <br><br>
@@ -2300,7 +2365,7 @@ CREATE TABLE parceiro_unidade (
 
 <br><br>
 
-#### 10. TABELA usuario_unidade
+#### 12. TABELA usuario_unidade
 <br>
 A tabela usuario_unidade associa usuários internos às unidades em que atuam.
 <br><br>
@@ -2317,7 +2382,7 @@ CREATE TABLE usuario_unidade (
 
 <br><br>
 
-#### 11. TABELA parceiro_coordenador
+#### 13. TABELA parceiro_coordenador
 <br>
 A tabela parceiro_coordenador registra qual coordenador/analista é responsável por cada parceiro. O campo data_fim nulo indica que o vínculo está ativo, o que dispensa um campo ativo separado.
 <br><br>
@@ -2339,7 +2404,7 @@ CREATE INDEX idx_parceiro_coordenador_parceiro ON parceiro_coordenador(parceiro_
 
 <br><br>
 
-#### 12. TABELA interacao
+#### 14. TABELA interacao
 <br>
 A tabela interacao registra o histórico de contatos entre a equipe interna e os parceiros - visitas, ligações, reuniões e outros tipos de interação. Não passa por fluxo de validação.
 <br><br>
@@ -2354,7 +2419,8 @@ CREATE TABLE interacao (
   tipo          VARCHAR NOT NULL,
   descricao     TEXT NOT NULL,
   data          DATE NOT NULL,
-  criado_em     TIMESTAMP NOT NULL DEFAULT NOW()
+  criado_em     TIMESTAMP NOT NULL DEFAULT NOW(),
+  status        VARCHAR NOT NULL DEFAULT 'registrado'
 );
 
 CREATE INDEX idx_interacao_parceiro ON interacao(parceiro_id);
@@ -2363,7 +2429,7 @@ CREATE INDEX idx_interacao_tipo     ON interacao(tipo);
 
 <br><br>
 
-#### 13. TABELA telefone_parceiro
+#### 15. TABELA telefone_parceiro
 <br>
 A tabela telefone_parceiro permite que um parceiro tenha múltiplos telefones cadastrados. O campo principal indica o número preferencial de contato.
 <br>
@@ -2388,9 +2454,9 @@ CREATE INDEX idx_telefone_parceiro ON telefone_parceiro(parceiro_id);
 
 <br><br>
 
-#### 14. TABELA registro_alteracao
+#### 16. TABELA registro_alteracao
 <br>
-Essa tabela registra as alterações de qualquer entidade do sistema através dos campos entidade_afetada e entidade_id. Também controla o fluxo de aprovação entre analista e coordenador. Além disso, ela também armazena os dados anteriores e os dados novos em JSONB.
+Essa tabela registra as alterações de qualquer entidade do sistema através dos campos entidade_afetada e entidade_id. O campo entidade_id não possui FK para a entidade auditada; a associação é polimórfica e interpretada em conjunto com entidade_afetada. Também controla o fluxo de aprovação entre analista e coordenador. Além disso, ela também armazena os dados anteriores e os dados novos em JSONB.
 <br><br>
 Os índices criados a partir dessa tabela estão relacionados à entidade_afetada, à entidade_id, ao usuario_id, ao status e ao tipo_operacao.
 <br><br>
