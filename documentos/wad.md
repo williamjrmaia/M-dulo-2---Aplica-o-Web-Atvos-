@@ -1430,6 +1430,8 @@ O diagrama de implantação apresenta a distribuição dos principais componente
 
 O acesso ao sistema é realizado por meio de um navegador web utilizado pelos perfis de Administrador, Coordenador e Analista. As requisições são encaminhadas via HTTP/HTTPS para o servidor de aplicação Node.js, responsável por hospedar a aplicação web desenvolvida com Express.js e EJS. Nesse ambiente também está implantado o middleware de autenticação baseado em JWT, encarregado da validação de sessões e controle de acesso aos recursos da plataforma.
 
+A persistência dos dados é realizada em uma instância PostgreSQL hospedada no Supabase Cloud. Tanto a aplicação principal quanto o mecanismo de autenticação estabelecem comunicação com o banco de dados por meio de conexões SQL sobre o protocolo TCP, utilizando a porta 5432. Essa separação entre camada de aplicação e camada de persistência contribui para a escalabilidade, manutenção e segurança da solução.
+
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
 No desenvolvimento do backend, foram adotados padrões de projeto voltados à separação de responsabilidades, organização da regra de negócio e redução de acoplamento entre a API, o banco de dados e os fluxos de validação. A escolha desses padrões ocorreu a partir de necessidades reais do projeto, principalmente a complexidade do domínio de parceiros agrícolas, terras, usuários, interações e histórico de alterações.
