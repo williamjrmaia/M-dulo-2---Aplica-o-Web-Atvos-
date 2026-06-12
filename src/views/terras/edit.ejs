@@ -4,6 +4,7 @@
   const base = typeof dados !== 'undefined' && dados ? dados : terra;
   const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
   const analistaAtual = perfilAtual === 'analista';
+  const coordenadorAtual = perfilAtual === 'coordenador';
 %>
 
 <section aria-labelledby="titulo-editar-terra">
@@ -55,7 +56,9 @@
                 <option value="pendente" <%= base.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
                 <option value="ativo" <%= base.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
                 <option value="devolvido" <%= base.status === 'devolvido' ? 'selected' : '' %>>Devolvido</option>
-                <option value="inativo" <%= base.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+                <% if (!coordenadorAtual) { %>
+                  <option value="inativo" <%= base.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
+                <% } %>
               <% } %>
             </select>
           </div>

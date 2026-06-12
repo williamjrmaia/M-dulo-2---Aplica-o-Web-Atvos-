@@ -15,7 +15,7 @@ import {
   obterParceiroPorId as obterParceiroPorIdService,
   vincularTerraAoParceiro as vincularTerraAoParceiroService,
 } from '../services/parceiroService';
-import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
+import { AppError, ForbiddenError, NotFoundError, ValidationError } from '../errors/AppError';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
@@ -54,6 +54,12 @@ function validarAlteracaoStatusAnalista(statusAtual: string, statusNovo: unknown
 
   if (!(['rascunho', 'devolvido'].includes(statusAtual) && statusNovo === 'pendente')) {
     throw new ValidationError('Analista só pode enviar rascunhos ou devolvidos para validação');
+  }
+}
+
+function validarStatusInativoCoordenador(perfil: string | undefined, statusNovo: unknown): void {
+  if (perfil === 'coordenador' && statusNovo === 'inativo') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
   }
 }
 
@@ -158,7 +164,10 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
   }
 
-  if (obterPerfilAutenticado(req, res) === 'analista' && status !== undefined) {
+  const perfilAutenticado = obterPerfilAutenticado(req, res);
+  validarStatusInativoCoordenador(perfilAutenticado, status);
+
+  if (perfilAutenticado === 'analista' && status !== undefined) {
     const parceiroAtual = await obterParceiroPorIdService(id);
     validarAlteracaoStatusAnalista(parceiroAtual.status, status);
   }
@@ -268,6 +277,10 @@ export const devolverParceiro = asyncHandler(async (req: Request, res: Response)
 export const excluirParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const { atualizado_por, comentario } = req.body;
+
+  if (obterPerfilAutenticado(req, res) === 'coordenador') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
+  }
 
   if (!atualizado_por) {
     throw new ValidationError('Campos obrigatórios: atualizado_por');
@@ -458,7 +471,10 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
     if (tipo_pessoa && !['fisica', 'juridica'].includes(tipo_pessoa)) {
       throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
     }
-    if (obterPerfilAutenticado(req, res) === 'analista' && status) {
+    const perfilAutenticado = obterPerfilAutenticado(req, res);
+    validarStatusInativoCoordenador(perfilAutenticado, status);
+
+    if (perfilAutenticado === 'analista' && status) {
       const parceiroAtual = await obterParceiroPorIdService(id);
       validarAlteracaoStatusAnalista(parceiroAtual.status, status);
     }

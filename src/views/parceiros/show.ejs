@@ -21,7 +21,7 @@
   <%- include('../partials/flash', { error: locals.error, info: locals.info }) %>
   <%
     const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
-    const podeEditarParceiro = ['analista', 'administrador'].includes(perfilAtual);
+    const podeEditarParceiro = ['analista', 'coordenador', 'administrador'].includes(perfilAtual);
   %>
 
   <section aria-labelledby="titulo-detalhe">

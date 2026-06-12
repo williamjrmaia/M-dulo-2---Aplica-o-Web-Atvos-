@@ -26,7 +26,7 @@ export const apiRouter = Router();
 
 apiRouter.use(requireAuth);
 apiRouter.post('/', authorizeRoles('analista', 'administrador'), createParceiro);
-apiRouter.patch('/:id', authorizeRoles('analista', 'administrador'), editarParceiro);
+apiRouter.patch('/:id', authorizeRoles('analista', 'coordenador', 'administrador'), editarParceiro);
 apiRouter.delete('/:id', authorizeRoles('analista', 'administrador'), excluirParceiro);
 apiRouter.get('/', authorizeRoles('analista', 'coordenador', 'administrador'), listarParceiros);
 apiRouter.get('/rascunhos-devolvidos', authorizeRoles('analista', 'administrador'), listarRascunhosDevolvidosAnalista);
@@ -45,6 +45,6 @@ viewRouter.use(requireAuth);
 viewRouter.get('/novo', authorizeRoles('analista', 'administrador'), renderFormCadastro);
 viewRouter.post('/', authorizeRoles('analista', 'administrador'), processarCadastro);
 viewRouter.get('/', authorizeRoles('analista', 'coordenador', 'administrador'), renderListaParceiros);
-viewRouter.get('/:id/editar', authorizeRoles('analista', 'administrador'), renderFormEdicao);
-viewRouter.post('/:id/editar', authorizeRoles('analista', 'administrador'), processarEdicao);
+viewRouter.get('/:id/editar', authorizeRoles('analista', 'coordenador', 'administrador'), renderFormEdicao);
+viewRouter.post('/:id/editar', authorizeRoles('analista', 'coordenador', 'administrador'), processarEdicao);
 viewRouter.get('/:id', authorizeRoles('analista', 'coordenador', 'administrador'), renderDetalheParceiro);
