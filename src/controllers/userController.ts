@@ -9,6 +9,14 @@ import { UserService } from '../services/userService';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  private async montarUsuarioFormulario(
+    id: string,
+    dados: Record<string, unknown> = {}
+  ): Promise<Record<string, unknown>> {
+    const usuarioAtual = await this.userService.buscarUsuario(id).catch(() => null);
+    return { ...(usuarioAtual ?? { id }), ...dados, id };
+  }
+
   private validarPermissaoAdmin(req: Request): 'autorizado' | 'nao-autenticado' | 'proibido' {
     const usuarioAutenticado = (req as Request & { usuario?: { perfil?: string } }).usuario;
     if (usuarioAutenticado) {
@@ -144,7 +152,7 @@ export class UserController {
     if (!parsed.success) {
       return res.status(400).render('usuarios/edit', {
         error: 'Dados de entrada invalidos',
-        usuario: { id, nome, email, ativo, perfil_acesso_id },
+        usuario: await this.montarUsuarioFormulario(id, { nome, email, ativo, perfil_acesso_id }),
       });
     }
     try {
@@ -155,7 +163,7 @@ export class UserController {
       const status = message === 'Usuario nao localizado na base' ? 404 : message === 'Erro interno do servidor' ? 500 : 400;
       return res.status(status).render('usuarios/edit', {
         error: message,
-        usuario: { id, nome, email, ativo, perfil_acesso_id },
+        usuario: await this.montarUsuarioFormulario(id, { nome, email, ativo, perfil_acesso_id }),
       });
     }
   };
@@ -201,7 +209,10 @@ export class UserController {
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Erro interno do servidor';
       const status = message === 'Usuario nao encontrado' ? 404 : 500;
-      return res.status(status).render('usuarios/inativar', { error: message, usuario: { id } });
+      return res.status(status).render('usuarios/inativar', {
+        error: message,
+        usuario: await this.montarUsuarioFormulario(id),
+      });
     }
   };
 
@@ -252,7 +263,7 @@ export class UserController {
     if (!parsed.success || !role_id) {
       return res.status(400).render('usuarios/perfil', {
         error: 'Dados obrigatorios ausentes',
-        usuario: { id, perfil_acesso_id: role_id },
+        usuario: await this.montarUsuarioFormulario(id, { perfil_acesso_id: role_id }),
         perfis: await this.userService.listarPerfis(),
       });
     }
@@ -263,7 +274,7 @@ export class UserController {
       const status = error instanceof Error && error.message === 'Perfil nao encontrado' ? 400 : 500;
       return res.status(status).render('usuarios/perfil', {
         error: error instanceof Error ? error.message : 'Erro interno do servidor',
-        usuario: { id, perfil_acesso_id: role_id },
+        usuario: await this.montarUsuarioFormulario(id, { perfil_acesso_id: role_id }),
         perfis: await this.userService.listarPerfis(),
       });
     }

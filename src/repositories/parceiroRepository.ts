@@ -358,8 +358,12 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
 
   const { rows } = await pool.query<Parceiro>(
     `SELECT p.*,
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome,
             tp.numero AS telefone
        FROM parceiros p
+       LEFT JOIN usuarios criador ON criador.id = p.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = p.atualizado_por
        LEFT JOIN LATERAL (
          SELECT numero
            FROM telefone_parceiro
@@ -379,8 +383,12 @@ export async function listarPendentesValidacao(): Promise<ParceiroPendenteValida
   const { rows } = await pool.query<ParceiroPendenteValidacao>(
     `SELECT
         p.*,
+        criador.nome AS criado_por_nome,
+        atualizador.nome AS atualizado_por_nome,
         ultimo_envio.data_alteracao AS data_envio
        FROM parceiros p
+       LEFT JOIN usuarios criador ON criador.id = p.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = p.atualizado_por
        LEFT JOIN LATERAL (
          SELECT ra.data_alteracao
            FROM registro_alteracao ra
@@ -429,8 +437,14 @@ export async function listarRascunhosDevolvidosDoAnalista(
 export async function getParceiroById(id: string): Promise<Parceiro | null> {
   const { rows } = await pool.query<Parceiro>(
     `SELECT p.*,
-            tp.numero AS telefone
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome,
+            tp.numero AS telefone,
+            ultima_devolucao.comentario AS comentario_devolucao,
+            ultima_devolucao.data_alteracao AS data_devolucao
        FROM parceiros p
+       LEFT JOIN usuarios criador ON criador.id = p.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = p.atualizado_por
        LEFT JOIN LATERAL (
          SELECT numero
            FROM telefone_parceiro
@@ -439,6 +453,15 @@ export async function getParceiroById(id: string): Promise<Parceiro | null> {
           ORDER BY principal DESC, criado_em DESC
           LIMIT 1
        ) tp ON TRUE
+       LEFT JOIN LATERAL (
+         SELECT ra.comentario, ra.data_alteracao
+           FROM registro_alteracao ra
+          WHERE ra.entidade_id = p.id
+            AND LOWER(ra.entidade_afetada) IN ('parceiro', 'parceiros')
+            AND ra.tipo_operacao = 'devolucao'
+          ORDER BY ra.data_alteracao DESC
+          LIMIT 1
+       ) ultima_devolucao ON TRUE
       WHERE p.id = $1
         AND p.status != 'inativo'`,
     [id]

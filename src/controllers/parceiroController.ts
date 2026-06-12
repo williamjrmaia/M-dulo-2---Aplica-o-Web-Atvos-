@@ -25,8 +25,14 @@ import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.sche
 type RequestComUsuario = Request & {
   usuario?: {
     id: string;
+    perfil?: string;
   };
 };
+
+function obterPerfilAutenticado(req: Request, res: Response): string | undefined {
+  const perfil = (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+  return typeof perfil === 'string' ? perfil.trim().toLowerCase() : undefined;
+}
 
 function obterUsuarioAutenticadoId(req: Request): string {
   const usuarioId = (req as RequestComUsuario).usuario?.id;
@@ -41,6 +47,14 @@ function textoOpcional(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
   const text = value.trim();
   return text.length > 0 ? text : undefined;
+}
+
+function validarAlteracaoStatusAnalista(statusAtual: string, statusNovo: unknown): void {
+  if (statusNovo === undefined || statusNovo === statusAtual) return;
+
+  if (!(['rascunho', 'devolvido'].includes(statusAtual) && statusNovo === 'pendente')) {
+    throw new ValidationError('Analista só pode enviar rascunhos ou devolvidos para validação');
+  }
 }
 
 // ─── API JSON ────────────────────────────────────────────────────────────────
@@ -142,6 +156,11 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     status === undefined
   ) {
     throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
+  }
+
+  if (obterPerfilAutenticado(req, res) === 'analista' && status !== undefined) {
+    const parceiroAtual = await obterParceiroPorIdService(id);
+    validarAlteracaoStatusAnalista(parceiroAtual.status, status);
   }
 
   const parceiro = await editarParceiroService(id, {
@@ -380,7 +399,16 @@ export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Resp
 });
 
 export const renderFormEdicao = asyncHandler(async (req: Request, res: Response) => {
-  res.render('parceiros/edit', { id: req.params.id, error: null, dados: {} });
+  try {
+    const parceiro = await obterParceiroPorIdService(req.params.id as string);
+    res.render('parceiros/edit', { id: req.params.id, error: null, dados: parceiro });
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      res.status(404).render('errors/404');
+      return;
+    }
+    throw err;
+  }
 });
 
 export const processarEdicao = asyncHandler(async (req: Request, res: Response) => {
@@ -429,6 +457,10 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
     }
     if (tipo_pessoa && !['fisica', 'juridica'].includes(tipo_pessoa)) {
       throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
+    }
+    if (obterPerfilAutenticado(req, res) === 'analista' && status) {
+      const parceiroAtual = await obterParceiroPorIdService(id);
+      validarAlteracaoStatusAnalista(parceiroAtual.status, status);
     }
 
     await editarParceiroService(id, { ...camposEditaveis, atualizado_por: usuarioId });

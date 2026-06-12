@@ -10,6 +10,7 @@ import {
   cadastrarParceiro,
   devolverParceiro,
   editarParceiro,
+  obterParceiroPorId,
 } from '../services/parceiroService';
 
 jest.mock('../services/parceiroService', () => ({
@@ -19,7 +20,7 @@ jest.mock('../services/parceiroService', () => ({
   editarParceiro: jest.fn().mockResolvedValue({}),
   enviarParceiroParaValidacao: jest.fn(),
   obterHistoricoParceiro: jest.fn(),
-  obterParceiroPorId: jest.fn(),
+  obterParceiroPorId: jest.fn().mockResolvedValue({ status: 'rascunho' }),
   obterParceiros: jest.fn(),
   obterTerrasDoParceiro: jest.fn(),
   vincularTerraAoParceiro: jest.fn(),
@@ -73,6 +74,72 @@ describe('controllers HTML de parceiros usam usuário autenticado', () => {
     expect(editarParceiro).toHaveBeenCalledWith(
       parceiroId,
       expect.objectContaining({ nome: 'Parceiro Editado', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('bloqueia analista ao alterar status fora de rascunho para pendente', async () => {
+    const usuarioId = randomUUID();
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      body: { status: 'ativo' },
+      usuario: { id: usuarioId, perfil: 'analista' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicao(req as any, res as any, next);
+
+    expect(obterParceiroPorId).toHaveBeenCalledWith(parceiroId);
+    expect(editarParceiro).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.render).toHaveBeenCalledWith(
+      'parceiros/edit',
+      expect.objectContaining({
+        error: 'Analista só pode enviar rascunhos ou devolvidos para validação',
+      })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('permite analista enviar rascunho de parceiro para pendente', async () => {
+    const usuarioId = randomUUID();
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      body: { status: 'pendente' },
+      usuario: { id: usuarioId, perfil: 'analista' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicao(req as any, res as any, next);
+
+    expect(editarParceiro).toHaveBeenCalledWith(
+      parceiroId,
+      expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('permite analista reenviar parceiro devolvido para pendente', async () => {
+    (obterParceiroPorId as jest.Mock).mockResolvedValueOnce({ status: 'devolvido' });
+    const usuarioId = randomUUID();
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      body: { status: 'pendente' },
+      usuario: { id: usuarioId, perfil: 'analista' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicao(req as any, res as any, next);
+
+    expect(editarParceiro).toHaveBeenCalledWith(
+      parceiroId,
+      expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
     );
     expect(next).not.toHaveBeenCalled();
   });
