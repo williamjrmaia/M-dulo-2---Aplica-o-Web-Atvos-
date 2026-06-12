@@ -61,4 +61,24 @@ export class PrimeiroAcessoService {
     await this.userRepository.definirSenha(usuario.id, senhaHash);
     await this.primeiroAcessoRepository.marcarComoUsado(registro.id);
   }
+
+  async definirSenhaPorEmail(email: string, senha: string): Promise<void> {
+    if (!email) {
+      throw new Error('E-mail obrigatório');
+    }
+
+    validarSenha(senha);
+
+    const usuario = await this.userRepository.buscarPorEmail(email.toLowerCase());
+    if (!usuario || !usuario.ativo) {
+      throw new Error('Usuário não elegível para primeiro acesso');
+    }
+
+    if (usuario.senha_hash) {
+      throw new Error('Usuário já acessou o sistema anteriormente');
+    }
+
+    const senhaHash = await bcrypt.hash(senha, 10);
+    await this.userRepository.definirSenha(usuario.id, senhaHash);
+  }
 }

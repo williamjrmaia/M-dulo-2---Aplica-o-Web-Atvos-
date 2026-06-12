@@ -483,6 +483,11 @@ button.logout-link {
   margin-bottom: var(--space-1);
 }
 
+.login-secondary-action {
+  margin-top: var(--space-4);
+  text-align: center;
+}
+
 /* =========================================================
    6. Page header e ações
    ========================================================= */

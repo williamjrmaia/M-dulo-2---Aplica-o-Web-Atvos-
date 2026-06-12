@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Primeiro acesso &middot; Safra Control</title>
+  <link rel="stylesheet" href="/css/atvos.css" />
+</head>
+<body class="login-page">
+  <main class="login-card" aria-labelledby="titulo-primeiro-acesso">
+    <div class="login-brand">
+      <span class="brand-mark brand-mark-cane login-logo-mark" aria-hidden="true"><span></span></span>
+      <span class="login-brand-name brand-wordmark">safra control</span>
+    </div>
+
+    <h1 id="titulo-primeiro-acesso" class="login-title">Primeiro acesso</h1>
+    <p class="login-subtitle">Cadastre sua senha para acessar o sistema</p>
+
+    <%- include('../partials/flash', { error: locals.error, success: locals.success }) %>
+
+    <form action="/primeiro-acesso" method="POST" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="email">E-mail</label>
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          name="email"
+          value="<%= locals.email || '' %>"
+          placeholder="seu.email@atvos.com"
+          autocomplete="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="senha">Nova senha</label>
+        <input
+          class="form-control"
+          type="password"
+          id="senha"
+          name="senha"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="confirmacao_senha">Repetir senha</label>
+        <input
+          class="form-control"
+          type="password"
+          id="confirmacao_senha"
+          name="confirmacao_senha"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full">Cadastrar senha</button>
+    </form>
+
+    <div class="login-secondary-action">
+      <a href="/login" class="btn-link">Voltar para login</a>
+    </div>
+  </main>
+</body>
+</html>
