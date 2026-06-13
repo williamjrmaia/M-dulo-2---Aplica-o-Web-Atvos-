@@ -3251,6 +3251,8 @@ Os cinco casos cobrem os três fluxos críticos citados na 5.1.1 e equilibram ca
 
 ### 5.1.4 Evidências de Execução
 
+Esta seção reúne as evidências que permitem verificar, de forma objetiva, se a suíte automatizada realmente sustentou os fluxos centrais da WebAPI. Em relatórios desse tipo, a função principal é transformar a execução dos testes em prova documentada de qualidade, cobertura e rastreabilidade, conectando o que foi testado ao que o sistema entrega.
+
 A execução final da suíte automatizada foi concluída sem falhas. O comando npm test terminou com 40 suites aprovadas e 327 testes aprovados, sem snapshots.
 
 ```text
@@ -3291,6 +3293,8 @@ O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da spri
 | CT10 | RN08, RN11 | RF007, RF008, RF012 | GET /api/parceiros; GET /api/parceiros/:id; GET /api/terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts; src/tests/terraController.spec.ts |
 
 Essa tabela fecha o elo entre os critérios técnicos, a matriz RF para RN para endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e em um conjunto de testes correspondente.
+
+Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao registrar uma suíte completa sem falhas, a cobertura por camada do Jest e a rastreabilidade entre CT, RN e RF. No contexto do CRM da ATVOS, essas evidências confirmam que os fluxos críticos de cadastro, validação, autenticação, histórico e consulta ficaram amparados por testes e por documentação consistente, reduzindo o risco de regressão e reforçando a confiabilidade da WebAPI.
 
 ## 5.2. Testes de usabilidade (sprint 5)
 
