@@ -3619,7 +3619,7 @@ Esta seção apresenta os testes unitários da camada de Service, que conhecem a
 
 #### Cobertura da camada de Service
 
-A cobertura é medida com o comando npm test -- --coverage, que gera o relatório do Jest por arquivo. O service principal do produto, o parceiroService, alcança cobertura acima do mínimo de 80% exigido, com cerca de 81% das linhas e 100% das funções exercitadas pelos testes. Os services de usuário também têm testes unitários dedicados. O relatório completo de cobertura por camada está transcrito na seção 5.1.4.
+A cobertura é medida com o comando npm test -- --coverage, que gera o relatório do Jest por arquivo. O service principal do produto, o parceiroService, alcança cobertura acima do mínimo de 80% exigido, com 100% das linhas e das funções exercitadas pelos testes na execução final. No relatório consolidado, a camada de services fechou com 99.76% das linhas cobertas. Os services de usuário também têm testes unitários dedicados. O relatório completo de cobertura por camada está transcrito na seção 5.1.4.
 
 #### Casos de teste vinculados às regras de negócio
 
@@ -3703,6 +3703,73 @@ O banco usado pelos testes é definido pela variável de ambiente DATABASE_URL_T
 O isolamento entre os casos segue o mesmo padrão da camada de service. Os helpers de src/tests/helpers criam os usuários e registros que cada teste precisa no beforeEach e os removem no afterEach, para que um caso não dependa do que outro deixou no banco. Ao final de cada arquivo, o afterAll encerra o pool de conexões, garantindo que a suíte termine sem conexões abertas.
 
 A validação do ambiente é feita pela própria suíte. Os specs de controller em src/tests usam request(app), percorrem o fluxo completo de rota, controller, service, repository e banco, e executam com sucesso no npm test.
+
+#### Casos cobertos por endpoint
+
+Os casos de integração foram organizados em quatro categorias, seguindo o contrato HTTP de cada endpoint: sucesso (200 ou 201), falha de validação de contrato (400 ou 422), regra de negócio violada (409) e recurso não encontrado (404). A tabela abaixo consolida onde cada categoria está coberta nos endpoints principais da seção 3.1.4. Quando a categoria não faz sentido para o endpoint, como um conflito de duplicidade em uma consulta, a célula indica que o cenário não se aplica.
+
+| Endpoint principal | Sucesso (200/201) | Validação (400/422) | Regra de negócio (409) | Não encontrado (404) |
+|---|---|---|---|---|
+| POST /api/parceiros | parceiroCadastroComplementar.spec.ts | CT61 (parceiroCadastroController.spec.ts) | CT63 (parceiroCadastroController.spec.ts) | não se aplica |
+| GET /api/parceiros | casos 1 a 4 (parceiroFiltrosController.spec.ts) | CT62 (parceiroFiltrosController.spec.ts) | não se aplica | não se aplica |
+| GET /api/parceiros/:id | parceiroDetalheController.spec.ts | não se aplica | não se aplica | parceiroDetalheController.spec.ts, com inexistente, malformado e inativo |
+| PATCH /api/parceiros/:id | CT53 (parceiroEdicaoController.spec.ts) | CT60 (parceiroEdicaoController.spec.ts) | CT66 (parceiroEdicaoController.spec.ts) | CT64 e CT65 (parceiroEdicaoController.spec.ts) |
+| PUT /api/parceiros/:id/validacao | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts |
+| PUT /api/parceiros/:id/aprovar e PUT /api/parceiros/:id/devolver | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts |
+| POST /api/usuarios | userCreateController.spec.ts | userCreateController.spec.ts | userCreateController.spec.ts | não se aplica |
+| PUT /usuarios/:id | userUpdateController.spec.ts | userUpdateController.spec.ts | não se aplica | userUpdateController.spec.ts |
+| POST /api/terras e PUT /api/terras/:id | terraController.spec.ts | terraController.spec.ts | não se aplica | terraController.spec.ts |
+| GET e POST /api/parceiros/:id/terras e /api/terras/:id/parceiros | parceiroTerraController.spec.ts e terraParceiroController.spec.ts | parceiroTerraController.spec.ts | parceiroTerraController.spec.ts, com vínculo duplicado | parceiroTerraController.spec.ts e terraParceiroController.spec.ts |
+| POST /primeiro-acesso/solicitar e POST /primeiro-acesso/definir-senha | CT51 e CT52 (primeiroAcessoController.spec.ts) | CT59 e casos de senha (primeiroAcessoController.spec.ts) | não se aplica | CT67 (primeiroAcessoController.spec.ts) |
+
+Os identificadores CT51 a CT67 correspondem aos casos numerados nos arquivos citados, e os demais cenários são cobertos por specs escritos em sprints anteriores e mantidos na suíte. Com isso, cada endpoint principal possui os quatro cenários-chave cobertos quando aplicáveis, e a execução consolidada desses casos está registrada na seção 5.1.4.
+
+### 5.1.4 Evidências de Execução
+
+Esta seção reúne as evidências que permitem verificar, de forma objetiva, se a suíte automatizada realmente sustentou os fluxos centrais da WebAPI. Em relatórios desse tipo, a função principal é transformar a execução dos testes em prova documentada de qualidade, cobertura e rastreabilidade, conectando o que foi testado ao que o sistema entrega.
+
+A execução final da suíte automatizada foi concluída sem falhas. O comando npm test terminou com 40 suites aprovadas e 327 testes aprovados, sem snapshots.
+
+```text
+Test Suites: 40 passed, 40 total
+Tests:       327 passed, 327 total
+Snapshots:   0 total
+Time:        777.986 s, estimated 847 s
+Ran all test suites.
+```
+
+O relatório de cobertura gerado por npm test -- --coverage confirmou a cobertura por camada da WebAPI. O resultado geral ficou em 81.47% de statements, 68.15% de branches, 85.26% de functions e 82.64% de lines.
+
+| Camada | Statements | Branches | Functions | Lines |
+|---|---|---|---|---|
+| controllers | 71.85% | 53.87% | 74.76% | 74.35% |
+| helpers | 100% | 100% | 100% | 100% |
+| middlewares | 46.15% | 24.39% | 61.53% | 45.31% |
+| repositories | 84.45% | 70.08% | 97.95% | 84.38% |
+| services | 99.76% | 99.27% | 100% | 99.76% |
+
+Os resultados por camada mostram que a cobertura está concentrada nos services e repositories, que concentram as regras de negócio e a persistência do CRM. A camada de helpers permaneceu totalmente coberta, e a camada de middlewares aparece com menor percentual porque parte de seus caminhos depende de cenários de autenticação e de tratamento de erro que não se repetem em todos os fluxos de teste.
+
+### 5.1.4.1 Mapeamento CT para RN para RF
+
+O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da sprint 1 com as regras de negócio e os requisitos funcionais já definidos nas seções 3.1.4 e 3.9. Os critérios CT11 e CT12 não entram nesta tabela porque não possuem RN associado e são tratados nos RNFs de desempenho e capacidade.
+
+| CT | RN | RF | Endpoint relacionado | Teste ou evidência |
+|---|---|---|---|---|
+| CT01 | RN01, RN09 | RF001, RF009 | POST /api/usuarios | src/tests/userCreateController.spec.ts; src/tests/userService.spec.ts |
+| CT02 | RN10 | RF010 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id; POST /api/terras; PUT /api/terras/:id | src/tests/userCreateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/terraController.spec.ts |
+| CT03 | RN02 | RF011 | POST /login | src/tests/auth.test.ts |
+| CT04 | RN04, RN05, RN06 | RF004, RF005, RF007, RF008 | POST /api/parceiros; PATCH /api/parceiros/:id; GET /api/parceiros; GET /api/parceiros/:id | src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts |
+| CT05 | RN07, RN08 | RF012, RF014 | GET /api/parceiros; GET /api/terras; PATCH /api/parceiros/:id; PUT /api/terras/:id | src/test/parceiroController.get.spec.ts; src/tests/terraController.spec.ts; src/test/parceiroController.patch.spec.ts |
+| CT06 | RN11 | RF018, RF019 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /api/terras; PUT /api/terras/:id | src/tests/userCreateController.spec.ts; src/tests/userUpdateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts; src/tests/terraController.spec.ts |
+| CT07 | RN12 | RF013 | GET /api/parceiros/:id/historico | src/tests/parceiroHistoricoController.spec.ts |
+| CT08 | RN13, RN14 | RF015 | GET /api/parceiros/:id/terras; POST /api/parceiros/:id/terras; GET /api/terras/:id/parceiros; POST /api/terras/:id/parceiros | src/tests/parceiroTerraController.spec.ts; src/tests/terraParceiroController.spec.ts |
+| CT09 | RN15 | RF020 | PUT /usuarios/:id/inativar; PUT /auth/sessoes/:id | src/tests/userInactivateController.spec.ts; src/tests/userServiceInactivateSessions.spec.ts |
+| CT10 | RN08, RN11 | RF007, RF008, RF012 | GET /api/parceiros; GET /api/parceiros/:id; GET /api/terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts; src/tests/terraController.spec.ts |
+
+Essa tabela fecha o elo entre os critérios técnicos, a matriz RF para RN para endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e em um conjunto de testes correspondente.
+
+Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao registrar uma suíte completa sem falhas, a cobertura por camada do Jest e a rastreabilidade entre CT, RN e RF. No contexto do CRM da ATVOS, essas evidências confirmam que os fluxos críticos de cadastro, validação, autenticação, histórico e consulta ficaram amparados por testes e por documentação consistente, reduzindo o risco de regressão e reforçando a confiabilidade da WebAPI.
 
 ## 5.2. Testes de usabilidade (sprint 5)
 
