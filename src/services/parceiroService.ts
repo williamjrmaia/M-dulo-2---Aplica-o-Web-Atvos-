@@ -2,9 +2,12 @@ import {
   approveParceiro,
   createParceiro,
   createParceiroTerra,
+  deactivateParceiro,
   getParceiroById,
   listarHistoricoParceiro,
+  listarPendentesValidacao,
   listarParceiros,
+  listarRascunhosDevolvidosDoAnalista,
   listarTerrasDoParceiro,
   returnParceiroForAdjustment,
   sendParceiroToValidation,
@@ -15,15 +18,31 @@ import {
   CreateParceiroInput,
   DevolverParceiroInput,
   EnviarParceiroValidacaoInput,
+  ExcluirParceiroInput,
   HistoricoParceiro,
+  ConsultaParceirosOpcoes,
   ListarParceirosFiltros,
   Parceiro,
+  ParceiroPendenteValidacao,
+  ParceiroRascunhoDevolvido,
   ParceiroTerra,
   TerraDoParceiro,
   UpdateParceiroInput,
   VincularTerraAoParceiroInput,
 } from '../models/parceiro';
-import { ConflictError, NotFoundError, UnprocessableEntityError } from '../errors/AppError';
+import { ConflictError, NotFoundError, UnprocessableEntityError, ValidationError } from '../errors/AppError';
+
+function validarCamposObrigatoriosParaValidacao(parceiro: Parceiro): void {
+  const camposAusentes: string[] = [];
+
+  if (!parceiro.email?.trim()) {
+    camposAusentes.push('email');
+  }
+
+  if (camposAusentes.length > 0) {
+    throw new ValidationError(`Campos obrigatórios para envio à validação: ${camposAusentes.join(', ')}`);
+  }
+}
 
 export async function cadastrarParceiro(data: CreateParceiroInput): Promise<Parceiro> {
   try {
@@ -52,13 +71,33 @@ export async function editarParceiro(id: string, data: UpdateParceiroInput): Pro
   }
 }
 
-export async function obterParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
-  return await listarParceiros(filtros);
+export async function obterParceiros(
+  filtros: ListarParceirosFiltros = {},
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<Parceiro[]> {
+  return await listarParceiros(filtros, opcoes);
 }
 
-export async function obterParceiroPorId(id: string): Promise<Parceiro> {
+export async function obterPendentesValidacao(): Promise<ParceiroPendenteValidacao[]> {
+  return listarPendentesValidacao();
+}
+
+export async function obterRascunhosDevolvidosDoAnalista(
+  analistaId: string
+): Promise<ParceiroRascunhoDevolvido[]> {
+  if (!analistaId) {
+    throw new ValidationError('Analista logado não identificado');
+  }
+
+  return listarRascunhosDevolvidosDoAnalista(analistaId);
+}
+
+export async function obterParceiroPorId(
+  id: string,
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<Parceiro> {
   try {
-    const parceiro = await getParceiroById(id);
+    const parceiro = await getParceiroById(id, opcoes);
     if (!parceiro) {
       throw new NotFoundError('Parceiro não encontrado');
     }
@@ -102,6 +141,8 @@ export async function enviarParceiroParaValidacao(
     if (!['rascunho', 'devolvido'].includes(parceiroAtual.status)) {
       throw new ConflictError('Parceiro só pode ser enviado para validação quando estiver em rascunho ou devolvido');
     }
+
+    validarCamposObrigatoriosParaValidacao(parceiroAtual);
 
     const parceiro = await sendParceiroToValidation(id, data, parceiroAtual);
     if (!parceiro) {
@@ -185,9 +226,43 @@ export async function devolverParceiro(id: string, data: DevolverParceiroInput):
   }
 }
 
-export async function obterTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[]> {
+export async function excluirParceiro(id: string, data: ExcluirParceiroInput): Promise<Parceiro> {
   try {
-    const terras = await listarTerrasDoParceiro(parceiroId);
+    const parceiroAtual = await getParceiroById(id);
+    if (!parceiroAtual) {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+
+    if (parceiroAtual.status === 'inativo') {
+      throw new ConflictError('Parceiro já está inativo');
+    }
+
+    const parceiro = await deactivateParceiro(id, data, parceiroAtual);
+    if (!parceiro) {
+      throw new ConflictError('Parceiro já está inativo');
+    }
+
+    return parceiro;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError || err instanceof ConflictError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Parceiro não encontrado');
+    }
+    if ((err as { code?: string }).code === '23503') {
+      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
+    }
+    throw err;
+  }
+}
+
+export async function obterTerrasDoParceiro(
+  parceiroId: string,
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<TerraDoParceiro[]> {
+  try {
+    const terras = await listarTerrasDoParceiro(parceiroId, opcoes);
     if (terras === null) {
       throw new NotFoundError('Parceiro não encontrado');
     }

@@ -6,25 +6,89 @@ import {
   devolverParceiro as devolverParceiroService,
   editarParceiro as editarParceiroService,
   enviarParceiroParaValidacao as enviarParceiroParaValidacaoService,
+  excluirParceiro as excluirParceiroService,
   obterHistoricoParceiro,
+  obterPendentesValidacao,
+  obterRascunhosDevolvidosDoAnalista,
   obterTerrasDoParceiro,
   obterParceiros,
   obterParceiroPorId as obterParceiroPorIdService,
   vincularTerraAoParceiro as vincularTerraAoParceiroService,
 } from '../services/parceiroService';
-import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
+import { AppError, ForbiddenError, NotFoundError, ValidationError } from '../errors/AppError';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
 import { devolverParceiroSchema } from '../schemas/parceiroDevolucao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 
-const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
+type RequestComUsuario = Request & {
+  usuario?: {
+    id: string;
+    perfil?: string;
+  };
+};
+
+function obterPerfilAutenticado(req: Request, res: Response): string | undefined {
+  const perfil = (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+  return typeof perfil === 'string' ? perfil.trim().toLowerCase() : undefined;
+}
+
+function obterUsuarioAutenticadoId(req: Request): string {
+  const usuarioId = (req as RequestComUsuario).usuario?.id;
+  if (!usuarioId) {
+    throw new ValidationError('Usuário autenticado não identificado');
+  }
+
+  return usuarioId;
+}
+
+function obterUsuarioAutenticadoIdOpcional(req: Request, res: Response): string | undefined {
+  return (req as RequestComUsuario).usuario?.id ?? res.locals?.usuarioAutenticado?.id;
+}
+
+function textoOpcional(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const text = value.trim();
+  return text.length > 0 ? text : undefined;
+}
+
+function validarAlteracaoStatusAnalista(statusAtual: string, statusNovo: unknown): void {
+  if (statusNovo === undefined || statusNovo === statusAtual) return;
+
+  if (!(['rascunho', 'devolvido'].includes(statusAtual) && statusNovo === 'pendente')) {
+    throw new ValidationError('Analista só pode enviar rascunhos ou devolvidos para validação');
+  }
+}
+
+function validarStatusInativoCoordenador(perfil: string | undefined, statusNovo: unknown): void {
+  if (perfil === 'coordenador' && statusNovo === 'inativo') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
+  }
+}
 
 // ─── API JSON ────────────────────────────────────────────────────────────────
 
 export const createParceiro = asyncHandler(async (req: Request, res: Response) => {
-  const { nome, tipo_pessoa, cpf_cnpj, criado_por, apelido, email, data_nascimento, nome_acompanhante } = req.body;
+  const {
+    nome,
+    tipo_pessoa,
+    cpf_cnpj,
+    criado_por,
+    apelido,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    status,
+  } = req.body;
 
   if (!nome || !tipo_pessoa || !cpf_cnpj || !criado_por) {
     throw new ValidationError('Campos obrigatórios: nome, tipo_pessoa, cpf_cnpj, criado_por');
@@ -39,10 +103,19 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     tipo_pessoa,
     cpf_cnpj,
     criado_por,
-    apelido,
-    email,
-    data_nascimento,
-    nome_acompanhante,
+    apelido: textoOpcional(apelido),
+    email: textoOpcional(email),
+    data_nascimento: textoOpcional(data_nascimento),
+    nome_acompanhante: textoOpcional(nome_acompanhante),
+    telefone: textoOpcional(telefone),
+    regiao: textoOpcional(regiao),
+    inscricao_estadual: textoOpcional(inscricao_estadual),
+    usina_referencia: textoOpcional(usina_referencia),
+    area_plantada: textoOpcional(area_plantada),
+    tch_medio: textoOpcional(tch_medio),
+    atr_medio: textoOpcional(atr_medio),
+    observacoes: textoOpcional(observacoes),
+    status: status === 'pendente' ? 'pendente' : 'rascunho',
   });
 
   res.status(201).json(parceiro);
@@ -50,7 +123,25 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
 
 export const editarParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status, atualizado_por } = req.body;
+  const {
+    nome,
+    apelido,
+    tipo_pessoa,
+    cpf_cnpj,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    status,
+    atualizado_por,
+  } = req.body;
 
   if (atualizado_por === undefined) {
     throw new ValidationError('Campo obrigatório: atualizado_por');
@@ -64,9 +155,29 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     email === undefined &&
     data_nascimento === undefined &&
     nome_acompanhante === undefined &&
+    telefone === undefined &&
+    regiao === undefined &&
+    inscricao_estadual === undefined &&
+    usina_referencia === undefined &&
+    area_plantada === undefined &&
+    tch_medio === undefined &&
+    atr_medio === undefined &&
+    observacoes === undefined &&
     status === undefined
   ) {
     throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
+  }
+
+  const perfilAutenticado = obterPerfilAutenticado(req, res);
+  validarStatusInativoCoordenador(perfilAutenticado, status);
+
+  const parceiroAtual = await obterParceiroPorIdService(id, {
+    incluirInativos: perfilAutenticado === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
+
+  if (perfilAutenticado === 'analista' && status !== undefined) {
+    validarAlteracaoStatusAnalista(parceiroAtual.status, status);
   }
 
   const parceiro = await editarParceiroService(id, {
@@ -77,6 +188,14 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     email,
     data_nascimento,
     nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
     status,
     atualizado_por,
   });
@@ -93,12 +212,28 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
     throw new ValidationError(detalhes);
   }
 
-  const parceiros = await obterParceiros(parsed.data);
+  const parceiros = await obterParceiros(parsed.data, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
+  res.status(200).json(parceiros);
+});
+
+export const listarRascunhosDevolvidosAnalista = asyncHandler(async (req: Request, res: Response) => {
+  const usuarioAutenticadoId =
+    (req as RequestComUsuario).usuario?.id ??
+    res.locals.usuarioAutenticado?.id ??
+    (typeof req.query.analista_id === 'string' ? req.query.analista_id : undefined);
+
+  const parceiros = await obterRascunhosDevolvidosDoAnalista(usuarioAutenticadoId ?? '');
   res.status(200).json(parceiros);
 });
 
 export const obterParceiroPorId = asyncHandler(async (req: Request, res: Response) => {
-  const parceiro = await obterParceiroPorIdService(req.params.id as string);
+  const parceiro = await obterParceiroPorIdService(req.params.id as string, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
   res.status(200).json(parceiro);
 });
 
@@ -153,9 +288,31 @@ export const devolverParceiro = asyncHandler(async (req: Request, res: Response)
   res.status(200).json(parceiro);
 });
 
+export const excluirParceiro = asyncHandler(async (req: Request, res: Response) => {
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const { atualizado_por, comentario } = req.body;
+
+  if (obterPerfilAutenticado(req, res) === 'coordenador') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
+  }
+
+  if (!atualizado_por) {
+    throw new ValidationError('Campos obrigatórios: atualizado_por');
+  }
+
+  const parceiro = await excluirParceiroService(id, {
+    atualizado_por,
+    comentario: textoOpcional(comentario),
+  });
+
+  res.status(200).json(parceiro);
+});
+
 export const listarTerrasDoParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-  const terras = await obterTerrasDoParceiro(id);
+  const terras = await obterTerrasDoParceiro(id, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+  });
   res.status(200).json(terras);
 });
 
@@ -181,7 +338,26 @@ export const renderFormCadastro = asyncHandler(async (_req: Request, res: Respon
 });
 
 export const processarCadastro = asyncHandler(async (req: Request, res: Response) => {
-  const { nome, tipo_pessoa, cpf_cnpj, apelido, email, data_nascimento, nome_acompanhante } = req.body;
+  const {
+    nome,
+    tipo_pessoa,
+    cpf_cnpj,
+    apelido,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    acao,
+  } = req.body;
+  const enviarParaValidacao = acao === 'validacao';
+  const usuarioId = obterUsuarioAutenticadoId(req);
 
   try {
     if (!nome || !tipo_pessoa || !cpf_cnpj) {
@@ -190,19 +366,34 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
     if (!['fisica', 'juridica'].includes(tipo_pessoa)) {
       throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
     }
+    if (enviarParaValidacao && !email) {
+      throw new ValidationError('Preencha o e-mail antes de enviar o parceiro para validação');
+    }
 
     await cadastrarParceiro({
       nome,
       tipo_pessoa,
       cpf_cnpj,
-      criado_por: SEED_USER_ID,
-      apelido: apelido || undefined,
-      email: email || undefined,
-      data_nascimento: data_nascimento || undefined,
-      nome_acompanhante: nome_acompanhante || undefined,
+      criado_por: usuarioId,
+      apelido: textoOpcional(apelido),
+      email: textoOpcional(email),
+      data_nascimento: textoOpcional(data_nascimento),
+      nome_acompanhante: textoOpcional(nome_acompanhante),
+      telefone: textoOpcional(telefone),
+      regiao: textoOpcional(regiao),
+      inscricao_estadual: textoOpcional(inscricao_estadual),
+      usina_referencia: textoOpcional(usina_referencia),
+      area_plantada: textoOpcional(area_plantada),
+      tch_medio: textoOpcional(tch_medio),
+      atr_medio: textoOpcional(atr_medio),
+      observacoes: textoOpcional(observacoes),
+      status: enviarParaValidacao ? 'pendente' : 'rascunho',
     });
 
-    res.redirect('/parceiros');
+    const info = enviarParaValidacao
+      ? 'Parceiro enviado para validação.'
+      : 'Rascunho salvo com sucesso.';
+    res.redirect(`/parceiros?info=${encodeURIComponent(info)}`);
   } catch (err) {
     const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao cadastrar parceiro';
     res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/new', {
@@ -212,16 +403,26 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
   }
 });
 
-export const renderListaParceiros = asyncHandler(async (_req: Request, res: Response) => {
-  const parceiros = await obterParceiros();
-  res.render('parceiros/index', { parceiros });
+export const renderListaParceiros = asyncHandler(async (req: Request, res: Response) => {
+  const parsed = listarParceirosFiltrosSchema.safeParse(req.query);
+  const filtros = parsed.success ? parsed.data : {};
+  const parceiros = await obterParceiros(filtros, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
+  const info = typeof req.query.info === 'string' ? req.query.info : null;
+  const error = parsed.success ? null : 'Filtros inválidos. Revise os campos informados.';
+  res.render('parceiros/index', { parceiros, filtros, info, error });
 });
 
 export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
 
   try {
-    const parceiro = await obterParceiroPorIdService(id);
+    const parceiro = await obterParceiroPorIdService(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+    });
     res.render('parceiros/show', { parceiro, naoEncontrado: false });
   } catch (err) {
     if (err instanceof NotFoundError) {
@@ -233,12 +434,42 @@ export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Resp
 });
 
 export const renderFormEdicao = asyncHandler(async (req: Request, res: Response) => {
-  res.render('parceiros/edit', { id: req.params.id, error: null, dados: {} });
+  try {
+    const parceiro = await obterParceiroPorIdService(req.params.id as string, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+    });
+    res.render('parceiros/edit', { id: req.params.id, error: null, dados: parceiro });
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      res.status(404).render('errors/404');
+      return;
+    }
+    throw err;
+  }
 });
 
 export const processarEdicao = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const { nome, apelido, tipo_pessoa, cpf_cnpj, email, data_nascimento, nome_acompanhante, status } = req.body;
+  const {
+    nome,
+    apelido,
+    tipo_pessoa,
+    cpf_cnpj,
+    email,
+    data_nascimento,
+    nome_acompanhante,
+    telefone,
+    regiao,
+    inscricao_estadual,
+    usina_referencia,
+    area_plantada,
+    tch_medio,
+    atr_medio,
+    observacoes,
+    status,
+  } = req.body;
+  const usuarioId = obterUsuarioAutenticadoId(req);
 
   const camposEditaveis: Record<string, unknown> = {};
   if (nome) camposEditaveis.nome = nome;
@@ -248,6 +479,14 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
   if (email) camposEditaveis.email = email;
   if (data_nascimento) camposEditaveis.data_nascimento = data_nascimento;
   if (nome_acompanhante) camposEditaveis.nome_acompanhante = nome_acompanhante;
+  if (telefone) camposEditaveis.telefone = telefone;
+  if (regiao) camposEditaveis.regiao = regiao;
+  if (inscricao_estadual) camposEditaveis.inscricao_estadual = inscricao_estadual;
+  if (usina_referencia) camposEditaveis.usina_referencia = usina_referencia;
+  if (area_plantada) camposEditaveis.area_plantada = area_plantada;
+  if (tch_medio) camposEditaveis.tch_medio = tch_medio;
+  if (atr_medio) camposEditaveis.atr_medio = atr_medio;
+  if (observacoes) camposEditaveis.observacoes = observacoes;
   if (status) camposEditaveis.status = status;
 
   try {
@@ -257,8 +496,19 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
     if (tipo_pessoa && !['fisica', 'juridica'].includes(tipo_pessoa)) {
       throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
     }
+    const perfilAutenticado = obterPerfilAutenticado(req, res);
+    validarStatusInativoCoordenador(perfilAutenticado, status);
 
-    await editarParceiroService(id, { ...camposEditaveis, atualizado_por: SEED_USER_ID });
+    const parceiroAtual = await obterParceiroPorIdService(id, {
+      incluirInativos: perfilAutenticado === 'administrador',
+      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+    });
+
+    if (perfilAutenticado === 'analista' && status) {
+      validarAlteracaoStatusAnalista(parceiroAtual.status, status);
+    }
+
+    await editarParceiroService(id, { ...camposEditaveis, atualizado_por: usuarioId });
 
     res.redirect('/parceiros');
   } catch (err) {
@@ -274,8 +524,7 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 // ─── Views HTML: validação e revisão de registros ────────────────────────────
 
 export const renderValidacao = asyncHandler(async (_req: Request, res: Response) => {
-  const todos = await obterParceiros();
-  const pendentes = todos.filter((p) => p.status === 'pendente');
+  const pendentes = await obterPendentesValidacao();
   res.render('parceiros/validacao', { pendentes });
 });
 
@@ -283,7 +532,9 @@ export const renderRevisar = asyncHandler(async (req: Request, res: Response) =>
   const id = req.params.id as string;
   try {
     const parceiro = await obterParceiroPorIdService(id);
-    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    const terras = await obterTerrasDoParceiro(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    }).catch(() => []);
     res.render('parceiros/revisar', { parceiro, terras, naoEncontrado: false, error: null });
   } catch (err) {
     if (err instanceof NotFoundError) {
@@ -297,16 +548,19 @@ export const renderRevisar = asyncHandler(async (req: Request, res: Response) =>
 export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
   const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  const usuarioId = obterUsuarioAutenticadoId(req);
   try {
     await aprovarParceiroService(id, {
-      aprovado_por: SEED_USER_ID,
+      aprovado_por: usuarioId,
       ...(comentario ? { comentario } : {}),
     });
     res.redirect('/validacao');
   } catch (err) {
     const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao aprovar registro';
     const parceiro = await obterParceiroPorIdService(id).catch(() => null);
-    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    const terras = await obterTerrasDoParceiro(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    }).catch(() => []);
     res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
       parceiro,
       terras,
@@ -319,16 +573,19 @@ export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, re
 export const devolverParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
   const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  const usuarioId = obterUsuarioAutenticadoId(req);
   try {
     await devolverParceiroService(id, {
-      devolvido_por: SEED_USER_ID,
+      devolvido_por: usuarioId,
       ...(comentario ? { comentario } : {}),
     });
     res.redirect('/validacao');
   } catch (err) {
     const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao devolver registro';
     const parceiro = await obterParceiroPorIdService(id).catch(() => null);
-    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    const terras = await obterTerrasDoParceiro(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    }).catch(() => []);
     res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
       parceiro,
       terras,

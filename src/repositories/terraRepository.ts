@@ -1,7 +1,9 @@
 import pool from '../config/connection';
 import {
   Terra,
+  ConsultaTerrasOpcoes,
   CreateTerraInput,
+  ExcluirTerraInput,
   ParceiroDaTerra,
   TerraParceiro,
   UpdateTerraInput,
@@ -25,14 +27,56 @@ export async function createTerra(data: CreateTerraInput): Promise<Terra> {
   return rows[0];
 }
 
-export async function listarTerras(): Promise<Terra[]> {
+export async function listarTerras(opcoes: ConsultaTerrasOpcoes = {}): Promise<Terra[]> {
+  const where: string[] = [];
+  const valores: unknown[] = [];
+
+  if (!opcoes.incluirInativos) {
+    where.push(`t.status != 'inativo'`);
+  }
+
+  if (opcoes.rascunhosUsuarioId) {
+    valores.push(opcoes.rascunhosUsuarioId);
+    where.push(`(t.status != 'rascunho' OR t.criado_por = $${valores.length})`);
+  }
+
   const { rows } = await pool.query<Terra>(
-    `SELECT *
-       FROM terras
-      WHERE status != 'inativo'
-      ORDER BY criado_em DESC`
+    `SELECT t.*,
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome
+       FROM terras t
+       LEFT JOIN usuarios criador ON criador.id = t.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = t.atualizado_por
+      ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
+      ORDER BY t.criado_em DESC`,
+    valores
   );
   return rows;
+}
+
+export async function getTerraById(
+  id: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<Terra | null> {
+  const valores: unknown[] = [id];
+  const where: string[] = ['t.id = $1'];
+
+  if (opcoes.rascunhosUsuarioId) {
+    valores.push(opcoes.rascunhosUsuarioId);
+    where.push(`(t.status != 'rascunho' OR t.criado_por = $${valores.length})`);
+  }
+
+  const { rows } = await pool.query<Terra>(
+    `SELECT t.*,
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome
+       FROM terras t
+       LEFT JOIN usuarios criador ON criador.id = t.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = t.atualizado_por
+      WHERE ${where.join(' AND ')}`,
+    valores
+  );
+  return rows[0] ?? null;
 }
 
 export async function updateTerra(id: string, data: UpdateTerraInput): Promise<Terra | null> {
@@ -82,7 +126,60 @@ export async function updateTerra(id: string, data: UpdateTerraInput): Promise<T
   return rows[0] ?? null;
 }
 
-export async function listarParceirosDaTerra(terraId: string): Promise<ParceiroDaTerra[] | null> {
+export async function deactivateTerra(
+  id: string,
+  data: ExcluirTerraInput,
+  dadosAnteriores: Terra
+): Promise<Terra | null> {
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    const { rows } = await client.query<Terra>(
+      `UPDATE terras
+          SET status = 'inativo',
+              atualizado_por = $1,
+              atualizado_em = NOW()
+        WHERE id = $2
+          AND status != 'inativo'
+        RETURNING *`,
+      [data.atualizado_por, id]
+    );
+
+    const terra = rows[0] ?? null;
+    if (!terra) {
+      await client.query('ROLLBACK');
+      return null;
+    }
+
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'terra', $2, 'exclusao', $3::jsonb, $4::jsonb, 'aprovado', $5)`,
+      [
+        data.atualizado_por,
+        id,
+        JSON.stringify(dadosAnteriores),
+        JSON.stringify(terra),
+        data.comentario ?? 'Terra inativada',
+      ]
+    );
+
+    await client.query('COMMIT');
+    return terra;
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function listarParceirosDaTerra(
+  terraId: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<ParceiroDaTerra[] | null> {
   const terra = await pool.query<{ id: string }>('SELECT id FROM terras WHERE id = $1', [terraId]);
   if (terra.rows.length === 0) {
     return null;
@@ -102,7 +199,7 @@ export async function listarParceirosDaTerra(terraId: string): Promise<ParceiroD
        FROM parceiro_terra pt
        JOIN parceiros p ON p.id = pt.parceiro_id
       WHERE pt.terra_id = $1
-        AND p.status != 'inativo'
+        ${opcoes.incluirInativos ? '' : "AND p.status != 'inativo'"}
       ORDER BY p.criado_em DESC`,
     [terraId]
   );

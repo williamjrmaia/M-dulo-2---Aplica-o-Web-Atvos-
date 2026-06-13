@@ -1,4 +1,5 @@
 import pool from '../config/connection';
+import { PoolClient } from 'pg';
 import { PerfilAcesso } from '../models/PerfilAcesso';
 import { AtualizarUsuarioDTO, CriarUsuarioInput, UsuarioComPerfil } from '../models/Usuario';
 
@@ -12,6 +13,32 @@ export interface Usuario {
 }
 
 export class UserRepository {
+  private dadosAuditaveisUsuario(usuario: UsuarioComPerfil): Omit<UsuarioComPerfil, 'senha_hash'> {
+    const { senha_hash, ...dados } = usuario;
+    return dados;
+  }
+
+  private async registrarAlteracaoUsuario(
+    client: PoolClient,
+    usuarioId: string,
+    dadosAnteriores: UsuarioComPerfil,
+    dadosNovos: UsuarioComPerfil,
+    comentario: string
+  ): Promise<void> {
+    await client.query(
+      `INSERT INTO registro_alteracao
+         (usuario_id, entidade_afetada, entidade_id, tipo_operacao, dados_anteriores, dados_novos, status, comentario)
+       VALUES ($1, 'usuario', $2, 'edicao', $3::jsonb, $4::jsonb, 'aprovado', $5)`,
+      [
+        usuarioId,
+        usuarioId,
+        JSON.stringify(this.dadosAuditaveisUsuario(dadosAnteriores)),
+        JSON.stringify(this.dadosAuditaveisUsuario(dadosNovos)),
+        comentario,
+      ],
+    );
+  }
+
   async buscarPorEmail(email: string): Promise<Usuario | null> {
     const result = await pool.query<Usuario>(
       'SELECT id, nome, email, senha_hash, ativo, perfil_acesso_id FROM usuarios WHERE email = $1',
@@ -74,14 +101,48 @@ export class UserRepository {
 
   async atualizaPerfilDeAcesso(id: string, role_id: string): Promise<UsuarioComPerfil | null> {
     console.log(`[REPOSITORY] atualizaPerfilDeAcesso usuario: ${id}, perfil: ${role_id}`);
-    const result = await pool.query<UsuarioComPerfil>(
-      `UPDATE usuarios
-          SET perfil_acesso_id = $1
-        WHERE id = $2
-        RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
-      [role_id, id],
-    );
-    return result.rows[0] ?? null;
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      const anterior = await client.query<UsuarioComPerfil>(
+        `SELECT id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em
+           FROM usuarios
+          WHERE id = $1
+          FOR UPDATE`,
+        [id],
+      );
+
+      const dadosAnteriores = anterior.rows[0] ?? null;
+      if (!dadosAnteriores) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      const result = await client.query<UsuarioComPerfil>(
+        `UPDATE usuarios
+            SET perfil_acesso_id = $1
+          WHERE id = $2
+          RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
+        [role_id, id],
+      );
+      const usuario = result.rows[0] ?? null;
+      if (!usuario) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      await this.registrarAlteracaoUsuario(client, id, dadosAnteriores, usuario, 'Perfil de acesso atualizado');
+
+      await client.query('COMMIT');
+      return usuario;
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
   }
 
   async atualizaUsuario(id: string, dados: AtualizarUsuarioDTO): Promise<UsuarioComPerfil | null> {
@@ -113,24 +174,103 @@ export class UserRepository {
 
     valores.push(id);
 
-    const result = await pool.query<UsuarioComPerfil>(
-      `UPDATE usuarios
-          SET ${campos.join(', ')}
-        WHERE id = $${contador}
-        RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
-      valores,
-    );
-    return result.rows[0] ?? null;
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      const anterior = await client.query<UsuarioComPerfil>(
+        `SELECT id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em
+           FROM usuarios
+          WHERE id = $1
+          FOR UPDATE`,
+        [id],
+      );
+
+      const dadosAnteriores = anterior.rows[0] ?? null;
+      if (!dadosAnteriores) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      const result = await client.query<UsuarioComPerfil>(
+        `UPDATE usuarios
+            SET ${campos.join(', ')}
+          WHERE id = $${contador}
+          RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
+        valores,
+      );
+      const usuario = result.rows[0] ?? null;
+      if (!usuario) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      await this.registrarAlteracaoUsuario(client, id, dadosAnteriores, usuario, 'Dados de usuário atualizados');
+
+      await client.query('COMMIT');
+      return usuario;
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
   }
 
   async inativarUsuario(id: string): Promise<UsuarioComPerfil | null> {
     console.log(`[REPOSITORY] inativarUsuario: ${id}`);
-    const result = await pool.query<UsuarioComPerfil>(
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      const anterior = await client.query<UsuarioComPerfil>(
+        `SELECT id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em
+           FROM usuarios
+          WHERE id = $1
+          FOR UPDATE`,
+        [id],
+      );
+
+      const dadosAnteriores = anterior.rows[0] ?? null;
+      if (!dadosAnteriores) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      const result = await client.query<UsuarioComPerfil>(
+        `UPDATE usuarios
+            SET ativo = FALSE
+          WHERE id = $1
+          RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
+        [id],
+      );
+      const usuario = result.rows[0] ?? null;
+      if (!usuario) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      await this.registrarAlteracaoUsuario(client, id, dadosAnteriores, usuario, 'Usuário inativado');
+
+      await client.query('COMMIT');
+      return usuario;
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  async definirSenha(id: string, senhaHash: string): Promise<Usuario | null> {
+    const result = await pool.query<Usuario>(
       `UPDATE usuarios
-          SET ativo = FALSE
+          SET senha_hash = $2
         WHERE id = $1
-        RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
-      [id],
+        RETURNING id, nome, email, senha_hash, ativo, perfil_acesso_id`,
+      [id, senhaHash],
     );
     return result.rows[0] ?? null;
   }

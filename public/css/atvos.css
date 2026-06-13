@@ -67,7 +67,7 @@
 
   /* Layout */
   --container-max: 1280px;
-  --header-height: 64px;
+  --header-height: 72px;
 
   /* Botões — alturas do guia */
   --btn-height: 40px;
@@ -206,7 +206,7 @@ h2,
   padding: 0 var(--space-5);
   display: flex;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
 
 .brand {
@@ -221,8 +221,8 @@ h2,
 }
 
 .brand-mark {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 40px;
   border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
@@ -234,11 +234,61 @@ h2,
   box-shadow: 0 2px 6px rgba(255, 104, 26, 0.35);
 }
 
+.brand-mark-cane {
+  position: relative;
+  overflow: hidden;
+  color: transparent;
+  background: #fff;
+  border: 1px solid rgba(255, 104, 26, 0.22);
+  box-shadow: 0 3px 10px rgba(63, 91, 112, 0.12);
+}
+
+.brand-mark-cane::before,
+.brand-mark-cane::after,
+.brand-mark-cane span {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  border-radius: 10px 10px 2px 2px;
+  transform-origin: bottom center;
+}
+
+.brand-mark-cane::before {
+  left: 10px;
+  width: 8px;
+  height: 23px;
+  background: linear-gradient(180deg, var(--color-yellow-atvos), #F5A800);
+  transform: rotate(-24deg);
+}
+
+.brand-mark-cane span {
+  left: 17px;
+  width: 9px;
+  height: 29px;
+  background: linear-gradient(180deg, var(--color-orange-dark), var(--color-orange-medium));
+  transform: rotate(7deg);
+}
+
+.brand-mark-cane::after {
+  right: 9px;
+  width: 8px;
+  height: 25px;
+  background: linear-gradient(180deg, #54748C, var(--color-blue-atvos));
+  transform: rotate(-18deg);
+}
+
 .brand-text {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--color-blue-atvos);
   white-space: nowrap;
+}
+
+.brand-wordmark {
+  color: var(--color-blue-atvos);
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: lowercase;
 }
 
 .nav-links {
@@ -257,7 +307,8 @@ h2,
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
-  border-bottom: 2px solid transparent;
+  border: 1px solid transparent;
+  border-bottom-width: 2px;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -276,6 +327,9 @@ h2,
   color: var(--color-orange-dark);
   background: var(--status-devolvido-bg);
   border-bottom-color: var(--color-orange-dark);
+  border-left-color: rgba(255, 104, 26, 0.08);
+  border-right-color: rgba(255, 104, 26, 0.08);
+  border-top-color: rgba(255, 104, 26, 0.08);
 }
 
 .nav-actions {
@@ -306,6 +360,13 @@ h2,
   text-decoration: none;
 }
 
+.logout-link:focus-visible,
+.nav-link:focus-visible,
+.brand:focus-visible {
+  outline: 2px solid var(--color-orange-dark);
+  outline-offset: 3px;
+}
+
 .logout-form {
   margin: 0;
 }
@@ -322,6 +383,10 @@ button.logout-link {
   color: var(--color-text-secondary);
   font-size: 13px;
   font-weight: 600;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* =========================================================
@@ -340,7 +405,7 @@ button.logout-link {
 
 .login-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 448px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -364,8 +429,35 @@ button.logout-link {
   border-radius: var(--radius-md);
 }
 
+.login-brand .brand-mark-cane {
+  width: 112px;
+  height: 112px;
+  box-shadow: none;
+}
+
+.login-brand .brand-mark-cane::before {
+  left: 25px;
+  bottom: 18px;
+  width: 16px;
+  height: 48px;
+}
+
+.login-brand .brand-mark-cane span {
+  left: 41px;
+  bottom: 18px;
+  width: 18px;
+  height: 60px;
+}
+
+.login-brand .brand-mark-cane::after {
+  right: 24px;
+  bottom: 18px;
+  width: 16px;
+  height: 52px;
+}
+
 .login-brand-name {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--color-blue-atvos);
 }
@@ -405,6 +497,11 @@ button.logout-link {
 
 .login-demo-box li {
   margin-bottom: var(--space-1);
+}
+
+.login-secondary-action {
+  margin-top: var(--space-4);
+  text-align: center;
 }
 
 /* =========================================================
@@ -955,6 +1052,30 @@ button.logout-link {
   flex: 1 1 320px;
 }
 
+.filters-toolbar {
+  display: grid;
+  grid-template-columns: minmax(320px, 2fr) repeat(2, minmax(180px, 1fr));
+  align-items: stretch;
+  padding: var(--space-5);
+}
+
+.filter-search {
+  min-width: 0;
+}
+
+.filter-control {
+  width: 100%;
+  min-height: var(--btn-height);
+}
+
+.filter-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+}
+
 .search-bar .search-icon {
   position: absolute;
   left: 12px;
@@ -1122,6 +1243,10 @@ button.logout-link {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4) var(--space-5);
+}
+
+.info-grid .span-2 {
+  grid-column: 1 / -1;
 }
 
 .definition-list {
@@ -1483,6 +1608,14 @@ button.logout-link {
   .detail-layout {
     grid-template-columns: 1fr;
   }
+
+  .filters-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-search {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1503,6 +1636,14 @@ button.logout-link {
     padding: var(--space-2);
   }
 
+  .app-nav {
+    gap: var(--space-3);
+  }
+
+  .user-chip {
+    display: none;
+  }
+
   .list-item-head {
     flex-wrap: wrap;
   }
@@ -1510,6 +1651,20 @@ button.logout-link {
   .list-item-actions {
     margin-left: 0;
     width: 100%;
+  }
+
+  .filters-toolbar {
+    grid-template-columns: 1fr;
+    padding: var(--space-4);
+  }
+
+  .filter-search,
+  .filter-actions {
+    grid-column: auto;
+  }
+
+  .filter-actions .btn {
+    flex: 1 1 0;
   }
 }
 

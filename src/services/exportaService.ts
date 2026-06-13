@@ -37,16 +37,16 @@ export class ExportaService {
   }
 
   private converterParaFormatoExportacao(parceiros: ParceiroExportacao[]): Buffer {
-    const cabecalho = 'id,nome,tipo_pessoa,cpf_cnpj,email,status,criado_em';
+    const cabecalho = 'nome,contato,tipo_parceiro,regiao,telefone_principal,email,terra_unidade';
     const linhas = parceiros.map((p) =>
       [
-        p.id,
         this.escaparCampoCSV(p.nome),
-        this.escaparCampoCSV(p.tipo_pessoa),
-        this.escaparCampoCSV(p.cpf_cnpj),
+        this.escaparCampoCSV(p.contato),
+        this.escaparCampoCSV(p.tipo_parceiro),
+        this.escaparCampoCSV(p.regiao),
+        this.escaparCampoCSV(p.telefone_principal),
         this.escaparCampoCSV(p.email),
-        this.escaparCampoCSV(p.status),
-        p.criado_em,
+        this.escaparCampoCSV(p.terra_unidade),
       ].join(',')
     );
     const csv = [cabecalho, ...linhas].join('\n');

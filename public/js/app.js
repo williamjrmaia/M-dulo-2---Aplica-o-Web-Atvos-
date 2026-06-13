@@ -66,10 +66,18 @@
       input.addEventListener('input', function () {
         var query = input.value.trim().toLowerCase();
         var items = scope.querySelectorAll('[data-search-item]');
+        var visibleCount = 0;
         Array.prototype.forEach.call(items, function (item) {
           var text = (item.getAttribute('data-search-text') || item.textContent || '').toLowerCase();
-          item.style.display = text.indexOf(query) !== -1 ? '' : 'none';
+          var visible = text.indexOf(query) !== -1;
+          item.style.display = visible ? '' : 'none';
+          if (visible) visibleCount += 1;
         });
+
+        var empty = scope.querySelector('[data-search-empty]');
+        if (empty) {
+          empty.hidden = visibleCount > 0;
+        }
       });
     });
   }

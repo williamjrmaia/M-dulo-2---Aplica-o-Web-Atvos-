@@ -4,7 +4,10 @@ import {
   apiRouter as parceiroApiRoutes,
   viewRouter as parceiroViewRoutes,
 } from './routes/parceiroRoutes';
-import { apiRouter as terraApiRoutes } from './routes/terra.routes';
+import {
+  apiRouter as terraApiRoutes,
+  viewRouter as terraViewRoutes,
+} from './routes/terra.routes';
 import { errorHandler } from './middlewares/errorHandler';
 import routes from './routes/index';
 
@@ -21,6 +24,7 @@ app.use(routes);
 app.use('/api/parceiros', parceiroApiRoutes);
 app.use('/parceiros', parceiroViewRoutes);
 app.use('/api/terras', terraApiRoutes);
+app.use('/terras', terraViewRoutes);
 
 app.use((req, res) => {
   if (req.path.startsWith('/api/')) {

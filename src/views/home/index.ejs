@@ -1,4 +1,10 @@
 <%- include('../partials/header', { title: 'Safra Control', active: 'home' }) %>
+<%
+  const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
+  const podeCadastrarParceiro = ['analista', 'administrador'].includes(perfilAtual);
+  const podeValidar = ['coordenador', 'administrador'].includes(perfilAtual);
+  const podeGerenciarUsuarios = perfilAtual === 'administrador';
+%>
 
 <section class="home-hero" aria-labelledby="home-hero-title">
   <p class="home-hero-eyebrow">Gestão agrícola ATVOS</p>
@@ -37,50 +43,56 @@
       </div>
     </article>
 
-    <article class="card home-card">
-      <div class="card-body">
-        <span class="home-card-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </span>
-        <h3 class="card-title">Novo Parceiro</h3>
-        <p class="home-card-text">
-          Cadastre novos fornecedores ou proprietários para análise e validação.
-        </p>
-      </div>
-      <div class="card-footer home-card-footer">
-        <a class="btn btn-secondary" href="/parceiros/novo">Novo cadastro</a>
-      </div>
-    </article>
+    <% if (podeCadastrarParceiro) { %>
+      <article class="card home-card">
+        <div class="card-body">
+          <span class="home-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
+          <h3 class="card-title">Novo Parceiro</h3>
+          <p class="home-card-text">
+            Cadastre novos fornecedores ou proprietários para análise e validação.
+          </p>
+        </div>
+        <div class="card-footer home-card-footer">
+          <a class="btn btn-secondary" href="/parceiros/novo">Novo cadastro</a>
+        </div>
+      </article>
+    <% } %>
 
-    <article class="card home-card">
-      <div class="card-body">
-        <span class="home-card-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        </span>
-        <h3 class="card-title">Validação</h3>
-        <p class="home-card-text">
-          Revise, aprove ou devolva registros pendentes de análise dos parceiros.
-        </p>
-      </div>
-      <div class="card-footer home-card-footer">
-        <a class="btn btn-secondary" href="/validacao">Ver pendentes</a>
-      </div>
-    </article>
+    <% if (podeValidar) { %>
+      <article class="card home-card">
+        <div class="card-body">
+          <span class="home-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </span>
+          <h3 class="card-title">Validação</h3>
+          <p class="home-card-text">
+            Revise, aprove ou devolva registros pendentes de análise dos parceiros.
+          </p>
+        </div>
+        <div class="card-footer home-card-footer">
+          <a class="btn btn-secondary" href="/validacao">Ver pendentes</a>
+        </div>
+      </article>
+    <% } %>
 
-    <article class="card home-card">
-      <div class="card-body">
-        <span class="home-card-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="19" cy="11" r="2"/></svg>
-        </span>
-        <h3 class="card-title">Usuários</h3>
-        <p class="home-card-text">
-          Gerencie perfis de acesso, edição e inativação de usuários do sistema.
-        </p>
-      </div>
-      <div class="card-footer home-card-footer">
-        <a class="btn btn-secondary" href="/usuarios">Ver usuários</a>
-      </div>
-    </article>
+    <% if (podeGerenciarUsuarios) { %>
+      <article class="card home-card">
+        <div class="card-body">
+          <span class="home-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="19" cy="11" r="2"/></svg>
+          </span>
+          <h3 class="card-title">Usuários</h3>
+          <p class="home-card-text">
+            Gerencie perfis de acesso, edição e inativação de usuários do sistema.
+          </p>
+        </div>
+        <div class="card-footer home-card-footer">
+          <a class="btn btn-secondary" href="/usuarios">Ver usuários</a>
+        </div>
+      </article>
+    <% } %>
   </div>
 </section>
 

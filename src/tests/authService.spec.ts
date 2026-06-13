@@ -38,6 +38,10 @@ function sessionRepoStub(over: Partial<Record<string, unknown>>): AuthSessionRep
   return over as unknown as AuthSessionRepository;
 }
 
+function erroPg(code: string): Error {
+  return Object.assign(new Error(`erro pg ${code}`), { code });
+}
+
 describe('AuthService.autenticar (unitário, com stub)', () => {
   // CT01 → RN02 (RF011): credenciais válidas geram token e sessão
   it('autentica e devolve token, dados do usuário e sessão quando as credenciais são válidas', async () => {
@@ -76,6 +80,29 @@ describe('AuthService.autenticar (unitário, com stub)', () => {
       'Credenciais inválidas'
     );
   });
+
+  it('rejeita o login de usuário inativo com mensagem genérica', async () => {
+    const criarSessao = jest.fn();
+    const usuarioInativo: Usuario = { ...usuarioValido, ativo: false };
+    const service = new AuthService(
+      userRepoStub(usuarioInativo),
+      sessionRepoStub({ criarSessao })
+    );
+
+    await expect(service.autenticar(usuarioInativo.email, SENHA_CORRETA)).rejects.toThrow(
+      'Credenciais inválidas'
+    );
+    expect(criarSessao).not.toHaveBeenCalled();
+  });
+
+  it('rejeita o login quando o usuário não possui senha cadastrada', async () => {
+    const usuarioSemSenha = { ...usuarioValido, senha_hash: null } as unknown as Usuario;
+    const service = new AuthService(userRepoStub(usuarioSemSenha));
+
+    await expect(service.autenticar(usuarioSemSenha.email, SENHA_CORRETA)).rejects.toThrow(
+      'Credenciais inválidas'
+    );
+  });
 });
 
 describe('AuthService.encerrarSessao (unitário, com stub)', () => {
@@ -111,5 +138,46 @@ describe('AuthService.encerrarSessao (unitário, com stub)', () => {
     );
 
     await expect(service.encerrarSessao('sess-1')).rejects.toThrow('Sessao ja encerrada');
+  });
+
+  it('trata o encerramento que perde a corrida como sessão já encerrada', async () => {
+    const service = new AuthService(
+      userRepoStub(usuarioValido),
+      sessionRepoStub({
+        buscarSessao: async () => sessaoBase({ ativa: true }),
+        encerrarSessao: async () => null,
+      })
+    );
+
+    await expect(service.encerrarSessao('sess-1')).rejects.toThrow('Sessao ja encerrada');
+  });
+
+  it('trata id malformado (erro 22P02) como sessão não encontrada', async () => {
+    const service = new AuthService(
+      userRepoStub(usuarioValido),
+      sessionRepoStub({
+        buscarSessao: async () => {
+          throw erroPg('22P02');
+        },
+      })
+    );
+
+    await expect(service.encerrarSessao('id-nao-uuid')).rejects.toThrow('Sessao nao encontrada');
+  });
+
+  it('informa quando o usuário revogador não existe (erro 23503)', async () => {
+    const service = new AuthService(
+      userRepoStub(usuarioValido),
+      sessionRepoStub({
+        buscarSessao: async () => sessaoBase({ ativa: true }),
+        encerrarSessao: async () => {
+          throw erroPg('23503');
+        },
+      })
+    );
+
+    await expect(service.encerrarSessao('sess-1', 'revogador-x')).rejects.toThrow(
+      'Usuario revogador nao encontrado'
+    );
   });
 });

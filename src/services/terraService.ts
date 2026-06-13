@@ -1,12 +1,16 @@
 import {
   createTerra,
   createTerraParceiro,
+  deactivateTerra,
+  getTerraById,
   listarParceirosDaTerra,
   listarTerras,
   updateTerra,
 } from '../repositories/terraRepository';
 import {
   CreateTerraInput,
+  ConsultaTerrasOpcoes,
+  ExcluirTerraInput,
   ParceiroDaTerra,
   Terra,
   TerraParceiro,
@@ -27,8 +31,29 @@ export async function cadastrarTerra(data: CreateTerraInput): Promise<Terra> {
   }
 }
 
-export async function obterTerras(): Promise<Terra[]> {
-  return listarTerras();
+export async function obterTerras(opcoes: ConsultaTerrasOpcoes = {}): Promise<Terra[]> {
+  return listarTerras(opcoes);
+}
+
+export async function obterTerraPorId(
+  id: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<Terra> {
+  try {
+    const terra = await getTerraById(id, opcoes);
+    if (!terra) {
+      throw new NotFoundError('Terra não encontrada');
+    }
+    return terra;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Terra não encontrada');
+    }
+    throw err;
+  }
 }
 
 export async function editarTerra(id: string, data: UpdateTerraInput): Promise<Terra> {
@@ -50,9 +75,43 @@ export async function editarTerra(id: string, data: UpdateTerraInput): Promise<T
   }
 }
 
-export async function obterParceirosDaTerra(terraId: string): Promise<ParceiroDaTerra[]> {
+export async function excluirTerra(id: string, data: ExcluirTerraInput): Promise<Terra> {
   try {
-    const parceiros = await listarParceirosDaTerra(terraId);
+    const terraAtual = await getTerraById(id);
+    if (!terraAtual) {
+      throw new NotFoundError('Terra não encontrada');
+    }
+
+    if (terraAtual.status === 'inativo') {
+      throw new ConflictError('Terra já está inativa');
+    }
+
+    const terra = await deactivateTerra(id, data, terraAtual);
+    if (!terra) {
+      throw new ConflictError('Terra já está inativa');
+    }
+
+    return terra;
+  } catch (err: unknown) {
+    if (err instanceof NotFoundError || err instanceof ConflictError) {
+      throw err;
+    }
+    if ((err as { code?: string }).code === '22P02') {
+      throw new NotFoundError('Terra não encontrada');
+    }
+    if ((err as { code?: string }).code === '23503') {
+      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
+    }
+    throw err;
+  }
+}
+
+export async function obterParceirosDaTerra(
+  terraId: string,
+  opcoes: ConsultaTerrasOpcoes = {}
+): Promise<ParceiroDaTerra[]> {
+  try {
+    const parceiros = await listarParceirosDaTerra(terraId, opcoes);
     if (parceiros === null) {
       throw new NotFoundError('Terra não encontrada');
     }

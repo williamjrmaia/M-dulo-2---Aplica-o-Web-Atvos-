@@ -39,6 +39,14 @@ export async function criarUsuario(p: CriarUsuarioParams): Promise<{ id: string 
 }
 
 export async function removerUsuarioPorEmail(email: string): Promise<void> {
+  // Apaga primeiro os filhos em registro_alteracao (FK), depois o usuario.
+  await pool.query(
+    `DELETE FROM registro_alteracao
+      WHERE usuario_id = (SELECT id FROM usuarios WHERE email = $1)
+         OR aprovado_por = (SELECT id FROM usuarios WHERE email = $1)
+         OR entidade_id = (SELECT id FROM usuarios WHERE email = $1)`,
+    [email]
+  );
   await pool.query('DELETE FROM usuarios WHERE email = $1', [email]);
 }
 

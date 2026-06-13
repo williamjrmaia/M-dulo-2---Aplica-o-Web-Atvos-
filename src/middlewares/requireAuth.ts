@@ -118,7 +118,11 @@ export function authorizeRoles(...roles: NomePerfilAcesso[]) {
       return next();
     }
 
-    const perfil = (req as RequestComUsuario).usuario?.perfil;
+    const perfil = String(
+      (req as RequestComUsuario).usuario?.perfil ??
+      res.locals.usuarioAutenticado?.perfil ??
+      ''
+    ).trim().toLowerCase() as NomePerfilAcesso;
     if (!perfil || !roles.includes(perfil)) {
       return responderNaoAutorizado(req, res);
     }

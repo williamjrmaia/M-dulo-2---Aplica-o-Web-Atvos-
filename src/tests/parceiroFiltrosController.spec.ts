@@ -165,4 +165,12 @@ describe('GET /api/parceiros com filtros', () => {
     expect(res.body.map((parceiro: { id: string }) => parceiro.id)).toContain(fornecedor.id);
     expect(res.body.map((parceiro: { id: string }) => parceiro.id)).not.toContain(arrendador.id);
   });
+
+  // CT62 → RN04 (RF007): filtro com valor fora do contrato é barrado pelo schema com 400
+  it('Caso 5 — status fora do contrato retorna 400 com mensagem do schema', async () => {
+    const res = await request(app).get('/api/parceiros').query({ status: 'arquivado' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('status: status deve ser rascunho, pendente, ativo, devolvido ou inativo');
+  });
 });

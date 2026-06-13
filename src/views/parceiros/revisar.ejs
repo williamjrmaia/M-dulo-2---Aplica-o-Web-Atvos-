@@ -115,7 +115,7 @@
           <div class="card-body stack-4">
             <div class="definition-list">
               <p class="term">Responsável pelo Cadastro</p>
-              <p class="value"><span class="code"><%= parceiro.criado_por %></span></p>
+              <p class="value"><%= parceiro.criado_por_nome || parceiro.criado_por || '—' %></p>
             </div>
             <div class="definition-list">
               <p class="term">Data de Envio</p>

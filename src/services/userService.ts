@@ -1,9 +1,13 @@
 import { PerfilAcesso } from '../models/PerfilAcesso';
 import { AtualizarUsuarioDTO, CriarUsuarioInput, UsuarioComPerfil } from '../models/Usuario';
+import { AuthSessionRepository } from '../repositories/authSessionRepository';
 import { UserRepository } from '../repositories/userRepository';
 
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly authSessionRepository = new AuthSessionRepository()
+  ) {}
 
   async listarPerfis(): Promise<PerfilAcesso[]> {
     console.log('[SERVICE] listarPerfis');
@@ -129,6 +133,8 @@ export class UserService {
     if (!usuarioInativado) {
       throw new Error('Usuario nao encontrado');
     }
+
+    await this.authSessionRepository.encerrarSessoesAtivasDoUsuario(id);
 
     console.log('[SERVICE] Usuario inativado com sucesso');
     return usuarioInativado;

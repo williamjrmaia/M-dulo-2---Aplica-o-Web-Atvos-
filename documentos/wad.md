@@ -3,7 +3,7 @@
 
 # WAD - Web Application Document - Módulo 2 - Inteli
 
-## Grupo Atwatts
+## Grupo Safra Control
 
 #### Integrantes
 
@@ -482,31 +482,31 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 | ID    | Descrição                                                                                                                     | Prioridade | Status    |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------| ---------- | --------- |
-| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, analista e coordenador.                 | Alta       | Planejado |
-| RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                        | Alta       | Planejado |
-| RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                            | Alta       | Planejado |
-| RF004 | O sistema deve permitir que o analista cadastre novos parceiros agrícolas.                                                      | Alta       | Planejado |
-| RF005 | O sistema deve permitir que o analista edite dados cadastrais de parceiros agrícolas existentes.                                | Alta       | Planejado |
-| RF006 | O sistema deve permitir que o analista registre dados de relacionamento e histórico de interações com parceiros agrícolas.      | Alta       | Planejado |
-| RF007 | O sistema deve permitir que o coordenador visualize a lista de parceiros agrícolas cadastrados.                                | Alta       | Planejado |
-| RF008 | O sistema deve permitir que o coordenador consulte o perfil detalhado de um parceiro agrícola.                                 | Alta       | Planejado |
-| RF009 | O sistema deve rejeitar ou sinalizar registros duplicados com base nos seguintes identificadores únicos: CPF, CNPJ e e-mail.  | Alta       | Planejado |
-| RF010 | O sistema deve verificar o preenchimento de campos obrigatórios antes dos registros serem enviados para a validação. Registros com o status rascunho podem ser salvos com dados incompletos.                                                                                                                            | Alta       | Planejado |
-| RF011 | O sistema deve exigir autenticação via e-mail e senha para acesso.                                                            | Alta       | Planejado |
-| RF012 | O sistema deve impedir que registros excluídos logicamente apareçam nas consultas e listagens normais.                        | Alta       | Planejado |
-| RF013 | O sistema deve manter um histórico de versões de cada registro, permitindo a visualização de valores anteriores a cada edição.| Alta       | Planejado |
-| RF014 | O sistema deve permitir que o administrador exclua registros de parceiros e terras de forma lógica.                           | Alta       | Planejado |
-| RF015 | O sistema deve permitir associar múltiplos parceiros a uma mesma terra e múltiplas terras a um mesmo parceiro.                | Alta       | Planejado |
-| RF016 | O sistema deve permitir a aplicação de filtros por nome, região, área contratada, potencial agrícola ou tipo de parceiro.     | Média      | Planejado |
-| RF017 | O sistema deve permitir a exportação de listas básicas de contatos e parceiros.                                               | Média      | Planejado |
-| RF018 | O sistema deve registrar a data de criação e última atualização de todos os registros do sistema.                             | Média      | Planejado |
-| RF019 | O sistema deve registrar o usuário responsável por cada criação ou atualização de registro.                                   | Média      | Planejado |
-| RF020 | O sistema deve definir o comportamento do sistema após a inativação de um usuário: acesso revogado imediatamente, sessão encerrada e histórico de ações preservado. | Alta      | Planejado |
-| RF021 | O sistema deve permitir que o analista envie um registro para validação do coordenador.                                       | Alta        | Planejado |
-| RF022 | O sistema deve exibir ao coordenador uma fila de registros pendentes de validação.                                            | Alta        | Planejado |
-| RF023 | O sistema deve permitir que o coordenador edite, aprove ou devolva um registro pendente.                                      | Alta        | Planejado |
-| RF024 | O sistema deve permitir upload de arquivos vinculados a um parceiro ou relatório.                                             | Média       | Planejado |
-| RF025 | O sistema deve executar um processo automático periódico que identifica registros que não sofreram alterações por um período configurável e notifica o analista responsável e o coordenador vinculado.                                                                                                                              | Média       | Planejado |
+| RF001 | O sistema deve permitir o cadastro de usuários com três perfis de acesso: administrador, analista e coordenador.                 | Alta       | Implementado |
+| RF002 | O sistema deve permitir que o administrador crie, edite, visualize e inative usuários.                                        | Alta       | Implementado |
+| RF003 | O sistema deve permitir que o administrador atribua um perfil de acesso a cada usuário cadastrado.                            | Alta       | Implementado |
+| RF004 | O sistema deve permitir que o analista cadastre novos parceiros agrícolas.                                                      | Alta       | Implementado |
+| RF005 | O sistema deve permitir que o analista edite dados cadastrais de parceiros agrícolas existentes.                                | Alta       | Implementado |
+| RF006 | O sistema deve permitir que o analista registre dados de relacionamento e histórico de interações com parceiros agrícolas.      | Alta       | Implementado |
+| RF007 | O sistema deve permitir que o coordenador visualize a lista de parceiros agrícolas cadastrados.                                | Alta       | Implementado |
+| RF008 | O sistema deve permitir que o coordenador consulte o perfil detalhado de um parceiro agrícola.                                 | Alta       | Implementado |
+| RF009 | O sistema deve rejeitar ou sinalizar registros duplicados com base nos seguintes identificadores únicos: CPF, CNPJ e e-mail.  | Alta       | Implementado |
+| RF010 | O sistema deve verificar o preenchimento de campos obrigatórios antes dos registros serem enviados para a validação. Registros com o status rascunho podem ser salvos com dados incompletos.                                                                                                                            | Alta       | Implementado |
+| RF011 | O sistema deve exigir autenticação via e-mail e senha para acesso.                                                            | Alta       | Implementado |
+| RF012 | O sistema deve impedir que registros excluídos logicamente apareçam nas consultas e listagens normais.                        | Alta       | Implementado |
+| RF013 | O sistema deve manter um histórico de versões de cada registro, permitindo a visualização de valores anteriores a cada edição.| Alta       | Implementado |
+| RF014 | O sistema deve permitir que o administrador exclua registros de parceiros e terras de forma lógica.                           | Alta       | Implementado |
+| RF015 | O sistema deve permitir associar múltiplos parceiros a uma mesma terra e múltiplas terras a um mesmo parceiro.                | Alta       | Implementado |
+| RF016 | O sistema deve permitir a aplicação de filtros por nome, região, área contratada, potencial agrícola ou tipo de parceiro.     | Média      | Implementado |
+| RF017 | O sistema deve permitir a exportação de listas básicas de contatos e parceiros.                                               | Média      | Implementado |
+| RF018 | O sistema deve registrar a data de criação e última atualização de todos os registros do sistema.                             | Média      | Implementado |
+| RF019 | O sistema deve registrar o usuário responsável por cada criação ou atualização de registro.                                   | Média      | Implementado |
+| RF020 | O sistema deve definir o comportamento do sistema após a inativação de um usuário: acesso revogado imediatamente, sessão encerrada e histórico de ações preservado. | Alta      | Implementado |
+| RF021 | O sistema deve permitir que o analista envie um registro para validação do coordenador.                                       | Alta        | Implementado |
+| RF022 | O sistema deve exibir ao coordenador uma fila de registros pendentes de validação.                                            | Alta        | Implementado |
+| RF023 | O sistema deve permitir que o coordenador edite, aprove ou devolva um registro pendente.                                      | Alta        | Implementado |
+| RF024 | O sistema deve permitir upload de arquivos vinculados a um parceiro ou relatório.                                             | Média       | Pendente |
+| RF025 | O sistema deve executar um processo automático periódico que identifica registros que não sofreram alterações por um período configurável e notifica o analista responsável e o coordenador vinculado.                                                                                                                              | Média       | Pendente |
 
 
 ### 3.1.2. Regras de Negócio (sprint 1, refinar até sprint 5)
@@ -515,14 +515,14 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 |------|-----------|--------------|
 | RN01 | Um usuário deve possuir um único e-mail associado (unicidade garantida no sistema). | RF001, RF002 |
 | RN02 | Somente usuários cadastrados internamente podem acessar o sistema. | RF011 |
-| RN03 | Existem três níveis de acesso: Analistas, Coordenadores e Gerentes. | RF001 |
-| RN04 | Analistas podem visualizar registros com status ativo, podem criar e alterar registros com status rascunho e podem enviar esses registros com status rascunho para uma validação. | RF007, RF008 |
-| RN05 | Coordenadores podem visualizar registros com status ativo e status pendente(registros enviados por analistas), podem alterar os registros com status pendente e transformar seus status em ativo. | RF004, RF005, RF006 |
-| RN06 | Gerentes podem inserir, atualizar, excluir logicamente e visualizar registros em qualquer status, e também são responsáveis pelos cadastros de usuários. | RF002, RF003, RF014 |
+| RN03 | Existem três níveis de acesso: analista, coordenador e administrador. | RF001, RF003 |
+| RN04 | Analistas podem consultar registros operacionais, criar e alterar registros em rascunho ou devolvidos e enviá-los para validação. | RF004, RF005, RF006, RF007, RF008, RF021 |
+| RN05 | Coordenadores podem consultar registros ativos e pendentes, editar dados permitidos e aprovar ou devolver parceiros pendentes. | RF005, RF007, RF008, RF022, RF023 |
+| RN06 | Administradores podem gerir usuários e executar as operações administrativas de criação, atualização, consulta e exclusão lógica previstas nas rotas protegidas. | RF001, RF002, RF003, RF014, RF020 |
 | RN07 | A exclusão de dados é lógica: o registro não é apagado, apenas marcado como excluído. | RF012, RF014 |
 | RN08 | Registros excluídos logicamente não devem aparecer em consultas padrão do sistema. | RF012 |
 | RN09 | O sistema deve rejeitar registros duplicados com base nos identificadores únicos: CPF, CNPJ e e-mail. | RF009 |
-| RN10 | Campos obrigatórios para parceiros e terras (nome, CPF/CNPJ, e-mail, tipo de parceiro, área em hectares, município e estado) não podem ser nulos em registros com status ativo (Registros com status rascunho podem ser salvos com campos incompletos). | RF010 |
+| RN10 | Parceiros enviados para validação devem possuir nome, CPF/CNPJ, e-mail e tipo de parceiro; terras devem respeitar nome, município, UF e área positiva conforme o schema. Rascunhos podem ser salvos com os campos opcionais ainda incompletos. | RF010, RF021 |
 | RN11 | Toda criação ou alteração de registro deve armazenar data, hora e o identificador do usuário responsável. | RF018, RF019 |
 | RN12 | Alterações de dados devem manter versões anteriores disponíveis para consulta. | RF013 |
 | RN13 | Um parceiro pode possuir múltiplas terras associadas. | RF015 |
@@ -530,15 +530,15 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 | RN15 | Ao inativar um usuário, o sistema deve revogar seu acesso imediatamente, encerrar sessões ativas e preservar o histórico de ações realizadas. | RF020 |
 | RN16 | Um registro do tipo rascunho/devolvido só transita para status pendente após ser concluído por um analista. | RF021 |
 | RN17 | Um registro do tipo pendente só transita para status ativo/devolvido após ser revisado por um coordenador. | RF022, RF023 |
-| RN18 | Registros com status ativo que não sofreram alterações por um período configurado geram notificações para os usuários do sistema (analistas, coordenadores e gerentes). | RF025 |
-| RN19 | Requisicoes de edicao de parceiro sem nenhum campo editavel no body devem ser rejeitadas com erro 400. | RF005 |
-| RN20 | Tentativas de edicao de parceiros inexistentes devem ser rejeitadas com erro 404. | RF005 |
+| RN18 | Registros ativos sem alteração por período configurável deverão gerar notificações para analistas, coordenadores e administradores quando o processo automático for implementado. | RF025 |
+| RN19 | Requisições de edição de parceiro sem nenhum campo editável no corpo devem ser rejeitadas com erro 400. | RF005 |
+| RN20 | Tentativas de edição de parceiros inexistentes devem ser rejeitadas com erro 404. | RF005 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
 Os Requisitos Não Funcionais (RNFs) definem os critérios de qualidade que o sistema deve atender para que os requisitos funcionais sejam úteis, confiáveis e sustentáveis no contexto de uso da ATVOS. Eles complementam os RFs ao estabelecer parâmetros de experiência, segurança, desempenho, manutenção, rastreabilidade e organização do produto.
 
-Para este projeto, os RNFs foram organizados nos oito eixos definidos para a documentação da solução, tomando a ISO/IEC 25010 como referência e adaptando sua aplicação ao MVP do CRM agrícola. Os critérios abaixo foram formulados de modo verificável, com relação explícita aos fluxos principais: autenticação, gestão de usuários, cadastro e validação de parceiros, consulta por filtros, histórico de interações, vínculos com terras, exportação e dashboard.
+Para este projeto, os RNFs foram organizados nos oito eixos definidos para a documentação da solução, tomando a ISO/IEC 25010 como referência e adaptando sua aplicação ao MVP do CRM agrícola. Os critérios abaixo foram formulados de modo verificável, com relação explícita aos fluxos principais: autenticação, gestão de usuários, cadastro e validação de parceiros, consulta por filtros, histórico de interações, vínculos com terras, exportação e dashboard. A implementação atual atende os RNFs apoiados por schemas, middlewares de acesso, persistência, testes e organização em camadas; critérios de carga e volume permanecem como metas de homologação, pois ainda não há ensaio automatizado de capacidade no repositório.
 
 | ID | Eixo | Requisito Não Funcional | Relação com RFs/fluxos principais | Critério de aceite / Forma de verificação |
 |---|---|---|---|---|
@@ -572,58 +572,47 @@ Além dos oito eixos de RNF, o projeto possui restrições de design que delimit
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
-| RF | US relacionada | RN associadas | Endpoint | Método |
-|---|---|---|---|---|
-| RF001 | US08 | RN01, RN03 | `/api/usuarios` | POST |
-| RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id` | PUT |
-| RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios/:id/inativar` | PUT |
-| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | PUT |
-| RF004 | US01, US02 | RN05, RN10 | `/api/parceiros` | POST |
-| RF005 | US05 | RN10, RN19, RN20 | `/api/parceiros/:id` | PATCH |
-| RF006 | US03 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF007 | US04, US06 | RN04, RN08 | `/api/parceiros` | GET |
-| RF008 | US04 | RN04, RN08 | `/api/parceiros/:id` | GET |
-| RF009 | US01, US02, US08 | RN09 | `/api/usuarios` | POST |
-| RF009 | US01, US02, US08 | RN09 | `/api/parceiros` | POST |
-| RF009 | US01, US02, US08 | RN09 | `/api/parceiros/:id` | PATCH |
-| RF010 | US01, US02, US08 | RN10 | `/api/usuarios` | POST |
-| RF010 | US01, US02, US08 | RN10 | `/api/parceiros` | POST |
-| RF010 | US01, US02, US08 | RN10 | `/api/parceiros/:id` | PATCH |
-| RF010 | US01, US02, US08 | RN10 | `/api/terras` | POST |
-| RF010 | US01, US02, US08 | RN10 | `/api/terras/:id` | PUT |
-| RF011 | US08, US09 | RN02 | `/login` | POST |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/api/parceiros` | GET |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/api/parceiros/:id` | GET |
-| RF012 | US04, US06, US07 | RN07, RN08 | `/api/terras` | GET |
-| RF013 | US05 | RN12 | `/api/parceiros/:id/historico` | GET |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/usuarios/:id/inativar` | PUT |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/api/parceiros/:id` | PATCH |
-| RF014 | Sem US prioritária associada nesta Sprint | RN06, RN07, RN08 | `/api/terras/:id` | PUT |
-| RF015 | US01, US02 | RN13, RN14 | `/api/parceiros/:id/terras` | GET, POST |
-| RF015 | US01, US02 | RN13, RN14 | `/api/terras/:id/parceiros` | GET, POST |
-| RF016 | US06 | RN04, RN08 | `/api/parceiros?nome=&regiao=&area=&tipo=` | GET |
-| RF017 | US07 | RN04 | `/parceiros/exportar` | GET |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
-| RF018 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/usuarios` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/usuarios/:id` | PUT |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/parceiros/:id` | PATCH |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/parceiros/:id/interacoes` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras` | POST |
-| RF019 | US01, US02, US03, US05, US08, US09 | RN11 | `/api/terras/:id` | PUT |
-| RF020 | US09 | RN15 | `/usuarios/:id/inativar` | PUT |
-| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT |
-| RF021 | US01, US02 | RN16 | `/api/parceiros/:id/validacao` | PUT |
-| RF022 | US11 | RN17 | `/api/parceiros/:id/aprovar` | PUT |
-| RF023 | US11 | RN17 | `/api/parceiros/:id/devolver` | PUT |
-| RF024 | Sem US prioritária associada nesta Sprint | — | — | — |
-| RF025 | Sem US prioritária associada nesta Sprint | RN18 | — | — |
+A matriz diferencia contratos JSON, páginas renderizadas e submissões de formulário. O status considera a segunda versão disponível no repositório e não presume funcionalidades sem rota implementada.
+
+| RF | US relacionada | RN associadas | Endpoint/Rota | Método | Tipo | Status | Observação |
+|---|---|---|---|---|---|---|---|
+| RF001, RF009, RF010 | US08 | RN01, RN03, RN09, RN10 | `/api/usuarios` | POST | API JSON | Implementado | Cadastro administrativo; valida e-mail e perfil. |
+| RF001, RF002 | US08, US09, US10 | RN01, RN06 | `/usuarios`, `/usuarios/novo` | GET, POST | View HTML / Form HTML | Implementado | Lista e cria usuários pela interface. |
+| RF002, RF018, RF019 | US09, US10 | RN01, RN06, RN11 | `/usuarios/:id/editar`, `/usuarios/:id` | GET, POST, PUT | View HTML / Form HTML / API JSON | Implementado | A interface usa POST; o contrato programático usa PUT. |
+| RF002, RF020 | US09 | RN06, RN15 | `/usuarios/:id/inativar` | GET, POST, PUT | View HTML / Form HTML / API JSON | Implementado | Inativação revoga sessões ativas. |
+| RF003 | US08 | RN03, RN06 | `/usuarios/:id/perfil` | GET, POST, PUT | View HTML / Form HTML / API JSON | Implementado | Alteração restrita ao administrador. |
+| RF004, RF009, RF010, RF018, RF019 | US01, US02 | RN04, RN09, RN10, RN11 | `/api/parceiros` | POST | API JSON | Implementado | Cria rascunho ou pendente conforme payload válido. |
+| RF004, RF010, RF018, RF019 | US01, US02 | RN04, RN10, RN11 | `/parceiros/novo`, `/parceiros` | GET, POST | View HTML / Form HTML | Implementado | Formulário integrado ao mesmo service de parceiros. |
+| RF005, RF009, RF010, RF018, RF019 | US05 | RN04, RN09, RN10, RN11, RN19, RN20 | `/api/parceiros/:id` | PATCH | API JSON | Implementado | Rejeita corpo vazio, duplicidade e parceiro inexistente. |
+| RF005, RF008 | US04, US05 | RN04, RN05 | `/parceiros/:id`, `/parceiros/:id/editar` | GET, POST | View HTML / Form HTML | Implementado | Detalhe e edição navegáveis pela interface. |
+| RF006, RF018, RF019 | US03 | RN04, RN11 | `/parceiros/:id/interacoes` | POST | API JSON | Implementado | Responde JSON; o detalhe envia a interação por JavaScript. |
+| RF006 | US03 | RN11 | `/dashboards/interacoes` | GET | API JSON | Parcial | Métricas implementadas, sem view EJS específica. |
+| RF007, RF012, RF016 | US04, US06 | RN04, RN05, RN08 | `/api/parceiros` | GET | API JSON | Implementado | Aceita filtros reais por query string e omite inativos. |
+| RF007, RF008, RF016, RF017 | US04, US06, US07 | RN04, RN05, RN08 | `/parceiros` | GET | View HTML | Implementado | Lista, filtros, busca e acesso à exportação. |
+| RF008, RF012 | US04 | RN04, RN05, RN08 | `/api/parceiros/:id` | GET | API JSON | Implementado | Retorna 404 para inexistente, inválido ou inativo. |
+| RF011 | US08, US09 | RN02 | `/login` | GET, POST | View HTML / Form HTML | Implementado | Cria JWT e sessão persistida em login válido. |
+| RF011, RF020 | US09 | RN02, RN15 | `/logout` | POST | Form HTML | Implementado | Revoga a sessão atual e limpa cookies. |
+| RF011 | US08 | RN02 | `/primeiro-acesso` | GET, POST | View HTML / Form HTML | Implementado | Define senha para usuário ativo ainda sem senha. |
+| RF011 | US08 | RN02 | `/primeiro-acesso/solicitar`, `/primeiro-acesso/definir-senha` | POST | API JSON | Implementado | Token temporário de 24 horas e uso único. |
+| RF012 | US04, US06 | RN07, RN08 | `/api/terras` | GET | API JSON | Implementado | A consulta padrão omite terras inativas. |
+| RF013 | US05 | RN12 | `/api/parceiros/:id/historico` | GET | API JSON | Implementado | Expõe alterações persistidas do parceiro. |
+| RF013 | US05 | RN12 | `/parceiros/:id` | GET | View HTML | Implementado | A tela reúne histórico e interações do parceiro. |
+| RF014 | Sem US prioritária | RN06, RN07, RN08 | `/api/parceiros/:id` | DELETE | API JSON | Implementado | Exclusão lógica; não remove fisicamente o registro. |
+| RF014 | Sem US prioritária | RN06, RN07, RN08 | `/api/terras/:id` | DELETE | API JSON | Implementado | Exclusão lógica; não remove fisicamente o registro. |
+| RF015 | US01, US02 | RN13, RN14 | `/api/parceiros/:id/terras` | GET, POST | API JSON | Implementado | Lista e cria vínculo a partir do parceiro. |
+| RF015 | US01, US02 | RN13, RN14 | `/api/terras/:id/parceiros` | GET, POST | API JSON | Implementado | Lista e cria vínculo a partir da terra. |
+| RF015 | US01, US02 | RN13, RN14 | `/terras/:id/vincular-parceiro`, `/terras/:id/parceiros` | GET, POST | View HTML / Form HTML | Implementado | Fluxo de vínculo disponível na interface de terras. |
+| RF017 | US07 | RN04 | `/parceiros/exportar` | GET | Download CSV | Implementado | Restrito a coordenador e administrador. |
+| RF018, RF019 | US01, US02 | RN11 | `/api/terras`, `/api/terras/:id` | POST, PUT | API JSON | Implementado | Persiste timestamps e responsável informado. |
+| RF018, RF019 | US01, US02 | RN11 | `/terras`, `/terras/nova`, `/terras/:id/editar` | GET, POST | View HTML / Form HTML | Implementado | Usa o usuário autenticado como responsável. |
+| RF020 | US09 | RN15 | `/auth/sessoes/:id` | PUT | API JSON | Implementado | Permite revogação explícita de sessão. |
+| RF021 | US01, US02 | RN16 | `/api/parceiros/:id/validacao` | PUT | API JSON | Implementado | Transição de rascunho/devolvido para pendente. |
+| RF022 | US11 | RN17 | `/validacao` | GET | View HTML | Implementado | Exibe somente parceiros pendentes. |
+| RF022, RF023 | US11 | RN17 | `/validacao/:id` | GET | View HTML | Implementado | Tela de revisão do registro pendente. |
+| RF023 | US11 | RN17 | `/api/parceiros/:id/aprovar`, `/api/parceiros/:id/devolver` | PUT | API JSON | Implementado | Aprovação e devolução exigem parceiro pendente. |
+| RF023 | US11 | RN17 | `/validacao/:id/aprovar`, `/validacao/:id/devolver` | POST | Form HTML | Implementado | A devolução exige comentário na interface. |
+| RF024 | Sem US prioritária | — | — | — | — | Pendente | Não há upload, armazenamento ou rota de arquivo nesta versão. |
+| RF025 | Sem US prioritária | RN18 | — | — | — | Pendente | Não há scheduler nem serviço de notificação automática. |
 
 ### 3.1.5. Critérios de Aceite Técnicos (Sprint 1)
 
@@ -1253,8 +1242,138 @@ No fluxo principal, o coordenador visualiza o engajamento e métricas de produti
 O fluxo principal permite que o coordenador gere e exporte uma planilha com os dados dos parceiros (200). Alternativamente, a exportação falha se a lista estiver vazia (404) ou por erro técnico (500).
 
 <div align="center">
-  <sub>Figura 3.2.4.16 - Fluxo 16: Exportação de dados</sub><br>
+  <sub>Figura 3.2.4.16 - Fluxo 16: exporta dados</sub><br>
   <img src="./assets/diagrama_de_sequencia/fluxo_16_exporta_dados_parceiros.png" width="100%" alt="Diagrama de Sequência 16"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Encerra Sessão
+
+O fluxo principal permite encerrar uma sessão ativa e persistir a revogação no banco (200). Alternativamente, a operação falha se a sessão já estiver encerrada (409), se a sessão não existir ou o ID for inválido (404), ou se o usuário revogador informado não existir (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.17 - Fluxo 17: Encerra sessão</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_17_encerra_secao.png" width="100%" alt="Diagrama de Sequência 17"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Visualiza dados de pareciros
+
+O fluxo principal permite que analistas, coordenadores e administradores consultem um parceiro existente pelo ID (200). Alternativamente, a consulta falha quando o parceiro não existe, está inativo ou o ID possui formato inválido (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.18 - Fluxo 18: Visualiza dados de pareciros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_18_consultas.png" width="100%" alt="Diagrama de Sequência 18"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Aprovação de Parceiro Pendente
+
+O fluxo principal permite que coordenadores ou administradores aprovem um parceiro pendente, alterando seu status para ativo e registrando a aprovação no histórico (200). Alternativamente, a operação falha por payload inválido (400), status incompatível (409), parceiro inexistente (404) ou aprovador inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.19 - Fluxo 19: Aprova dados de pareciros pendentes</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_19_aprova_parceiro_pendente.png" width="100%" alt="Diagrama de Sequência 19"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Devolve dados de Parceiro
+
+O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.20 - Fluxo 20: Devolve dados de pareciros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_20_devolve_parceiro.png" width="100%" alt="Diagrama de Sequência 20"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Envio para validação
+
+O fluxo principal permite que coordenadores ou administradores devolvam um parceiro pendente para ajustes, alterando seu status para devolvido e registrando a operação no histórico (200). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404),O fluxo principal permite que analistas ou administradores enviem um parceiro em rascunho ou devolvido para validação, alterando seu status para pendente e registrando o envio no histórico (200). Alternativamente, a operação falha por payload ou cadastro incompleto (400), parceiro inexistente (404), status incompatível (409) ou usuário responsável inexistente ( status incompatível (409) ou usuário responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.21 - Fluxo 21: Envio para validação </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_21_envio_para_validacao.png" width="100%" alt="Diagrama de Sequência 21"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta rascunhos devolvidos
+
+O fluxo principal permite que analistas ou administradores consultem os parceiros em rascunho ou devolvidos pertencentes ao analista, incluindo o comentário mais recente de devolução (200). Alternativamente, a consulta falha quando o analista não está identificado (400). Se não houver registros, o endpoint retorna uma lista vazia com 200.
+
+<div align="center">
+  <sub>Figura 3.2.4.22 - Fluxo 22: Consulta rascunhos devolvidos</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_21_envio_para_validacao.png" width="100%" alt="Diagrama de Sequência 22"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Vincula terra á parceiros
+
+O fluxo principal permite que analistas ou administradores vinculem uma terra existente a um parceiro, registrem dados comerciais opcionais e gravem a operação no histórico (201). Alternativamente, a operação falha por payload inválido (400), parceiro inexistente (404), vínculo duplicado (409) ou terra inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.23 - Fluxo 23: Vincula terra a parceiros</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_23_vincula_terra_parceiro.png" width="100%" alt="Diagrama de Sequência 23"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta das Terras Vinculadas
+
+O fluxo principal permite que analistas, coordenadores ou administradores consultem as terras ativas vinculadas a um parceiro (200). Se o parceiro existir sem vínculos, retorna uma lista vazia (200). Alternativamente, a consulta falha quando o parceiro não existe ou o ID é inválido (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.24 - Fluxo 24: Consulta das Terras Vinculadas</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_24_consulta_terras_vinculadas.png" width="100%" alt="Diagrama de Sequência 24"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Consulta das Terras Existentes
+
+O fluxo principal permite que analistas, coordenadores ou administradores consultem as terras cadastradas que não estejam inativas (200). Quando nenhuma terra estiver disponível, o endpoint retorna uma lista vazia (200), e não 404.
+
+<div align="center">
+  <sub>Figura 3.2.4.25 - Fluxo 25: Consulta das Terras Existentes</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_25_consulta_terras.png" width="100%" alt="Diagrama de Sequência 25"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Inativa Parceiro
+
+O fluxo principal permite que analistas ou administradores realizem a exclusão lógica de um parceiro, alterando seu status para inativo e registrando a operação no histórico (200). Alternativamente, a operação falha por ausência do responsável (400), parceiro inexistente (404), parceiro já inativo (409) ou responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.26 - Fluxo 26: Inativa Parceiro </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_26_inativa_parceiro.png" width="100%" alt="Diagrama de Sequência 26"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Inativa terras
+
+O fluxo principal permite que analistas ou administradores realizem a exclusão lógica de uma terra, alterando seu status para inativo e registrando a auditoria (200). Alternativamente, a operação pode falhar por ausência do responsável (400), terra inexistente (404), terra já inativa (409) ou responsável inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.27 - Fluxo 27: Inativa terras </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_27_inativa_terras.png" width="100%" alt="Diagrama de Sequência 27"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### Vincula parceiro a terra
+
+O fluxo principal permite que um analista ou administrador vincule um parceiro existente a uma terra, persistindo o relacionamento e retornando 201 Created. Alternativamente, a operação falha por dados inválidos (400), terra inexistente (404), vínculo duplicado (409) ou parceiro inexistente (422).
+
+<div align="center">
+  <sub>Figura 3.2.4.28 - Fluxo 28: Vincula parceiro a terra </sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_28_vincula_parceiro_terra.png" width="100%" alt="Diagrama de Sequência 28"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
+</div>
+
+#### visualiza parceiro vinculado
+
+O fluxo principal permite que analistas, coordenadores ou administradores visualizem os parceiros ativos vinculados a uma terra (200). Se não houver vínculos ativos, retorna um array vazio, também com 200. Alternativamente, a consulta falha quando a terra não existe ou o ID é malformado (404).
+
+<div align="center">
+  <sub>Figura 3.2.4.29 - Fluxo 29: Visualiza parceiro vinculado</sub><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_29_visualiza_parceiro_vinculado.png" width="100%" alt="Diagrama de Sequência 29"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1266,31 +1385,104 @@ O fluxo principal permite que o coordenador gere e exporte uma planilha com os d
 
 *Diagrama UML de deployment mostrando nós físicos, artefatos e canais de comunicação. Representa a visão Engineering + Technology do RM-ODP.*
 
+```mermaid
+flowchart TB
+    classDef device fill:#AED6F1,stroke:#2E86C1,color:#1a1a1a,font-weight:bold
+    classDef artifact fill:#D6EAF8,stroke:#2E75B6,color:#1a1a1a
+    classDef db fill:#3F5B70,stroke:#1e3040,color:#fff,font-weight:bold
+    classDef nodebg fill:#FFFDE7,stroke:#D4AC0D,color:#1a1a1a
+
+    subgraph LEGEND["Legenda de Estereótipos UML"]
+        direction LR
+        L1["Device<br/>(dispositivo físico do usuário)"]:::device
+        L2["Node<br/>(ambiente de execução)"]:::nodebg
+        L3["Artifact<br/>(artefato de software)"]:::artifact
+        L4["Artifact - Persistência<br/>(banco de dados)"]:::db
+    end
+
+    USER["Navegador Web<br/>(Administrador / Coordenador / Analista)"]:::device
+
+    subgraph APP["Servidor de Aplicação - Node.js (porta 3000)"]
+        direction TB
+        WEB["safra-control<br/>(app.ts / server.ts)<br/>Bootstrap Express.js"]:::artifact
+        CTRL["Controllers / Services /<br/>Repositories"]:::artifact
+        PRES["Camada de Apresentação<br/>Views EJS (src/views/*.ejs)<br/>Assets Estáticos (public/)"]:::artifact
+        JWT["Middleware de Autenticação JWT<br/>(requireAuth.ts)"]:::artifact
+    end
+
+    subgraph CLOUD["Supabase Cloud - PostgreSQL DBaaS"]
+        direction TB
+        PG["Instância PostgreSQL<br/>Banco de Dados CRM<br/>(usuarios, parceiros, terras,<br/>interacoes, sessoes, perfil_acesso)"]:::db
+    end
+
+    USER <==>|"Requisição HTTP/HTTPS<br/>porta 3000 / Resposta HTML ou JSON"| WEB
+    WEB ==>|"Conexão SQL via Pool (pg)<br/>TCP/SSL - porta 5432"| PG
+```
+
+O diagrama de implantação utiliza um esquema de cores para representar os estereótipos UML, conforme indicado na legenda: azul claro representa o dispositivo do usuário (`device`), amarelo claro representa um nó de execução (`node`), azul acinzentado representa artefatos de software (`artifact`) e azul-marinho representa o artefato de persistência de dados. Essa convenção evita a dependência de símbolos de estereótipo (`<<>>`/`«»`) cuja renderização varia entre visualizadores Mermaid, mantendo a leitura fiel à notação UML por meio de codificação visual consistente.
+
+O acesso é realizado pelos perfis Administrador, Coordenador e Analista por meio de um navegador web (device), que se comunica de forma bidirecional com o nó "Servidor de Aplicação" — um ambiente de execução Node.js na porta 3000 — enviando requisições HTTP/HTTPS e recebendo como resposta páginas HTML renderizadas (rotas de navegação) ou dados em JSON (rotas `/api/...`). Esse nó concentra quatro artefatos implantados a partir do mesmo pacote `safra-control`: o módulo de inicialização (`app.ts`/`server.ts`), responsável por configurar o Express e registrar as rotas; a camada de Controllers/Services/Repositories, que contém as regras de negócio e o acesso a dados; a camada de apresentação, que reúne as views EJS (`src/views/*.ejs`) e os assets estáticos servidos via `express.static` a partir de `public/` (CSS, JS, imagens); e o middleware de autenticação JWT (`requireAuth.ts`), responsável pela validação de sessões. Todos esses artefatos coexistem no mesmo runtime e processo, sem necessidade de canais de rede entre si.
+
+A persistência ocorre em uma instância PostgreSQL hospedada no Supabase Cloud, acessada pelo servidor de aplicação por meio de uma conexão SQL sobre TCP/SSL na porta 5432, via biblioteca `pg` (`config/connection.ts`). Esse canal único atende tanto às consultas de negócio quanto às consultas de autenticação (usuários e sessões), já que ambas partem do mesmo pool de conexão dentro do nó de aplicação.
+
 ### 3.2.7. Padrões de Projeto Aplicados (sprints 3 a 5)
 
-No desenvolvimento do backend, foram adotados padrões de projeto voltados à separação de responsabilidades, organização da regra de negócio e redução de acoplamento entre a API, o banco de dados e os fluxos de validação. A escolha desses padrões ocorreu a partir de necessidades reais do projeto, principalmente a complexidade do domínio de parceiros agrícolas, terras, usuários, interações e histórico de alterações.
+Durante o desenvolvimento da solução foram adotados padrões arquiteturais e de projeto com o objetivo de promover separação de responsabilidades, reutilização de código, manutenibilidade, escalabilidade e redução de acoplamento entre os componentes da aplicação. A adoção desses padrões foi motivada pela necessidade de centralizar o gerenciamento de parceiros agrícolas, terras, interações e usuários em uma plataforma única, confiável e preparada para evoluções futuras.
 
-No contexto da ATVOS, o problema central envolve a substituição de controles dispersos em planilhas, e-mails e registros manuais por uma base única, auditável e confiável para consulta e manutenção de dados de parceiros agrícolas. Por isso, o backend precisava ser organizado de forma que novas regras de governança, validação, rastreabilidade e autorização por perfil pudessem ser adicionadas sem comprometer os fluxos já existentes. Os padrões abaixo foram aplicados para responder diretamente a essa necessidade de padronização, controle e evolução gradual do sistema.
+A arquitetura implementada segue o modelo **Layered Architecture (Arquitetura em Camadas)**, organizado segundo o fluxo **Route → Controller → Service → Repository → Banco de Dados**. Essa estrutura permite que cada camada possua responsabilidades bem definidas, facilitando a manutenção, a realização de testes e a implementação de novas funcionalidades sem impactos significativos nos demais módulos do sistema.
 
-| Padrão aplicado | Onde aparece no backend | Justificativa de adoção |
-| --- | --- | --- |
-| **Repository** | `src/repositories`, como `userRepository.ts`, `parceiroRepository.ts`, `terraRepository.ts`, `interacaoRepository.ts`, `exportaRepository.ts` e `dashboardInteracoesRepository.ts`. | O sistema depende de várias consultas e operações SQL sobre entidades diferentes. O Repository foi usado para concentrar o acesso ao PostgreSQL/Supabase e evitar que controllers e services manipulassem SQL diretamente. No problema da ATVOS, isso é importante porque os dados de parceiros, terras, vínculos e interações precisam formar uma base única e consistente, substituindo consultas manuais em fontes espalhadas. |
-| **Service Layer** | `src/services`, como `userService.ts`, `parceiroService.ts`, `terraService.ts`, `authService.ts` e `interacaoService.ts`. | As regras de negócio não ficam nas rotas. Validações como existência de perfil, usuário inexistente, duplicidade, vínculo entre parceiro e terra, inativação lógica e tratamento de erros de banco são coordenadas nos services. Essa camada reflete a necessidade da ATVOS de aplicar governança sobre cadastros e alterações, garantindo que operações críticas não dependam apenas da interface ou de decisões manuais do usuário. |
-| **Controller** | `src/controllers`, como `userController.ts`, `parceiroController.ts`, `terraController.ts`, `authController.ts` e `dashboardInteracoesController.ts`. | Os controllers foram usados para receber requisições HTTP, chamar os services e devolver respostas com status codes adequados. Essa separação evita misturar regra de negócio com detalhes de Express, como `Request`, `Response`, headers e renderização. |
-| **DTO / Schema de Validação** | `src/schemas`, com schemas Zod como `terra.schema.ts`, `parceiroFiltros.schema.ts`, `parceiroTerra.schema.ts` e `terraParceiro.schema.ts`; também nos tipos de entrada em `src/models`. | O backend recebe dados de cadastro, edição, filtros e vínculos. Os schemas funcionam como contratos de entrada, validando campos obrigatórios, enums, UUIDs e formatos antes de acessar o banco. Isso reduz inconsistência nos dados, uma dor relevante para a ATVOS, já que informações cadastrais divergentes prejudicam a análise de parceiros e a tomada de decisão operacional. |
-| **Middleware de Tratamento de Erros** | `src/middlewares/errorHandler.ts` e `src/errors/AppError.ts`. | Como a API possui muitos cenários de falha (`400`, `404`, `409`, `422` e `500`), foi criado um tratamento centralizado para converter erros da aplicação em respostas HTTP consistentes. Em um sistema de uso interno e recorrente, isso ajuda a tornar falhas de cadastro, consulta e permissão mais previsíveis para os usuários e mais rastreáveis pela equipe técnica. |
-| **Wrapper para handlers assíncronos** | `src/helpers/asyncHandler.ts`, usado em controllers como `terraController.ts`. | Rotas assíncronas podem lançar exceções durante validações, consultas ou persistência. O helper evita blocos repetitivos de `try/catch` e encaminha erros para o middleware central, simplificando os controllers. |
-| **Composição de dependências** | Instanciação de repository, service e controller nas rotas, como em `user.routes.ts`, `auth.routes.ts`, `interacao.routes.ts`, `exporta.routes.ts` e `dashboardInteracoes.routes.ts`. | Cada rota monta explicitamente a cadeia necessária para executar seu módulo. Isso deixa claro o fluxo `Route -> Controller -> Service -> Repository` e reduz dependências globais escondidas. |
+Ao longo das sprints, a arquitetura foi consolidada com a inclusão de mecanismos de autenticação JWT, validações estruturadas utilizando Zod, tratamento centralizado de exceções, testes automatizados e integração com PostgreSQL hospedado no Supabase. Os padrões apresentados a seguir sustentam essas decisões arquiteturais e contribuem diretamente para os atributos de qualidade definidos para a solução.
 
-Esses padrões também apoiam princípios SOLID no backend:
+#### Arquitetura em Camadas (Layered Architecture)
 
-| Princípio | Aplicação no projeto |
-| --- | --- |
-| **SRP - Single Responsibility Principle** | Rotas definem endpoints, controllers lidam com HTTP, services concentram regras de negócio, repositories acessam o banco e schemas validam entradas. |
-| **OCP - Open/Closed Principle** | Novos módulos podem ser adicionados seguindo a mesma estrutura de camadas sem reescrever os módulos já existentes. Por exemplo, os fluxos de dashboard e exportação seguem a organização já usada em usuários e interações. |
-| **DIP - Dependency Inversion Principle** | Services recebem repositories por construtor em módulos como usuários, autenticação e interações, reduzindo o acoplamento direto entre regra de negócio e implementação de persistência. |
+A aplicação foi estruturada de forma que cada camada execute uma responsabilidade específica:
 
-Com isso, a arquitetura do backend ficou preparada para evolução nas próximas sprints, principalmente para integração com o frontend, ampliação dos testes automatizados e refinamento das regras de autorização por perfil.
+* **Routes:** definem os endpoints da API e realizam o direcionamento das requisições.
+* **Controllers:** recebem as requisições HTTP e coordenam o fluxo de execução.
+* **Services:** concentram as regras de negócio e validações do domínio.
+* **Repositories:** encapsulam o acesso ao banco de dados e as consultas SQL.
+* **Persistência:** composta pelo banco PostgreSQL hospedado no Supabase.
+
+Essa organização reduz o acoplamento entre componentes e favorece a evolução gradual do sistema à medida que novas funcionalidades são incorporadas.
+
+#### Padrões de Projeto Utilizados
+
+| Padrão aplicado                         | Onde aparece no backend                                                                                                                                                             | Justificativa de adoção                                                                                                                           |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Layered Architecture**                | Estrutura geral do projeto organizada em `routes`, `controllers`, `services`, `repositories` e banco de dados.                                                                      | Define uma separação clara de responsabilidades, facilitando manutenção, testes e evolução da aplicação.                                          |
+| **Repository Pattern**                  | `src/repositories`, como `userRepository.ts`, `parceiroRepository.ts`, `terraRepository.ts`, `interacaoRepository.ts`, `exportaRepository.ts` e `dashboardInteracoesRepository.ts`. | Centraliza o acesso ao PostgreSQL/Supabase, isolando consultas SQL da lógica de negócio e reduzindo o acoplamento entre persistência e aplicação. |
+| **Service Layer Pattern**               | `src/services`, como `userService.ts`, `parceiroService.ts`, `terraService.ts`, `authService.ts`, `interacaoService.ts`, `exportaService.ts` e `dashboardInteracoesService.ts`.     | Concentra regras de negócio, validações de domínio e fluxos operacionais, evitando que controladores assumam responsabilidades excessivas.        |
+| **Controller Pattern**                  | `src/controllers`, como `userController.ts`, `parceiroController.ts`, `terraController.ts`, `authController.ts` e `dashboardInteracoesController.ts`.                               | Atua como camada de interface entre as requisições HTTP e os serviços da aplicação, promovendo separação entre protocolo e negócio.               |
+| **Validation Pattern**                  | Schemas localizados em `src/schemas`, incluindo validações de parceiros, terras e filtros.                                                                                          | Garante integridade dos dados recebidos pela API antes que eles alcancem a camada de negócio, reduzindo inconsistências e falhas operacionais.    |
+| **Middleware Pattern**                  | `src/middlewares/requireAuth.ts` e `src/middlewares/errorHandler.ts`.                                                                                                               | Permite implementar autenticação, autorização e tratamento de erros de forma centralizada, evitando duplicação de código.                         |
+| **Centralized Exception Handling**      | `src/errors/AppError.ts` e middleware global de erros.                                                                                                                              | Padroniza respostas de falha, melhora a rastreabilidade de problemas e simplifica a manutenção da aplicação.                                      |
+| **Async Handler Pattern**               | `src/helpers/asyncHandler.ts`, utilizado pelos controladores.                                                                                                                       | Elimina repetições de blocos `try/catch`, simplificando o tratamento de operações assíncronas e integrando-as ao fluxo central de exceções.       |
+| **Autenticação Baseada em Token (JWT)** | Middleware `requireAuth.ts` e serviços de autenticação.                                                                                                                             | Garante controle de acesso baseado em sessão autenticada, protegendo rotas e funcionalidades restritas da plataforma.                             |
+
+#### Relação com os Atributos de Qualidade
+
+Os padrões adotados foram selecionados não apenas pela organização estrutural que proporcionam, mas também pela contribuição direta aos atributos de qualidade definidos para o projeto.
+
+| Atributo de Qualidade | Contribuição dos Padrões                                                                                                             |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Manutenibilidade**  | A separação em camadas permite modificar regras de negócio, persistência ou endpoints sem afetar toda a aplicação.                   |
+| **Escalabilidade**    | Novos módulos podem ser adicionados seguindo a mesma estrutura arquitetural já consolidada.                                          |
+| **Confiabilidade**    | Validações estruturadas, autenticação JWT e tratamento centralizado de erros reduzem falhas operacionais e inconsistências de dados. |
+| **Testabilidade**     | A separação entre controllers, services e repositories facilita a execução de testes unitários e de integração.                      |
+| **Reutilização**      | Serviços, repositórios e middlewares podem ser reutilizados em diferentes fluxos do sistema.                                         |
+
+#### Princípios de Projeto Evidenciados
+
+Além dos padrões apresentados, a implementação demonstra aderência a princípios fundamentais de arquitetura de software:
+
+| Princípio                                 | Aplicação no Projeto                                                                                                                               |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SRP (Single Responsibility Principle)** | Cada camada possui uma responsabilidade específica dentro da arquitetura.                                                                          |
+| **OCP (Open/Closed Principle)**           | Novas funcionalidades podem ser incorporadas seguindo a estrutura existente, sem necessidade de alterar componentes consolidados.                  |
+| **Separation of Concerns (SoC)**          | Responsabilidades de autenticação, validação, persistência, negócio e apresentação permanecem desacopladas e organizadas em módulos independentes. |
+
+Dessa forma, os padrões adotados fornecem uma base arquitetural sólida para a continuidade do desenvolvimento da plataforma, garantindo que futuras evoluções possam ser realizadas de maneira controlada, consistente e alinhada aos requisitos de qualidade definidos para o projeto.
+
 
 ## 3.3. Wireframes (sprint 2)
 
@@ -1369,253 +1561,146 @@ O guia de estilos consolida os padrões visuais do **Safra Control**, sistema vo
 Este guia padroniza cores, tipografia, espaçamentos, grid, radius, sombras, componentes, ícones, estados visuais e exemplos de aplicação. A proposta não é apenas registrar a aparência da interface, mas também explicar **onde cada elemento deve ser usado** e **por que aquela escolha visual foi feita** no contexto do **Safra Control**. A identidade visual estruturada pelo grupo **Atwatts** foi alinhada ao contexto operacional da **ATVOS**, preservando a leitura corporativa necessária para uma plataforma de relacionamento agrícola.
 
 ### 3.4.1. Cores
-
-A paleta visual do **Safra Control** foi definida a partir da identidade institucional da **ATVOS**. Ela combina laranjas, amarelo e azul institucional para diferenciar ações, navegação, estados e informações de apoio. Essa separação ajuda o usuário a identificar rapidamente o que é ação principal, o que é estrutura da interface e o que representa atenção, validação ou status.
-
+A paleta visual do Safra Control foi definida a partir da identidade institucional da ATVOS. Ela combina laranjas, amarelo e azul institucional para diferenciar ações, navegação, estados e informações de apoio. Essa separação ajuda o usuário a identificar rapidamente o que é ação principal, o que é estrutura da interface e o que representa atenção, validação ou status.
 <div align="center">
-  <sub>Figura 3.4.1 - Paleta visual derivada da identidade da ATVOS</sub><br>
-  <img src="./assets/guia_de_estilos/guia_cores_institucionais.png" width="100%" alt="Paleta visual do Safra Control derivada da identidade institucional da ATVOS"><br>
+  <sub>Figura 3.4.1.1 - Paleta visual derivada da identidade da ATVOS</sub><br>
+  <img src="./assets/guia_de_estilos/cores_institucionais.png" width="100%" alt="Paleta visual do Safra Control derivada da identidade institucional da ATVOS"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
+O laranja escuro #FF681A é usado em CTAs, botões primários e ações de destaque, como "Entrar", "Novo Fornecedor" e "Salvar Fornecedor". Ele foi escolhido por remeter à energia, movimento e identidade institucional da ATVOS, além de orientar a ação prioritária do usuário. O laranja médio #FF8100 aparece em estados de hover e variações de destaque, indicando interatividade sem romper a consistência da ação principal. O laranja claro #FFA500 é usado em highlights e indicadores visuais secundários, principalmente quando é necessário destacar uma informação sem transformá-la em CTA.
 
-O **laranja escuro `#FF681A`** é usado em CTAs, botões primários e ações de destaque, como "Entrar", "Novo Fornecedor" e "Salvar Fornecedor". Ele foi escolhido por remeter à energia, movimento e identidade institucional da **ATVOS**, além de orientar a ação prioritária do usuário. O **laranja médio `#FF8100`** aparece em estados de hover e variações de destaque, indicando interatividade sem romper a consistência da ação principal. O **laranja claro `#FFA500`** é usado em highlights e indicadores visuais secundários, principalmente quando é necessário destacar uma informação sem transformá-la em CTA.
-
-O **amarelo ATVOS `#FFCD00`** é utilizado com moderação em estados de atenção, indicadores e badges informativos. Sua função é chamar atenção para pendências, prazos ou avisos sem competir com o botão primário. O **azul ATVOS `#3F5B70`** aparece em navbar, botões secundários, avatar, textos de apoio e componentes corporativos, pois transmite confiança, estabilidade e clareza operacional.
-
+O **amarelo ATVOS `#FFCD00`** é utilizado com moderação em estados de atenção, indicadores e badges informativos. Sua função é chamar atenção para pendências, prazos ou avisos sem competir com o botão primário. Ele representa a **identidade institucional da ATVOS** e aparece em métricas, tags e destaques de conteúdo. O **amarelo de alerta `#F59E0B`** é reservado exclusivamente para **feedbacks do sistema**, como documentação incompleta, prazo próximo ou validação pendente — sempre acompanhado de ícone e texto para não depender apenas da cor. Apesar da proximidade visual, as duas cores têm contextos distintos: o amarelo ATVOS marca informação institucional, enquanto o amarelo de alerta sinaliza necessidade de ação do usuário. O **azul ATVOS `#3F5B70`** aparece em navbar, botões secundários, avatar, textos de apoio e componentes corporativos, pois transmite confiança, estabilidade e clareza operacional.
 <div align="center">
-  <sub>Figura 3.4.2 - Cores neutras, semânticas e status</sub><br>
-  <img src="./assets/guia_de_estilos/guia_cores_neutras_semanticas.png" width="100%" alt="Cores neutras, semânticas e status do design system Safra Control"><br>
+  <sub>Figura 3.4.1.2 - Cores neutras</sub><br>
+  <img src="./assets/guia_de_estilos/cores_neutras.png" width="100%" alt="Cores neutras do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-As cores neutras estruturam a interface. O fundo principal `#F7F8FA` separa a área da página dos cards brancos `#FFFFFF`; as bordas `#D9DEE3` delimitam inputs, tabelas e cards; os divisores `#E5E7EB` separam linhas e grupos de conteúdo; e os textos `#1F2933`, `#5C6670` e `#9CA3AF` criam hierarquia entre informação principal, apoio e conteúdo desabilitado.
-
-As cores semânticas indicam feedbacks do sistema. Sucesso usa `#16803C` com fundo `#DCFCE7`; erro usa `#D92D20` com fundo `#FEF2F2`; alerta usa `#F59E0B` com fundo `#FEF9C3`; informação usa `#2563EB` com fundo `#DBEAFE`. Em todos os casos, a cor deve aparecer acompanhada de texto e, quando possível, ícone, evitando que o usuário dependa apenas da cor para compreender a mensagem.
-
-| Grupo | Cor | Código | Uso na interface | Justificativa |
-|---|---|---|---|---|
-| Institucional | Laranja escuro | `#FF681A` | Botões primários e CTAs | Reforça ação principal e identidade da ATVOS |
-| Institucional | Laranja médio | `#FF8100` | Hover de botões primários e destaques | Comunica interatividade mantendo a paleta institucional |
-| Institucional | Laranja claro | `#FFA500` | Highlights e indicadores secundários | Destaca informações sem competir com o CTA |
-| Institucional | Amarelo ATVOS | `#FFCD00` | Atenção, métricas e badges informativos | Chama atenção para pendências e prazos |
-| Institucional | Azul ATVOS | `#3F5B70` | Navbar, botões secundários e elementos estruturais | Transmite confiança e estabilidade |
-| Neutra | Background | `#F7F8FA` | Fundo geral das telas | Diferencia a página dos cards e formulários |
-| Neutra | Surface | `#FFFFFF` | Cards, modais e painéis | Garante leitura limpa do conteúdo |
-| Neutra | Border | `#D9DEE3` | Inputs, cards, tabelas e divisórias | Organiza blocos sem excesso visual |
-| Neutra | Divisor | `#E5E7EB` | Linhas de tabela e separadores internos | Separa informações sem criar peso visual excessivo |
-| Neutra | Texto principal | `#1F2933` | Títulos, rótulos e dados importantes | Prioriza informações essenciais |
-| Neutra | Texto secundário | `#5C6670` | Descrições, metadados e textos de apoio | Mantém contexto sem competir com o conteúdo principal |
-| Neutra | Texto desabilitado | `#9CA3AF` | Placeholders, campos bloqueados e ações indisponíveis | Comunica limitação de uso sem parecer erro |
-| Semântica | Sucesso | `#16803C` / `#DCFCE7` | Confirmações e status ativo | Indica conclusão positiva |
-| Semântica | Erro | `#D92D20` / `#FEF2F2` | Validações e falhas | Indica necessidade de correção |
-| Semântica | Alerta | `#F59E0B` / `#FEF9C3` | Pendências, prazos e documentação incompleta | Sinaliza atenção sem indicar erro crítico |
-| Semântica | Informação | `#2563EB` / `#DBEAFE` | Avisos gerais e atualizações | Comunica orientação ou novidade do sistema |
-| Status | Rascunho | `#F3F4F6` / `#5C6670` | Cadastros iniciados e não enviados | Indica estado temporário e neutro |
-| Status | Pendente | `#FEF9C3` / `#A16207` | Cadastros aguardando validação | Sinaliza atenção sem indicar falha |
-| Status | Ativo | `#DCFCE7` / `#16803C` | Registros aprovados e disponíveis | Comunica normalidade operacional |
-| Status | Devolvido | `#FFF4ED` / `#C05111` | Registros retornados para correção | Indica retrabalho necessário |
-| Status | Inativo | `#E5E7EB` / `#374151` | Usuários ou registros desabilitados | Comunica indisponibilidade |
+<div align="center">
+  <sub>Figura 3.4.1.3 - Cores semânticas</sub><br>
+  <img src="./assets/guia_de_estilos/cores_semanticas.png" width="100%" alt="Cores semânticas do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+<div align="center">
+  <sub>Figura 3.4.1.4 - Cores de status</sub><br>
+  <img src="./assets/guia_de_estilos/cores_de_status.png" width="100%" alt="Cores de status do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+As cores neutras estruturam a interface. O fundo principal #F7F8FA separa a área da página dos cards brancos #FFFFFF; as bordas #D9DEE3 delimitam inputs, tabelas e cards; os divisores #E5E7EB separam linhas e grupos de conteúdo; e os textos #1F2933, #5C6670 e #9CA3AF criam hierarquia entre informação principal, apoio e conteúdo desabilitado.
+As cores semânticas indicam feedbacks do sistema. Sucesso usa #16803C com fundo #DCFCE7; erro usa #D92D20 com fundo #FEF2F2; alerta usa #F59E0B com fundo #FEF9C3; informação usa #2563EB com fundo #DBEAFE. Em todos os casos, a cor deve aparecer acompanhada de texto e, quando possível, ícone, evitando que o usuário dependa apenas da cor para compreender a mensagem.
 
 ### 3.4.2. Tipografia
-
-A fonte principal do Safra Control é **Tahoma**, adotada por sua alta legibilidade, boa compatibilidade em ambientes web, aparência limpa e adequação a sistemas com formulários, tabelas e grande volume de informação. A escolha favorece a leitura contínua em telas operacionais e mantém coerência com a identidade visual definida para o projeto.
-
+A fonte principal do Safra Control é Tahoma, adotada por sua alta legibilidade, boa compatibilidade em ambientes web, aparência limpa e adequação a sistemas com formulários, tabelas e grande volume de informação. A escolha favorece a leitura contínua em telas operacionais e mantém coerência com a identidade visual definida para o projeto.
 <div align="center">
-  <sub>Figura 3.4.3 - Escala tipográfica do Safra Control</sub><br>
-  <img src="./assets/guia_de_estilos/guia_tipografia.png" width="100%" alt="Tipografia do design system Safra Control"><br>
+  <sub>Figura 3.4.2.1 - Escala tipográfica do Safra Control</sub><br>
+  <img src="./assets/guia_de_estilos/tipografia.png" width="100%" alt="Tipografia do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-| Estilo | Tamanho | Peso | Aplicação | Justificativa |
-|---|---:|---|---|---|
-| Display | `32px` | Bold `700` | Títulos principais do design system e telas de apresentação | Cria destaque máximo sem uso excessivo na interface |
-| Título de página | `24px` | Bold `700` | Cabeçalhos de telas como Fornecedores, Proprietários e Usuários | Garante hierarquia visual clara |
-| Subtítulo de seção | `18px` | Bold `700` | Blocos como Dados Cadastrais, Dados Agrícolas e Histórico | Facilita varredura da tela |
-| Corpo | `16px` | Regular `400` | Descrições, instruções e textos corridos | Garante leitura contínua |
-| Corpo menor | `14px` | Regular `400` | Células, formulários e detalhes cadastrais | Permite densidade sem perder legibilidade |
-| Label | `14px` | Medium `600` | Rótulos de inputs, selects e filtros | Ajuda a identificar campos |
-| Botão | `14px` | Bold `700` | Ações clicáveis | Reforça interatividade |
-| Texto auxiliar | `12px` | Regular `400` | Hints, metadados, datas e mensagens de apoio | Reduz ruído visual |
-| Erro | `12px` | Medium `600` | Validação de campos | Destaca necessidade de correção |
-| Status/Chip | `12px` | Medium `600` | Chips de status e badges de perfil | Mantém estados legíveis em espaços reduzidos |
-| Texto de tabela/listagem | `13px` | Regular `400` | Células de tabelas, listagens e resultados de busca | Permite comparação de registros com boa densidade |
-
 A tipografia aparece no login, nas listagens de parceiros, nos formulários de cadastro, nos detalhes do parceiro, no histórico de interações, na gestão de usuários e nos modais. O uso consistente dos tamanhos evita que telas densas pareçam desorganizadas e permite que o usuário diferencie rapidamente título, dado cadastral, metadado e mensagem de erro.
-
-A aplicação tipográfica também foi definida para manter contraste em diferentes fundos. Em fundo claro `#F7F8FA`, títulos e dados principais usam `#1F2933`; em fundo institucional ou escuro, o texto deve usar branco ou neutro muito claro para preservar leitura; em cards brancos, labels e valores mantêm hierarquia por peso e tamanho; em botões primários, o texto branco em bold reforça a ação clicável; em alertas de erro, o texto vermelho acompanha borda e fundo sem depender apenas da cor; em chips de status, pesos médios e textos curtos garantem legibilidade mesmo em áreas reduzidas.
+A aplicação tipográfica também foi definida para manter contraste em diferentes fundos. Em fundo claro #F7F8FA, títulos e dados principais usam #1F2933; em fundo institucional ou escuro, o texto deve usar branco ou neutro muito claro para preservar leitura; em cards brancos, labels e valores mantêm hierarquia por peso e tamanho; em botões primários, o texto branco em bold reforça a ação clicável; em alertas de erro, o texto vermelho acompanha borda e fundo sem depender apenas da cor; em chips de status, pesos médios e textos curtos garantem legibilidade mesmo em áreas reduzidas.
 
 ### 3.4.3. Espaçamento, grid, radius e sombras
-
-O design system utiliza uma estrutura baseada em múltiplos de 4px, com uso recorrente de múltiplos de 8px para compor espaçamentos de interface. Essa escolha melhora alinhamento, consistência e organização visual, especialmente em telas com muitos campos e registros. O grid desktop possui largura de referência de `1440px`, 12 colunas, gutter de `24px` e margem horizontal de `80px`.
-
+O design system utiliza uma estrutura baseada em múltiplos de 4px, com uso recorrente de múltiplos de 8px para compor espaçamentos de interface. Essa escolha melhora alinhamento, consistência e organização visual, especialmente em telas com muitos campos e registros. O grid desktop possui largura de referência de 1440px, 12 colunas, gutter de 24px e margem horizontal de 80px.
 <div align="center">
-  <sub>Figura 3.4.4 - Espaçamento, radius, sombras e grid</sub><br>
-  <img src="./assets/guia_de_estilos/guia_espacamento_grid.png" width="100%" alt="Espaçamento, grid, radius e sombras do design system Safra Control"><br>
+  <sub>Figura 3.4.3.1 - Espaçamento, radius, sombras e grid</sub><br>
+  <img src="./assets/guia_de_estilos/espacamento_grid.png" width="100%" alt="Espaçamento, grid, radius e sombras do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-O espaçamento pequeno é usado entre ícones, labels e elementos próximos; o médio organiza campos de formulário, botões e linhas internas de cards; e o grande separa seções, como filtros, tabelas, dados cadastrais e histórico de interações. O radius de `8px` aparece em inputs e botões; o de `12px` em cards e painéis; e valores maiores são reservados para modais e elementos circulares, como avatares e chips.
-
-As sombras são leves e funcionais. Elas não têm papel decorativo principal, mas ajudam a separar camadas, como cards, dropdowns, modais e estados de foco. Isso mantém a interface clara para uso corporativo e evita excesso visual em telas de consulta.
-
-| Token visual | Aplicação | Justificativa |
-|---|---|---|
-| Espaçamento pequeno | Ícones, labels e elementos próximos | Mantém compactação sem poluir |
-| Espaçamento médio | Campos de formulário e botões | Melhora leitura e área de clique |
-| Espaçamento grande | Separação entre seções | Cria hierarquia visual |
-| Grid 12 colunas | Listagens, formulários e páginas internas | Mantém alinhamento entre módulos |
-| Radius 8px | Inputs e botões | Mantém aparência moderna e clara |
-| Radius 12px | Cards e modais | Diferencia blocos de conteúdo |
-| Sombra leve | Cards, dropdowns e modais | Cria profundidade sem excesso decorativo |
+O espaçamento pequeno é usado entre ícones, labels e elementos próximos; o médio organiza campos de formulário, botões e linhas internas de cards; e o grande separa seções, como filtros, tabelas, dados cadastrais e histórico de interações. O radius de 8px aparece em inputs e botões; o de 12px em cards e painéis; e valores maiores são reservados para modais e elementos circulares, como avatares e chips. As sombras são leves e funcionais, ajudando a separar camadas como cards, dropdowns, modais e estados de foco sem excesso visual.
 
 ### 3.4.4. Botões
-
-Os botões foram padronizados para diferenciar ações principais, secundárias, exportação e ações críticas. Essa distinção é importante porque o **Safra Control** possui fluxos com consequências diferentes, como salvar um fornecedor, cancelar um cadastro, exportar CSV ou inativar um usuário.
-
+Os botões foram padronizados para diferenciar ações principais, secundárias, exportação e ações críticas. Essa distinção é importante porque o Safra Control possui fluxos com consequências diferentes, como salvar um fornecedor, cancelar um cadastro, exportar CSV ou inativar um usuário.
 <div align="center">
-  <sub>Figura 3.4.5 - Botões e estados de interação</sub><br>
-  <img src="./assets/guia_de_estilos/guia_botoes.png" width="100%" alt="Botões do design system Safra Control"><br>
+  <sub>Figura 3.4.4.1 - Botões e estados de interação</sub><br>
+  <img src="./assets/guia_de_estilos/botoes.png" width="100%" alt="Botões do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-| Componente | Uso | Exemplo no sistema | Justificativa |
-|---|---|---|---|
-| Button/Primary | Ações principais | Entrar, Salvar alterações, Novo Fornecedor, Enviar para validação | Direciona a ação prioritária do usuário |
-| Button/Secondary | Ações auxiliares | Voltar, Cancelar, Limpar filtros | Evita competição com o CTA principal |
-| Button/Export | Exportação de dados | Exportar CSV | Diferencia ação de download das demais ações |
-| Button/Danger | Ações críticas | Inativar usuário, Confirmar inativação | Sinaliza impacto e necessidade de cautela |
-| Button/Disabled | Ações indisponíveis | Formulário incompleto ou operação bloqueada | Evita erro de uso |
-
-Os estados documentados são **default**, **hover**, **pressed**, **disabled**, **loading** e **success**. O estado loading deve aparecer em ações assíncronas, como salvar cadastro ou gerar CSV. O estado success é usado quando uma operação é concluída, por exemplo, quando a exportação está pronta para download. A padronização dos estados reduz dúvida durante operações críticas e melhora a percepção de resposta do sistema.
+Os estados documentados são default, hover, pressed, disabled, loading e success. O estado loading deve aparecer em ações assíncronas, como salvar cadastro ou gerar CSV. O estado success é usado quando uma operação é concluída, por exemplo, quando a exportação está pronta para download. A padronização dos estados reduz dúvida durante operações críticas e melhora a percepção de resposta do sistema.
 
 ### 3.4.5. Formulários, inputs e filtros
 
 Os formulários foram desenhados para suportar cadastros longos de fornecedores, proprietários e usuários, mantendo legibilidade e validação clara. Como o Safra Control depende de dados cadastrais confiáveis, os campos precisam orientar o preenchimento e indicar erros sem ambiguidade.
-
 <div align="center">
-  <sub>Figura 3.4.6 - Inputs, filtros, searchbar e textarea</sub><br>
-  <img src="./assets/guia_de_estilos/guia_formularios.png" width="100%" alt="Formulários, inputs e filtros do design system Safra Control"><br>
+  <sub>Figura 3.4.5.1 - Inputs e Filtros</sub><br>
+  <img src="./assets/guia_de_estilos/formularios1.png" width="100%" alt="Inputs e filtros do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-| Componente | Uso no Safra Control | Exemplo | Justificativa |
-|---|---|---|---|
-| Input/Text | Dados cadastrais | Nome, CPF/CNPJ, e-mail, telefone | Padroniza entrada de dados |
-| Input/Password | Autenticação | Senha no login | Mantém segurança visual do acesso |
-| Select/Filter | Filtros e seleção de perfil | Estado, região, tipo de parceiro, perfil de acesso | Reduz erro de digitação |
-| SearchBar | Busca em listagens | Buscar fornecedores ou proprietários | Facilita localização rápida |
-| TextArea | Campos livres | Observações e descrição da interação | Permite contexto textual maior |
-| Input/Error | Validação | CPF duplicado, e-mail inválido, campo obrigatório | Indica correção necessária |
-
-Os estados previstos são **default**, **focus**, **filled**, **error** e **disabled**. O foco usa destaque laranja para indicar edição ativa. O erro usa borda e mensagem em vermelho para orientar correção imediata. Campos desabilitados aparecem em cinza para indicar que a informação não pode ser editada naquele momento, como dados bloqueados por permissão ou status de validação.
+<div align="center">
+  <sub>Figura 3.4.5.2 - Searchbar e Textarea</sub><br>
+  <img src="./assets/guia_de_estilos/formularios2.png" width="100%" alt="Searchbar e textarea do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+Os estados previstos são default, focus, filled, error e disabled. O foco usa destaque laranja para indicar edição ativa. O erro usa borda e mensagem em vermelho para orientar correção imediata. Campos desabilitados aparecem em cinza para indicar que a informação não pode ser editada naquele momento, como dados bloqueados por permissão ou status de validação.
 
 ### 3.4.6. Navegação e cards
-
-A navegação principal organiza os módulos centrais do **Safra Control**: **Fornecedores**, **Proprietários**, **Usuários**, além da área de perfil e saída. A navbar aparece nas telas internas para manter o usuário orientado durante consulta, cadastro, edição e gestão de acesso.
-
+A navegação principal organiza os módulos centrais do Safra Control: Fornecedores, Proprietários, Usuários, além da área de perfil e saída. A navbar aparece nas telas internas para manter o usuário orientado durante consulta, cadastro, edição e gestão de acesso.
 <div align="center">
-  <sub>Figura 3.4.7 - Navbar e cards de informação</sub><br>
-  <img src="./assets/guia_de_estilos/guia_navbar_cards.png" width="100%" alt="Navbar e cards do design system Safra Control"><br>
+  <sub>Figura 3.4.6.1 - Navbar</sub><br>
+  <img src="./assets/guia_de_estilos/navbar.png" width="100%" alt="Navbar do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-O item ativo da navbar usa laranja e linha inferior para indicar localização atual. Essa escolha é relevante porque fornecedores e proprietários possuem telas parecidas; o estado ativo reduz risco de navegação equivocada. O hover indica interatividade, e a área de perfil mostra nome, papel e ação de sair, reforçando controle de sessão.
-
-Os cards organizam informações em blocos reconhecíveis. O **Card/Partner** resume dados essenciais de fornecedores e proprietários; o **Card/User** mostra dados de usuários, permissões e status; e o **Card/Info** agrupa informações cadastrais na tela de detalhe do parceiro.
-
-| Componente | Uso | Onde aparece | Justificativa |
-|---|---|---|---|
-| Navigation/Header | Navegação global | Todas as telas internas | Mantém orientação do usuário |
-| Card/Partner | Listagem resumida de parceiros | Fornecedores e proprietários | Resume dados essenciais para consulta |
-| Card/User | Gestão de usuários | Tela de usuários | Exibe permissões, status e ações |
-| Card/Info | Detalhes do parceiro | Perfil detalhado | Agrupa informações por categoria |
-| Card/Metric | Indicadores quantitativos | Dashboards e resumos | Facilita leitura rápida de números relevantes |
+<div align="center">
+  <sub>Figura 3.4.6.2 - Cards</sub><br>
+  <img src="./assets/guia_de_estilos/cards1.png" width="100%" alt="Cards de parceiro e usuário do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+<div align="center">
+  <sub>Figura 3.4.6.3 - Cards</sub><br>
+  <img src="./assets/guia_de_estilos/cards2.png" width="100%" alt="Cards de informação e métrica do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+O item ativo da navbar usa laranja e linha inferior para indicar localização atual. Essa escolha é relevante porque fornecedores e proprietários possuem telas parecidas; o estado ativo reduz risco de navegação equivocada. O hover indica interatividade, e a área de perfil mostra nome, papel e ação de sair, reforçando controle de sessão. Os cards organizam informações em blocos reconhecíveis: o Card/Partner resume dados essenciais de fornecedores e proprietários; o Card/User mostra dados de usuários, permissões e status; e o Card/Info agrupa informações cadastrais na tela de detalhe do parceiro.
 
 ### 3.4.7. Tabelas, listagens e status
-
 Tabelas e listagens são usadas para leitura comparativa de dados, validação de registros, gestão de usuários e acompanhamento de parceiros. Elas aparecem em fluxos nos quais o usuário precisa comparar muitos registros, aplicar filtros e executar ações por linha.
-
 <div align="center">
-  <sub>Figura 3.4.8 - Tabelas, listagens e chips de status</sub><br>
-  <img src="./assets/guia_de_estilos/guia_tabelas_status.png" width="100%" alt="Tabelas, listagens e status do design system Safra Control"><br>
+  <sub>Figura 3.4.7.1 - Chips de status</sub><br>
+  <img src="./assets/guia_de_estilos/status_chips.png" width="100%" alt="Chips de status do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-As tabelas utilizam cabeçalhos em caixa alta, células compactas e divisórias claras, favorecendo varredura visual. Os chips de status aparecem em cards, tabelas e telas de detalhe para sintetizar o estado do registro sem exigir leitura de campos longos.
-
-| Status | Uso | Significado | Justificativa visual |
-|---|---|---|---|
-| Rascunho | Cadastros incompletos | Registro salvo, mas não enviado | Cor neutra indica estado temporário |
-| Pendente | Fila de validação | Aguardando análise ou documentação | Cor de atenção indica ação necessária |
-| Ativo | Registro aprovado | Disponível nas consultas e operações | Cor positiva indica normalidade |
-| Devolvido | Correção necessária | Retornado pelo coordenador | Cor de alerta indica retrabalho |
-| Inativo | Usuário ou registro desabilitado | Acesso ou uso bloqueado | Cor neutra escura indica indisponibilidade |
+As tabelas utilizam cabeçalhos em caixa alta, células compactas e divisórias claras, favorecendo varredura visual. Os chips de status aparecem em cards, tabelas e telas de detalhe para sintetizar o estado do registro sem exigir leitura de campos longos. Os status Rascunho, Pendente, Ativo, Devolvido e Inativo usam cores distintas para comunicar estado operacional de forma imediata, sempre acompanhados de label textual para não depender apenas da cor.
 
 ### 3.4.8. Histórico de interações
-
 O histórico de interações é um componente essencial do Safra Control, pois responde diretamente à dor de perda de histórico entre analistas, coordenadores e gestores. Ele transforma contatos, visitas, reuniões e observações em memória institucional consultável.
-
 <div align="center">
-  <sub>Figura 3.4.9 - Histórico de interações em timeline</sub><br>
-  <img src="./assets/guia_de_estilos/guia_historico_interacoes.png" width="100%" alt="Histórico de interações do design system Safra Control"><br>
+  <sub>Figura 3.4.8.1 - Histórico de interações em timeline</sub><br>
+  <img src="./assets/guia_de_estilos/historico_de_interacoes.png" width="100%" alt="Histórico de interações do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-O componente **Timeline/InteractionItem** apresenta data, tipo de interação, responsável, descrição, ícone e ordem cronológica. As interações mais recentes ficam no topo para facilitar consulta antes de reuniões, negociações ou atualizações cadastrais.
-
-Esse componente deve ser usado na tela de detalhes do fornecedor, na tela de detalhes do proprietário e em qualquer fluxo de acompanhamento de relacionamento. A timeline torna o histórico mais rastreável, legível e institucional, reduzindo dependência de conhecimento individual ou registros dispersos em planilhas e mensagens.
+O componente Timeline/InteractionItem apresenta data, tipo de interação, responsável, descrição, ícone e ordem cronológica. As interações mais recentes ficam no topo para facilitar consulta antes de reuniões, negociações ou atualizações cadastrais. Esse componente deve ser usado na tela de detalhes do fornecedor, na tela de detalhes do proprietário e em qualquer fluxo de acompanhamento de relacionamento.
 
 ### 3.4.9. Modais, alertas e estados vazios
-
 Modais, alertas e empty states são usados para feedback de ações importantes. Eles ajudam o usuário a entender se uma operação foi concluída, se houve erro, se existe pendência ou se uma lista não possui resultados.
-
 <div align="center">
-  <sub>Figura 3.4.10 - Modais, alertas e estado vazio</sub><br>
-  <img src="./assets/guia_de_estilos/guia_modais_alertas.png" width="100%" alt="Modais, alertas e estados vazios do design system Safra Control"><br>
+  <sub>Figura 3.4.9.1 - Modais, alertas e estado vazio</sub><br>
+  <img src="./assets/guia_de_estilos/modais_e_alertas.png" width="100%" alt="Modais, alertas e estados vazios do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-| Componente | Uso | Exemplo | Justificativa |
-|---|---|---|---|
-| Modal/ExportCSV | Confirmação de exportação | Arquivo CSV gerado | Dá retorno claro ao usuário |
-| Modal/ConfirmInactiveUser | Ação crítica | Inativar usuário | Evita ações acidentais |
-| Alert/Success | Confirmação | Cadastro salvo | Reforça conclusão da tarefa |
-| Alert/Error | Falha ou validação | Campo obrigatório ou erro ao salvar | Direciona correção |
-| Alert/Warning | Atenção operacional | Documentação pendente | Sinaliza necessidade de acompanhamento |
-| Alert/Info | Informação geral | Nova versão disponível | Comunica orientação sem bloquear fluxo |
-| EmptyState | Lista vazia | Nenhum parceiro encontrado | Evita tela sem contexto |
-
 Modais devem ser usados apenas quando a ação exige confirmação ou atenção concentrada, como exportar dados ou inativar usuários. Alertas aparecem após ações ou em situações de validação. Empty states devem explicar o motivo da ausência de dados e oferecer uma ação de recuperação, como limpar filtros.
 
 ### 3.4.10. Iconografia e imagens
-
-A iconografia usa estilo uniforme, preferencialmente outline/linear, com traço regular, proporção consistente e cor padronizada. O design system adota a família Lucide React, com ícones vetoriais de aparência leve, espessura aproximada de `1.5px` a `2px` e aplicação em botões, inputs, cards, tabelas, modais e timeline. A cor base segue o azul institucional ou tons neutros; cores semânticas são reservadas para sucesso, erro, alerta e informação.
-
+A iconografia usa estilo uniforme, preferencialmente outline/linear, com traço regular, proporção consistente e cor padronizada. O design system adota a família Lucide React, com ícones vetoriais de aparência leve, espessura aproximada de 1.5px a 2px e aplicação em botões, inputs, cards, tabelas, modais e timeline. A cor base segue o azul institucional ou tons neutros; cores semânticas são reservadas para sucesso, erro, alerta e informação.
 <div align="center">
-  <sub>Figura 3.4.11 - Biblioteca de ícones do Safra Control</sub><br>
-  <img src="./assets/guia_de_estilos/guia_iconografia.png" width="100%" alt="Iconografia do design system Safra Control"><br>
+  <sub>Figura 3.4.10.1 - Iconografia</sub><br>
+  <img src="./assets/guia_de_estilos/iconografia.png" width="100%" alt="Biblioteca de ícones do design system Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-
-| Ícone | Função | Onde usar | Justificativa |
-|---|---|---|---|
-| Busca | Pesquisar registros | SearchBar | Ícone reconhecido universalmente |
-| Filtro | Refinar listagem | Filtros de parceiros e usuários | Representa seleção de critérios |
-| Download/Exportação | Exportar dados | Exportar CSV | Associação direta com baixar arquivo |
-| Editar | Alterar dados | Detalhes, cards e formulários | Indica modificação |
-| Histórico | Ver interações | Perfil do parceiro | Relaciona-se à linha do tempo |
-| Alerta | Problemas ou atenção | Erros, warnings e pendências | Comunica risco ou pendência |
-| Sucesso | Confirmação positiva | Alertas e status ativo | Reforça conclusão da ação |
-| Usuário | Representar conta interna | Navbar, gestão de usuários e avatar | Identifica perfil logado e permissões |
-| Parceiro | Representar grupo ou parceiro | Módulos de fornecedores e proprietários | Comunica entidade principal do Safra Control |
-| Calendário | Representar data | Histórico e atualização | Facilita leitura temporal |
-| Status | Indicador visual | Chips e tabelas | Reforça estado do registro |
-| Inativar | Bloquear usuário | Gestão de usuários | Sinaliza ação administrativa crítica |
-| Sair | Encerrar sessão | Navbar | Comunica logout |
-| Voltar | Retornar tela | Formulários e detalhes | Facilita navegação reversa |
-| Salvar | Confirmar formulário | Cadastro e edição | Comunica persistência de dados |
-
+<div align="center">
+  <sub>Figura 3.4.10.2 - Ícones obrigatórios</sub><br>
+  <img src="./assets/guia_de_estilos/icones_obrigatorios.png" width="100%" alt="Ícones obrigatórios do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+<div align="center">
+  <sub>Figura 3.4.10.3 - Ícones de suporte</sub><br>
+  <img src="./assets/guia_de_estilos/icones_de_suporte.png" width="100%" alt="Ícones de suporte do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
+<div align="center">
+  <sub>Figura 3.4.10.4 - Variantes de cor semântica</sub><br>
+  <img src="./assets/guia_de_estilos/variantes_de_cor_semantica.png" width="100%" alt="Variantes de cor semântica dos ícones do design system Safra Control"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div>
 A uniformidade dos ícones reduz ruído visual e ajuda o usuário a reconhecer ações recorrentes. Ícones podem aparecer sozinhos apenas em ações frequentes e de baixo risco, desde que haja contexto visual suficiente. Em ações sensíveis, como inativar usuário, exportar dados, salvar alterações ou sair do sistema, o ícone deve aparecer acompanhado de label textual, pois a clareza da ação é mais importante do que a economia de espaço.
+
 
 ## 3.5. Protótipo de alta fidelidade (sprint 3)
 
@@ -1725,13 +1810,15 @@ A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **m
 
 ### Notação e visão geral
 
-A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Foram identificadas **14 entidades** distribuídas em três grupos lógicos, conforme apresentado a seguir:
+A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Considerando o banco implementado em `src/db/migration.sql`, foram identificadas **16 tabelas reais** distribuídas em quatro grupos lógicos, conforme apresentado a seguir:
 
-- **Núcleo do parceiro externo**: Parceiro, Interacao, VinculoComercial, DadosFornecedor, DadosArrendador, Terra e ParceiroTerra. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Interacao centraliza o histórico de contatos com cada parceiro de forma estruturada e consultável. ParceiroTerra é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
+- **Núcleo do parceiro externo**: `parceiros`, `interacao`, `telefone_parceiro`, `vinculo_comercial`, `terras` e `parceiro_terra`. Representa as identidades externas com as quais a ATVOS se relaciona comercialmente, separando conceitualmente **identidade** (a pessoa física ou jurídica) do **papel comercial** (Fornecedor de Cana ou Arrendador de Terra) que essa identidade exerce. Esse papel é controlado por `vinculo_comercial.tipo_parceiro`, sem tabelas especializadas para fornecedor ou arrendador. `interacao` centraliza o histórico de contatos com cada parceiro, e `parceiro_terra` é a entidade associativa N:N que reflete a regra de negócio de que múltiplos parceiros podem vincular-se à mesma terra (RN13, RN14, RF015).
 
-- **Núcleo de operação interna**: Usuario, Cargo e Unidade. Representa os colaboradores internos da ATVOS, sua estrutura organizacional e as unidades industriais onde a operação acontece.
+- **Núcleo de operação interna**: `usuarios`, `perfil_acesso` e `unidades`. Representa os colaboradores internos da ATVOS, seus perfis de acesso e as unidades industriais onde a operação acontece.
 
-- **Auditoria e associações**: RegistroAlteracao, ParceiroCoordenador, ParceiroUnidade e UsuarioUnidade. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros dois grupos. RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável, tornando todos os elos de rastreabilidade visíveis no próprio diagrama conceitual.
+- **Autenticação e primeiro acesso**: `auth_sessoes` e `primeiro_acesso_tokens`. Implementa o controle de sessões autenticadas, revogação de sessões e fluxo de definição de senha para usuários criados sem senha inicial.
+
+- **Auditoria e associações**: `registro_alteracao`, `parceiro_coordenador`, `parceiro_unidade`, `usuario_unidade` e `terra_unidade`. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros grupos. `registro_alteracao` identifica a entidade auditada por `entidade_afetada` e `entidade_id`, sem chave estrangeira direta para a entidade auditável.
 
 
 ### Decisões estruturais relevantes
@@ -1740,11 +1827,11 @@ Quatro decisões de modelagem merecem destaque por serem fundamentais para a rob
 
 1. **Separação entre identidade e papel comercial.** Uma mesma pessoa física ou jurídica pode atuar simultaneamente como Fornecedor e Arrendador (caso real observado nas planilhas). Por isso, a entidade Parceiro mantém apenas dados de identidade (nome, CPF/CNPJ, contatos), enquanto VinculoComercial concretiza cada papel exercido. Esta separação evita duplicação de cadastro e garante consistência de dados de contato.
 
-2. **Especialização para vínculos com atributos próprios.** As entidades DadosFornecedor e DadosArrendador são especializações de VinculoComercial: existem apenas quando o vínculo é do tipo correspondente. DadosFornecedor concentra atributos específicos de fornecimento de cana (modalidade contratual, embaixador, guardião). DadosArrendador, neste momento, está modelada como entidade preparada para receber atributos próprios conforme retorno da ATVOS. A separação foi mantida por solicitação do cliente, prevendo divergência de atributos em iterações futuras.
+2. **Papel comercial no próprio vínculo.** O banco real não possui entidades separadas para dados de fornecedor ou arrendador. O papel exercido pelo parceiro em cada relação é representado pelo campo `tipo_parceiro` em `vinculo_comercial`, com valores controlados para `arrendador` e `fornecedor`. A tabela também concentra atributos do vínculo, como `tipo_vinculo`, `status`, `modalidade_contrato`, `data_inicio`, `data_fim` e `observacoes`.
 
-3. **Auditoria via relacionamentos explícitos e opcionais.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No modelo conceitual, cada registro de auditoria se relaciona de forma **explícita e opcional** com cada entidade auditável (Parceiro, VinculoComercial, DadosFornecedor, DadosArrendador e Terra) por meio de relacionamentos individuais com cardinalidade `[0..1]`. A constraint de negócio é que **exatamente um** desses relacionamentos é não-nulo por registro, validada em camada de aplicação (Service). Esta representação torna todos os elos de auditoria visíveis no diagrama conceitual, coerente com a notação Chen adotada. A implementação física desta restrição, via cinco chaves estrangeiras opcionais individuais para cada entidade auditável, está detalhada na seção 3.6.3.
+3. **Auditoria por identificação polimórfica.** A entidade RegistroAlteracao implementa **simultaneamente** o fluxo de aprovação (RN11, RN12) e a trilha de auditoria do sistema. No banco real, cada registro aponta para a entidade auditada por meio de `entidade_afetada VARCHAR` e `entidade_id UUID`, sem FKs opcionais individuais para cada tabela auditável. Além disso, `usuario_id` identifica o solicitante e `aprovado_por` identifica, quando aplicável, o usuário responsável pela aprovação.
 
-4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com atributos mínimos identificados: `tipo` (visita, ligação, WhatsApp, reunião), `data`, `texto` e `nome_responsavel`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo". Os atributos definitivos de Interacao serão validados com a ATVOS e poderão incluir campos adicionais como resultado, próximo passo ou duração, dependendo das necessidades operacionais levantadas com o cliente.
+4. **Histórico de interações como entidade independente.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, com os atributos reais `parceiro_id`, `registrado_por`, `tipo`, `descricao`, `data`, `criado_em` e `status`. Esta decisão atende à Primeira Forma Normal: um campo de texto que concatena múltiplos eventos heterogêneos não é atômico e impede consultas estruturadas como "todas as visitas de um parceiro no mês" ou "interações por tipo".
 
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
@@ -1796,9 +1883,15 @@ flowchart TB
     USUA[USUARIOS]:::entity
     PERF[PERFIL ACESSO]:::entity
     UNID[UNIDADES]:::entity
+    AUTH[AUTH SESSOES]:::entity
+    PAT[PRIMEIRO ACESSO TOKENS]:::entity
 
     Rclass{classifica}:::rel
+    Rsess{mantem}:::rel
+    Rprim{gera}:::rel
     PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    USUA -- "1,1" --- Rsess -- "0,N" --- AUTH
+    USUA -- "1,1" --- Rprim -- "0,N" --- PAT
 ```
 
 **Grupo 3 — Auditoria e associações**
@@ -1818,14 +1911,12 @@ flowchart TB
 
     Rsol{solicita}:::rel
     Rapr{aprova}:::rel
-    Raud{audita}:::rel
     Rcoord{coordena}:::rel
     Ropun{opera em}:::rel
     Ratun{atua em}:::rel
 
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
-    RA -- "0,N" --- Raud -- "0,1" --- PARC
     PARC -- "1,1" --- Rcoord
     USUA -- "1,1" --- Rcoord
     Rcoord --- PCOORD
@@ -1854,6 +1945,8 @@ flowchart TB
     TEL[TELEFONE PARCEIRO]:::entity
     USUA[USUARIOS]:::entity
     PERF[PERFIL ACESSO]:::entity
+    AUTH[AUTH SESSOES]:::entity
+    PAT[PRIMEIRO ACESSO TOKENS]:::entity
     RA[REGISTRO ALTERACAO]:::entity
     PCOORD[PARCEIRO COORDENADOR]:::entity
     PUNID[PARCEIRO UNIDADE]:::entity
@@ -1866,9 +1959,10 @@ flowchart TB
     Rpert{pertence a}:::rel
     Rtu{pertence a}:::rel
     Rclass{classifica}:::rel
+    Rsess{mantem}:::rel
+    Rprim{gera}:::rel
     Rsol{solicita}:::rel
     Rapr{aprova}:::rel
-    Raud{audita}:::rel
     Rcoord{coordena}:::rel
     Ropun{opera em}:::rel
     Ratun{atua em}:::rel
@@ -1884,9 +1978,10 @@ flowchart TB
     UNID -- "1,1" --- Rtu
     Rtu --- TU
     PERF -- "1,1" --- Rclass -- "0,N" --- USUA
+    USUA -- "1,1" --- Rsess -- "0,N" --- AUTH
+    USUA -- "1,1" --- Rprim -- "0,N" --- PAT
     USUA -- "1,1" --- Rsol -- "0,N" --- RA
     USUA -- "0,1" --- Rapr -- "0,N" --- RA
-    RA -- "0,N" --- Raud -- "0,1" --- PARC
     PARC -- "1,1" --- Rcoord
     USUA -- "1,1" --- Rcoord
     Rcoord --- PCOORD
@@ -1898,9 +1993,7 @@ flowchart TB
     Ratun --- UUNID
 ```
 
-
-
-> **Nota sobre relacionamentos entre grupos:** Os relacionamentos entre Usuario e VinculoComercial (embaixador e guardião) vinculam entidades do Grupo 2 (Usuario) ao Grupo 1 (VinculoComercial). Por atravessarem dois grupos distintos, não são representados graficamente nos diagramas acima — estão detalhados na tabela a seguir e poderão ser implementados como chaves estrangeiras opcionais em VinculoComercial em iteração futura, conforme validação com a ATVOS.
+> **Nota sobre auditoria:** `registro_alteracao` identifica a entidade auditada por `entidade_afetada` e `entidade_id`. Por isso, o banco real não possui relacionamentos FK diretos entre essa tabela e cada entidade auditável.
 
 ### Resumo dos relacionamentos
 
@@ -1915,20 +2008,22 @@ flowchart TB
 | 5a | Terra / TerraUnidade | `[1..1] :: [0..N]` | Cada registro de TerraUnidade pertence a exatamente uma Terra; uma Terra pode estar associada a zero ou muitas Unidades. |
 | 5b | Unidade / TerraUnidade | `[1..1] :: [0..N]` | Cada registro de TerraUnidade pertence a exatamente uma Unidade; uma Unidade pode ter zero ou muitas Terras vinculadas. |
 | 6 | PerfilAcesso / Usuario | `[1..1] :: [0..N]` | Cada usuário possui exatamente um perfil de acesso. Um perfil pode classificar zero ou muitos usuários. |
-| 7 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação possui um solicitante obrigatório. Um usuário pode solicitar zero ou muitas alterações. |
-| 8 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional — permanece NULL enquanto a solicitação está pendente. |
-| 9 | RegistroAlteracao / Parceiro | `[0..N] :: [0..1]` | Um RegistroAlteracao pode auditar zero ou um Parceiro; um Parceiro pode ter zero ou muitos registros de auditoria. |
-| 10 | RegistroAlteracao / VinculoComercial | `[0..N] :: [0..1]` | Idem para VinculoComercial. |
-| 11 | RegistroAlteracao / Terra | `[0..N] :: [0..1]` | Idem para Terra. |
-| ★ | Constraint 9 a 11 | exclusividade | Exatamente um dos três relacionamentos acima é não-nulo por registro de RegistroAlteracao. Validada em camada de aplicação (Service); os demais ficam NULL. |
-| 12 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
-| 13 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
-| 14 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
+| 7 | Usuario / AuthSessoes | `[1..1] :: [0..N]` | Um usuário pode ter zero ou muitas sessões registradas. Toda sessão pertence a exatamente um usuário. |
+| 8 | Usuario / PrimeiroAcessoTokens | `[1..1] :: [0..N]` | Um usuário pode ter zero ou muitos tokens de primeiro acesso. Todo token pertence a exatamente um usuário. |
+| 9 | Usuario / RegistroAlteracao (solicitante) | `[1..1] :: [0..N]` | Toda solicitação possui um solicitante obrigatório. Um usuário pode solicitar zero ou muitas alterações. |
+| 10 | Usuario / RegistroAlteracao (aprovador) | `[0..1] :: [0..N]` | O aprovador é opcional — permanece NULL enquanto a solicitação está pendente. |
+| 11 | RegistroAlteracao / Entidade auditada | polimórfico | A entidade auditada é identificada por `entidade_afetada` e `entidade_id`, sem FK formal para a tabela auditada. |
+| 12 | Usuario / Parceiro (criação/atualização) | `[1..1] :: [0..N]` | `criado_por` é obrigatório e `atualizado_por` é opcional em Parceiro. |
+| 13 | Usuario / Terra (criação/atualização) | `[1..1] :: [0..N]` | `criado_por` é obrigatório e `atualizado_por` é opcional em Terra. |
+| 14 | Usuario / TelefoneParceiro (criação/atualização) | `[1..1] :: [0..N]` | `criado_por` é obrigatório e `atualizado_por` é opcional em TelefoneParceiro. |
+| 15 | Parceiro / Usuario via ParceiroCoordenador | N:N com histórico | Múltiplos coordenadores podem atender o mesmo parceiro ao longo do tempo (data_inicio / data_fim). |
+| 16 | Parceiro / Unidade via ParceiroUnidade | N:N | Um parceiro pode operar em múltiplas unidades industriais simultaneamente. |
+| 17 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
 
 
 ### Boas práticas aplicadas no modelo
 
-- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. Atributos especulativos do WAD (US01, US02) sem evidência nas planilhas, como TCH, ATR, CAR e demais, foram conscientemente excluídos do modelo e documentados como pendências para validação direta com o cliente, evitando inflar a estrutura com dados que talvez nunca sejam preenchidos. A entidade Interacao segue o mesmo princípio: os atributos mínimos (tipo, data, descricao) foram identificados com base no uso atual das planilhas, e os atributos adicionais aguardam validação com a ATVOS antes de serem incorporados.
+- **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. A entidade Interacao segue o mesmo princípio: os atributos implementados (`parceiro_id`, `registrado_por`, `tipo`, `descricao`, `data`, `criado_em` e `status`) refletem o uso atual do sistema e permanecem abertos a evolução conforme validação com a ATVOS.
 
 - **Normalização até a Terceira Forma Normal.** O campo de texto livre que registrava interações com parceiros foi extraído para a entidade Interacao, atendendo à Primeira Forma Normal: cada linha de Interacao armazena um evento atômico e consultável individualmente. A entidade é referenciada por uma chave estrangeira para Parceiro, sem dependências parciais ou transitivas, garantindo conformidade com 2NF e 3NF.
 
@@ -1936,7 +2031,7 @@ flowchart TB
 
 - **Perfil de acesso como entidade.** A entidade PerfilAcesso define os três níveis de permissão do sistema: analista, coordenador e administrador. O campo `requer_aprovacao` determina se alterações feitas por usuários daquele perfil precisam de aprovação antes de se tornarem ativas, internalizando a regra de negócio no dado em vez de no código. Isso permite que a ATVOS altere a política de aprovação no futuro sem necessidade de redeploy.
 
-- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No modelo conceitual, RegistroAlteracao mantém relacionamentos explícitos e opcionais com cada entidade auditável (Parceiro, VinculoComercial e Terra), com a constraint de que exatamente um desses vínculos é não-nulo por registro. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `pendente` e aguardam aprovação de Coordenador; registros originados de Administrador recebem `aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
+- **Auditoria estrutural via RegistroAlteracao.** O fluxo de aprovação obrigatório para alterações feitas por Analistas (RN11) e a necessidade de trilha de versionamento (RN12) foram resolvidos com **uma única entidade**, que serve simultaneamente como fila de aprovação e log de auditoria. No banco real, RegistroAlteracao aponta para a entidade auditada por `entidade_afetada` e `entidade_id`, sem FK formal para cada tabela auditável. O campo `status` opera em dois modos: registros originados de Analistas iniciam como `pendente` e aguardam aprovação de Coordenador; registros originados de Administrador recebem `aprovado` imediatamente. Essa unificação reduz redundância e centraliza a lógica de governança em um único ponto do modelo.
 
 - **Histórico modelado apenas onde tem valor de negócio.** Optou-se por manter histórico (`data_inicio`/`data_fim`) apenas em ParceiroCoordenador, onde a troca de coordenador ao longo do tempo é uma necessidade real do CRM. As demais associações N:N (ParceiroUnidade, UsuarioUnidade, ParceiroTerra) guardam apenas o estado atual ou o momento de associação, evitando complexidade desnecessária.
 
@@ -1953,7 +2048,7 @@ A separação entre Parceiro e VinculoComercial é o que permite que **uma mesma
 
 A entidade ParceiroTerra, introduzida como associativa N:N entre Parceiro e Terra, resolve diretamente a contradição que existiria em um modelo 1:N diante das regras RN13, RN14 e RF015: uma gleba pode ser compartilhada por herdeiros, meeiros ou coproprietários, e um mesmo parceiro pode vincular-se a múltiplas propriedades. Ambos os sentidos do relacionamento precisam ser "muitos para muitos".
 
-A entidade RegistroAlteracao concretiza diretamente as regras RN11 (auditoria), RN12 (versionamento) e o fluxo de aprovação obrigatória: alterações de Analistas vão para fila, são revisadas por Coordenadores, e o histórico é preservado. Os relacionamentos explícitos e opcionais com cada entidade auditável, representados no diagrama conceitual com cardinalidade `[0..1]` em cada elo, permitem que **uma única estrutura** atenda todo o domínio auditável do sistema, sem multiplicação de entidades de auditoria.
+A entidade RegistroAlteracao concretiza diretamente as regras RN11 (auditoria), RN12 (versionamento) e o fluxo de aprovação obrigatória: alterações de Analistas vão para fila, são revisadas por Coordenadores, e o histórico é preservado. A identificação da entidade auditada por `entidade_afetada` e `entidade_id` permite que **uma única estrutura** atenda todo o domínio auditável do sistema, sem multiplicação de entidades de auditoria.
 
 A entidade ParceiroCoordenador com histórico responde ao caso, observado em campo, de coordenadores que se aposentam, mudam de função ou são realocados, preservando a memória institucional de "quem cuidou de quem e quando". As associações N:N entre Parceiro, Usuario e Unidade refletem a realidade multissítio da ATVOS, em que um mesmo parceiro pode entregar cana a duas unidades e um mesmo coordenador atende parceiros em mais de uma planta.
 
@@ -1973,13 +2068,13 @@ A importância do DER em qualquer projeto de software está na clareza e na prev
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
-No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER é especialmente relevante por se tratar de um domínio com relacionamentos complexos e múltiplos perfis de usuário. Ele torna explícita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores, e garante que a rastreabilidade de alterações — central para a integridade do sistema — esteja corretamente estruturada desde a concepção do banco de dados.
+No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER é especialmente relevante por se tratar de um domínio com relacionamentos complexos e múltiplos perfis de usuário. Ele torna explícita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores, e documenta que a rastreabilidade de alterações é feita por `registro_alteracao.entidade_afetada` e `registro_alteracao.entidade_id`, sem FK formal para a entidade auditada. O DER deve refletir o banco real definido em `src/db/migration.sql`, incluindo `auth_sessoes` e `primeiro_acesso_tokens`, e removendo entidades que não existem na implementação física.
 
 ### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
 <br>
 O modelo relacional tem como objetivo representar de forma lógica as entidades do sistema, seus atributos e os relacionamentos existentes entre elas. Nessa etapa, as entidades foram convertidas em tabelas relacionais, com definição de chaves primárias e estrangeiras, além da normalização necessária para reduzir redundâncias e garantir maior integridade dos dados.
 
-A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional.
+A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional. O modelo relacional deve acompanhar o banco real descrito em `src/db/migration.sql`, incluindo as tabelas `auth_sessoes` e `primeiro_acesso_tokens`.
 
 <div align="center">
   <sub>Figura 3.6.3.1.1</sub><br>
@@ -2056,7 +2151,53 @@ CREATE INDEX idx_usuario_nome ON usuarios(nome);
 ```
 <br><br>
 
-#### 03. TABELA unidades
+#### 03. TABELA auth_sessoes
+<br>
+A tabela auth_sessoes armazena as sessões autenticadas dos usuários. Ela permite controlar expiração, revogação e encerramento de sessões, mantendo vínculo direto com a tabela usuarios.
+<br><br>
+Os índices escolhidos foram relacionados ao usuario_id e ao status de atividade da sessão.
+<br><br>
+
+```SQL
+CREATE TABLE auth_sessoes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  token TEXT NOT NULL,
+  ativa BOOLEAN NOT NULL DEFAULT TRUE,
+  criada_em TIMESTAMP NOT NULL DEFAULT NOW(),
+  expira_em TIMESTAMP NOT NULL,
+  revogada_em TIMESTAMP,
+  revogada_por UUID REFERENCES usuarios(id) ON DELETE SET NULL
+);
+
+CREATE INDEX idx_auth_sessoes_usuario ON auth_sessoes(usuario_id);
+CREATE INDEX idx_auth_sessoes_ativa ON auth_sessoes(ativa);
+```
+<br><br>
+
+#### 04. TABELA primeiro_acesso_tokens
+<br>
+A tabela primeiro_acesso_tokens armazena tokens temporários usados no fluxo de primeiro acesso. Ela permite que usuários criados sem senha definam sua senha inicial de forma controlada, com expiração e marcação de uso.
+<br><br>
+Os índices escolhidos foram relacionados ao usuario_id e ao token_hash.
+<br><br>
+
+```SQL
+CREATE TABLE primeiro_acesso_tokens (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  usuario_id UUID NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+  token_hash TEXT NOT NULL UNIQUE,
+  criado_em TIMESTAMP NOT NULL DEFAULT NOW(),
+  expira_em TIMESTAMP NOT NULL,
+  usado_em TIMESTAMP
+);
+
+CREATE INDEX idx_primeiro_acesso_usuario ON primeiro_acesso_tokens(usuario_id);
+CREATE INDEX idx_primeiro_acesso_token_hash ON primeiro_acesso_tokens(token_hash);
+```
+<br><br>
+
+#### 05. TABELA unidades
 <br>
 A tabela unidade representa as unidades operacionais - as usinas - da ATVOS. O campo codigo é único e identifica a unidade internamente.
 <br><br>
@@ -2071,11 +2212,11 @@ CREATE TABLE unidades (
 ```
 <br><br>
 
-#### 04. TABELA parceiros
+#### 06. TABELA parceiros
 <br>
 A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador.
 <br><br>
-Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome e ao tipo_pessoa.
+Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome, ao tipo_pessoa, à região e à usina de referência.
 <br>
 
 ```SQL
@@ -2089,6 +2230,13 @@ CREATE TABLE parceiros (
   email            VARCHAR,
   data_nascimento  DATE,
   nome_acompanhante VARCHAR,
+  regiao           VARCHAR,
+  inscricao_estadual VARCHAR,
+  usina_referencia VARCHAR,
+  area_plantada    VARCHAR,
+  tch_medio        VARCHAR,
+  atr_medio        VARCHAR,
+  observacoes      TEXT,
   status           status_validacao NOT NULL DEFAULT 'rascunho',
   criado_em        TIMESTAMP NOT NULL DEFAULT NOW(),
   atualizado_em    TIMESTAMP,
@@ -2100,10 +2248,12 @@ CREATE INDEX idx_parceiro_status   ON parceiros(status);
 CREATE INDEX idx_parceiro_cpf_cnpj ON parceiros(cpf_cnpj);
 CREATE INDEX idx_parceiro_nome ON parceiros(nome);
 CREATE INDEX idx_parceiro_tipo_pessoa ON parceiros(tipo_pessoa);
+CREATE INDEX idx_parceiro_regiao ON parceiros(regiao);
+CREATE INDEX idx_parceiro_usina_referencia ON parceiros(usina_referencia);
 ```
 <br><br>
 
-#### 05. TABELA terras
+#### 07. TABELA terras
 <br>
 A tabela terra armazena os dados das propriedades rurais. Assim como parceiro, passa pelo mesmo ciclo de validação via status. O campo area_contratada_ha representa a área física da terra disponível para contrato. Note algumas considerações, como estado aceitar apenas dois caracteres, para que seja forçada a padronização (SP, MG, RJ etc) e como a area_contratada_ha poder ter até 12 dígitos com até 4 casas decimais.
 <br><br>
@@ -2132,7 +2282,7 @@ CREATE INDEX idx_terra_estado ON terras(estado);
 
 <br><br>
 
-#### 06. TABELA vinculo_comercial
+#### 08. TABELA vinculo_comercial
 <br>
 A tabela vinculo_comercial representa o contrato formal entre um parceiro e uma terra. Um parceiro pode ter múltiplos vínculos com terras diferentes, e uma terra pode ter múltiplos vínculos com parceiros diferentes. O campo tipo_parceiro define se o parceiro atua como arrendador ou fornecedor naquele vínculo específico.
 <br><br>
@@ -2162,7 +2312,7 @@ CREATE INDEX idx_vinculo_tipo_parceiro    ON vinculo_comercial(tipo_parceiro);
 
 <br><br>
 
-#### 07. TABELA parceiro_terra
+#### 09. TABELA parceiro_terra
 <br>
 A tabela parceiro_terra resolve a relação N:M entre parceiros e terras, isso sem necessidade de vínculo comercial formal, isto é, de um contrato. Um parceiro pode estar associado a uma terra sem contrato com a Atvos, e uma terra pode ter múltiplos parceiros associados.
 <br><br>
@@ -2181,7 +2331,7 @@ CREATE TABLE parceiro_terra (
 
 <br><br>
 
-#### 08. TABELA terra_unidade
+#### 10. TABELA terra_unidade
 <br>
 Essa tabela resolve a relação N:M entre terras e unidades operacionais da ATVOS (Uma terra pode ter mais de uma unidade e vice-versa).
 <br><br>
@@ -2198,7 +2348,7 @@ CREATE TABLE terra_unidade (
 
 <br><br>
 
-#### 09. TABELA parceiro_unidade
+#### 11. TABELA parceiro_unidade
 <br>
 A tabela parceiro_unidade associa parceiros às unidades operacionais da ATVOS com as quais se relacionam.
 <br><br>
@@ -2215,7 +2365,7 @@ CREATE TABLE parceiro_unidade (
 
 <br><br>
 
-#### 10. TABELA usuario_unidade
+#### 12. TABELA usuario_unidade
 <br>
 A tabela usuario_unidade associa usuários internos às unidades em que atuam.
 <br><br>
@@ -2232,7 +2382,7 @@ CREATE TABLE usuario_unidade (
 
 <br><br>
 
-#### 11. TABELA parceiro_coordenador
+#### 13. TABELA parceiro_coordenador
 <br>
 A tabela parceiro_coordenador registra qual coordenador/analista é responsável por cada parceiro. O campo data_fim nulo indica que o vínculo está ativo, o que dispensa um campo ativo separado.
 <br><br>
@@ -2254,7 +2404,7 @@ CREATE INDEX idx_parceiro_coordenador_parceiro ON parceiro_coordenador(parceiro_
 
 <br><br>
 
-#### 12. TABELA interacao
+#### 14. TABELA interacao
 <br>
 A tabela interacao registra o histórico de contatos entre a equipe interna e os parceiros - visitas, ligações, reuniões e outros tipos de interação. Não passa por fluxo de validação.
 <br><br>
@@ -2269,7 +2419,8 @@ CREATE TABLE interacao (
   tipo          VARCHAR NOT NULL,
   descricao     TEXT NOT NULL,
   data          DATE NOT NULL,
-  criado_em     TIMESTAMP NOT NULL DEFAULT NOW()
+  criado_em     TIMESTAMP NOT NULL DEFAULT NOW(),
+  status        VARCHAR NOT NULL DEFAULT 'registrado'
 );
 
 CREATE INDEX idx_interacao_parceiro ON interacao(parceiro_id);
@@ -2278,7 +2429,7 @@ CREATE INDEX idx_interacao_tipo     ON interacao(tipo);
 
 <br><br>
 
-#### 13. TABELA telefone_parceiro
+#### 15. TABELA telefone_parceiro
 <br>
 A tabela telefone_parceiro permite que um parceiro tenha múltiplos telefones cadastrados. O campo principal indica o número preferencial de contato.
 <br>
@@ -2303,9 +2454,9 @@ CREATE INDEX idx_telefone_parceiro ON telefone_parceiro(parceiro_id);
 
 <br><br>
 
-#### 14. TABELA registro_alteracao
+#### 16. TABELA registro_alteracao
 <br>
-Essa tabela registra as alterações de qualquer entidade do sistema através dos campos entidade_afetada e entidade_id. Também controla o fluxo de aprovação entre analista e coordenador. Além disso, ela também armazena os dados anteriores e os dados novos em JSONB.
+Essa tabela registra as alterações de qualquer entidade do sistema através dos campos entidade_afetada e entidade_id. O campo entidade_id não possui FK para a entidade auditada; a associação é polimórfica e interpretada em conjunto com entidade_afetada. Também controla o fluxo de aprovação entre analista e coordenador. Além disso, ela também armazena os dados anteriores e os dados novos em JSONB.
 <br><br>
 Os índices criados a partir dessa tabela estão relacionados à entidade_afetada, à entidade_id, ao usuario_id, ao status e ao tipo_operacao.
 <br><br>
@@ -2887,34 +3038,29 @@ O acesso à aplicação é controlado por uma combinação de JWT, sessão persi
 
 ## 3.9. Matriz de Rastreabilidade (RTM) (sprints 3 a 5)
 
-*A RTM consolida a rastreabilidade completa do sistema. Um elo quebrado invalida toda a cadeia — mantenha-a atualizada a cada sprint. A partir da sprint 3 não deve haver lacunas nos fluxos centrais.*
+A RTM registra a cadeia entre necessidade, interface, contrato HTTP, implementação e teste. “Parcial” indica que parte do fluxo existe sem toda a experiência prevista; “Pendente” indica ausência de implementação nesta versão.
 
-| Persona | RF | RN | Endpoint | Tela | Teste | Evidência |
-|---|---|---|---|---|---|---|
-| Gerente de coordenadores | RF001 | RN01, RN03 | POST /api/usuarios | Cadastro de Usuário | src/tests/userCreateController.spec.ts | Testes de criação de usuário: 201 com usuário ativo sem senha, 409 para e-mail duplicado, 400 para payload inválido, 422 para perfil inexistente e persistência no banco |
-| Gerente de coordenadores | RF002 | RN01, RN06 | PUT /usuarios/:id | Gestão de Usuários | src/tests/userUpdateController.spec.ts; src/tests/userUpdateService.spec.ts | Testes de atualização de usuário: 200 com persistência, 400 para payload inválido, 404 para usuário inexistente, validação de perfil e falha técnica controlada |
-| Gerente de coordenadores | RF003 | RN03, RN06 | PUT /usuarios/:id/perfil | Cadastro / Gestão de Usuário | src/tests/userController.spec.ts; src/tests/userService.spec.ts | Testes de atualização de perfil: sucesso com persistência, perfil inexistente, campos obrigatórios e usuário inexistente |
-| Gerente de coordenadores | RF011 | RN02 | POST /login | Login | src/tests/auth.test.ts | Testes de login: credenciais válidas, senha incorreta, e-mail inexistente, campos ausentes e senha hasheada |
-| Gerente de coordenadores | RF020 | RN15 | PUT /usuarios/:id/inativar | Listagem / Gestão de Usuários | src/tests/userInactivateController.spec.ts; src/tests/userInactivateService.spec.ts | Testes de inativação: sucesso, 401 sem token, 403 sem perfil administrador, 404 usuário inexistente e 500 falha técnica |
-| Gerente de coordenadores | RF013 | RN12 | GET /api/parceiros/:id/historico | Auditoria / Histórico | src/tests/parceiroHistoricoController.spec.ts | Testes de histórico: retorno em ordem cronológica decrescente, isolamento por entidade, parceiro sem histórico com array vazio e 404 para parceiro inexistente ou ID inválido |
-| Gerente de coordenadores | RF014 | RN06, RN07, RN08 | PATCH /api/parceiros/:id; PUT /api/terras/:id | Gestão de Parceiros e Terras | src/test/parceiroController.patch.spec.ts; src/tests/terraController.spec.ts | Testes de edição: parceiro atualizado com persistência, CPF/CNPJ duplicado, payload sem campos editáveis, edição de terra válida, terra inexistente e validações de responsável |
-| Analista de Negócios Agrícolas | RF004 | RN09, RN10, RN11 | POST /api/parceiros | Cadastro de Parceiro | src/test/parceiroController.spec.ts | Testes de cadastro: 201 com rascunho, 409 CPF/CNPJ duplicado, 400 tipo_pessoa inválido e persistência no banco |
-| Analista de Negócios Agrícolas | RF005 | RN09, RN11, RN19, RN20 | PATCH /api/parceiros/:id | Edição de Parceiro | src/test/parceiroController.patch.spec.ts | Testes de edição: 200 com registro atualizado, 409 CPF/CNPJ duplicado, 400 sem campos editáveis e persistência no banco |
-| Analista de Negócios Agrícolas | RF006 | RN11 | POST /parceiros/:id/interacoes | Perfil do Parceiro | src/tests/interacao.test.ts | Testes de interação: 201 com dados válidos, 400 campos ausentes, 404 parceiro inexistente e persistência no banco |
-| Analista de Negócios Agrícolas | RF009 | RN09 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id | Cadastro de Usuário / Cadastro e Edição de Parceiro | src/tests/userCreateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts | Testes de unicidade: e-mail duplicado em usuário e CPF/CNPJ duplicado no cadastro e edição de parceiro |
-| Analista de Negócios Agrícolas | RF010 | RN10 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id; POST /api/terras; PUT /api/terras/:id | Cadastro / Edição de Usuário, Parceiro e Terra | src/tests/userCreateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/terraController.spec.ts | Testes de validação contratual: campos obrigatórios, enums inválidos, ausência de campos editáveis, área positiva, UF com dois caracteres e responsáveis válidos |
-| Analista de Negócios Agrícolas | RF015 | RN13, RN14 | GET /api/parceiros/:id/terras; POST /api/parceiros/:id/terras; GET /api/terras/:id/parceiros; POST /api/terras/:id/parceiros | Cadastro de Parceiro / Cadastro de Terras | src/tests/parceiroTerraController.spec.ts; src/tests/terraParceiroController.spec.ts | Testes de vínculo bidirecional: criação de vínculo, payload ausente, entidade inexistente, vínculo duplicado, listagem, ocultação de registros inativos e persistência no banco |
-| Analista de Negócios Agrícolas | RF018 | RN11 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /api/terras; PUT /api/terras/:id | Cadastro / Edição de registros | src/tests/userCreateController.spec.ts; src/tests/userUpdateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts; src/tests/terraController.spec.ts | Testes de auditoria e persistência: criação/edição com dados gravados, timestamps de criação/atualização, persistência de interações e conferência direta no banco |
-| Analista de Negócios Agrícolas | RF019 | RN11 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /api/terras; PUT /api/terras/:id | Cadastro / Edição de registros | src/tests/userCreateController.spec.ts; src/tests/userUpdateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts; src/tests/terraController.spec.ts | Testes de autoria: criado_por/atualizado_por válidos, rejeição de responsáveis inexistentes e persistência do usuário responsável nas operações cobertas |
-| Coordenador de Estratégia de Terras | RF007 | RN04, RN08 | GET /api/parceiros | Listagem de Parceiros | src/test/parceiroController.get.spec.ts | Testes de listagem: retorno de parceiros ativos, array vazio, exclusão de inativos e conferência com dados persistidos |
-| Coordenador de Estratégia de Terras | RF008 | RN04, RN08 | GET /api/parceiros/:id | Perfil do Parceiro | src/tests/parceiroDetalheController.spec.ts; src/test/parceiroController.get.spec.ts | Testes de detalhe: retorno por ID, 404 para inexistente, 404 para UUID inválido, ocultação de parceiro inativo e persistência após cadastro |
-| Coordenador de Estratégia de Terras | RF012 | RN07, RN08 | GET /api/parceiros; GET /api/parceiros?nome=&regiao=&area=&tipo=; GET /api/terras | Listagem de Parceiros / Terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroFiltrosController.spec.ts; src/tests/terraController.spec.ts | Testes de consulta: listagem de parceiros e terras, ocultação de inativos, filtros combinados por nome/região/área/tipo e conferência com o banco |
-| Coordenador de Estratégia de Terras | RF016 | RN04, RN08 | GET /api/parceiros?nome=&regiao=&area=&tipo= | Listagem de Parceiros | src/tests/parceiroFiltrosController.spec.ts | Testes de filtros: sem filtros, nome parcial case-insensitive, combinação de região e área mínima, tipo de parceiro comercial e exclusão de inativos |
-| Coordenador de Estratégia de Terras | RF017 | RN04 | GET /parceiros/exportar | Exportação de Lista | src/tests/exporta.test.ts | Testes de exportação: 200 com CSV, 404 sem parceiros, dados corretos e múltiplos parceiros no arquivo |
-| Coordenador de Estratégia de Terras | RF021 | RN16 | PUT /api/parceiros/:id/validacao | Validação de Parceiros | src/tests/parceiroValidacaoController.spec.ts | Testes de validação: rascunho para pendente, devolvido para pendente, bloqueio de ativo/pendente, payload inválido, parceiro inexistente e usuário inexistente |
-| Coordenador de Estratégia de Terras | RF022 | RN17 | PUT /api/parceiros/:id/aprovar | Fila de Validação | src/tests/parceiroAprovacaoController.spec.ts | Testes de aprovação: pendente para ativo, aprovação sem registro prévio, bloqueio de status inválidos, payload inválido, parceiro inexistente e usuário inexistente |
-| Coordenador de Estratégia de Terras | RF023 | RN17 | PUT /api/parceiros/:id/devolver | Fila de Validação | src/tests/parceiroDevolucaoController.spec.ts | Testes de devolução: pendente para devolvido, devolução sem registro prévio, bloqueio de status inválidos, payload inválido, parceiro inexistente e usuário inexistente |
-| Todos | RF012 | RN07, RN08 | GET /api/parceiros; GET /api/terras | Consultas gerais do sistema | src/test/parceiroController.get.spec.ts; src/tests/terraController.spec.ts | Testes de consultas gerais: listagem de parceiros e terras, retorno de arrays, ocultação de registros inativos e conferência de dados persistidos |
+| Persona/Perfil | US | RF | RN | RNF | Fluxo | Tela/View | Endpoint/Rota | Camadas principais | Teste automatizado | Evidência | Status |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Todos os perfis | US08, US09 | RF011 | RN02 | RNF-SEG-01 | Login e proteção de rotas | `login/index.ejs` | `GET/POST /login`; rotas protegidas por `requireAuth` | `AuthController`, `AuthService`, `AuthSessionRepository`, `requireAuth` | `auth.test.ts`, `authService.spec.ts` | Login válido e inválido, JWT, sessão persistida e bloqueio sem autenticação | Implementado |
+| Todos os perfis | US09 | RF011, RF020 | RN02, RN15 | RNF-SEG-01 | Logout | Header global | `POST /logout` | `AuthController`, `AuthService`, `AuthSessionRepository` | `auth.test.ts`, `authSessionController.spec.ts` | Sessão revogada, cookies removidos e redirecionamento ao login | Implementado |
+| Novo usuário | US08 | RF001, RF011 | RN01, RN02 | RNF-SEG-01, RNF-CONF-01 | Primeiro acesso | `login/primeiro-acesso.ejs` | `GET/POST /primeiro-acesso`; `POST /primeiro-acesso/solicitar`; `POST /primeiro-acesso/definir-senha` | `PrimeiroAcessoController`, `PrimeiroAcessoService`, `PrimeiroAcessoRepository` | `primeiroAcessoService.spec.ts` | Senha mínima, token de uso único e bloqueio de usuário inelegível | Implementado |
+| Administrador | US08 | RF001, RF009, RF010 | RN01, RN03, RN09, RN10 | RNF-CONF-01, RNF-SEG-02 | Cadastro de usuário | `usuarios/new.ejs` | `GET /usuarios/novo`; `POST /usuarios`; `POST /api/usuarios` | `UserController`, `UserService`, `UserRepository`, schemas de usuário | `userCreateController.spec.ts` | Criação, perfil válido, e-mail duplicado e persistência | Implementado |
+| Administrador | US09, US10 | RF002, RF003 | RN01, RN03, RN06 | RNF-SEG-02, RNF-RAST-02 | Listagem, edição e perfil | `usuarios/index.ejs`, `edit.ejs`, `perfil.ejs` | `GET /usuarios`; `GET/POST/PUT /usuarios/:id`; `GET/POST/PUT /usuarios/:id/perfil` | `UserController`, `UserService`, `UserRepository` | `userUpdateController.spec.ts`, `userUpdateService.spec.ts`, `userController.spec.ts` | Atualização de dados e perfil com erros controlados | Implementado |
+| Administrador | US09 | RF002, RF020 | RN06, RN15 | RNF-SEG-01, RNF-SEG-02 | Inativação e revogação de sessões | `usuarios/inativar.ejs` | `GET/POST/PUT /usuarios/:id/inativar`; `PUT /auth/sessoes/:id` | `UserController`, `UserService`, `UserRepository`, `AuthSessionRepository` | `userInactivateController.spec.ts`, `userInactivateService.spec.ts`, `userServiceInactivateSessions.spec.ts` | Usuário inativo perde acesso e sessões ativas são encerradas | Implementado |
+| Analista | US01, US02 | RF004, RF009, RF010, RF018, RF019 | RN04, RN09, RN10, RN11 | RNF-CONF-01, RNF-RAST-02 | Cadastro de parceiro | `parceiros/new.ejs` | `GET /parceiros/novo`; `POST /parceiros`; `POST /api/parceiros` | `parceiroController`, `parceiroService`, `parceiroRepository`, schemas | `parceiroController.spec.ts`, `parceiroCadastroComplementar.spec.ts`, `parceiroControllerHtmlAuth.spec.ts` | Rascunho persistido, duplicidade bloqueada e autoria registrada | Implementado |
+| Analista, Coordenador, Administrador | US04, US06 | RF007, RF012, RF016 | RN04, RN05, RN08 | RNF-USAB-02, RNF-DESEMP-02 | Listagem e filtros de parceiros | `parceiros/index.ejs` | `GET /parceiros`; `GET /api/parceiros` | `parceiroController`, `parceiroService`, `parceiroRepository` | `parceiroController.get.spec.ts`, `parceiroFiltrosController.spec.ts` | Filtros combinados, busca e exclusão de inativos | Implementado |
+| Analista, Coordenador, Administrador | US04, US05 | RF005, RF008, RF013 | RN04, RN05, RN12, RN19, RN20 | RNF-CONF-01, RNF-RAST-02 | Detalhe, edição e histórico | `parceiros/show.ejs`, `edit.ejs` | `GET /parceiros/:id`; `GET/POST /parceiros/:id/editar`; `GET/PATCH /api/parceiros/:id`; `GET /api/parceiros/:id/historico` | `parceiroController`, `parceiroService`, `parceiroRepository` | `parceiroDetalheController.spec.ts`, `parceiroController.patch.spec.ts`, `parceiroHistoricoController.spec.ts` | Detalhe, edição, versões anteriores e respostas 400/404/409 | Implementado |
+| Analista | US03 | RF006, RF018, RF019 | RN04, RN11 | RNF-CONF-01, RNF-RAST-02 | Registro e consulta de interações | Área de interações em `parceiros/show.ejs` | `POST /parceiros/:id/interacoes`; consulta no detalhe | `InteracaoController`, `InteracaoService`, `InteracaoRepository` | `interacao.test.ts`, `interacaoService.spec.ts`, `parceiroDetalheController.spec.ts` | Interação persistida e histórico exibido em ordem decrescente | Implementado |
+| Analista | US01, US02 | RF021 | RN16 | RNF-CONF-02 | Envio para validação e consulta de rascunhos/devolvidos | `parceiros/edit.ejs`; listagem de parceiros | `PUT /api/parceiros/:id/validacao`; `GET /api/parceiros/rascunhos-devolvidos` | `parceiroController`, `parceiroService`, `parceiroRepository` | `parceiroValidacaoController.spec.ts`, `parceiroRascunhosDevolvidosController.spec.ts` | Transição para pendente e retorno do comentário mais recente | Implementado |
+| Coordenador, Administrador | US11 | RF022, RF023 | RN17 | RNF-CONF-02, RNF-SEG-02 | Fila, revisão, aprovação e devolução | `parceiros/validacao.ejs`, `revisar.ejs` | `GET /validacao`; `GET /validacao/:id`; `POST /validacao/:id/aprovar`; `POST /validacao/:id/devolver`; APIs PUT equivalentes | `parceiroController`, `parceiroService`, `parceiroRepository` | `parceiroFilaValidacaoService.spec.ts`, `parceiroAprovacaoController.spec.ts`, `parceiroDevolucaoController.spec.ts`, `parceiroControllerHtmlAuth.spec.ts` | Somente pendentes entram na fila; aprovação e devolução registram responsável | Implementado |
+| Analista, Coordenador, Administrador | US01, US02 | RF010, RF012, RF018, RF019 | RN07, RN08, RN10, RN11 | RNF-CONF-01, RNF-RAST-02 | Cadastro, listagem e edição de terras | `terras/index.ejs`, `new.ejs`, `edit.ejs` | `GET/POST /terras`; `GET /terras/nova`; `GET/POST /terras/:id/editar`; APIs em `/api/terras` | `TerraController`, `terraService`, `terraRepository`, schema de terra | `terraController.spec.ts`, `terraControllerHtml.spec.ts`, `terraService.spec.ts` | Validação, persistência, autoria, status e consulta sem inativos | Implementado |
+| Analista, Administrador | US01, US02 | RF015 | RN13, RN14 | RNF-CONF-01 | Vínculo parceiro-terra bidirecional | `terras/vincular.ejs`; detalhe do parceiro | `GET/POST /api/parceiros/:id/terras`; `GET/POST /api/terras/:id/parceiros`; `GET /terras/:id/vincular-parceiro`; `POST /terras/:id/parceiros` | Controllers, services e repositories de parceiro e terra | `parceiroTerraController.spec.ts`, `terraParceiroController.spec.ts`, `terraControllerHtml.spec.ts` | Vínculo persistido, duplicidade bloqueada e entidades inativas omitidas | Implementado |
+| Administrador | Sem US prioritária | RF014 | RN06, RN07, RN08 | RNF-CONF-02 | Exclusão lógica de parceiro e terra | Sem botão dedicado nas views atuais | `DELETE /api/parceiros/:id`; `DELETE /api/terras/:id` | Controllers, services e repositories de parceiro e terra | `softDeleteController.spec.ts`, `parceiroService.spec.ts`, `terraService.spec.ts` | Status inativo, ocultação das consultas e auditoria | Parcial |
+| Coordenador, Administrador | US07 | RF017 | RN04 | RNF-DESEMP-01 | Exportação CSV | Ação em `parceiros/index.ejs` | `GET /parceiros/exportar` | `ExportaController`, `ExportaService`, `ExportaRepository` | `exporta.test.ts`, `exportaService.spec.ts` | CSV com campos esperados e tratamento de lista vazia | Implementado |
+| Coordenador, Administrador | US03 | RF006 | RN11 | RNF-DESEMP-01 | Dashboard de interações | Sem view EJS específica | `GET /dashboards/interacoes` | `DashboardController`, `DashboardService`, `DashboardRepository` | `dashboardInteracoes.test.ts`, `dashboardInteracoesService.spec.ts` | Métricas agregadas por tipo e status retornadas em JSON | Parcial |
+| Todos | Sem US prioritária | RF024 | — | RNF-ORG-01 | Upload de arquivos | Não existe | Não existe | Não implementado | Sem teste automatizado específico | Requisito mantido como evolução sem endpoint ou tela fictícia | Pendente |
+| Todos | Sem US prioritária | RF025 | RN18 | RNF-SUP-01 | Notificação periódica | Não existe | Não existe | Não implementado | Sem teste automatizado específico | Não há scheduler ou integração de notificação nesta versão | Pendente |
 
 # <a name="c4"></a>4. Desenvolvimento da Aplicação Web
 
@@ -2991,150 +3137,445 @@ Com isso, a primeira versão entrega a base técnica do sistema: banco integrado
 
 ## 4.2. Segunda versão da aplicação web (sprint 4)
 
-Na sprint 4, a aplicação evoluiu da primeira versão centrada em backend para uma versão web navegável, com telas renderizadas no servidor, navegação entre módulos, autenticação por sessão e integração parcial dos fluxos principais com os services e repositories já implementados. O objetivo desta segunda versão foi transformar os endpoints e regras de negócio consolidados na sprint anterior em uma experiência operacional mínima para os perfis internos da ATVOS, permitindo visualizar, cadastrar, editar, validar e administrar registros a partir de páginas HTML.
+### 4.2.1. Objetivo e evolução
 
-A implementação utilizou Express com EJS para renderização server-side, mantendo a arquitetura em camadas já adotada no backend. As rotas de interface chamam os mesmos controllers e services usados pela API, evitando duplicidade de regra de negócio entre frontend e backend. Também foram adicionados arquivos públicos de estilo e comportamento (`public/css/atvos.css` e `public/js/app.js`), responsáveis por padronizar componentes visuais, navegação, formulários, busca client-side, máscaras de CPF/CNPJ e telefone, modais e mensagens de feedback.
+A segunda versão transforma a WebAPI da sprint anterior em uma aplicação web navegável e integrada. O objetivo foi disponibilizar os fluxos prioritários por páginas EJS e formulários HTML sem duplicar regras de negócio: tanto as rotas JSON quanto as rotas de interface reutilizam controllers, services, repositories e schemas do backend.
 
-### 4.2.1. Melhorias em relação à primeira versão
+Em relação à primeira versão, foram acrescentados autenticação por navegador, cookies HttpOnly, navegação por perfil, telas de parceiros, usuários, terras e validação, estados vazios, feedbacks, máscaras, busca client-side e ações conectadas ao PostgreSQL/Supabase.
 
-A principal melhoria em relação à sprint 3 foi a criação de uma camada visual funcional. Na primeira versão, o sistema estava estruturado principalmente como WebAPI, com endpoints, testes automatizados e integração com banco. Na segunda versão, esses recursos passaram a ser acessíveis por telas, formulários e fluxos de navegação.
+### 4.2.2. Arquitetura técnica e integração
 
-| Aspecto | Primeira versão (sprint 3) | Segunda versão (sprint 4) |
-| --- | --- | --- |
-| Experiência do usuário | Predominantemente API e backend. | Interface web navegável com páginas EJS. |
-| Acesso ao sistema | Login implementado no backend. | Tela de login, criação de sessão, cookie HttpOnly e logout. |
-| Parceiros | Endpoints de cadastro, listagem, edição e detalhe. | Telas de listagem, cadastro, edição e detalhe conectadas aos services. |
-| Validação | Transições de status implementadas por API. | Fila de validação com revisão, aprovação e devolução via formulário. |
-| Usuários | Endpoints e services de gestão. | Telas de listagem, cadastro, edição, alteração de perfil e inativação. |
-| Exportação | Service e endpoint de CSV. | Ação de exportar CSV disponível na tela de parceiros. |
-| Usabilidade | Sem experiência visual consolidada. | Guia visual aplicado com navegação, botões, cards, estados vazios, badges e feedbacks. |
+A aplicação utiliza TypeScript, Express, EJS, CSS próprio, JavaScript próprio e PostgreSQL/Supabase. `src/app.ts` registra os middlewares, arquivos públicos, rotas HTML e APIs. As routes recebem a requisição; controllers validam e escolhem resposta HTML ou JSON; services aplicam regras de negócio; repositories executam SQL; schemas Zod validam entradas; models descrevem o domínio.
 
-### 4.2.2. Fluxos funcionais disponíveis
+O login cria um JWT e uma sessão persistida. O middleware `requireAuth` valida token, sessão e usuário ativo. `authorizeRoles` aplica as permissões de `analista`, `coordenador` e `administrador` no backend. Views protegidas redirecionam visitantes para `/login`, enquanto APIs respondem com status HTTP e JSON.
 
-Os fluxos implementados nesta segunda versão cobrem os módulos mais importantes para a operação inicial do CRM:
+### 4.2.3. Fluxos funcionais disponíveis
 
-| Fluxo | Telas/rotas envolvidas | Integração com backend | RFs relacionados | User Stories / casos de uso relacionados |
-| --- | --- | --- | --- | --- |
-| Autenticação e sessão | `/login`, `/logout` | `AuthController`, `AuthService`, `AuthSessionRepository`, JWT e cookie `auth_token`. | RF011, RF020 | UC09 |
-| Navegação inicial | `/` | Renderização EJS com links para os módulos principais. | RF007, RF011, RF022 | US04, US06, US08, US11 |
-| Listagem e busca de parceiros | `/parceiros` | Consulta de parceiros pelo `ParceiroService`; busca visual client-side sobre a lista carregada. | RF007, RF012, RF016, RF017 | US04, US06, US07 |
-| Cadastro de parceiros | `/parceiros/novo`, `POST /parceiros` | Persistência via `cadastrarParceiro`, com validação de campos obrigatórios e duplicidade. | RF004, RF009, RF010, RF018, RF019 | US01, US02 |
-| Edição e detalhe de parceiros | `/parceiros/:id`, `/parceiros/:id/editar` | Consulta e atualização via `obterParceiroPorId` e `editarParceiro`. | RF005, RF008, RF013, RF018, RF019 | US04, US05 |
-| Validação de registros | `/validacao`, `/validacao/:id`, ações de aprovar/devolver | Transições de status usando services de aprovação e devolução. | RF021, RF022, RF023 | US11, US12 |
-| Gestão de usuários | `/usuarios`, `/usuarios/novo`, `/usuarios/:id/editar`, `/usuarios/:id/perfil`, `/usuarios/:id/inativar` | `UserController` e `UserService` para CRUD, perfil e inativação lógica. | RF001, RF002, RF003, RF009, RF010, RF020 | US08, US09, US10 |
-| Exportação CSV | `/parceiros/exportar` | `ExportaController`, `ExportaService` e `ExportaRepository`. | RF017 | US07 |
-| Dashboard de interações | `/dashboards/interacoes` | Endpoint JSON com métricas agregadas de interações. | Fluxo 15, RF006, RF018, RF019 | US03 |
+| Fluxo | Tela inicial | Endpoint/rota principal | Backend usado | Status |
+|---|---|---|---|---|
+| Login e logout | `/login` | `POST /login`, `POST /logout` | AuthController, AuthService e AuthSessionRepository | Implementado |
+| Primeiro acesso | `/primeiro-acesso` | `POST /primeiro-acesso` e endpoints de token | PrimeiroAcessoController, Service e Repository | Implementado |
+| Parceiros | `/parceiros` | Views em `/parceiros...` e API `/api/parceiros...` | parceiroController, parceiroService e parceiroRepository | Implementado |
+| Histórico e interações | `/parceiros/:id` | `GET /api/parceiros/:id/historico`, `POST /parceiros/:id/interacoes` | Módulos de parceiro e interação | Implementado |
+| Validação | `/validacao` | Views `/validacao...` e APIs `/api/parceiros/:id/...` | parceiroController, parceiroService e parceiroRepository | Implementado |
+| Usuários e perfis | `/usuarios` | Views `/usuarios...` e `POST /api/usuarios` | UserController, UserService e UserRepository | Implementado |
+| Terras | `/terras` | Views `/terras...` e API `/api/terras...` | TerraController, terraService e terraRepository | Implementado |
+| Vínculo parceiro-terra | `/terras/:id/vincular-parceiro` | APIs bidirecionais de parceiros e terras | Módulos de parceiro e terra | Implementado |
+| Exportação CSV | `/parceiros` | `GET /parceiros/exportar` | ExportaController, Service e Repository | Implementado |
+| Dashboard de interações | Sem tela específica | `GET /dashboards/interacoes` | DashboardController, Service e Repository | Parcial: somente JSON |
+| Exclusão lógica | Sem botão dedicado | `DELETE /api/parceiros/:id`, `DELETE /api/terras/:id` | Services e repositories correspondentes | Parcial na interface |
+| Upload de arquivos | Não existe | Não existe | Não implementado | Pendente |
+| Notificação periódica | Não existe | Não existe | Não implementado | Pendente |
 
-### 4.2.3. Telas atualizadas e evidências visuais
+### 4.2.4. Telas implementadas
 
-As evidências abaixo foram capturadas com a aplicação em execução local na porta `3100`, em `NODE_ENV=test`, para permitir a navegação pelas views sem depender de uma sessão manual durante a geração dos prints. As páginas principais retornaram status `200` durante a verificação manual: `/login`, `/`, `/parceiros`, `/parceiros/novo`, `/validacao` e `/usuarios`.
+- login e primeiro acesso;
+- página inicial com atalhos por permissão;
+- listagem, cadastro, edição e detalhe de parceiros;
+- fila e revisão de parceiros pendentes;
+- listagem, cadastro, edição, perfil e inativação de usuários;
+- listagem, cadastro, edição e vínculo de terras;
+- estados vazios, mensagens de erro e sucesso, badges, cards, tabelas e formulários responsivos.
 
-<div align="center">
-  <sub>Figura 4.2.3.1 - Tela de login do Safra Control</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/login.png" width="100%" alt="Tela de login do Safra Control"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+O protótipo de alta fidelidade apresenta um logotipo completo em imagem. A implementação atual não possui esse arquivo em `public/`; por isso, usa uma marca vetorial construída em CSS com as cores institucionais. Essa decisão evita referenciar um ativo inexistente, mas permanece como diferença visual conhecida em relação ao Figma.
 
-A tela de login centraliza o acesso por e-mail e senha e exibe usuários de demonstração, facilitando a validação acadêmica do fluxo. No backend, o login cria uma sessão persistida e retorna token/cookie para acesso às rotas protegidas.
+### 4.2.5. Evidências visuais e de execução
 
-<div align="center">
-  <sub>Figura 4.2.3.2 - Tela inicial com atalhos para os módulos</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/home.png" width="100%" alt="Tela inicial do Safra Control"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+As capturas da interface da segunda versão web estão em `documentos/assets/aplicacao_web_sprint4/` e são apresentadas abaixo como evidência visual dos principais fluxos implementados.
 
-A tela inicial funciona como ponto de entrada para os principais fluxos: parceiros, novo cadastro, validação e usuários. Ela substitui a necessidade de navegar diretamente por endpoints e organiza a aplicação de acordo com as tarefas dos usuários internos.
+![Tela de login](./assets/aplicacao_web_sprint4/login.png)
+*Tela de login.*
 
-<div align="center">
-  <sub>Figura 4.2.3.3 - Listagem de parceiros com busca e exportação</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/parceiros.png" width="100%" alt="Listagem de parceiros do Safra Control"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+![Página inicial autenticada](./assets/aplicacao_web_sprint4/home.png)
+*Página inicial com atalhos por permissão.*
 
-A listagem de parceiros apresenta busca por nome ou CPF/CNPJ, ações de cadastro de fornecedor ou proprietário e exportação CSV. No ambiente usado para a captura, a base não possuía parceiros ativos, portanto a tela exibe corretamente o estado vazio e orienta o usuário a cadastrar o primeiro parceiro.
+![Listagem de parceiros](./assets/aplicacao_web_sprint4/parceiros.png)
+*Listagem de parceiros com busca e filtros.*
 
-<div align="center">
-  <sub>Figura 4.2.3.4 - Formulário de cadastro de novo parceiro</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/novo-parceiro.png" width="100%" alt="Formulário de cadastro de parceiro"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+![Cadastro de novo parceiro](./assets/aplicacao_web_sprint4/novo-parceiro.png)
+*Formulário de cadastro de parceiro.*
 
-O formulário de parceiro permite cadastrar fornecedores e proprietários, usando campos padronizados e máscaras no frontend para reduzir erros de digitação. A submissão é processada pelo backend e reaproveita as validações de campos obrigatórios e unicidade já cobertas pelos testes.
+![Fila de validação](./assets/aplicacao_web_sprint4/validacao.png)
+*Fila de parceiros pendentes de validação.*
 
-<div align="center">
-  <sub>Figura 4.2.3.5 - Fila de validação de registros</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/validacao.png" width="100%" alt="Tela de validação de registros pendentes"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+![Gestão de usuários](./assets/aplicacao_web_sprint4/usuarios.png)
+*Listagem e gestão de usuários.*
 
-A tela de validação apresenta os registros pendentes e permite acessar a revisão individual para aprovar ou devolver cadastros. No ambiente da evidência não havia registros pendentes, por isso o estado vazio confirma o comportamento previsto para uma fila sem itens.
+Não foi possível produzir novas capturas neste ambiente porque não há navegador headless funcional instalado. Em vez de simular imagens, a validação foi feita com servidor real, banco configurado e sessão criada pelo endpoint de login.
 
-<div align="center">
-  <sub>Figura 4.2.3.6 - Gestão de usuários</sub><br>
-  <img src="./assets/aplicacao_web_sprint4/usuarios.png" width="100%" alt="Tela de gestão de usuários"><br>
-  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
-</div><br>
+| Evidência executada | Resultado observado |
+|---|---|
+| `npm install` | Dependências atualizadas; auditoria sem vulnerabilidades. |
+| `npm run migrate` | `migration.sql` e migrations complementares aplicadas com sucesso. |
+| `npm run seed` | Perfis e três usuários de demonstração preparados com sucesso. |
+| `GET /login` | `200`. |
+| `GET /` sem sessão | `302` para `/login`. |
+| `POST /login` com administrador de demonstração | `302` para `/parceiros`, com cookies de sessão. |
+| `GET /`, `/parceiros`, `/parceiros/novo`, `/validacao`, `/usuarios` e `/terras` autenticado | `200` em todas as páginas. |
+| `GET /api/parceiros` e `GET /api/terras` autenticado | `200` em ambas as APIs. |
+| `POST /logout` | `302` para `/login`, com encerramento da sessão. |
 
-A gestão de usuários exibe colaboradores cadastrados, status ativo, perfil de acesso, data de cadastro e ações de edição e inativação. Esse fluxo atende à necessidade de governança de acesso, permitindo que o administrador mantenha os perfis coerentes com as responsabilidades de cada colaborador.
+Para a apresentação final, as capturas devem ser refeitas em navegador convencional depois do login, usando dados de demonstração sem informações sensíveis. Os PNGs históricos restantes podem orientar enquadramento, mas não substituem essa evidência autenticada.
 
-### 4.2.4. Decisões técnicas relevantes
+### 4.2.6. Decisões técnicas relevantes
 
-A segunda versão manteve a decisão de arquitetura em camadas. As views não acessam o banco diretamente; elas passam por rotas, controllers, services e repositories. Essa escolha reduz o risco de divergência entre comportamento da API e comportamento da interface, pois os dois pontos de entrada compartilham as mesmas regras de negócio.
+1. EJS foi mantido para renderização server-side, reduzindo complexidade de infraestrutura e preservando a stack do projeto.
+2. API e formulários compartilham regras de negócio e persistência, evitando versões divergentes do mesmo fluxo.
+3. Autorização é aplicada nas rotas do backend, não apenas pela ocultação de botões.
+4. Cookies de autenticação são HttpOnly, `sameSite=lax` e `secure` em produção.
+5. Exclusões de parceiros e terras são lógicas, preservando auditoria e referências.
+6. CSS e JavaScript próprios concentram identidade, responsividade, máscaras, busca, modais e feedbacks sem bibliotecas externas.
 
-Outra decisão relevante foi o uso de renderização server-side com EJS. Para esta fase do projeto, essa abordagem reduziu a complexidade de infraestrutura, dispensou a criação de uma aplicação frontend separada e permitiu entregar rapidamente telas funcionais conectadas ao backend Express. Os arquivos públicos de CSS e JavaScript ficaram concentrados em `public/`, mantendo a interface simples de servir e compatível com a estrutura atual.
+### 4.2.7. Testes e validações
 
-Também foi consolidado o middleware `requireAuth` para proteger rotas internas. O middleware valida token JWT, consulta a sessão ativa no banco, verifica se o usuário continua ativo e diferencia respostas HTML e JSON: páginas web redirecionam para `/login`, enquanto chamadas de API recebem `401`. Essa separação é importante para manter coerência entre uso por navegador e uso por cliente HTTP.
+A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na revisão do Artefato 10, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 36 suítes e 293 testes, sem falhas. A execução completa levou cerca de 697 segundos devido ao uso de banco remoto (PostgreSQL/Supabase) em parte dos testes; a conexão exige a variável `DATABASE_URL` configurada no `.env`.
 
-### 4.2.5. O que foi implementado
+### 4.2.8. Limitações conhecidas e próximos passos
 
-Foram implementadas as seguintes entregas de aplicação web:
+| Limitação | Próximo passo recomendado |
+|---|---|
+| Dashboard disponível somente em JSON | Criar view com indicadores acessíveis e responsivos. |
+| Exclusão lógica sem ação dedicada nas views | Adicionar confirmação e botão apenas para perfis autorizados. |
+| Ausência do arquivo oficial de logotipo no diretório público | Incorporar ativo aprovado pela equipe e revisar contraste e dimensões. |
+| Upload de arquivos não implementado | Definir armazenamento, autorização, limites e auditoria antes da implementação. |
+| Notificação periódica não implementada | Definir scheduler, período e canal de notificação. |
+| Capturas autenticadas não geradas neste ambiente | Refazer evidências em navegador com sessão real antes da entrega final. |
 
-| Entrega | Descrição |
-| --- | --- |
-| Layout e navegação global | Cabeçalho com marca Safra Control, links para parceiros, validação e usuários, além de ação de logout. |
-| Tela de login | Formulário de acesso com e-mail e senha, mensagens de erro e usuários de demonstração. |
-| Home operacional | Página inicial com atalhos para módulos centrais do sistema. |
-| Módulo de parceiros | Listagem, busca client-side, estado vazio, cadastro, edição, detalhe e exportação CSV. |
-| Módulo de validação | Fila de pendentes, revisão de registro, aprovação e devolução com comentário. |
-| Módulo de usuários | Listagem, cadastro, edição, alteração de perfil e inativação lógica. |
-| Componentes de interface | Botões, cards, badges de status, formulários, modais, flash messages, máscaras e busca em listas. |
-| Integração com backend | Reuso dos controllers/services/repositories existentes para persistência, validação, autenticação e exportação. |
+A segunda versão atende ao objetivo de integrar backend e frontend nos fluxos centrais sem mocks de produção. As limitações acima são registradas como evolução, não como funcionalidades concluídas.
 
-### 4.2.6. O que não foi concluído
+### 4.2.9. Fluxos principais ponta a ponta do MVP
 
-Apesar de a aplicação já estar navegável, alguns pontos permanecem incompletos para a versão final:
+Esta subseção comprova que o sistema não está apenas prototipado: os fluxos centrais do MVP executam de ponta a ponta, conectando interface (views EJS e formulários HTML), backend (rotas, controllers, services e schemas), banco de dados (PostgreSQL/Supabase, tabelas reais de `src/db/migration.sql`) e regras de negócio aplicadas nas camadas de serviço. As rotas e endpoints citados abaixo existem de fato em `src/routes/`; os controllers, services e repositories existem em `src/controllers/`, `src/services/` e `src/repositories/`; e cada fluxo possui cobertura por testes automatizados reais em `src/test/` e `src/tests/`. A matriz da seção 3.1.4 detalha a relação RF → RN → endpoint; as capturas estão na seção 4.2.5; os resultados de `npx tsc --noEmit` e `npm test` estão na seção 4.2.7.
 
-| Pendência | Impacto |
-| --- | --- |
-| Autorização por perfil mais granular nas views | O backend já autentica o usuário, mas a restrição fina por perfil ainda precisa ser consolidada em todas as rotas e ações da interface. |
-| Telas completas de terras e vínculos | Os endpoints de terras e relacionamento parceiro-terra existem, mas ainda não há uma experiência web completa para cadastro, edição e associação diretamente pela interface. |
-| Dashboard visual | O endpoint de dashboard de interações existe em JSON, porém ainda não foi transformado em uma tela com gráficos e indicadores. |
-| Histórico/auditoria em tela | A API de histórico está implementada, mas a visualização amigável do histórico de alterações ainda deve ser integrada ao perfil do parceiro. |
-| Notificações e processo periódico | O RF025 permanece como evolução futura, sem tela ou rotina operacional final nesta versão. |
-| Base de demonstração para parceiros | Na captura das evidências, a base local não possuía parceiros ativos nem pendentes, resultando em estados vazios nas telas de parceiros e validação. |
+A integração geral funciona assim: o usuário acessa uma view protegida; o middleware `requireAuth` (`src/middlewares/requireAuth.ts`) valida o JWT, a sessão persistida e se o usuário está ativo; o middleware `authorizeRoles` restringe a ação ao perfil (`analista`, `coordenador`, `administrador`); o controller valida a entrada com schemas Zod (`src/schemas/`) e escolhe resposta HTML ou JSON; o service aplica a regra de negócio; o repository executa SQL no PostgreSQL; e a resposta retorna para a interface (redirecionamento com flash em views ou status/JSON nas APIs).
 
-### 4.2.7. Dificuldades técnicas enfrentadas
+#### Tabela-resumo geral dos fluxos
 
-Uma dificuldade relevante foi integrar a interface EJS aos services existentes sem duplicar regras de validação. Como parte da API já estava testada, a solução foi reutilizar os controllers e services para as ações de formulário, adaptando apenas os retornos para HTML, redirecionamentos e mensagens de erro.
+| Fluxo | Interface | Backend/API | Banco de dados | RF/US | Evidência | Status |
+|---|---|---|---|---|---|---|
+| Login e autenticação | `GET/POST /login` (`login/index.ejs`) | `authController.login` → `authService.autenticar` | `usuarios`, `perfil_acesso`, `auth_sessoes` | RF011 / US08, US09 | `authService.spec.ts`, `auth.test.ts`, `parceiroControllerHtmlAuth.spec.ts`; print `login.png` | Implementado |
+| Logout | `POST /logout` | `authController.logout` → `authService.encerrarSessao` | `auth_sessoes` | RF011, RF020 / US09 | `auth.test.ts`, `authSessionController.spec.ts` | Implementado |
+| Primeiro acesso | `GET/POST /primeiro-acesso` (`login/primeiro-acesso.ejs`) | `primeiroAcessoController` → `primeiroAcessoService` | `usuarios`, `primeiro_acesso_tokens` | RF011 / US08 | `primeiroAcessoService.spec.ts` | Implementado |
+| Listagem de parceiros (filtros) | `GET /parceiros` (`parceiros/index.ejs`) | `renderListaParceiros` / `GET /api/parceiros` → `parceiroService.obterParceiros` | `parceiros`, `telefone_parceiro` | RF007, RF008, RF012, RF016 / US04, US06 | `parceiroFiltrosController.spec.ts`, `parceiroController.get.spec.ts`; print `parceiros.png` | Implementado |
+| Cadastro de parceiro | `GET /parceiros/novo`, `POST /parceiros` (`parceiros/new.ejs`) / `POST /api/parceiros` | `processarCadastro`/`createParceiro` → `parceiroService.cadastrarParceiro` | `parceiros`, `registro_alteracao` | RF004, RF009, RF010, RF018, RF019 / US01, US02 | `parceiroController.spec.ts`, `parceiroCadastroComplementar.spec.ts`; print `novo-parceiro.png` | Implementado |
+| Edição de parceiro | `GET/POST /parceiros/:id/editar` (`parceiros/edit.ejs`) / `PATCH /api/parceiros/:id` | `processarEdicao`/`editarParceiro` → `parceiroService.editarParceiro` | `parceiros`, `registro_alteracao` | RF005, RF009, RF010 / US05 | `parceiroController.patch.spec.ts` | Implementado |
+| Detalhe e histórico | `GET /parceiros/:id` (`parceiros/show.ejs`) / `GET /api/parceiros/:id/historico` | `renderDetalheParceiro`/`listarHistoricoParceiro` → `parceiroService` | `parceiros`, `registro_alteracao`, `interacao` | RF008, RF013 / US04, US05 | `parceiroDetalheController.spec.ts`, `parceiroHistoricoController.spec.ts` | Implementado |
+| Envio para validação | `POST /parceiros/:id/editar` / `PUT /api/parceiros/:id/validacao` | `enviarParceiroParaValidacao` → `parceiroService` | `parceiros`, `registro_alteracao` | RF010, RF021 / US01, US02, US11 | `parceiroValidacaoController.spec.ts`, `parceiroFilaValidacaoService.spec.ts` | Implementado |
+| Fila e aprovação/devolução | `GET /validacao`, `POST /validacao/:id/aprovar|devolver` (`parceiros/validacao.ejs`, `revisar.ejs`) / `PUT /api/parceiros/:id/aprovar|devolver` | `renderValidacao`, `aprovarParceiroViaFormulario`, `devolverParceiroViaFormulario` → `parceiroService` | `parceiros`, `registro_alteracao` | RF022, RF023 / US11 | `parceiroAprovacaoController.spec.ts`, `parceiroDevolucaoController.spec.ts`; print `validacao.png` | Implementado |
+| Registro de interações | Detalhe do parceiro (JS) → `POST /parceiros/:id/interacoes` | `interacaoController` → `interacaoService` | `interacao`, `parceiros` | RF006, RF018, RF019 / US03 | `interacaoService.spec.ts`, `interacao.test.ts` | Implementado |
+| Exportação CSV | Botão na listagem → `GET /parceiros/exportar` | `exportaController` → `exportaService` | `parceiros`, `telefone_parceiro` | RF017 / US07 | `exportaService.spec.ts`, `exporta.test.ts` | Implementado |
+| Gestão de usuários | `GET /usuarios`, `/novo`, `/:id/editar`, `/:id/perfil` (`usuarios/*.ejs`) / `POST /api/usuarios` | `userController` → `userService` | `usuarios`, `perfil_acesso` | RF001, RF002, RF003 / US08, US10 | `userController.spec.ts`, `userCreateController.spec.ts`, `userUpdateController.spec.ts` | Implementado |
+| Inativação de usuário | `POST /usuarios/:id/inativar` (`usuarios/inativar.ejs`) | `userController` → `userService` (inativa + revoga sessões) | `usuarios`, `auth_sessoes` | RF002, RF020 / US09 | `userInactivateController.spec.ts`, `userServiceInactivateSessions.spec.ts` | Implementado |
+| Terras (listagem/cadastro/edição) | `GET /terras`, `/nova`, `/:id/editar` (`terras/*.ejs`) / `/api/terras` | `terraController` → `terraService` | `terras` | RF012, RF014 / US04, US06 | `terraController.spec.ts`, `terraControllerHtml.spec.ts`, `terraService.spec.ts` | Implementado |
+| Vínculo parceiro-terra | `GET/POST /terras/:id/vincular-parceiro` (`terras/vincular.ejs`) / `POST /api/parceiros/:id/terras` | `vincularTerraAoParceiro`, `processarVinculoTerra` → services | `parceiro_terra`, `vinculo_comercial`, `registro_alteracao` | RF015 / US01, US02 | `parceiroTerraController.spec.ts`, `terraParceiroController.spec.ts` | Implementado |
+| Exclusão lógica | Sem botão dedicado nas views | `DELETE /api/parceiros/:id`, `DELETE /api/terras/:id` | `parceiros`, `terras` | RF014, RF012 | `softDeleteController.spec.ts` | Parcial (somente API) |
+| Dashboard de interações | Sem tela específica | `GET /dashboards/interacoes` | `interacao` | RF006 / US03 | `dashboardInteracoesService.spec.ts`, `dashboardInteracoes.test.ts` | Parcial (somente JSON) |
 
-Outro desafio foi conciliar autenticação, sessão e renderização por navegador. A aplicação precisa responder de forma diferente para rotas HTML e endpoints JSON, pois uma falha de autenticação em tela deve redirecionar para o login, enquanto uma falha em API deve retornar status HTTP adequado. O middleware `requireAuth` foi ajustado para tratar esses dois contextos.
+#### Fluxo: Login e autenticação
 
-Também houve complexidade na documentação das evidências visuais, porque algumas telas dependem do estado do banco. Para manter a transparência, os prints foram registrados com a base disponível no ambiente local, incluindo estados vazios quando não havia parceiros ou registros pendentes.
+| Item | Descrição |
+|---|---|
+| Objetivo | Autenticar o usuário e estabelecer uma sessão segura no navegador. |
+| Persona/perfil | Qualquer usuário cadastrado (`analista`, `coordenador`, `administrador`). |
+| RF relacionado | RF011. |
+| User Story relacionada | US08, US09. |
+| Tela inicial | View `src/views/login/index.ejs`, rota `GET /login`. |
+| Ação do usuário | Informa e-mail e senha e envia o formulário. |
+| Rota HTML/Form | `POST /login`. |
+| Endpoint/API | O login é feito pelo formulário web; não há endpoint JSON separado de login. |
+| Controller/Service/Repository | `authController.login` → `authService.autenticar` → `userRepository` e `authSessionRepository`. |
+| Banco de dados | Consulta `usuarios` e `perfil_acesso`; cria registro em `auth_sessoes`. |
+| Regra de negócio | Valida a senha com hash (bcrypt); gera JWT; persiste a sessão; define cookies HttpOnly; mensagem genérica para credenciais inválidas, sem enumeração de e-mail. |
+| Resultado esperado | `302` para `/parceiros` com cookies de sessão; credenciais inválidas retornam erro na própria tela. |
+| Evidência | `src/tests/authService.spec.ts`, `src/tests/auth.test.ts`, `src/tests/parceiroControllerHtmlAuth.spec.ts`; captura `login.png` (4.2.5); validação manual `GET /login` → `200`. |
+| Status | Implementado. |
 
-### 4.2.8. Próximos ajustes
+#### Fluxo: Logout
 
-Para a versão final da aplicação web, os próximos ajustes recomendados são:
+| Item | Descrição |
+|---|---|
+| Objetivo | Encerrar a sessão atual do usuário. |
+| Persona/perfil | Usuário autenticado. |
+| RF relacionado | RF011, RF020. |
+| User Story relacionada | US09. |
+| Tela inicial | Ação disponível no cabeçalho autenticado (`src/views/partials/header.ejs`). |
+| Ação do usuário | Aciona "Sair". |
+| Rota HTML/Form | `POST /logout` (protegida por `requireAuth`). |
+| Endpoint/API | `PUT /auth/sessoes/:id` encerra uma sessão específica de forma programática. |
+| Controller/Service/Repository | `authController.logout` → `authService.encerrarSessao` → `authSessionRepository.encerrarSessao`. |
+| Banco de dados | Atualiza `auth_sessoes` marcando a sessão como encerrada/revogada. |
+| Regra de negócio | Revoga a sessão e limpa os cookies; sessões revogadas passam a ser rejeitadas pelo middleware. |
+| Resultado esperado | `302` para `/login`, sem acesso a rotas protegidas. |
+| Evidência | `src/tests/auth.test.ts`, `src/tests/authSessionController.spec.ts`; validação manual `POST /logout` → `302`. |
+| Status | Implementado. |
 
-| Próximo ajuste | Objetivo |
-| --- | --- |
-| Consolidar autorização por perfil | Garantir que analistas, coordenadores e administradores acessem apenas as ações permitidas. |
-| Criar telas de terras e vínculos | Permitir a gestão completa do relacionamento entre parceiros e terras pela interface web. |
-| Adicionar dashboard visual | Transformar o endpoint de métricas de interações em uma tela com indicadores e gráficos. |
-| Integrar histórico ao perfil do parceiro | Exibir alterações anteriores e responsáveis diretamente na interface. |
-| Popular uma base de demonstração | Facilitar validação acadêmica e apresentação com parceiros, pendências e interações de exemplo. |
-| Revisar responsividade e acessibilidade | Validar a experiência em telas menores, navegação por teclado, contraste e textos alternativos. |
+#### Fluxo: Primeiro acesso e definição de senha
 
-Com isso, a segunda versão atende ao objetivo da sprint 4: entregar uma aplicação web funcional mínima, integrada ao backend em seus fluxos principais, com evidências visuais, rastreabilidade para RFs e User Stories e registro transparente das limitações que devem ser endereçadas na versão final.
+| Item | Descrição |
+|---|---|
+| Objetivo | Permitir que um usuário criado sem senha defina a própria senha. |
+| Persona/perfil | Usuário ativo ainda sem senha. |
+| RF relacionado | RF011. |
+| User Story relacionada | US08. |
+| Tela inicial | View `src/views/login/primeiro-acesso.ejs`, rota `GET /primeiro-acesso`. |
+| Ação do usuário | Informa o e-mail e define a nova senha. |
+| Rota HTML/Form | `POST /primeiro-acesso`. |
+| Endpoint/API | `POST /primeiro-acesso/solicitar` e `POST /primeiro-acesso/definir-senha`. |
+| Controller/Service/Repository | `primeiroAcessoController` → `primeiroAcessoService` → `primeiroAcessoRepository`. |
+| Banco de dados | Consulta/atualiza `usuarios`; usa `primeiro_acesso_tokens`. |
+| Regra de negócio | Token de uso único com expiração de 24 horas; aceito apenas para usuário ativo que ainda não tem senha; senha com mínimo de oito caracteres. |
+| Resultado esperado | Senha definida e usuário habilitado a logar. |
+| Evidência | `src/tests/primeiroAcessoService.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Listagem de parceiros com filtros
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Listar os parceiros cadastrados, com busca e filtros. |
+| Persona/perfil | `analista`, `coordenador`, `administrador`. |
+| RF relacionado | RF007, RF008, RF012, RF016, RF017. |
+| User Story relacionada | US04, US06, US07. |
+| Tela inicial | View `src/views/parceiros/index.ejs`, rota `GET /parceiros`. |
+| Ação do usuário | Acessa a listagem e aplica filtros por nome, tipo, status, região e usina. |
+| Rota HTML/Form | `GET /parceiros`. |
+| Endpoint/API | `GET /api/parceiros` (aceita filtros por query string). |
+| Controller/Service/Repository | `renderListaParceiros`/`listarParceiros` → `parceiroService.obterParceiros` → `parceiroRepository`. |
+| Banco de dados | Consulta `parceiros` (e `telefone_parceiro`); omite registros inativos. |
+| Regra de negócio | Exclusão lógica respeitada (inativos não aparecem); filtros validados por schema; busca client-side complementar. |
+| Resultado esperado | `200` com a lista filtrada renderizada ou em JSON. |
+| Evidência | `src/tests/parceiroFiltrosController.spec.ts`, `src/test/parceiroController.get.spec.ts`; captura `parceiros.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Cadastro de parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Cadastrar um novo parceiro como rascunho ou já enviado para validação. |
+| Persona/perfil | `analista`, `administrador`. |
+| RF relacionado | RF004, RF009, RF010, RF018, RF019. |
+| User Story relacionada | US01, US02. |
+| Tela inicial | View `src/views/parceiros/new.ejs`, rota `GET /parceiros/novo`. |
+| Ação do usuário | Preenche o formulário e escolhe salvar rascunho ou enviar para validação. |
+| Rota HTML/Form | `POST /parceiros`. |
+| Endpoint/API | `POST /api/parceiros`. |
+| Controller/Service/Repository | `processarCadastro`/`createParceiro` → `parceiroService.cadastrarParceiro` → `parceiroRepository`. |
+| Banco de dados | Insere em `parceiros`; registra auditoria em `registro_alteracao`; grava `criado_por` e timestamps. |
+| Regra de negócio | Valida obrigatórios (nome, tipo_pessoa, CPF/CNPJ) por schema Zod; rejeita CPF/CNPJ duplicado (`23505` → conflito); status `rascunho` aceita incompleto e `pendente` exige campos obrigatórios (ex.: e-mail). |
+| Resultado esperado | Parceiro persistido e visível na listagem; mensagem de sucesso. |
+| Evidência | `src/test/parceiroController.spec.ts`, `src/tests/parceiroCadastroComplementar.spec.ts`; captura `novo-parceiro.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Edição de parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Atualizar os dados cadastrais de um parceiro existente. |
+| Persona/perfil | `analista`, `coordenador`, `administrador`. |
+| RF relacionado | RF005, RF009, RF010, RF018, RF019. |
+| User Story relacionada | US05. |
+| Tela inicial | View `src/views/parceiros/edit.ejs`, rota `GET /parceiros/:id/editar`. |
+| Ação do usuário | Altera os campos desejados e salva. |
+| Rota HTML/Form | `POST /parceiros/:id/editar`. |
+| Endpoint/API | `PATCH /api/parceiros/:id`. |
+| Controller/Service/Repository | `processarEdicao`/`editarParceiro` → `parceiroService.editarParceiro` → `parceiroRepository`. |
+| Banco de dados | Atualiza `parceiros`; registra auditoria em `registro_alteracao` com `atualizado_por`. |
+| Regra de negócio | Rejeita corpo vazio; valida `tipo_pessoa`; rejeita duplicidade e parceiro inexistente. |
+| Resultado esperado | Dados atualizados e refletidos no detalhe e na listagem. |
+| Evidência | `src/test/parceiroController.patch.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Detalhe e histórico do parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Exibir o perfil detalhado do parceiro com histórico e interações. |
+| Persona/perfil | `analista`, `coordenador`, `administrador`. |
+| RF relacionado | RF008, RF013. |
+| User Story relacionada | US04, US05. |
+| Tela inicial | View `src/views/parceiros/show.ejs`, rota `GET /parceiros/:id`. |
+| Ação do usuário | Abre o detalhe de um parceiro. |
+| Rota HTML/Form | `GET /parceiros/:id`. |
+| Endpoint/API | `GET /api/parceiros/:id`, `GET /api/parceiros/:id/historico`. |
+| Controller/Service/Repository | `renderDetalheParceiro`/`listarHistoricoParceiro` → `parceiroService` → `parceiroRepository`. |
+| Banco de dados | Consulta `parceiros`, `registro_alteracao` e `interacao`. |
+| Regra de negócio | Retorna `404` para parceiro inexistente, inválido ou inativo; reúne histórico de alterações e interações. |
+| Resultado esperado | Tela com dados, histórico de versões e interações. |
+| Evidência | `src/tests/parceiroDetalheController.spec.ts`, `src/tests/parceiroHistoricoController.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Envio para validação
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Enviar um parceiro em rascunho para a fila de validação do coordenador. |
+| Persona/perfil | `analista`, `administrador`. |
+| RF relacionado | RF010, RF021. |
+| User Story relacionada | US01, US02, US11. |
+| Tela inicial | Detalhe/edição do parceiro. |
+| Ação do usuário | Aciona o envio para validação. |
+| Rota HTML/Form | `POST /parceiros/:id/editar` (ação de envio). |
+| Endpoint/API | `PUT /api/parceiros/:id/validacao`. |
+| Controller/Service/Repository | `enviarParceiroParaValidacao` → `parceiroService` → `parceiroRepository`. |
+| Banco de dados | Atualiza `status` em `parceiros`; registra `envio` em `registro_alteracao`. |
+| Regra de negócio | Exige os campos obrigatórios para validação antes de mudar o status para `pendente`. |
+| Resultado esperado | Parceiro aparece na fila de pendentes do coordenador. |
+| Evidência | `src/tests/parceiroValidacaoController.spec.ts`, `src/tests/parceiroFilaValidacaoService.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Fila, aprovação e devolução de parceiro
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Revisar parceiros pendentes e aprová-los ou devolvê-los com comentário. |
+| Persona/perfil | `coordenador`, `administrador`. |
+| RF relacionado | RF022, RF023. |
+| User Story relacionada | US11. |
+| Tela inicial | Views `src/views/parceiros/validacao.ejs` e `revisar.ejs`, rota `GET /validacao`. |
+| Ação do usuário | Abre a fila, revisa um registro e aprova ou devolve. |
+| Rota HTML/Form | `POST /validacao/:id/aprovar`, `POST /validacao/:id/devolver`. |
+| Endpoint/API | `PUT /api/parceiros/:id/aprovar`, `PUT /api/parceiros/:id/devolver`. |
+| Controller/Service/Repository | `renderValidacao`, `aprovarParceiroViaFormulario`, `devolverParceiroViaFormulario` → `parceiroService` → `parceiroRepository`. |
+| Banco de dados | Atualiza `status` em `parceiros`; registra `aprovado_por`/`devolvido_por` e o comentário em `registro_alteracao`. |
+| Regra de negócio | A fila busca apenas pendentes ordenados por data de envio; devolução permite comentário; ação restrita a validadores. |
+| Resultado esperado | Parceiro aprovado sai da fila; devolvido volta como rascunho com comentário. |
+| Evidência | `src/tests/parceiroAprovacaoController.spec.ts`, `src/tests/parceiroDevolucaoController.spec.ts`; captura `validacao.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Registro de interações
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Registrar interações de relacionamento com um parceiro. |
+| Persona/perfil | `analista` (usuário autenticado). |
+| RF relacionado | RF006, RF018, RF019. |
+| User Story relacionada | US03. |
+| Tela inicial | Detalhe do parceiro (`src/views/parceiros/show.ejs`). |
+| Ação do usuário | Registra uma interação pelo formulário/JS do detalhe. |
+| Rota HTML/Form | Envio por JavaScript a partir do detalhe. |
+| Endpoint/API | `POST /parceiros/:id/interacoes`. |
+| Controller/Service/Repository | `interacaoController` → `interacaoService` → `interacaoRepository`. |
+| Banco de dados | Insere em `interacao`; valida existência do parceiro em `parceiros`. |
+| Regra de negócio | Rejeita campos obrigatórios ausentes (`400`) e parceiro inexistente (`404`); registra o responsável. |
+| Resultado esperado | Interação persistida e visível no histórico do parceiro. |
+| Evidência | `src/tests/interacaoService.spec.ts`, `src/tests/interacao.test.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Exportação CSV de parceiros
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Exportar a lista de parceiros/contatos em CSV. |
+| Persona/perfil | `coordenador`, `administrador`. |
+| RF relacionado | RF017. |
+| User Story relacionada | US07. |
+| Tela inicial | Listagem de parceiros (`/parceiros`). |
+| Ação do usuário | Aciona a exportação. |
+| Rota HTML/Form | `GET /parceiros/exportar`. |
+| Endpoint/API | `GET /parceiros/exportar` (resposta CSV). |
+| Controller/Service/Repository | `exportaController` → `exportaService` → `exportaRepository`. |
+| Banco de dados | Consulta `parceiros` e `telefone_parceiro`. |
+| Regra de negócio | Exporta nome, contato, tipo, região, telefone, e-mail e terra/unidade; restrito a validadores. |
+| Resultado esperado | Download de arquivo CSV com os campos definidos. |
+| Evidência | `src/tests/exportaService.spec.ts`, `src/tests/exporta.test.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Gestão de usuários (cadastro, edição e perfil)
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Administrar usuários e seus perfis de acesso. |
+| Persona/perfil | `administrador`. |
+| RF relacionado | RF001, RF002, RF003. |
+| User Story relacionada | US08, US10. |
+| Tela inicial | Views `src/views/usuarios/index.ejs`, `new.ejs`, `edit.ejs`, `perfil.ejs`. |
+| Ação do usuário | Cadastra, edita e altera o perfil de usuários. |
+| Rota HTML/Form | `GET /usuarios`, `/usuarios/novo`, `POST /usuarios`, `/usuarios/:id/editar`, `/usuarios/:id/perfil`. |
+| Endpoint/API | `POST /api/usuarios`, `PUT /usuarios/:id`, `PUT /usuarios/:id/perfil`. |
+| Controller/Service/Repository | `userController` → `userService` → `userRepository`. |
+| Banco de dados | Insere/atualiza `usuarios`; usa `perfil_acesso`. |
+| Regra de negócio | Valida e-mail e perfil; alteração de perfil restrita ao administrador; registra responsável. |
+| Resultado esperado | Usuário criado/atualizado e habilitado conforme o perfil. |
+| Evidência | `src/tests/userController.spec.ts`, `src/tests/userCreateController.spec.ts`, `src/tests/userUpdateController.spec.ts`; captura `usuarios.png` (4.2.5). |
+| Status | Implementado. |
+
+#### Fluxo: Inativação de usuário e revogação de sessões
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Inativar um usuário e revogar imediatamente seus acessos. |
+| Persona/perfil | `administrador`. |
+| RF relacionado | RF002, RF020. |
+| User Story relacionada | US09. |
+| Tela inicial | View `src/views/usuarios/inativar.ejs`. |
+| Ação do usuário | Confirma a inativação de um usuário. |
+| Rota HTML/Form | `POST /usuarios/:id/inativar`. |
+| Endpoint/API | `PUT /usuarios/:id/inativar`. |
+| Controller/Service/Repository | `userController` → `userService` → `userRepository` e `authSessionRepository`. |
+| Banco de dados | Marca `ativo=false` em `usuarios`; revoga registros em `auth_sessoes`. |
+| Regra de negócio | Inativação revoga sessões ativas; usuário inativo não consegue mais logar nem usar sessão existente. |
+| Resultado esperado | Acesso revogado de imediato; histórico preservado. |
+| Evidência | `src/tests/userInactivateController.spec.ts`, `src/tests/userServiceInactivateSessions.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Terras (listagem, cadastro e edição)
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Gerenciar o cadastro de terras. |
+| Persona/perfil | `analista`, `coordenador`, `administrador` (cadastro/edição restrito a `analista`/`administrador`). |
+| RF relacionado | RF012, RF014. |
+| User Story relacionada | US04, US06. |
+| Tela inicial | Views `src/views/terras/index.ejs`, `new.ejs`, `edit.ejs`. |
+| Ação do usuário | Lista, cadastra e edita terras. |
+| Rota HTML/Form | `GET /terras`, `/terras/nova`, `POST /terras`, `/terras/:id/editar`. |
+| Endpoint/API | `POST /api/terras`, `GET /api/terras`, `PUT /api/terras/:id`. |
+| Controller/Service/Repository | `terraController` → `terraService` → `terraRepository`. |
+| Banco de dados | Insere/atualiza/consulta `terras`; consultas padrão omitem inativas. |
+| Regra de negócio | Validação de entrada por schema; exclusão lógica (`POST /terras/:id/inativar`, `DELETE /api/terras/:id`). |
+| Resultado esperado | Terra persistida e visível na listagem. |
+| Evidência | `src/tests/terraController.spec.ts`, `src/tests/terraControllerHtml.spec.ts`, `src/tests/terraService.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Vínculo parceiro-terra
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Associar parceiros e terras em relação muitos-para-muitos. |
+| Persona/perfil | `analista`, `administrador`. |
+| RF relacionado | RF015. |
+| User Story relacionada | US01, US02. |
+| Tela inicial | View `src/views/terras/vincular.ejs`, rota `GET /terras/:id/vincular-parceiro`. |
+| Ação do usuário | Vincula um parceiro a uma terra (ou vice-versa). |
+| Rota HTML/Form | `POST /terras/:id/parceiros`. |
+| Endpoint/API | `POST /api/parceiros/:id/terras`, `GET /api/parceiros/:id/terras`, `POST /api/terras/:id/parceiros`. |
+| Controller/Service/Repository | `vincularTerraAoParceiro`/`processarVinculoTerra` → `parceiroService`/`terraService` → repositories. |
+| Banco de dados | Insere em `parceiro_terra` e, quando aplicável, `vinculo_comercial`; registra `registro_alteracao`. |
+| Regra de negócio | Permite múltiplos parceiros por terra e múltiplas terras por parceiro; grava auditoria do vínculo na mesma transação. |
+| Resultado esperado | Vínculo persistido e listável por parceiro e por terra. |
+| Evidência | `src/tests/parceiroTerraController.spec.ts`, `src/tests/terraParceiroController.spec.ts`. |
+| Status | Implementado. |
+
+#### Fluxo: Dashboard de interações
+
+| Item | Descrição |
+|---|---|
+| Objetivo | Fornecer métricas agregadas de interações. |
+| Persona/perfil | `coordenador`, `administrador`. |
+| RF relacionado | RF006. |
+| User Story relacionada | US03. |
+| Tela inicial | Não há tela EJS específica nesta versão. |
+| Ação do usuário | Consome o endpoint de métricas. |
+| Rota HTML/Form | Não há rota HTML dedicada. |
+| Endpoint/API | `GET /dashboards/interacoes`. |
+| Controller/Service/Repository | `dashboardInteracoesController` → `dashboardInteracoesService` → `dashboardInteracoesRepository`. |
+| Banco de dados | Consulta `interacao`. |
+| Regra de negócio | Agrega métricas de interações; restrito a `coordenador`/`administrador`. |
+| Resultado esperado | `200` com JSON de métricas. |
+| Evidência | `src/tests/dashboardInteracoesService.spec.ts`, `src/tests/dashboardInteracoes.test.ts`. |
+| Status | Parcialmente implementado (somente JSON, sem view). |
+
+> Observação sobre evidências: as capturas referenciadas (seção 4.2.5) ilustram telas reais da aplicação. As evidências de execução não usam `NODE_ENV=test` para simular autenticação como se fosse fluxo real autenticado; a comprovação de integração ponta a ponta se apoia nas rotas reais, na suíte automatizada (seção 4.2.7) e nas validações de execução já registradas em 4.2.5.
 
 ## 4.3. Versão final da aplicação web (sprint 5)
 
@@ -3171,6 +3612,164 @@ A suíte também foi construída para ser determinística, ou seja, para dar sem
 - Ao final de cada arquivo, a conexão com o banco é fechada com afterAll e pool.end, evitando estado residual e conexões abertas.
 
 Concluiu-se que a estratégia de testes contribui diretamente para o CRM da ATVOS ao proteger justamente os fluxos críticos do produto: o cadastro de parceiros com CPF e CNPJ únicos, a atualização de perfil de acesso e as transições de status do parceiro. Ao cobrir esses fluxos nas camadas de Service e de Controller, a suíte impede que mudanças futuras quebrem em silêncio a integridade dos dados de parceiros, e dá ao grupo segurança para evoluir a WebAPI sem medo de regressão.
+
+### 5.1.2 Testes Unitários de Service (white-box)
+
+Esta seção apresenta os testes unitários da camada de Service, que conhecem a implementação e chamam o método do service direto, sem passar pelo HTTP, para verificar se a regra de negócio está correta. Ela traz a cobertura alcançada na camada, a lista de casos de teste com a regra de negócio que cada um cobre e o detalhamento dos cinco casos prioritários.
+
+#### Cobertura da camada de Service
+
+A cobertura é medida com o comando npm test -- --coverage, que gera o relatório do Jest por arquivo. O service principal do produto, o parceiroService, alcança cobertura acima do mínimo de 80% exigido, com 100% das linhas e das funções exercitadas pelos testes na execução final. No relatório consolidado, a camada de services fechou com 99.76% das linhas cobertas. Os services de usuário também têm testes unitários dedicados. O relatório completo de cobertura por camada está transcrito na seção 5.1.4.
+
+#### Casos de teste vinculados às regras de negócio
+
+Cada caso de teste unitário está ligado de forma explícita a uma regra de negócio. As tabelas abaixo listam os casos já implementados na camada de Service, ordenados pela sequência das RN definidas no artefato 1. A coluna Caminho indica se o caso cobre o fluxo de sucesso ou o de falha. O mapeamento completo que liga cada caso à RN e ao RF está consolidado na seção 5.1.4.
+
+Casos do parceiroService:
+
+| CT | RN | Caminho | Descrição |
+|---|---|---|---|
+| CT02 | RN04 | feliz | edita um parceiro em rascunho |
+| CT03 | RN04 | feliz | retorna um parceiro existente pelo id |
+| CT20 | RN04 | feliz | lista os parceiros existentes |
+| CT09 | RN08 | falha | consulta de parceiro inexistente |
+| CT10 | RN08 | falha | consulta com id malformado |
+| CT07 | RN09 | falha | cadastro com cpf ou cnpj duplicado |
+| CT23 | RN09 | falha | edição que deixaria o cpf duplicado |
+| CT01 | RN10 | feliz | cadastra um parceiro novo em rascunho |
+| CT14 | RN12 | falha | histórico de parceiro inexistente |
+| CT21 | RN12 | feliz | histórico de parceiro existente |
+| CT24 | RN12 | falha | histórico com id malformado |
+| CT15 | RN13 | falha | terras de parceiro inexistente |
+| CT22 | RN13 | feliz | terras de parceiro existente |
+| CT25 | RN13 | falha | terras com id malformado |
+| CT16 | RN14 | falha | vínculo com terra inexistente |
+| CT04 | RN16 | feliz | envio para validação de rascunho para pendente |
+| CT11 | RN16 | falha | envio a partir de status inválido |
+| CT17 | RN16 | falha | envio de parceiro inexistente |
+| CT26 | RN16 | falha | envio com id malformado |
+| CT05 | RN17 | feliz | aprovação de pendente para ativo |
+| CT06 | RN17 | feliz | devolução de pendente para devolvido |
+| CT12 | RN17 | falha | aprovação com status diferente de pendente |
+| CT13 | RN17 | falha | devolução com status diferente de pendente |
+| CT18 | RN17 | falha | aprovação de parceiro inexistente |
+| CT19 | RN17 | falha | devolução de parceiro inexistente |
+| CT27 | RN17 | falha | aprovação com id malformado |
+| CT28 | RN17 | falha | devolução com id malformado |
+| CT08 | RN20 | falha | edição de parceiro inexistente |
+
+Casos dos services de usuário (userService, userUpdateService e userInactivateService):
+
+| CT | RN | Caminho | Descrição |
+|---|---|---|---|
+| CT29 | RN03 | feliz | atualiza o perfil de acesso de um usuário |
+| CT30 | RN03 | falha | bloqueia a atualização para um perfil inexistente |
+| CT31 | RN03 | falha | valida os campos obrigatórios antes de consultar o banco |
+| CT39 | RN03 | falha | valida o perfil quando perfil_acesso_id é enviado |
+| CT32 | RN06 | falha | informa quando o usuário do perfil não existe |
+| CT33 | RN06 | feliz | inativa o usuário e grava ativo como falso |
+| CT34 | RN06 | falha | rejeita a inativação quando o id não é informado |
+| CT35 | RN06 | falha | rejeita a inativação de usuário inexistente |
+| CT36 | RN06 | feliz | atualiza o usuário com dados válidos |
+| CT37 | RN06 | falha | rejeita a atualização com payload mal formatado |
+| CT38 | RN06 | falha | rejeita a atualização de usuário inexistente |
+
+#### Cinco casos prioritários em detalhe
+
+Os cinco casos abaixo foram escolhidos por cobrirem os três fluxos críticos do produto citados na 5.1.1: o cadastro de parceiros com CPF e CNPJ únicos, as transições de status do parceiro e a atualização de perfil de acesso. Para cada um descreve-se a regra coberta, o tipo de caminho e a estrutura AAA.
+
+CT01 Cadastro de parceiro. Regra coberta RN10. Caminho feliz. No Arrange, o beforeEach cria um usuário analista no banco, que será o autor do cadastro, e o teste gera um CPF único com randomUUID para evitar colisão entre execuções. No Act, o teste chama o método cadastrarParceiro do service, passando nome, tipo de pessoa, CPF, e-mail e o autor. No Assert, o teste confere primeiro o retorno do método, verificando que o parceiro recebeu um identificador e que o status inicial é rascunho, e depois lê a tabela parceiros com pool.query para provar que o registro foi gravado com esse nome e status. O determinismo vem da limpeza no afterEach e do CPF único por execução.
+
+CT07 Cadastro com CPF ou CNPJ duplicado. Regra coberta RN09. Caminho de falha. No Arrange, o teste cadastra um primeiro parceiro e guarda o CPF usado. No Act, chama cadastrarParceiro de novo com o mesmo CPF. No Assert, o teste espera que a chamada seja rejeitada com a mensagem cpf_cnpj já cadastrado, usando rejects.toThrow. Aqui o teste não lê o banco depois, porque o comportamento esperado é o bloqueio: o service lança a exceção antes de gravar, então não existe registro novo para conferir. O resultado do teste é a própria exceção correta. O determinismo vem do CPF gerado com randomUUID a cada execução e da limpeza no afterEach, de modo que a segunda chamada sempre encontra o mesmo cenário de duplicidade, sem depender de ordem nem de dados residuais.
+
+CT05 Aprovação de parceiro pendente. Regra coberta RN17. Caminho feliz. No Arrange, o teste insere um parceiro já no status pendente direto no banco. No Act, chama o método aprovarParceiro passando o autor da aprovação. No Assert, confere no retorno que o status passou para ativo e depois lê a tabela parceiros para confirmar que a transição foi persistida. O determinismo vem de o parceiro ser criado no próprio Arrange já no status pendente e removido no afterEach, então o teste não herda estado de nenhum outro caso e roda igual em qualquer ordem.
+
+CT11 Envio para validação a partir de status inválido. Regra coberta RN16. Caminho de falha. A RN16 determina que apenas registros em rascunho ou devolvido podem ir para pendente. No Arrange, o teste cria um parceiro no status ativo, que não permite a transição. No Act, chama enviarParceiroParaValidacao. No Assert, espera a rejeição com mensagem que cita rascunho ou devolvido, provando que o service bloqueia a transição proibida. Como é um bloqueio, o teste não lê o banco, e sim verifica a exceção. O determinismo vem de o parceiro ativo ser montado no próprio Arrange e limpo no afterEach, sem dependência de relógio, rede ou de dados deixados por outro teste.
+
+CT29 Atualização de perfil de acesso. Regra coberta RN03. Caminho feliz. Este caso vem do arquivo userService.spec.ts. No Arrange, o beforeEach cria um usuário com perfil de analista e o teste recupera o identificador do perfil de coordenador. No Act, chama o método atualizaPerfilDeAcesso passando o usuário e o novo perfil. No Assert, confere no retorno que o campo perfil_acesso_id passou a apontar para o coordenador e depois lê a tabela usuarios com pool.query para provar que a troca de perfil ficou gravada. O determinismo vem do beforeEach que recria o usuário e do afterEach que o remove, com os identificadores de perfil vindo do helper garantirPerfis, que é idempotente, de modo que o teste roda igual em qualquer ordem de execução.
+
+Os cinco casos cobrem os três fluxos críticos citados na 5.1.1 e equilibram caminho feliz e caminho de falha. Os casos de sucesso provam a persistência lendo o banco depois da ação, e os casos de falha provam o bloqueio verificando a exceção correta, sem efeito no banco. Dessa forma, a seção mostra que cada regra de negócio central tem um teste que a defende.
+
+### 5.1.3 Testes de Integração de Endpoints (black-box)
+
+Os testes de integração verificam o sistema do ponto de vista de quem consome a API. Cada caso envia uma requisição HTTP de verdade para um endpoint e confere três coisas: o status retornado, o corpo da resposta e o efeito gravado no banco. Diferente dos testes unitários da 5.1.2, que chamam o service direto e conhecem a implementação, esses testes tratam a aplicação como uma caixa preta, em que só importa o contrato que o endpoint promete cumprir. Esta subseção apresenta como o ambiente desses testes foi montado. Os casos cobertos por endpoint são detalhados na sequência.
+
+#### Ambiente de integração
+
+A ferramenta usada é o Supertest, em conjunto com o Jest. O Supertest recebe a aplicação Express exportada por src/app.ts e simula as requisições dentro do próprio processo de teste, sem abrir porta de rede. Para isso funcionar, o app.ts apenas monta middlewares e rotas e exporta o objeto da aplicação. Quem sobe o servidor de verdade é o src/server.ts, que chama listen somente quando executado de forma direta. Essa separação permite que cada spec importe o app e faça chamadas com request(app) como se fosse um cliente externo.
+
+O banco usado pelos testes é definido pela variável de ambiente DATABASE_URL_TEST. Quando o Jest executa, a variável NODE_ENV recebe o valor test de forma automática, e o arquivo src/config/connection.ts passa a usar a URL de teste no lugar da URL principal. Assim, a conexão dos testes fica separada da configuração usada pelo servidor em operação normal. O arquivo src/tests/jest.setup.ts completa o ambiente carregando o .env e definindo valores padrão para as variáveis que os testes precisam, como o segredo de assinatura dos tokens de sessão.
+
+O isolamento entre os casos segue o mesmo padrão da camada de service. Os helpers de src/tests/helpers criam os usuários e registros que cada teste precisa no beforeEach e os removem no afterEach, para que um caso não dependa do que outro deixou no banco. Ao final de cada arquivo, o afterAll encerra o pool de conexões, garantindo que a suíte termine sem conexões abertas.
+
+A validação do ambiente é feita pela própria suíte. Os specs de controller em src/tests usam request(app), percorrem o fluxo completo de rota, controller, service, repository e banco, e executam com sucesso no npm test.
+
+#### Casos cobertos por endpoint
+
+Os casos de integração foram organizados em quatro categorias, seguindo o contrato HTTP de cada endpoint: sucesso (200 ou 201), falha de validação de contrato (400 ou 422), regra de negócio violada (409) e recurso não encontrado (404). A tabela abaixo consolida onde cada categoria está coberta nos endpoints principais da seção 3.1.4. Quando a categoria não faz sentido para o endpoint, como um conflito de duplicidade em uma consulta, a célula indica que o cenário não se aplica.
+
+| Endpoint principal | Sucesso (200/201) | Validação (400/422) | Regra de negócio (409) | Não encontrado (404) |
+|---|---|---|---|---|
+| POST /api/parceiros | parceiroCadastroComplementar.spec.ts | CT61 (parceiroCadastroController.spec.ts) | CT63 (parceiroCadastroController.spec.ts) | não se aplica |
+| GET /api/parceiros | casos 1 a 4 (parceiroFiltrosController.spec.ts) | CT62 (parceiroFiltrosController.spec.ts) | não se aplica | não se aplica |
+| GET /api/parceiros/:id | parceiroDetalheController.spec.ts | não se aplica | não se aplica | parceiroDetalheController.spec.ts, com inexistente, malformado e inativo |
+| PATCH /api/parceiros/:id | CT53 (parceiroEdicaoController.spec.ts) | CT60 (parceiroEdicaoController.spec.ts) | CT66 (parceiroEdicaoController.spec.ts) | CT64 e CT65 (parceiroEdicaoController.spec.ts) |
+| PUT /api/parceiros/:id/validacao | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts |
+| PUT /api/parceiros/:id/aprovar e PUT /api/parceiros/:id/devolver | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts |
+| POST /api/usuarios | userCreateController.spec.ts | userCreateController.spec.ts | userCreateController.spec.ts | não se aplica |
+| PUT /usuarios/:id | userUpdateController.spec.ts | userUpdateController.spec.ts | não se aplica | userUpdateController.spec.ts |
+| POST /api/terras e PUT /api/terras/:id | terraController.spec.ts | terraController.spec.ts | não se aplica | terraController.spec.ts |
+| GET e POST /api/parceiros/:id/terras e /api/terras/:id/parceiros | parceiroTerraController.spec.ts e terraParceiroController.spec.ts | parceiroTerraController.spec.ts | parceiroTerraController.spec.ts, com vínculo duplicado | parceiroTerraController.spec.ts e terraParceiroController.spec.ts |
+| POST /primeiro-acesso/solicitar e POST /primeiro-acesso/definir-senha | CT51 e CT52 (primeiroAcessoController.spec.ts) | CT59 e casos de senha (primeiroAcessoController.spec.ts) | não se aplica | CT67 (primeiroAcessoController.spec.ts) |
+
+Os identificadores CT51 a CT67 correspondem aos casos numerados nos arquivos citados, e os demais cenários são cobertos por specs escritos em sprints anteriores e mantidos na suíte. Com isso, cada endpoint principal possui os quatro cenários-chave cobertos quando aplicáveis, e a execução consolidada desses casos está registrada na seção 5.1.4.
+
+### 5.1.4 Evidências de Execução
+
+Esta seção reúne as evidências que permitem verificar, de forma objetiva, se a suíte automatizada realmente sustentou os fluxos centrais da WebAPI. Em relatórios desse tipo, a função principal é transformar a execução dos testes em prova documentada de qualidade, cobertura e rastreabilidade, conectando o que foi testado ao que o sistema entrega.
+
+A execução final da suíte automatizada foi concluída sem falhas. O comando npm test terminou com 40 suites aprovadas e 327 testes aprovados, sem snapshots.
+
+```text
+Test Suites: 40 passed, 40 total
+Tests:       327 passed, 327 total
+Snapshots:   0 total
+Time:        777.986 s, estimated 847 s
+Ran all test suites.
+```
+
+O relatório de cobertura gerado por npm test -- --coverage confirmou a cobertura por camada da WebAPI. O resultado geral ficou em 81.47% de statements, 68.15% de branches, 85.26% de functions e 82.64% de lines.
+
+| Camada | Statements | Branches | Functions | Lines |
+|---|---|---|---|---|
+| controllers | 71.85% | 53.87% | 74.76% | 74.35% |
+| helpers | 100% | 100% | 100% | 100% |
+| middlewares | 46.15% | 24.39% | 61.53% | 45.31% |
+| repositories | 84.45% | 70.08% | 97.95% | 84.38% |
+| services | 99.76% | 99.27% | 100% | 99.76% |
+
+Os resultados por camada mostram que a cobertura está concentrada nos services e repositories, que concentram as regras de negócio e a persistência do CRM. A camada de helpers permaneceu totalmente coberta, e a camada de middlewares aparece com menor percentual porque parte de seus caminhos depende de cenários de autenticação e de tratamento de erro que não se repetem em todos os fluxos de teste.
+
+### 5.1.4.1 Mapeamento CT para RN para RF
+
+O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da sprint 1 com as regras de negócio e os requisitos funcionais já definidos nas seções 3.1.4 e 3.9. Os critérios CT11 e CT12 não entram nesta tabela porque não possuem RN associado e são tratados nos RNFs de desempenho e capacidade.
+
+| CT | RN | RF | Endpoint relacionado | Teste ou evidência |
+|---|---|---|---|---|
+| CT01 | RN01, RN09 | RF001, RF009 | POST /api/usuarios | src/tests/userCreateController.spec.ts; src/tests/userService.spec.ts |
+| CT02 | RN10 | RF010 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id; POST /api/terras; PUT /api/terras/:id | src/tests/userCreateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/terraController.spec.ts |
+| CT03 | RN02 | RF011 | POST /login | src/tests/auth.test.ts |
+| CT04 | RN04, RN05, RN06 | RF004, RF005, RF007, RF008 | POST /api/parceiros; PATCH /api/parceiros/:id; GET /api/parceiros; GET /api/parceiros/:id | src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts |
+| CT05 | RN07, RN08 | RF012, RF014 | GET /api/parceiros; GET /api/terras; PATCH /api/parceiros/:id; PUT /api/terras/:id | src/test/parceiroController.get.spec.ts; src/tests/terraController.spec.ts; src/test/parceiroController.patch.spec.ts |
+| CT06 | RN11 | RF018, RF019 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /api/terras; PUT /api/terras/:id | src/tests/userCreateController.spec.ts; src/tests/userUpdateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts; src/tests/terraController.spec.ts |
+| CT07 | RN12 | RF013 | GET /api/parceiros/:id/historico | src/tests/parceiroHistoricoController.spec.ts |
+| CT08 | RN13, RN14 | RF015 | GET /api/parceiros/:id/terras; POST /api/parceiros/:id/terras; GET /api/terras/:id/parceiros; POST /api/terras/:id/parceiros | src/tests/parceiroTerraController.spec.ts; src/tests/terraParceiroController.spec.ts |
+| CT09 | RN15 | RF020 | PUT /usuarios/:id/inativar; PUT /auth/sessoes/:id | src/tests/userInactivateController.spec.ts; src/tests/userServiceInactivateSessions.spec.ts |
+| CT10 | RN08, RN11 | RF007, RF008, RF012 | GET /api/parceiros; GET /api/parceiros/:id; GET /api/terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts; src/tests/terraController.spec.ts |
+
+Essa tabela fecha o elo entre os critérios técnicos, a matriz RF para RN para endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e em um conjunto de testes correspondente.
+
+Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao registrar uma suíte completa sem falhas, a cobertura por camada do Jest e a rastreabilidade entre CT, RN e RF. No contexto do CRM da ATVOS, essas evidências confirmam que os fluxos críticos de cadastro, validação, autenticação, histórico e consulta ficaram amparados por testes e por documentação consistente, reduzindo o risco de regressão e reforçando a confiabilidade da WebAPI.
 
 ## 5.2. Testes de usabilidade (sprint 5)
 
@@ -3281,10 +3880,20 @@ Como a plataforma foi projetada para ser uma solução somente corporativa e vol
 Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar os riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
 #### 6.6.3 Praça
-*Apresente os canais digitais utilizados para distribuir e entregar a aplicação ao público.*
+Tendo como base uma estratégia de Canal Direto Intracorporativo, focado de forma exclusiva no ambiente digital fechado para definir a Praça. O sistema web será disponibilizado através de servidores de nuvem privada integrados à estrutura tecnológica interna da companhia. Os usuários terão acesso de forma restrita e segura através de qualquer navegador web que seja o padrão da empresa, sendo exigida a autenticação corporativa única (SSO) e perfis específicos para cada nível de acesso e atuação. As oito unidades agroindustriais e os dois escritórios corporativos da Atvos são formalizados como os canais de entrega.
+A distribuição digital direta garante a governança sobre os dados e a sincronização das interações em tempo real. Segundo a teoria dos canais dos autores Kotler e Keller (2012), tal configuração de nível zero garante o controle sobre a governança de informações e a segurança das informações sensíveis da Atvos e seus 1.137 parceiros de terras e 108 fornecedores.
 
-#### Promoção 
-*Descreva as estratégias digitais planejadas, como SEO, redes sociais, marketing de conteúdo e campanhas pagas.*
+#### 6.6.4 Promoção
+O plano estratégico de promoção da solução foi construída sob a ótica do Endomarketing Estratégico e Gestão de Mudança Corporativa, já que o público-alvo se resume a colaboradores nas áreas de Negócios Agrícolas e Estratégias de Terras. Campanhas de publicidade públicas ou marketing digital (como redes sociais e mídia paga) não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
+
+O plano de divulgação interna será estruturado em três fases distintas:
+
+**Fase de Sensibilização (Teasers e Eventos de Lançamento):** A proposta é realizar seminários e videoconferências institucionais e comunicados internos nas plataformas oficiais de comunicação da empresa, apresentando a solução.
+
+**Fase de Capacitação (Workshops de Engajamento):** Também será necessário realizar treinamentos técnicos  e orientações práticas nas 8 unidades agroindustriais para mitigar a resistência na susbtituíção de ferramentas antigas.
+
+**Fase de Sustentação (Marketing de Conteúdo Interno):** Manuais de usuário e guias interativos de UX/UI  disponibilizados no sistema corporativo.
+
 
 # <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
 

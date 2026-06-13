@@ -34,6 +34,20 @@ export const listarParceirosFiltrosSchema = z.object({
       })
       .optional()
   ),
+  status: z.preprocess(
+    (value) => {
+      const valor = Array.isArray(value) ? value[0] : value;
+      if (typeof valor !== 'string') return undefined;
+      const texto = valor.trim();
+      return texto.length > 0 ? texto : undefined;
+    },
+    z
+      .enum(['rascunho', 'pendente', 'ativo', 'devolvido', 'inativo'], {
+        message: 'status deve ser rascunho, pendente, ativo, devolvido ou inativo',
+      })
+      .optional()
+  ),
+  usina_referencia: textoOpcional,
 });
 
 export type ListarParceirosFiltrosSchemaInput = z.infer<typeof listarParceirosFiltrosSchema>;

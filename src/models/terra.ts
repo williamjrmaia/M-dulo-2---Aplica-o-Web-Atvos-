@@ -6,7 +6,9 @@ export interface Terra {
   estado: string;
   status: string;
   criado_por: string;
+  criado_por_nome?: string | null;
   atualizado_por?: string | null;
+  atualizado_por_nome?: string | null;
   criado_em: Date;
   atualizado_em?: Date | null;
 }
@@ -27,6 +29,11 @@ export interface UpdateTerraInput {
   estado?: string;
   status?: string;
   atualizado_por: string;
+}
+
+export interface ExcluirTerraInput {
+  atualizado_por: string;
+  comentario?: string;
 }
 
 export interface TerraParceiro {
@@ -51,4 +58,9 @@ export interface ParceiroDaTerra {
 export interface VincularParceiroATerraInput {
   parceiro_id: string;
   tipo_vinculo?: string;
+}
+
+export interface ConsultaTerrasOpcoes {
+  incluirInativos?: boolean;
+  rascunhosUsuarioId?: string;
 }

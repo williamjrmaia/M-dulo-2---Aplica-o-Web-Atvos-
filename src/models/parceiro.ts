@@ -7,9 +7,21 @@ export interface Parceiro {
     email: string;
     data_nascimento: string | null;
     nome_acompanhante?: string | null;
+    telefone?: string | null;
+    regiao?: string | null;
+    inscricao_estadual?: string | null;
+    usina_referencia?: string | null;
+    area_plantada?: string | null;
+    tch_medio?: string | null;
+    atr_medio?: string | null;
+    observacoes?: string | null;
     status: string;
     criado_por: string;
+    criado_por_nome?: string | null;
     atualizado_por?: string | null;
+    atualizado_por_nome?: string | null;
+    comentario_devolucao?: string | null;
+    data_devolucao?: Date | null;
     criado_em: Date;
     atualizado_em?: Date | null;
 }
@@ -22,6 +34,15 @@ export interface CreateParceiroInput {
     email?: string;
     data_nascimento?: string;
     nome_acompanhante?: string;
+    telefone?: string;
+    regiao?: string;
+    inscricao_estadual?: string;
+    usina_referencia?: string;
+    area_plantada?: string;
+    tch_medio?: string;
+    atr_medio?: string;
+    observacoes?: string;
+    status?: 'rascunho' | 'pendente';
     criado_por: string;
 }
 
@@ -33,6 +54,14 @@ export interface UpdateParceiroInput {
     email?: string;
     data_nascimento?: string;
     nome_acompanhante?: string;
+    telefone?: string;
+    regiao?: string;
+    inscricao_estadual?: string;
+    usina_referencia?: string;
+    area_plantada?: string;
+    tch_medio?: string;
+    atr_medio?: string;
+    observacoes?: string;
     status?: string;
     atualizado_por: string;
 }
@@ -42,6 +71,11 @@ export interface ParceiroTerra {
     parceiro_id: string;
     terra_id: string;
     tipo_vinculo?: string | null;
+    tipo_parceiro?: 'arrendador' | 'fornecedor' | null;
+    modalidade_contrato?: string | null;
+    data_inicio?: string | null;
+    data_fim?: string | null;
+    observacoes?: string | null;
 }
 
 export interface TerraDoParceiro {
@@ -58,6 +92,11 @@ export interface TerraDoParceiro {
 export interface VincularTerraAoParceiroInput {
     terra_id: string;
     tipo_vinculo?: string;
+    tipo_parceiro?: 'arrendador' | 'fornecedor';
+    modalidade_contrato?: string;
+    data_inicio?: string;
+    data_fim?: string;
+    observacoes?: string;
 }
 
 export interface ListarParceirosFiltros {
@@ -65,6 +104,13 @@ export interface ListarParceirosFiltros {
     regiao?: string;
     area?: number;
     tipo?: 'fisica' | 'juridica' | 'arrendador' | 'fornecedor';
+    status?: 'rascunho' | 'pendente' | 'ativo' | 'devolvido' | 'inativo';
+    usina_referencia?: string;
+}
+
+export interface ConsultaParceirosOpcoes {
+    incluirInativos?: boolean;
+    rascunhosUsuarioId?: string;
 }
 
 export interface HistoricoParceiro {
@@ -83,6 +129,15 @@ export interface HistoricoParceiro {
     data_alteracao: Date;
 }
 
+export interface ParceiroPendenteValidacao extends Parceiro {
+    data_envio?: Date | null;
+}
+
+export interface ParceiroRascunhoDevolvido extends Parceiro {
+    comentario_devolucao?: string | null;
+    data_devolucao?: Date | null;
+}
+
 export interface EnviarParceiroValidacaoInput {
     atualizado_por: string;
     comentario?: string;
@@ -95,5 +150,10 @@ export interface AprovarParceiroInput {
 
 export interface DevolverParceiroInput {
     devolvido_por: string;
+    comentario?: string;
+}
+
+export interface ExcluirParceiroInput {
+    atualizado_por: string;
     comentario?: string;
 }

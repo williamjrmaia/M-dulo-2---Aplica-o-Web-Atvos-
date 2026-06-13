@@ -1,0 +1,46 @@
+<%- include('../partials/header', { title: 'Vincular Parceiro', active: 'terras' }) %>
+
+<section aria-labelledby="titulo-vincular-terra">
+  <div class="page-header">
+    <div class="page-back">
+      <a href="/terras" class="back-btn" aria-label="Voltar para terras">←</a>
+      <div class="page-header-text">
+        <h1 id="titulo-vincular-terra" class="page-title">Vincular Parceiro</h1>
+        <p class="subtitle"><%= terra ? terra.nome : 'Terra não localizada' %></p>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/flash', { error: locals.error }) %>
+
+  <form action="/terras/<%= terra.id %>/parceiros" method="POST" novalidate>
+    <div class="form-card">
+      <div class="form-card-header">
+        <h2 class="section-title">Vínculo Comercial</h2>
+      </div>
+      <div class="form-card-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="parceiro_id">Parceiro <span class="required">*</span></label>
+            <select class="form-select" id="parceiro_id" name="parceiro_id" required>
+              <option value="">Selecione...</option>
+              <% parceiros.forEach(function(p) { %>
+                <option value="<%= p.id %>" <%= dados.parceiro_id === p.id ? 'selected' : '' %>><%= p.nome %> · <%= p.cpf_cnpj %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="tipo_vinculo">Tipo de vínculo</label>
+            <input class="form-control" id="tipo_vinculo" name="tipo_vinculo" value="<%= dados.tipo_vinculo || '' %>" placeholder="Ex: arrendamento" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <a href="/terras" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Vincular</button>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>
