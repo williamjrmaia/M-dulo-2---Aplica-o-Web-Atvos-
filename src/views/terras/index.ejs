@@ -3,16 +3,25 @@
 <%- include('../partials/flash', { error: locals.error, info: locals.info }) %>
 
 <section aria-labelledby="titulo-terras">
+  <%
+    const perfilAtual = locals.usuarioAutenticado && locals.usuarioAutenticado.perfil;
+    const podeManterTerras = ['analista', 'coordenador', 'administrador'].includes(perfilAtual);
+    const podeCadastrarTerras = ['analista', 'administrador'].includes(perfilAtual);
+    const podeVincularParceiros = ['analista', 'administrador'].includes(perfilAtual);
+    const podeInativarTerras = perfilAtual === 'administrador';
+  %>
   <div class="page-header">
     <div class="page-header-text">
       <h1 id="titulo-terras" class="page-title">Terras</h1>
       <p class="subtitle">Áreas rurais vinculadas aos parceiros do Safra Control</p>
     </div>
     <div class="page-header-actions">
-      <a href="/terras/nova" class="btn btn-primary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Nova Terra
-      </a>
+      <% if (podeCadastrarTerras) { %>
+        <a href="/terras/nova" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nova Terra
+        </a>
+      <% } %>
     </div>
   </div>
 
@@ -20,7 +29,9 @@
     <div class="empty-state">
       <p class="empty-title">Nenhuma terra cadastrada</p>
       <p class="empty-text">Cadastre uma área para iniciar os vínculos com parceiros.</p>
-      <a href="/terras/nova" class="btn btn-primary empty-action">Nova Terra</a>
+      <% if (podeCadastrarTerras) { %>
+        <a href="/terras/nova" class="btn btn-primary empty-action">Nova Terra</a>
+      <% } %>
     </div>
   <% } else { %>
     <div class="partner-list" id="lista-terras">
@@ -29,10 +40,19 @@
           <div class="list-item-head">
             <h2 class="list-item-title"><%= t.nome %></h2>
             <span class="badge badge-<%= t.status %>"><%= t.status %></span>
-            <div class="list-item-actions">
-              <a href="/terras/<%= t.id %>/vincular-parceiro" class="btn btn-secondary btn-sm">Vincular parceiro</a>
-              <a href="/terras/<%= t.id %>/editar" class="btn btn-primary btn-sm">Editar</a>
-            </div>
+            <% if (podeManterTerras) { %>
+              <div class="list-item-actions">
+                <% if (podeVincularParceiros) { %>
+                  <a href="/terras/<%= t.id %>/vincular-parceiro" class="btn btn-secondary btn-sm">Vincular parceiro</a>
+                <% } %>
+                <a href="/terras/<%= t.id %>/editar" class="btn btn-primary btn-sm">Editar</a>
+                <% if (podeInativarTerras && t.status !== 'inativo') { %>
+                  <form method="POST" action="/terras/<%= t.id %>/inativar">
+                    <button type="submit" class="btn btn-danger-outline btn-sm">Inativar</button>
+                  </form>
+                <% } %>
+              </div>
+            <% } %>
           </div>
           <div class="list-item-grid">
             <div>

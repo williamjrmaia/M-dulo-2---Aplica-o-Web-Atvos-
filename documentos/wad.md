@@ -3540,7 +3540,7 @@ SALESFORCE. What is CRM Software? San Francisco: Salesforce, 2026. Disponível e
 SAP. Customer Experience and Customer Relationship Management. Walldorf: SAP, 2026. Disponível em: https://www.sap.com/products/crm.html. Acesso em: 8 jun. 2026.
 
 SÃO MARTINHO. São Martinho. São Paulo: São Martinho, 2026. Disponível em: https://www.saomartinho.com.br/. Acesso em: 8 jun. 2026.
-=======
+
 Raízen. (2026). Sobre a Raízen. https://www.raizen.com.br/sobre-a-raizen
 
 Ries, A., & Trout, J. (2001). Positioning: The battle for your mind (20th anniversary ed.). McGraw-Hill.
@@ -3552,7 +3552,6 @@ SAP. (2026). Customer experience and customer relationship management. https://w
 São Martinho. (2026). São Martinho. https://www.saomartinho.com.br/
 
 União Nacional da Bioenergia. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
->>>>>>> 800ed0a1d13753481425f5c3beea963ff1aed89e
 
 # <a name="c9"></a>Anexos
 

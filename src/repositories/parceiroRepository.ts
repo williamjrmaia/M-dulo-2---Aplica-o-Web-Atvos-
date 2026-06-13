@@ -7,6 +7,7 @@ import {
   EnviarParceiroValidacaoInput,
   ExcluirParceiroInput,
   HistoricoParceiro,
+  ConsultaParceirosOpcoes,
   ListarParceirosFiltros,
   ParceiroPendenteValidacao,
   ParceiroTerra,
@@ -286,9 +287,21 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
   }
 }
 
-export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
-  const where: string[] = [`p.status != 'inativo'`];
+export async function listarParceiros(
+  filtros: ListarParceirosFiltros = {},
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<Parceiro[]> {
+  const where: string[] = [];
   const valores: unknown[] = [];
+
+  if (!opcoes.incluirInativos) {
+    where.push(`p.status != 'inativo'`);
+  }
+
+  if (opcoes.rascunhosUsuarioId) {
+    valores.push(opcoes.rascunhosUsuarioId);
+    where.push(`(p.status != 'rascunho' OR p.criado_por = $${valores.length})`);
+  }
 
   if (filtros.nome !== undefined) {
     valores.push(`%${filtros.nome}%`);
@@ -358,8 +371,12 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
 
   const { rows } = await pool.query<Parceiro>(
     `SELECT p.*,
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome,
             tp.numero AS telefone
        FROM parceiros p
+       LEFT JOIN usuarios criador ON criador.id = p.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = p.atualizado_por
        LEFT JOIN LATERAL (
          SELECT numero
            FROM telefone_parceiro
@@ -368,7 +385,7 @@ export async function listarParceiros(filtros: ListarParceirosFiltros = {}): Pro
           ORDER BY principal DESC, criado_em DESC
           LIMIT 1
        ) tp ON TRUE
-      WHERE ${where.join(' AND ')}
+      ${where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''}
       ORDER BY p.criado_em DESC`,
     valores
   );
@@ -379,8 +396,12 @@ export async function listarPendentesValidacao(): Promise<ParceiroPendenteValida
   const { rows } = await pool.query<ParceiroPendenteValidacao>(
     `SELECT
         p.*,
+        criador.nome AS criado_por_nome,
+        atualizador.nome AS atualizado_por_nome,
         ultimo_envio.data_alteracao AS data_envio
        FROM parceiros p
+       LEFT JOIN usuarios criador ON criador.id = p.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = p.atualizado_por
        LEFT JOIN LATERAL (
          SELECT ra.data_alteracao
            FROM registro_alteracao ra
@@ -426,11 +447,32 @@ export async function listarRascunhosDevolvidosDoAnalista(
   return rows;
 }
 
-export async function getParceiroById(id: string): Promise<Parceiro | null> {
+export async function getParceiroById(
+  id: string,
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<Parceiro | null> {
+  const valores: unknown[] = [id];
+  const where: string[] = ['p.id = $1'];
+
+  if (!opcoes.incluirInativos) {
+    where.push(`p.status != 'inativo'`);
+  }
+
+  if (opcoes.rascunhosUsuarioId) {
+    valores.push(opcoes.rascunhosUsuarioId);
+    where.push(`(p.status != 'rascunho' OR p.criado_por = $${valores.length})`);
+  }
+
   const { rows } = await pool.query<Parceiro>(
     `SELECT p.*,
-            tp.numero AS telefone
+            criador.nome AS criado_por_nome,
+            atualizador.nome AS atualizado_por_nome,
+            tp.numero AS telefone,
+            ultima_devolucao.comentario AS comentario_devolucao,
+            ultima_devolucao.data_alteracao AS data_devolucao
        FROM parceiros p
+       LEFT JOIN usuarios criador ON criador.id = p.criado_por
+       LEFT JOIN usuarios atualizador ON atualizador.id = p.atualizado_por
        LEFT JOIN LATERAL (
          SELECT numero
            FROM telefone_parceiro
@@ -439,9 +481,17 @@ export async function getParceiroById(id: string): Promise<Parceiro | null> {
           ORDER BY principal DESC, criado_em DESC
           LIMIT 1
        ) tp ON TRUE
-      WHERE p.id = $1
-        AND p.status != 'inativo'`,
-    [id]
+       LEFT JOIN LATERAL (
+         SELECT ra.comentario, ra.data_alteracao
+           FROM registro_alteracao ra
+          WHERE ra.entidade_id = p.id
+            AND LOWER(ra.entidade_afetada) IN ('parceiro', 'parceiros')
+            AND ra.tipo_operacao = 'devolucao'
+          ORDER BY ra.data_alteracao DESC
+          LIMIT 1
+       ) ultima_devolucao ON TRUE
+      WHERE ${where.join(' AND ')}`,
+    valores
   );
   return rows[0] ?? null;
 }
@@ -697,7 +747,10 @@ export async function deactivateParceiro(
   }
 }
 
-export async function listarTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[] | null> {
+export async function listarTerrasDoParceiro(
+  parceiroId: string,
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<TerraDoParceiro[] | null> {
   const parceiro = await pool.query<{ id: string }>('SELECT id FROM parceiros WHERE id = $1', [parceiroId]);
   if (parceiro.rows.length === 0) {
     return null;
@@ -716,7 +769,7 @@ export async function listarTerrasDoParceiro(parceiroId: string): Promise<TerraD
        FROM parceiro_terra pt
        JOIN terras t ON t.id = pt.terra_id
       WHERE pt.parceiro_id = $1
-        AND t.status != 'inativo'
+        ${opcoes.incluirInativos ? '' : "AND t.status != 'inativo'"}
       ORDER BY t.criado_em DESC`,
     [parceiroId]
   );

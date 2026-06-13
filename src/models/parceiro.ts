@@ -17,7 +17,11 @@ export interface Parceiro {
     observacoes?: string | null;
     status: string;
     criado_por: string;
+    criado_por_nome?: string | null;
     atualizado_por?: string | null;
+    atualizado_por_nome?: string | null;
+    comentario_devolucao?: string | null;
+    data_devolucao?: Date | null;
     criado_em: Date;
     atualizado_em?: Date | null;
 }
@@ -100,8 +104,13 @@ export interface ListarParceirosFiltros {
     regiao?: string;
     area?: number;
     tipo?: 'fisica' | 'juridica' | 'arrendador' | 'fornecedor';
-    status?: 'rascunho' | 'pendente' | 'ativo' | 'devolvido';
+    status?: 'rascunho' | 'pendente' | 'ativo' | 'devolvido' | 'inativo';
     usina_referencia?: string;
+}
+
+export interface ConsultaParceirosOpcoes {
+    incluirInativos?: boolean;
+    rascunhosUsuarioId?: string;
 }
 
 export interface HistoricoParceiro {

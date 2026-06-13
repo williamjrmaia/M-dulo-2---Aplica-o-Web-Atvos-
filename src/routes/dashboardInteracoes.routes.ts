@@ -10,11 +10,8 @@ const dashboardRepository = new DashboardRepository();
 const dashboardService = new DashboardService(dashboardRepository);
 const dashboardController = new DashboardController(dashboardService);
 
-router.use(requireAuth);
-router.use(authorizeRoles('coordenador', 'administrador'));
-
 // GET /dashboards/interacoes — Fluxo 15
-router.get('/dashboards/interacoes', (req, res) =>
+router.get('/dashboards/interacoes', requireAuth, authorizeRoles('coordenador', 'administrador'), (req, res) =>
   dashboardController.getDashboardInteracoes(req, res)
 );
 

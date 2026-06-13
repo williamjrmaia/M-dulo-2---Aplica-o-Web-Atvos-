@@ -3,10 +3,10 @@
 <section aria-labelledby="titulo-editar-usuario">
   <div class="page-header">
     <div class="page-back">
-      <a href="/parceiros" class="back-btn" aria-label="Voltar">←</a>
+      <a href="/usuarios" class="back-btn" aria-label="Voltar">←</a>
       <div class="page-header-text">
         <h1 id="titulo-editar-usuario" class="page-title">Editar Usuário</h1>
-        <p class="subtitle">Atualize os dados de acesso do usuário</p>
+        <p class="subtitle"><%= usuario && usuario.nome ? usuario.nome : 'Atualize os dados de acesso do usuário' %></p>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
       <div class="form-card">
         <div class="form-card-header">
           <h2 class="section-title">Informações do Usuário</h2>
-          <p class="card-subtitle">Campos marcados com <span class="required">*</span> são obrigatórios</p>
+          <p class="card-subtitle"><%= usuario.email || 'Campos marcados com * são obrigatórios' %></p>
         </div>
         <div class="form-card-body">
           <div class="form-group">
@@ -42,7 +42,7 @@
       </div>
 
       <div class="form-actions">
-        <a href="/parceiros" class="btn btn-secondary">Cancelar</a>
+        <a href="/usuarios" class="btn btn-secondary">Cancelar</a>
         <button type="submit" class="btn btn-primary">Salvar Alterações</button>
       </div>
     </form>

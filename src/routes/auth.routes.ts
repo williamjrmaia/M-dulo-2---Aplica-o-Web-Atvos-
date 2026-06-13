@@ -21,6 +21,10 @@ router.get('/login', (req, res) => {
 
 router.post('/login', controller.login);
 
+router.get('/primeiro-acesso', primeiroAcessoController.renderFormPrimeiroAcesso);
+
+router.post('/primeiro-acesso', primeiroAcessoController.definirSenhaViaFormulario);
+
 router.post('/primeiro-acesso/solicitar', primeiroAcessoController.solicitarToken);
 
 router.post('/primeiro-acesso/definir-senha', primeiroAcessoController.definirSenha);

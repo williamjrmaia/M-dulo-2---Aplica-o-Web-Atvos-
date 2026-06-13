@@ -15,7 +15,7 @@ import {
   obterParceiroPorId as obterParceiroPorIdService,
   vincularTerraAoParceiro as vincularTerraAoParceiroService,
 } from '../services/parceiroService';
-import { AppError, NotFoundError, ValidationError } from '../errors/AppError';
+import { AppError, ForbiddenError, NotFoundError, ValidationError } from '../errors/AppError';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
@@ -25,8 +25,14 @@ import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.sche
 type RequestComUsuario = Request & {
   usuario?: {
     id: string;
+    perfil?: string;
   };
 };
+
+function obterPerfilAutenticado(req: Request, res: Response): string | undefined {
+  const perfil = (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+  return typeof perfil === 'string' ? perfil.trim().toLowerCase() : undefined;
+}
 
 function obterUsuarioAutenticadoId(req: Request): string {
   const usuarioId = (req as RequestComUsuario).usuario?.id;
@@ -37,10 +43,28 @@ function obterUsuarioAutenticadoId(req: Request): string {
   return usuarioId;
 }
 
+function obterUsuarioAutenticadoIdOpcional(req: Request, res: Response): string | undefined {
+  return (req as RequestComUsuario).usuario?.id ?? res.locals?.usuarioAutenticado?.id;
+}
+
 function textoOpcional(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined;
   const text = value.trim();
   return text.length > 0 ? text : undefined;
+}
+
+function validarAlteracaoStatusAnalista(statusAtual: string, statusNovo: unknown): void {
+  if (statusNovo === undefined || statusNovo === statusAtual) return;
+
+  if (!(['rascunho', 'devolvido'].includes(statusAtual) && statusNovo === 'pendente')) {
+    throw new ValidationError('Analista só pode enviar rascunhos ou devolvidos para validação');
+  }
+}
+
+function validarStatusInativoCoordenador(perfil: string | undefined, statusNovo: unknown): void {
+  if (perfil === 'coordenador' && statusNovo === 'inativo') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
+  }
 }
 
 // ─── API JSON ────────────────────────────────────────────────────────────────
@@ -144,6 +168,18 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
   }
 
+  const perfilAutenticado = obterPerfilAutenticado(req, res);
+  validarStatusInativoCoordenador(perfilAutenticado, status);
+
+  const parceiroAtual = await obterParceiroPorIdService(id, {
+    incluirInativos: perfilAutenticado === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
+
+  if (perfilAutenticado === 'analista' && status !== undefined) {
+    validarAlteracaoStatusAnalista(parceiroAtual.status, status);
+  }
+
   const parceiro = await editarParceiroService(id, {
     nome,
     apelido,
@@ -176,7 +212,10 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
     throw new ValidationError(detalhes);
   }
 
-  const parceiros = await obterParceiros(parsed.data);
+  const parceiros = await obterParceiros(parsed.data, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
   res.status(200).json(parceiros);
 });
 
@@ -191,7 +230,10 @@ export const listarRascunhosDevolvidosAnalista = asyncHandler(async (req: Reques
 });
 
 export const obterParceiroPorId = asyncHandler(async (req: Request, res: Response) => {
-  const parceiro = await obterParceiroPorIdService(req.params.id as string);
+  const parceiro = await obterParceiroPorIdService(req.params.id as string, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
   res.status(200).json(parceiro);
 });
 
@@ -250,6 +292,10 @@ export const excluirParceiro = asyncHandler(async (req: Request, res: Response) 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const { atualizado_por, comentario } = req.body;
 
+  if (obterPerfilAutenticado(req, res) === 'coordenador') {
+    throw new ForbiddenError('Coordenador não pode inativar registros');
+  }
+
   if (!atualizado_por) {
     throw new ValidationError('Campos obrigatórios: atualizado_por');
   }
@@ -264,7 +310,9 @@ export const excluirParceiro = asyncHandler(async (req: Request, res: Response) 
 
 export const listarTerrasDoParceiro = asyncHandler(async (req: Request, res: Response) => {
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-  const terras = await obterTerrasDoParceiro(id);
+  const terras = await obterTerrasDoParceiro(id, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+  });
   res.status(200).json(terras);
 });
 
@@ -358,7 +406,10 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
 export const renderListaParceiros = asyncHandler(async (req: Request, res: Response) => {
   const parsed = listarParceirosFiltrosSchema.safeParse(req.query);
   const filtros = parsed.success ? parsed.data : {};
-  const parceiros = await obterParceiros(filtros);
+  const parceiros = await obterParceiros(filtros, {
+    incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+  });
   const info = typeof req.query.info === 'string' ? req.query.info : null;
   const error = parsed.success ? null : 'Filtros inválidos. Revise os campos informados.';
   res.render('parceiros/index', { parceiros, filtros, info, error });
@@ -368,7 +419,10 @@ export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Resp
   const id = req.params.id as string;
 
   try {
-    const parceiro = await obterParceiroPorIdService(id);
+    const parceiro = await obterParceiroPorIdService(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+    });
     res.render('parceiros/show', { parceiro, naoEncontrado: false });
   } catch (err) {
     if (err instanceof NotFoundError) {
@@ -380,7 +434,19 @@ export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Resp
 });
 
 export const renderFormEdicao = asyncHandler(async (req: Request, res: Response) => {
-  res.render('parceiros/edit', { id: req.params.id, error: null, dados: {} });
+  try {
+    const parceiro = await obterParceiroPorIdService(req.params.id as string, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+    });
+    res.render('parceiros/edit', { id: req.params.id, error: null, dados: parceiro });
+  } catch (err) {
+    if (err instanceof NotFoundError) {
+      res.status(404).render('errors/404');
+      return;
+    }
+    throw err;
+  }
 });
 
 export const processarEdicao = asyncHandler(async (req: Request, res: Response) => {
@@ -430,6 +496,17 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
     if (tipo_pessoa && !['fisica', 'juridica'].includes(tipo_pessoa)) {
       throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
     }
+    const perfilAutenticado = obterPerfilAutenticado(req, res);
+    validarStatusInativoCoordenador(perfilAutenticado, status);
+
+    const parceiroAtual = await obterParceiroPorIdService(id, {
+      incluirInativos: perfilAutenticado === 'administrador',
+      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+    });
+
+    if (perfilAutenticado === 'analista' && status) {
+      validarAlteracaoStatusAnalista(parceiroAtual.status, status);
+    }
 
     await editarParceiroService(id, { ...camposEditaveis, atualizado_por: usuarioId });
 
@@ -455,7 +532,9 @@ export const renderRevisar = asyncHandler(async (req: Request, res: Response) =>
   const id = req.params.id as string;
   try {
     const parceiro = await obterParceiroPorIdService(id);
-    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    const terras = await obterTerrasDoParceiro(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    }).catch(() => []);
     res.render('parceiros/revisar', { parceiro, terras, naoEncontrado: false, error: null });
   } catch (err) {
     if (err instanceof NotFoundError) {
@@ -479,7 +558,9 @@ export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, re
   } catch (err) {
     const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao aprovar registro';
     const parceiro = await obterParceiroPorIdService(id).catch(() => null);
-    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    const terras = await obterTerrasDoParceiro(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    }).catch(() => []);
     res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
       parceiro,
       terras,
@@ -502,7 +583,9 @@ export const devolverParceiroViaFormulario = asyncHandler(async (req: Request, r
   } catch (err) {
     const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao devolver registro';
     const parceiro = await obterParceiroPorIdService(id).catch(() => null);
-    const terras = await obterTerrasDoParceiro(id).catch(() => []);
+    const terras = await obterTerrasDoParceiro(id, {
+      incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
+    }).catch(() => []);
     res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
       parceiro,
       terras,

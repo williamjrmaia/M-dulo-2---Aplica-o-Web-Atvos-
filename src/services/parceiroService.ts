@@ -20,6 +20,7 @@ import {
   EnviarParceiroValidacaoInput,
   ExcluirParceiroInput,
   HistoricoParceiro,
+  ConsultaParceirosOpcoes,
   ListarParceirosFiltros,
   Parceiro,
   ParceiroPendenteValidacao,
@@ -70,8 +71,11 @@ export async function editarParceiro(id: string, data: UpdateParceiroInput): Pro
   }
 }
 
-export async function obterParceiros(filtros: ListarParceirosFiltros = {}): Promise<Parceiro[]> {
-  return await listarParceiros(filtros);
+export async function obterParceiros(
+  filtros: ListarParceirosFiltros = {},
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<Parceiro[]> {
+  return await listarParceiros(filtros, opcoes);
 }
 
 export async function obterPendentesValidacao(): Promise<ParceiroPendenteValidacao[]> {
@@ -88,9 +92,12 @@ export async function obterRascunhosDevolvidosDoAnalista(
   return listarRascunhosDevolvidosDoAnalista(analistaId);
 }
 
-export async function obterParceiroPorId(id: string): Promise<Parceiro> {
+export async function obterParceiroPorId(
+  id: string,
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<Parceiro> {
   try {
-    const parceiro = await getParceiroById(id);
+    const parceiro = await getParceiroById(id, opcoes);
     if (!parceiro) {
       throw new NotFoundError('Parceiro não encontrado');
     }
@@ -250,9 +257,12 @@ export async function excluirParceiro(id: string, data: ExcluirParceiroInput): P
   }
 }
 
-export async function obterTerrasDoParceiro(parceiroId: string): Promise<TerraDoParceiro[]> {
+export async function obterTerrasDoParceiro(
+  parceiroId: string,
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<TerraDoParceiro[]> {
   try {
-    const terras = await listarTerrasDoParceiro(parceiroId);
+    const terras = await listarTerrasDoParceiro(parceiroId, opcoes);
     if (terras === null) {
       throw new NotFoundError('Parceiro não encontrado');
     }
