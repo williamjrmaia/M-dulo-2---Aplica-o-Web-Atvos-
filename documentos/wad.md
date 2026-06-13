@@ -3249,6 +3249,49 @@ CT29 Atualização de perfil de acesso. Regra coberta RN03. Caminho feliz. Este 
 
 Os cinco casos cobrem os três fluxos críticos citados na 5.1.1 e equilibram caminho feliz e caminho de falha. Os casos de sucesso provam a persistência lendo o banco depois da ação, e os casos de falha provam o bloqueio verificando a exceção correta, sem efeito no banco. Dessa forma, a seção mostra que cada regra de negócio central tem um teste que a defende.
 
+### 5.1.4 Evidências de Execução
+
+A execução final da suíte automatizada foi concluída sem falhas. O comando npm test terminou com 40 suites aprovadas e 327 testes aprovados, sem snapshots.
+
+```text
+Test Suites: 40 passed, 40 total
+Tests:       327 passed, 327 total
+Snapshots:   0 total
+Time:        777.986 s, estimated 847 s
+Ran all test suites.
+```
+
+O relatório de cobertura gerado por npm test -- --coverage confirmou a cobertura por camada da WebAPI. O resultado geral ficou em 81.47% de statements, 68.15% de branches, 85.26% de functions e 82.64% de lines.
+
+| Camada | Statements | Branches | Functions | Lines |
+|---|---|---|---|---|
+| controllers | 71.85% | 53.87% | 74.76% | 74.35% |
+| helpers | 100% | 100% | 100% | 100% |
+| middlewares | 46.15% | 24.39% | 61.53% | 45.31% |
+| repositories | 84.45% | 70.08% | 97.95% | 84.38% |
+| services | 99.76% | 99.27% | 100% | 99.76% |
+
+Os resultados por camada mostram que a cobertura está concentrada nos services e repositories, que concentram as regras de negócio e a persistência do CRM. A camada de helpers permaneceu totalmente coberta, e a camada de middlewares aparece com menor percentual porque parte de seus caminhos depende de cenários de autenticação e de tratamento de erro que não se repetem em todos os fluxos de teste.
+
+### 5.1.4.1 Mapeamento CT para RN para RF
+
+O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da sprint 1 com as regras de negócio e os requisitos funcionais já definidos nas seções 3.1.4 e 3.9. Os critérios CT11 e CT12 não entram nesta tabela porque não possuem RN associado e são tratados nos RNFs de desempenho e capacidade.
+
+| CT | RN | RF | Endpoint relacionado | Teste ou evidência |
+|---|---|---|---|---|
+| CT01 | RN01, RN09 | RF001, RF009 | POST /api/usuarios | src/tests/userCreateController.spec.ts; src/tests/userService.spec.ts |
+| CT02 | RN10 | RF010 | POST /api/usuarios; POST /api/parceiros; PATCH /api/parceiros/:id; POST /api/terras; PUT /api/terras/:id | src/tests/userCreateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/terraController.spec.ts |
+| CT03 | RN02 | RF011 | POST /login | src/tests/auth.test.ts |
+| CT04 | RN04, RN05, RN06 | RF004, RF005, RF007, RF008 | POST /api/parceiros; PATCH /api/parceiros/:id; GET /api/parceiros; GET /api/parceiros/:id | src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts |
+| CT05 | RN07, RN08 | RF012, RF014 | GET /api/parceiros; GET /api/terras; PATCH /api/parceiros/:id; PUT /api/terras/:id | src/test/parceiroController.get.spec.ts; src/tests/terraController.spec.ts; src/test/parceiroController.patch.spec.ts |
+| CT06 | RN11 | RF018, RF019 | POST /api/usuarios; PUT /usuarios/:id; POST /api/parceiros; PATCH /api/parceiros/:id; POST /parceiros/:id/interacoes; POST /api/terras; PUT /api/terras/:id | src/tests/userCreateController.spec.ts; src/tests/userUpdateController.spec.ts; src/test/parceiroController.spec.ts; src/test/parceiroController.patch.spec.ts; src/tests/interacao.test.ts; src/tests/terraController.spec.ts |
+| CT07 | RN12 | RF013 | GET /api/parceiros/:id/historico | src/tests/parceiroHistoricoController.spec.ts |
+| CT08 | RN13, RN14 | RF015 | GET /api/parceiros/:id/terras; POST /api/parceiros/:id/terras; GET /api/terras/:id/parceiros; POST /api/terras/:id/parceiros | src/tests/parceiroTerraController.spec.ts; src/tests/terraParceiroController.spec.ts |
+| CT09 | RN15 | RF020 | PUT /usuarios/:id/inativar; PUT /auth/sessoes/:id | src/tests/userInactivateController.spec.ts; src/tests/userServiceInactivateSessions.spec.ts |
+| CT10 | RN08, RN11 | RF007, RF008, RF012 | GET /api/parceiros; GET /api/parceiros/:id; GET /api/terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts; src/tests/terraController.spec.ts |
+
+Essa tabela fecha o elo entre os critérios técnicos, a matriz RF para RN para endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e em um conjunto de testes correspondente.
+
 ## 5.2. Testes de usabilidade (sprint 5)
 
 ### 5.2.1. Relatório de testes de guerrilha
