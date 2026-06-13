@@ -3619,7 +3619,7 @@ Esta seção apresenta os testes unitários da camada de Service, que conhecem a
 
 #### Cobertura da camada de Service
 
-A cobertura é medida com o comando npm test -- --coverage, que gera o relatório do Jest por arquivo. O service principal do produto, o parceiroService, alcança cobertura acima do mínimo de 80% exigido, com cerca de 81% das linhas e 100% das funções exercitadas pelos testes. Os services de usuário também têm testes unitários dedicados. O relatório completo de cobertura por camada está transcrito na seção 5.1.4.
+A cobertura é medida com o comando npm test -- --coverage, que gera o relatório do Jest por arquivo. O service principal do produto, o parceiroService, alcança cobertura acima do mínimo de 80% exigido, com 100% das linhas e das funções exercitadas pelos testes na execução final. No relatório consolidado, a camada de services fechou com 99.76% das linhas cobertas. Os services de usuário também têm testes unitários dedicados. O relatório completo de cobertura por camada está transcrito na seção 5.1.4.
 
 #### Casos de teste vinculados às regras de negócio
 
@@ -3703,6 +3703,26 @@ O banco usado pelos testes é definido pela variável de ambiente DATABASE_URL_T
 O isolamento entre os casos segue o mesmo padrão da camada de service. Os helpers de src/tests/helpers criam os usuários e registros que cada teste precisa no beforeEach e os removem no afterEach, para que um caso não dependa do que outro deixou no banco. Ao final de cada arquivo, o afterAll encerra o pool de conexões, garantindo que a suíte termine sem conexões abertas.
 
 A validação do ambiente é feita pela própria suíte. Os specs de controller em src/tests usam request(app), percorrem o fluxo completo de rota, controller, service, repository e banco, e executam com sucesso no npm test.
+
+#### Casos cobertos por endpoint
+
+Os casos de integração foram organizados em quatro categorias, seguindo o contrato HTTP de cada endpoint: sucesso (200 ou 201), falha de validação de contrato (400 ou 422), regra de negócio violada (409) e recurso não encontrado (404). A tabela abaixo consolida onde cada categoria está coberta nos endpoints principais da seção 3.1.4. Quando a categoria não faz sentido para o endpoint, como um conflito de duplicidade em uma consulta, a célula indica que o cenário não se aplica.
+
+| Endpoint principal | Sucesso (200/201) | Validação (400/422) | Regra de negócio (409) | Não encontrado (404) |
+|---|---|---|---|---|
+| POST /api/parceiros | parceiroCadastroComplementar.spec.ts | CT61 (parceiroCadastroController.spec.ts) | CT63 (parceiroCadastroController.spec.ts) | não se aplica |
+| GET /api/parceiros | casos 1 a 4 (parceiroFiltrosController.spec.ts) | CT62 (parceiroFiltrosController.spec.ts) | não se aplica | não se aplica |
+| GET /api/parceiros/:id | parceiroDetalheController.spec.ts | não se aplica | não se aplica | parceiroDetalheController.spec.ts, com inexistente, malformado e inativo |
+| PATCH /api/parceiros/:id | CT53 (parceiroEdicaoController.spec.ts) | CT60 (parceiroEdicaoController.spec.ts) | CT66 (parceiroEdicaoController.spec.ts) | CT64 e CT65 (parceiroEdicaoController.spec.ts) |
+| PUT /api/parceiros/:id/validacao | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts | parceiroValidacaoController.spec.ts |
+| PUT /api/parceiros/:id/aprovar e PUT /api/parceiros/:id/devolver | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts | parceiroAprovacaoController.spec.ts e parceiroDevolucaoController.spec.ts |
+| POST /api/usuarios | userCreateController.spec.ts | userCreateController.spec.ts | userCreateController.spec.ts | não se aplica |
+| PUT /usuarios/:id | userUpdateController.spec.ts | userUpdateController.spec.ts | não se aplica | userUpdateController.spec.ts |
+| POST /api/terras e PUT /api/terras/:id | terraController.spec.ts | terraController.spec.ts | não se aplica | terraController.spec.ts |
+| GET e POST /api/parceiros/:id/terras e /api/terras/:id/parceiros | parceiroTerraController.spec.ts e terraParceiroController.spec.ts | parceiroTerraController.spec.ts | parceiroTerraController.spec.ts, com vínculo duplicado | parceiroTerraController.spec.ts e terraParceiroController.spec.ts |
+| POST /primeiro-acesso/solicitar e POST /primeiro-acesso/definir-senha | CT51 e CT52 (primeiroAcessoController.spec.ts) | CT59 e casos de senha (primeiroAcessoController.spec.ts) | não se aplica | CT67 (primeiroAcessoController.spec.ts) |
+
+Os identificadores CT51 a CT67 correspondem aos casos numerados nos arquivos citados, e os demais cenários são cobertos por specs escritos em sprints anteriores e mantidos na suíte. Com isso, cada endpoint principal possui os quatro cenários-chave cobertos quando aplicáveis, e a execução consolidada desses casos está registrada na seção 5.1.4.
 
 ### 5.1.4 Evidências de Execução
 
