@@ -43,12 +43,9 @@ export class PrimeiroAcessoController {
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-      const status =
-        message === 'Usuário já acessou o sistema anteriormente'
-          ? 409
-          : message === 'Usuário não elegível para primeiro acesso'
-            ? 404
-            : 400;
+      let status = 400;
+      if (message === 'Usuário já acessou o sistema anteriormente') status = 409;
+      else if (message === 'Usuário não elegível para primeiro acesso') status = 404;
 
       return res.status(status).render('login/primeiro-acesso', {
         error: message,
