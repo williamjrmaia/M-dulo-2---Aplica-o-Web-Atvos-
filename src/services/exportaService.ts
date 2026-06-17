@@ -22,7 +22,7 @@ export class ExportaService {
     try {
       const buffer = this.converterParaFormatoExportacao(parceiros);
       return buffer;
-    } catch (err) {
+    } catch {
       throw new InternalError();
     }
   }
