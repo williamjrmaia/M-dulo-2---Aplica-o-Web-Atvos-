@@ -47,6 +47,8 @@ Para solucionar esse problema, foi desenvolvida uma aplicação web do tipo CRM 
 
 A aplicação foi concebida com base em quatro pilares fundamentais. O primeiro consiste no cadastro centralizado de parceiros, fornecedores e terras, permitindo a manutenção de informações padronizadas e atualizadas em uma única base de dados. O segundo é o registro completo do histórico de interações, alterações cadastrais e atividades realizadas pelos usuários, garantindo rastreabilidade e preservação do conhecimento institucional ao longo do tempo. O terceiro é o fluxo de validação e governança dos dados, que possibilita o envio, aprovação, devolução e acompanhamento de registros por meio de diferentes estados de validação, assegurando maior confiabilidade das informações armazenadas. O quarto pilar corresponde ao controle de acesso baseado em perfis de usuário, permitindo que administradores, coordenadores e analistas utilizem o sistema de acordo com suas responsabilidades e níveis de permissão.
 
+Além da gestão de parceiros, a solução contempla o gerenciamento de terras e dos vínculos entre parceiros e propriedades, possibilitando uma visão mais completa das relações comerciais mantidas pela ATVOS. Também foram implementadas funcionalidades de consulta, filtragem, exportação de dados, gestão de usuários e visualização de indicadores relacionados às interações registradas, ampliando a capacidade analítica e operacional da plataforma.
+
 
 # <a name="c2"></a>2. Visão Geral da Aplicação Web (sprint 1)
 
