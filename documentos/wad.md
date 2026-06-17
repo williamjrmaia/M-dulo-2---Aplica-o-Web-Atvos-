@@ -43,6 +43,8 @@
 
 A ATVOS, empresa do setor sucroenergético, enfrentava dificuldades na gestão do relacionamento com seus parceiros de terras e fornecedores de cana devido à dispersão das informações em planilhas, e-mails e registros individuais. A ausência de um ambiente centralizado comprometia a preservação do histórico de interações, dificultava a padronização dos cadastros e tornava a continuidade dos relacionamentos dependente do conhecimento de cada colaborador. Na prática, mudanças na equipe podiam resultar na perda de informações estratégicas sobre negociações, visitas e acordos estabelecidos ao longo das safras, impactando diretamente a tomada de decisão e a eficiência operacional.
 
+Para solucionar esse problema, foi desenvolvida uma aplicação web do tipo CRM (*Customer Relationship Management*), voltada à gestão centralizada dos relacionamentos da ATVOS com parceiros agrícolas, proprietários de terras e fornecedores de cana. A solução substitui o modelo fragmentado anteriormente utilizado por um ambiente digital único, estruturado e rastreável, permitindo o registro, consulta, atualização e acompanhamento das informações relevantes para o negócio.
+
 
 # <a name="c2"></a>2. Visão Geral da Aplicação Web (sprint 1)
 
