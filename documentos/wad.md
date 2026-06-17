@@ -49,6 +49,7 @@ A aplicação foi concebida com base em quatro pilares fundamentais. O primeiro 
 
 Além da gestão de parceiros, a solução contempla o gerenciamento de terras e dos vínculos entre parceiros e propriedades, possibilitando uma visão mais completa das relações comerciais mantidas pela ATVOS. Também foram implementadas funcionalidades de consulta, filtragem, exportação de dados, gestão de usuários e visualização de indicadores relacionados às interações registradas, ampliando a capacidade analítica e operacional da plataforma.
 
+Com a adoção dessa solução, a ATVOS passa a contar com uma fonte única e confiável de informações sobre seus parceiros estratégicos, reduzindo retrabalho, fortalecendo a governança dos dados e apoiando decisões baseadas em informações históricas estruturadas. Dessa forma, o relacionamento com parceiros agrícolas deixa de depender exclusivamente do conhecimento individual dos colaboradores e passa a constituir um ativo institucional permanente da organização.
 
 # <a name="c2"></a>2. Visão Geral da Aplicação Web (sprint 1)
 
