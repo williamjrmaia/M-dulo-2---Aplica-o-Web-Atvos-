@@ -41,13 +41,8 @@
 
 # <a name="c1"></a>1. Introdução (sprints 1 a 5)
 
-A ATVOS, empresa do setor sucroenergético, enfrenta dificuldades na gestão do relacionamento com seus parceiros de terras e fornecedores de cana. As informações encontram-se dispersas em planilhas, e-mails e anotações individuais, sem padronização ou centralização, o que torna o histórico de interações dependente do conhecimento de cada analista. Na prática, quando um coordenador de campo deixa a equipe, os registros de negociações e visitas com determinado parceiro simplesmente desaparecem, obrigando o substituto a reconstruir o relacionamento do zero a cada safra. Dessa forma, a continuidade dos relacionamentos é comprometida, assim como a capacidade de tomada de decisão estratégica por parte da gestão.
+A ATVOS, empresa do setor sucroenergético, enfrentava dificuldades na gestão do relacionamento com seus parceiros de terras e fornecedores de cana devido à dispersão das informações em planilhas, e-mails e registros individuais. A ausência de um ambiente centralizado comprometia a preservação do histórico de interações, dificultava a padronização dos cadastros e tornava a continuidade dos relacionamentos dependente do conhecimento de cada colaborador. Na prática, mudanças na equipe podiam resultar na perda de informações estratégicas sobre negociações, visitas e acordos estabelecidos ao longo das safras, impactando diretamente a tomada de decisão e a eficiência operacional.
 
-Diante dessa problemática, será desenvolvida uma aplicação web do tipo CRM, sigla para Customer Relationship Management, isto é, uma ferramenta voltada à gestão centralizada do relacionamento com clientes e parceiros de negócio. No contexto deste projeto, a solução permitirá que a ATVOS registre, acompanhe e analise suas interações com parceiros de terras e fornecedores de cana em um único ambiente digital, substituindo o modelo atual fragmentado por um fluxo estruturado e rastreável de informações.
-
-A aplicação será construída sobre três pilares principais. O primeiro é o cadastro centralizado, por meio do qual parceiros e fornecedores serão registrados com informações detalhadas de perfil, localização e oportunidades associadas. O segundo é o histórico de alterações e interações, que garantirá rastreabilidade e continuidade das relações independente de mudanças no time responsável. O terceiro é o controle de acesso por perfil, com três níveis distintos de permissão, assegurando que cada usuário interaja com o sistema de acordo com seu papel e responsabilidade dentro da organização.
-
-Com a adoção dessa solução, espera-se que a ATVOS consolide uma visão única e confiável de seus parceiros estratégicos, reduza o retrabalho operacional e fortaleça a tomada de decisões com base em dados estruturados e históricos preservados ao longo das safras.
 
 # <a name="c2"></a>2. Visão Geral da Aplicação Web (sprint 1)
 
