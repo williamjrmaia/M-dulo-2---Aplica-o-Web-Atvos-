@@ -15,7 +15,7 @@ export class ExportaService {
     // RN03 — converter para formato de exportação (CSV/XLSX)
     try {
       return this.converterParaFormatoExportacao(parceiros);
-    } catch (err) {
+    } catch {
       throw new InternalError();
     }
   }

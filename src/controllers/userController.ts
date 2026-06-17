@@ -139,6 +139,7 @@ export class UserController {
       const usuarios = await this.userService.listarUsuarios();
       return res.render('usuarios/index', { usuarios, error: null });
     } catch (error) {
+      console.error('[CONTROLLER] Erro ao listar usuarios:', error);
       return res.status(500).render('usuarios/index', { usuarios: [], error: 'Erro interno do servidor' });
     }
   };
@@ -149,6 +150,7 @@ export class UserController {
       const perfis = await this.userService.listarPerfis();
       return res.render('usuarios/new', { perfis, dados: {}, error: null });
     } catch (error) {
+      console.error('[CONTROLLER] Erro ao renderizar novo usuario:', error);
       return res.status(500).render('usuarios/new', { perfis: [], dados: {}, error: 'Erro interno do servidor' });
     }
   };
@@ -190,6 +192,7 @@ export class UserController {
       }
       return res.render('usuarios/edit', { usuario, error: null });
     } catch (error) {
+      console.error('[CONTROLLER] Erro ao renderizar edicao de usuario:', error);
       return res.status(500).render('usuarios/edit', { error: 'Erro interno do servidor', usuario: null });
     }
   };
@@ -260,6 +263,7 @@ export class UserController {
       }
       return res.render('usuarios/inativar', { usuario, error: null });
     } catch (error) {
+      console.error('[CONTROLLER] Erro ao renderizar confirmacao de inativacao:', error);
       return res.status(500).render('usuarios/inativar', { error: 'Erro interno do servidor', usuario: null });
     }
   };
@@ -293,6 +297,7 @@ export class UserController {
       }
       return res.render('usuarios/perfil', { usuario, perfis, error: null });
     } catch (error) {
+      console.error('[CONTROLLER] Erro ao renderizar perfil de usuario:', error);
       return res.status(500).render('usuarios/perfil', { error: 'Erro interno do servidor', usuario: null, perfis: [] });
     }
   };
