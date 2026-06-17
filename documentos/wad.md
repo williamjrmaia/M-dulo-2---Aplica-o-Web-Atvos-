@@ -45,6 +45,8 @@ A ATVOS, empresa do setor sucroenergético, enfrentava dificuldades na gestão d
 
 Para solucionar esse problema, foi desenvolvida uma aplicação web do tipo CRM (*Customer Relationship Management*), voltada à gestão centralizada dos relacionamentos da ATVOS com parceiros agrícolas, proprietários de terras e fornecedores de cana. A solução substitui o modelo fragmentado anteriormente utilizado por um ambiente digital único, estruturado e rastreável, permitindo o registro, consulta, atualização e acompanhamento das informações relevantes para o negócio.
 
+A aplicação foi concebida com base em quatro pilares fundamentais. O primeiro consiste no cadastro centralizado de parceiros, fornecedores e terras, permitindo a manutenção de informações padronizadas e atualizadas em uma única base de dados. O segundo é o registro completo do histórico de interações, alterações cadastrais e atividades realizadas pelos usuários, garantindo rastreabilidade e preservação do conhecimento institucional ao longo do tempo. O terceiro é o fluxo de validação e governança dos dados, que possibilita o envio, aprovação, devolução e acompanhamento de registros por meio de diferentes estados de validação, assegurando maior confiabilidade das informações armazenadas. O quarto pilar corresponde ao controle de acesso baseado em perfis de usuário, permitindo que administradores, coordenadores e analistas utilizem o sistema de acordo com suas responsabilidades e níveis de permissão.
+
 
 # <a name="c2"></a>2. Visão Geral da Aplicação Web (sprint 1)
 
