@@ -65,13 +65,18 @@ export class AuthService {
 
       return sessao;
     } catch (err: unknown) {
-      if ((err as { code?: string }).code === '22P02') {
-        throw new Error('Sessao nao encontrada');
-      }
-      if ((err as { code?: string }).code === '23503') {
-        throw new Error('Usuario revogador nao encontrado');
-      }
-      throw err;
+      this.traduzirErroSessao(err);
     }
+  }
+
+  private traduzirErroSessao(err: unknown): never {
+    const code = (err as { code?: string }).code;
+    if (code === '22P02') {
+      throw new Error('Sessao nao encontrada');
+    }
+    if (code === '23503') {
+      throw new Error('Usuario revogador nao encontrado');
+    }
+    throw err;
   }
 }

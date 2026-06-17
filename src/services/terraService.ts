@@ -17,7 +17,33 @@ import {
   UpdateTerraInput,
   VincularParceiroATerraInput,
 } from '../models/terra';
-import { ConflictError, NotFoundError, UnprocessableEntityError } from '../errors/AppError';
+import { AppError, ConflictError, NotFoundError, UnprocessableEntityError } from '../errors/AppError';
+
+type TratamentoErroTerra = {
+  fkMessage?: string;
+  uniqueMessage?: string;
+};
+
+const FABRICAS_ERRO_TERRA: Record<string, (t: TratamentoErroTerra) => AppError | undefined> = {
+  '22P02': () => new NotFoundError('Terra não encontrada'),
+  '23505': (t) => (t.uniqueMessage ? new ConflictError(t.uniqueMessage) : undefined),
+  '23503': (t) => (t.fkMessage ? new UnprocessableEntityError(t.fkMessage) : undefined),
+};
+
+// Re-lança AppError do domínio e traduz códigos do Postgres (id inválido, FK e
+// unicidade) em AppError para os services de terra.
+function lancarErroTerraTraduzido(err: unknown, tratamento: TratamentoErroTerra = {}): never {
+  if (err instanceof AppError) {
+    throw err;
+  }
+  const code = String((err as { code?: string }).code);
+  const fabrica = FABRICAS_ERRO_TERRA[code];
+  const erroTraduzido = fabrica ? fabrica(tratamento) : undefined;
+  if (erroTraduzido) {
+    throw erroTraduzido;
+  }
+  throw err;
+}
 
 export async function cadastrarTerra(data: CreateTerraInput): Promise<Terra> {
   try {
@@ -46,13 +72,7 @@ export async function obterTerraPorId(
     }
     return terra;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Terra não encontrada');
-    }
-    throw err;
+    lancarErroTerraTraduzido(err);
   }
 }
 
@@ -93,16 +113,7 @@ export async function excluirTerra(id: string, data: ExcluirTerraInput): Promise
 
     return terra;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError || err instanceof ConflictError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Terra não encontrada');
-    }
-    if ((err as { code?: string }).code === '23503') {
-      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
-    }
-    throw err;
+    lancarErroTerraTraduzido(err, { fkMessage: 'atualizado_por não referencia um usuário existente' });
   }
 }
 
@@ -117,13 +128,7 @@ export async function obterParceirosDaTerra(
     }
     return parceiros;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Terra não encontrada');
-    }
-    throw err;
+    lancarErroTerraTraduzido(err);
   }
 }
 
@@ -138,18 +143,9 @@ export async function vincularParceiroATerra(
     }
     return vinculo;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Terra não encontrada');
-    }
-    if ((err as { code?: string }).code === '23505') {
-      throw new ConflictError('Parceiro já vinculado à terra');
-    }
-    if ((err as { code?: string }).code === '23503') {
-      throw new UnprocessableEntityError('parceiro_id não referencia um parceiro existente');
-    }
-    throw err;
+    lancarErroTerraTraduzido(err, {
+      uniqueMessage: 'Parceiro já vinculado à terra',
+      fkMessage: 'parceiro_id não referencia um parceiro existente',
+    });
   }
 }

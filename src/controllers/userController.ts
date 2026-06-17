@@ -6,6 +6,93 @@ import {
 } from '../schemas/usuario.schema';
 import { UserService } from '../services/userService';
 
+function resolverRoleIdFormulario(
+  parsed: ReturnType<typeof atualizarPerfilUsuarioSchema.safeParse>,
+  body: Record<string, any>
+): any {
+  if (parsed.success) return parsed.data.role_id;
+  return body.role_id ?? body.perfil_acesso_id;
+}
+
+function statusEMensagemErroAtualizaPerfilFormulario(error: unknown): { status: number; mensagem: string } {
+  const mensagem = error instanceof Error ? error.message : 'Erro interno do servidor';
+  const status = mensagem === 'Perfil nao encontrado' ? 400 : 500;
+  return { status, mensagem };
+}
+
+function extrairIdParam(req: Request): string {
+  const id = req.params.id;
+  return Array.isArray(id) ? id[0] : id;
+}
+
+function perfilDosHeaders(req: Request): unknown {
+  return req.headers['x-user-role'] ?? req.headers['x-user-perfil'] ?? req.headers['x-perfil-acesso'];
+}
+
+// Responde o erro de um endpoint JSON a partir de um mapa mensagem -> status;
+// mensagens não mapeadas viram 500.
+function responderComMapa(res: Response, error: unknown, mapa: Record<string, number>): Response {
+  const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+  const status = mapa[message];
+  if (status) {
+    return res.status(status).json({ error: message });
+  }
+  return res.status(500).json({ error: 'Erro interno do servidor' });
+}
+
+function responderPermissaoNegada(
+  res: Response,
+  permissao: 'autorizado' | 'nao-autenticado' | 'proibido'
+): Response | null {
+  if (permissao === 'nao-autenticado') {
+    return res.status(401).json({ error: 'Token invalido ou ausente' });
+  }
+  if (permissao === 'proibido') {
+    return res.status(403).json({ error: 'Usuario sem permissao de administrador' });
+  }
+  return null;
+}
+
+function statusErroCadastroFormulario(error: unknown): { status: number; message: string } {
+  const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+  const status = message === 'Erro interno do servidor' ? 500 : 400;
+  return { status, message };
+}
+
+function statusErroAtualizaFormulario(error: unknown): { status: number; message: string } {
+  const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+  let status = 400;
+  if (message === 'Usuario nao localizado na base') {
+    status = 404;
+  } else if (message === 'Erro interno do servidor') {
+    status = 500;
+  }
+  return { status, message };
+}
+
+const ERRO_CRIA_USUARIO: Record<string, number> = {
+  'Dados de entrada invalidos': 400,
+  'Perfil nao encontrado': 422,
+  'Email ja cadastrado': 409,
+};
+
+const ERRO_ATUALIZA_USUARIO: Record<string, number> = {
+  'Dados de entrada invalidos': 400,
+  'Perfil nao encontrado': 400,
+  'Usuario nao localizado na base': 404,
+};
+
+const ERRO_INATIVA_USUARIO: Record<string, number> = {
+  'Dados obrigatorios ausentes': 400,
+  'Usuario nao encontrado': 404,
+};
+
+const ERRO_ATUALIZA_PERFIL: Record<string, number> = {
+  'Dados obrigatorios ausentes': 400,
+  'Perfil nao encontrado': 400,
+  'Usuario nao encontrado': 404,
+};
+
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -24,10 +111,7 @@ export class UserController {
     }
 
     const authorization = req.headers.authorization;
-    const perfil =
-      req.headers['x-user-role'] ??
-      req.headers['x-user-perfil'] ??
-      req.headers['x-perfil-acesso'];
+    const perfil = perfilDosHeaders(req);
 
     if (!authorization) return 'nao-autenticado';
     if (perfil !== 'administrador') return 'proibido';
@@ -45,17 +129,7 @@ export class UserController {
       const usuario = await this.userService.cadastraUsuario({ nome, email, perfil_acesso_id });
       return res.status(201).location(`/api/usuarios/${usuario.id}`).json(usuario);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-      if (message === 'Dados de entrada invalidos') {
-        return res.status(400).json({ error: message });
-      }
-      if (message === 'Perfil nao encontrado') {
-        return res.status(422).json({ error: message });
-      }
-      if (message === 'Email ja cadastrado') {
-        return res.status(409).json({ error: message });
-      }
-      return res.status(500).json({ error: 'Erro interno do servidor' });
+      return responderComMapa(res, error, ERRO_CRIA_USUARIO);
     }
   };
 
@@ -96,8 +170,7 @@ export class UserController {
       await this.userService.cadastraUsuario(parsed.data);
       return res.redirect('/usuarios');
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-      const status = message === 'Erro interno do servidor' ? 500 : 400;
+      const { status, message } = statusErroCadastroFormulario(error);
       const perfis = await this.userService.listarPerfis().catch(() => []);
       return res.status(status).render('usuarios/new', {
         error: message,
@@ -108,7 +181,7 @@ export class UserController {
   };
 
   editarUsuario = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     console.log(`[CONTROLLER] Renderizando formulario de edicao do usuario: ${id}`);
     try {
       const usuario = await this.userService.buscarUsuario(id);
@@ -122,7 +195,7 @@ export class UserController {
   };
 
   atualizaUsuario = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     const parsed = atualizarUsuarioSchema.safeParse(req.body);
     if (!parsed.success) {
       return res.status(400).json({ error: 'Dados de entrada invalidos' });
@@ -133,19 +206,12 @@ export class UserController {
       console.log('[CONTROLLER] Retornando 200');
       return res.status(200).json({ success: 'Dados atualizados com governanca', usuario });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-      if (message === 'Dados de entrada invalidos' || message === 'Perfil nao encontrado') {
-        return res.status(400).json({ error: message });
-      }
-      if (message === 'Usuario nao localizado na base') {
-        return res.status(404).json({ error: message });
-      }
-      return res.status(500).json({ error: 'Erro interno do servidor' });
+      return responderComMapa(res, error, ERRO_ATUALIZA_USUARIO);
     }
   };
 
   atualizaUsuarioViaFormulario = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     const { nome, email, ativo, perfil_acesso_id } = req.body;
     console.log(`[CONTROLLER] POST formulario edicao usuario: ${id}`);
     const parsed = atualizarUsuarioSchema.safeParse({ nome, email, ativo, perfil_acesso_id });
@@ -159,8 +225,7 @@ export class UserController {
       await this.userService.atualizaUsuario(id, parsed.data);
       return res.redirect(`/usuarios/${id}/editar`);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-      const status = message === 'Usuario nao localizado na base' ? 404 : message === 'Erro interno do servidor' ? 500 : 400;
+      const { status, message } = statusErroAtualizaFormulario(error);
       return res.status(status).render('usuarios/edit', {
         error: message,
         usuario: await this.montarUsuarioFormulario(id, { nome, email, ativo, perfil_acesso_id }),
@@ -169,25 +234,24 @@ export class UserController {
   };
 
   inativarUsuario = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     console.log(`[CONTROLLER] Inativacao de usuario recebida: ${id}`);
     const permissao = this.validarPermissaoAdmin(req);
-    if (permissao === 'nao-autenticado') return res.status(401).json({ error: 'Token invalido ou ausente' });
-    if (permissao === 'proibido') return res.status(403).json({ error: 'Usuario sem permissao de administrador' });
+    const respostaPermissao = responderPermissaoNegada(res, permissao);
+    if (respostaPermissao) {
+      return respostaPermissao;
+    }
     try {
       const usuario = await this.userService.inativarUsuario(id);
       console.log('[CONTROLLER] Retornando 200');
       return res.status(200).json({ success: 'Acesso revogado e historico preservado', usuario });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-      if (message === 'Dados obrigatorios ausentes') return res.status(400).json({ error: message });
-      if (message === 'Usuario nao encontrado') return res.status(404).json({ error: message });
-      return res.status(500).json({ error: 'Erro interno do servidor' });
+      return responderComMapa(res, error, ERRO_INATIVA_USUARIO);
     }
   };
 
   confirmarInativacao = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     console.log(`[CONTROLLER] Renderizando confirmacao de inativacao: ${id}`);
     try {
       const usuario = await this.userService.buscarUsuario(id);
@@ -201,7 +265,7 @@ export class UserController {
   };
 
   inativarUsuarioViaFormulario = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     console.log(`[CONTROLLER] POST formulario inativacao usuario: ${id}`);
     try {
       await this.userService.inativarUsuario(id);
@@ -217,7 +281,7 @@ export class UserController {
   };
 
   editarPerfil = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     console.log(`[CONTROLLER] Renderizando formulario de perfil do usuario: ${id}`);
     try {
       const [usuario, perfis] = await Promise.all([
@@ -234,7 +298,7 @@ export class UserController {
   };
 
   atualizaPerfilDeAcesso = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     const parsed = atualizarPerfilUsuarioSchema.safeParse(req.body);
     if (!parsed.success || !parsed.data.role_id) {
       return res.status(400).json({ error: 'Dados obrigatorios ausentes' });
@@ -246,19 +310,14 @@ export class UserController {
       console.log('[CONTROLLER] Retornando 200');
       return res.status(200).json({ success: 'Perfil de acesso atualizado', usuario });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-      if (message === 'Dados obrigatorios ausentes' || message === 'Perfil nao encontrado') {
-        return res.status(400).json({ error: message });
-      }
-      if (message === 'Usuario nao encontrado') return res.status(404).json({ error: message });
-      return res.status(500).json({ error: 'Erro interno do servidor' });
+      return responderComMapa(res, error, ERRO_ATUALIZA_PERFIL);
     }
   };
 
   atualizaPerfilDeAcessoViaFormulario = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     const parsed = atualizarPerfilUsuarioSchema.safeParse(req.body);
-    const role_id = parsed.success ? parsed.data.role_id : req.body.role_id ?? req.body.perfil_acesso_id;
+    const role_id = resolverRoleIdFormulario(parsed, req.body);
     console.log(`[CONTROLLER] POST formulario perfil para usuario: ${id}`);
     if (!parsed.success || !role_id) {
       return res.status(400).render('usuarios/perfil', {
@@ -271,9 +330,9 @@ export class UserController {
       await this.userService.atualizaPerfilDeAcesso(id, role_id);
       return res.redirect(`/usuarios/${id}/perfil`);
     } catch (error) {
-      const status = error instanceof Error && error.message === 'Perfil nao encontrado' ? 400 : 500;
+      const { status, mensagem } = statusEMensagemErroAtualizaPerfilFormulario(error);
       return res.status(status).render('usuarios/perfil', {
-        error: error instanceof Error ? error.message : 'Erro interno do servidor',
+        error: mensagem,
         usuario: await this.montarUsuarioFormulario(id, { perfil_acesso_id: role_id }),
         perfis: await this.userService.listarPerfis(),
       });

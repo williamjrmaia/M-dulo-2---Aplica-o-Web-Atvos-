@@ -6,13 +6,7 @@ export class ExportaService {
   constructor(private readonly exportaRepository: ExportaRepository) {}
 
   async processarExportacaoParceiros(): Promise<Buffer> {
-    let parceiros: ParceiroExportacao[];
-    try {
-      parceiros = await this.exportaRepository.buscarTodosDadosParceiros();
-    } catch (err) {
-      if (err instanceof DataAccessException) throw err;
-      throw new DataAccessException();
-    }
+    const parceiros = await this.buscarDadosParaExportacao();
 
     if (!parceiros || parceiros.length === 0) {
       throw new EmptyDataException();
@@ -20,17 +14,28 @@ export class ExportaService {
 
     // RN03 — converter para formato de exportação (CSV/XLSX)
     try {
-      const buffer = this.converterParaFormatoExportacao(parceiros);
-      return buffer;
+      return this.converterParaFormatoExportacao(parceiros);
     } catch (err) {
       throw new InternalError();
     }
   }
 
+  private async buscarDadosParaExportacao(): Promise<ParceiroExportacao[]> {
+    try {
+      return await this.exportaRepository.buscarTodosDadosParceiros();
+    } catch (err) {
+      if (err instanceof DataAccessException) throw err;
+      throw new DataAccessException();
+    }
+  }
+
+  private campoPrecisaAspas(str: string): boolean {
+    return str.includes(',') || str.includes('"') || str.includes('\n');
+  }
+
   private escaparCampoCSV(valor: string | null | undefined): string {
-    if (valor === null || valor === undefined) return '';
-    const str = String(valor);
-    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    const str = String(valor ?? '');
+    if (this.campoPrecisaAspas(str)) {
       return `"${str.replace(/"/g, '""')}"`;
     }
     return str;

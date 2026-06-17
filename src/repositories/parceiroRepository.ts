@@ -1,4 +1,5 @@
 import pool from '../config/connection';
+import { PoolClient } from 'pg';
 import {
   AprovarParceiroInput,
   Parceiro,
@@ -23,6 +24,49 @@ function vazioComoNull(value: string | undefined): string | null {
   return text.length > 0 ? text : null;
 }
 
+type CampoAtualizavelParceiro = {
+  chave: keyof UpdateParceiroInput;
+  coluna: string;
+  transformar?: (valor: NonNullable<UpdateParceiroInput[keyof UpdateParceiroInput]>) => unknown;
+};
+
+const CAMPOS_ATUALIZAVEIS_PARCEIRO: CampoAtualizavelParceiro[] = [
+  { chave: 'nome', coluna: 'nome' },
+  { chave: 'apelido', coluna: 'apelido' },
+  { chave: 'tipo_pessoa', coluna: 'tipo_pessoa' },
+  { chave: 'cpf_cnpj', coluna: 'cpf_cnpj' },
+  { chave: 'email', coluna: 'email' },
+  { chave: 'data_nascimento', coluna: 'data_nascimento' },
+  { chave: 'nome_acompanhante', coluna: 'nome_acompanhante', transformar: vazioComoNull as never },
+  { chave: 'regiao', coluna: 'regiao', transformar: vazioComoNull as never },
+  { chave: 'inscricao_estadual', coluna: 'inscricao_estadual', transformar: vazioComoNull as never },
+  { chave: 'usina_referencia', coluna: 'usina_referencia', transformar: vazioComoNull as never },
+  { chave: 'area_plantada', coluna: 'area_plantada', transformar: vazioComoNull as never },
+  { chave: 'tch_medio', coluna: 'tch_medio', transformar: vazioComoNull as never },
+  { chave: 'atr_medio', coluna: 'atr_medio', transformar: vazioComoNull as never },
+  { chave: 'observacoes', coluna: 'observacoes', transformar: vazioComoNull as never },
+  { chave: 'status', coluna: 'status' },
+];
+
+function montarCamposAtualizacaoParceiro(data: UpdateParceiroInput): {
+  campos: string[];
+  valores: unknown[];
+  contador: number;
+} {
+  const campos: string[] = [];
+  const valores: unknown[] = [];
+  let contador = 1;
+
+  for (const { chave, coluna, transformar } of CAMPOS_ATUALIZAVEIS_PARCEIRO) {
+    const valor = data[chave];
+    if (valor === undefined) continue;
+    campos.push(`${coluna} = $${contador++}`);
+    valores.push(transformar ? transformar(valor as never) : valor);
+  }
+
+  return { campos, valores, contador };
+}
+
 function possuiDadosComerciais(data: VincularTerraAoParceiroInput): boolean {
   return Boolean(
     data.tipo_parceiro ||
@@ -30,6 +74,87 @@ function possuiDadosComerciais(data: VincularTerraAoParceiroInput): boolean {
       data.data_inicio ||
       data.data_fim ||
       data.observacoes
+  );
+}
+
+function normalizarTelefone(telefone: string | undefined): string | null {
+  const texto = telefone?.trim();
+  return texto ? texto : null;
+}
+
+function comentarioCriacaoParceiro(status: string | undefined): string {
+  return status === 'pendente'
+    ? 'Parceiro criado e enviado para validação'
+    : 'Parceiro criado como rascunho';
+}
+
+function telefoneAposAtualizacao(data: UpdateParceiroInput, dadosAnteriores: Parceiro): string | null {
+  if (data.telefone !== undefined) {
+    return vazioComoNull(data.telefone);
+  }
+  return dadosAnteriores.telefone ?? null;
+}
+
+// Atualiza o telefone principal do parceiro: desmarca o atual e insere o novo.
+// Sem alteração de telefone quando o campo não veio na requisição.
+async function aplicarTelefoneNaAtualizacao(
+  client: PoolClient,
+  id: string,
+  data: UpdateParceiroInput
+): Promise<void> {
+  if (data.telefone === undefined) {
+    return;
+  }
+
+  const telefone = vazioComoNull(data.telefone);
+
+  await client.query(
+    `UPDATE telefone_parceiro
+        SET principal = FALSE,
+            atualizado_por = $2,
+            atualizado_em = NOW()
+      WHERE parceiro_id = $1
+        AND principal = TRUE`,
+    [id, data.atualizado_por]
+  );
+
+  if (telefone) {
+    await client.query(
+      `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
+       VALUES ($1, $2, 'celular', TRUE, $3)`,
+      [id, telefone, data.atualizado_por]
+    );
+  }
+}
+
+async function inserirVinculoComercial(
+  client: PoolClient,
+  parceiroId: string,
+  data: VincularTerraAoParceiroInput
+): Promise<void> {
+  await client.query(
+    `INSERT INTO vinculo_comercial
+       (
+        parceiro_id,
+        terra_id,
+        tipo_parceiro,
+        tipo_vinculo,
+        modalidade_contrato,
+        data_inicio,
+        data_fim,
+        observacoes
+       )
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+    [
+      parceiroId,
+      data.terra_id,
+      data.tipo_parceiro ?? 'arrendador',
+      data.tipo_vinculo ?? 'vinculo comercial',
+      vazioComoNull(data.modalidade_contrato),
+      data.data_inicio ?? null,
+      data.data_fim ?? null,
+      vazioComoNull(data.observacoes),
+    ]
   );
 }
 
@@ -82,16 +207,17 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
     );
 
     const parceiro = rows[0];
+    const telefone = normalizarTelefone(data.telefone);
 
-    if (data.telefone && data.telefone.trim()) {
+    if (telefone) {
       await client.query(
         `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
          VALUES ($1, $2, 'celular', TRUE, $3)`,
-        [parceiro.id, data.telefone.trim(), data.criado_por]
+        [parceiro.id, telefone, data.criado_por]
       );
     }
 
-    const parceiroCriado = { ...parceiro, telefone: data.telefone?.trim() || null };
+    const parceiroCriado = { ...parceiro, telefone };
 
     await client.query(
       `INSERT INTO registro_alteracao
@@ -101,7 +227,7 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
         data.criado_por,
         parceiro.id,
         JSON.stringify(parceiroCriado),
-        data.status === 'pendente' ? 'Parceiro criado e enviado para validação' : 'Parceiro criado como rascunho',
+        comentarioCriacaoParceiro(data.status),
       ]
     );
 
@@ -116,82 +242,8 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
 }
 
 export async function updateParceiro(id: string, data: UpdateParceiroInput): Promise<Parceiro | null> {
-  const campos: string[] = [];
-  const valores: any[] = [];
-  let contador = 1;
-
-  if (data.nome !== undefined) {
-    campos.push(`nome = $${contador++}`);
-    valores.push(data.nome);
-  }
-
-  if (data.apelido !== undefined) {
-    campos.push(`apelido = $${contador++}`);
-    valores.push(data.apelido);
-  }
-  if (data.tipo_pessoa !== undefined) {
-    campos.push(`tipo_pessoa = $${contador++}`);
-    valores.push(data.tipo_pessoa);
-  }
-  if (data.cpf_cnpj !== undefined) {
-    campos.push(`cpf_cnpj = $${contador++}`);
-    valores.push(data.cpf_cnpj);
-  }
-
-  if (data.email !== undefined) {
-    campos.push(`email = $${contador++}`);
-    valores.push(data.email);
-  }
-
-  if (data.data_nascimento !== undefined) {
-    campos.push(`data_nascimento = $${contador++}`);
-    valores.push(data.data_nascimento);
-  }
-
-  if (data.nome_acompanhante !== undefined) {
-    campos.push(`nome_acompanhante = $${contador++}`);
-    valores.push(vazioComoNull(data.nome_acompanhante));
-  }
-
-  if (data.regiao !== undefined) {
-    campos.push(`regiao = $${contador++}`);
-    valores.push(vazioComoNull(data.regiao));
-  }
-
-  if (data.inscricao_estadual !== undefined) {
-    campos.push(`inscricao_estadual = $${contador++}`);
-    valores.push(vazioComoNull(data.inscricao_estadual));
-  }
-
-  if (data.usina_referencia !== undefined) {
-    campos.push(`usina_referencia = $${contador++}`);
-    valores.push(vazioComoNull(data.usina_referencia));
-  }
-
-  if (data.area_plantada !== undefined) {
-    campos.push(`area_plantada = $${contador++}`);
-    valores.push(vazioComoNull(data.area_plantada));
-  }
-
-  if (data.tch_medio !== undefined) {
-    campos.push(`tch_medio = $${contador++}`);
-    valores.push(vazioComoNull(data.tch_medio));
-  }
-
-  if (data.atr_medio !== undefined) {
-    campos.push(`atr_medio = $${contador++}`);
-    valores.push(vazioComoNull(data.atr_medio));
-  }
-
-  if (data.observacoes !== undefined) {
-    campos.push(`observacoes = $${contador++}`);
-    valores.push(vazioComoNull(data.observacoes));
-  }
-
-  if (data.status !== undefined) {
-    campos.push(`status = $${contador++}`);
-    valores.push(data.status);
-  }
+  const { campos, valores, contador: contadorAposCampos } = montarCamposAtualizacaoParceiro(data);
+  let contador = contadorAposCampos;
 
   campos.push(`atualizado_por = $${contador}`);
   valores.push(data.atualizado_por);
@@ -221,7 +273,7 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
       [id]
     );
 
-    const dadosAnteriores = anteriores[0] ?? null;
+    const dadosAnteriores = anteriores[0];
     if (!dadosAnteriores) {
       await client.query('ROLLBACK');
       return null;
@@ -231,37 +283,18 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
       `UPDATE parceiros SET ${campos.join(', ')} WHERE id = $${contador} RETURNING *`,
       valores
     );
-    const parceiro = result.rows[0] ?? null;
+    const parceiro = result.rows[0];
 
     if (!parceiro) {
       await client.query('ROLLBACK');
       return null;
     }
 
-    if (data.telefone !== undefined) {
-      const telefone = vazioComoNull(data.telefone);
-      await client.query(
-        `UPDATE telefone_parceiro
-            SET principal = FALSE,
-                atualizado_por = $2,
-                atualizado_em = NOW()
-          WHERE parceiro_id = $1
-            AND principal = TRUE`,
-        [id, data.atualizado_por]
-      );
-
-      if (telefone) {
-        await client.query(
-          `INSERT INTO telefone_parceiro (parceiro_id, numero, tipo, principal, criado_por)
-           VALUES ($1, $2, 'celular', TRUE, $3)`,
-          [id, telefone, data.atualizado_por]
-        );
-      }
-    }
+    await aplicarTelefoneNaAtualizacao(client, id, data);
 
     const parceiroAtualizado = {
       ...parceiro,
-      telefone: data.telefone !== undefined ? vazioComoNull(data.telefone) : dadosAnteriores.telefone ?? null,
+      telefone: telefoneAposAtualizacao(data, dadosAnteriores),
     };
 
     await client.query(
@@ -287,13 +320,11 @@ export async function updateParceiro(id: string, data: UpdateParceiroInput): Pro
   }
 }
 
-export async function listarParceiros(
-  filtros: ListarParceirosFiltros = {},
-  opcoes: ConsultaParceirosOpcoes = {}
-): Promise<Parceiro[]> {
-  const where: string[] = [];
-  const valores: unknown[] = [];
-
+function aplicarFiltrosVisibilidade(
+  opcoes: ConsultaParceirosOpcoes,
+  where: string[],
+  valores: unknown[]
+): void {
   if (!opcoes.incluirInativos) {
     where.push(`p.status != 'inativo'`);
   }
@@ -302,72 +333,130 @@ export async function listarParceiros(
     valores.push(opcoes.rascunhosUsuarioId);
     where.push(`(p.status != 'rascunho' OR p.criado_por = $${valores.length})`);
   }
+}
 
-  if (filtros.nome !== undefined) {
-    valores.push(`%${filtros.nome}%`);
-    where.push(
-      `(p.nome ILIKE $${valores.length}
-        OR p.apelido ILIKE $${valores.length}
-        OR p.cpf_cnpj ILIKE $${valores.length}
-        OR p.email ILIKE $${valores.length})`
-    );
+function aplicarFiltroNome(
+  filtros: ListarParceirosFiltros,
+  where: string[],
+  valores: unknown[]
+): void {
+  if (filtros.nome === undefined) {
+    return;
   }
+  valores.push(`%${filtros.nome}%`);
+  where.push(
+    `(p.nome ILIKE $${valores.length}
+      OR p.apelido ILIKE $${valores.length}
+      OR p.cpf_cnpj ILIKE $${valores.length}
+      OR p.email ILIKE $${valores.length})`
+  );
+}
 
-  if (filtros.regiao !== undefined) {
-    valores.push(`%${filtros.regiao}%`);
-    where.push(
-      `(p.regiao ILIKE $${valores.length}
-        OR EXISTS (
-          SELECT 1
-            FROM parceiro_terra pt
-            JOIN terras t ON t.id = pt.terra_id
-           WHERE pt.parceiro_id = p.id
-             AND t.status != 'inativo'
-             AND (t.cidade ILIKE $${valores.length} OR t.estado ILIKE $${valores.length})
-        ))`
-    );
+function aplicarFiltroRegiao(
+  filtros: ListarParceirosFiltros,
+  where: string[],
+  valores: unknown[]
+): void {
+  if (filtros.regiao === undefined) {
+    return;
   }
-
-  if (filtros.area !== undefined) {
-    valores.push(filtros.area);
-    where.push(
-      `EXISTS (
+  valores.push(`%${filtros.regiao}%`);
+  where.push(
+    `(p.regiao ILIKE $${valores.length}
+      OR EXISTS (
         SELECT 1
           FROM parceiro_terra pt
           JOIN terras t ON t.id = pt.terra_id
          WHERE pt.parceiro_id = p.id
            AND t.status != 'inativo'
-           AND t.area_contratada_ha >= $${valores.length}
-      )`
-    );
-  }
+           AND (t.cidade ILIKE $${valores.length} OR t.estado ILIKE $${valores.length})
+      ))`
+  );
+}
 
-  if (filtros.tipo !== undefined) {
-    valores.push(filtros.tipo);
-    if (['fisica', 'juridica'].includes(filtros.tipo)) {
-      where.push(`p.tipo_pessoa = $${valores.length}`);
-    } else {
-      where.push(
-        `EXISTS (
-          SELECT 1
-            FROM vinculo_comercial vc
-           WHERE vc.parceiro_id = p.id
-             AND vc.status = 'ativo'
-             AND vc.tipo_parceiro = $${valores.length}
-        )`
-      );
-    }
+function aplicarFiltroArea(
+  filtros: ListarParceirosFiltros,
+  where: string[],
+  valores: unknown[]
+): void {
+  if (filtros.area === undefined) {
+    return;
   }
+  valores.push(filtros.area);
+  where.push(
+    `EXISTS (
+      SELECT 1
+        FROM parceiro_terra pt
+        JOIN terras t ON t.id = pt.terra_id
+       WHERE pt.parceiro_id = p.id
+         AND t.status != 'inativo'
+         AND t.area_contratada_ha >= $${valores.length}
+    )`
+  );
+}
 
-  if (filtros.status !== undefined) {
-    valores.push(filtros.status);
-    where.push(`p.status = $${valores.length}::status_validacao`);
+function aplicarFiltroTipo(
+  filtros: ListarParceirosFiltros,
+  where: string[],
+  valores: unknown[]
+): void {
+  if (filtros.tipo === undefined) {
+    return;
   }
+  valores.push(filtros.tipo);
+  if (['fisica', 'juridica'].includes(filtros.tipo)) {
+    where.push(`p.tipo_pessoa = $${valores.length}`);
+    return;
+  }
+  where.push(
+    `EXISTS (
+      SELECT 1
+        FROM vinculo_comercial vc
+       WHERE vc.parceiro_id = p.id
+         AND vc.status = 'ativo'
+         AND vc.tipo_parceiro = $${valores.length}
+    )`
+  );
+}
 
-  if (filtros.usina_referencia !== undefined) {
-    valores.push(`%${filtros.usina_referencia}%`);
-    where.push(`p.usina_referencia ILIKE $${valores.length}`);
+function aplicarFiltroStatus(
+  filtros: ListarParceirosFiltros,
+  where: string[],
+  valores: unknown[]
+): void {
+  if (filtros.status === undefined) {
+    return;
   }
+  valores.push(filtros.status);
+  where.push(`p.status = $${valores.length}::status_validacao`);
+}
+
+function aplicarFiltroUsina(
+  filtros: ListarParceirosFiltros,
+  where: string[],
+  valores: unknown[]
+): void {
+  if (filtros.usina_referencia === undefined) {
+    return;
+  }
+  valores.push(`%${filtros.usina_referencia}%`);
+  where.push(`p.usina_referencia ILIKE $${valores.length}`);
+}
+
+export async function listarParceiros(
+  filtros: ListarParceirosFiltros = {},
+  opcoes: ConsultaParceirosOpcoes = {}
+): Promise<Parceiro[]> {
+  const where: string[] = [];
+  const valores: unknown[] = [];
+
+  aplicarFiltrosVisibilidade(opcoes, where, valores);
+  aplicarFiltroNome(filtros, where, valores);
+  aplicarFiltroRegiao(filtros, where, valores);
+  aplicarFiltroArea(filtros, where, valores);
+  aplicarFiltroTipo(filtros, where, valores);
+  aplicarFiltroStatus(filtros, where, valores);
+  aplicarFiltroUsina(filtros, where, valores);
 
   const { rows } = await pool.query<Parceiro>(
     `SELECT p.*,
@@ -805,30 +894,7 @@ export async function createParceiroTerra(
     const vinculo = rows[0];
 
     if (possuiDadosComerciais(data)) {
-      await client.query(
-        `INSERT INTO vinculo_comercial
-           (
-            parceiro_id,
-            terra_id,
-            tipo_parceiro,
-            tipo_vinculo,
-            modalidade_contrato,
-            data_inicio,
-            data_fim,
-            observacoes
-           )
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [
-          parceiroId,
-          data.terra_id,
-          data.tipo_parceiro ?? 'arrendador',
-          data.tipo_vinculo ?? 'vinculo comercial',
-          vazioComoNull(data.modalidade_contrato),
-          data.data_inicio ?? null,
-          data.data_fim ?? null,
-          vazioComoNull(data.observacoes),
-        ]
-      );
+      await inserirVinculoComercial(client, parceiroId, data);
     }
 
     await client.query(
