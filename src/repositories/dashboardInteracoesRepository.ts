@@ -16,7 +16,7 @@ export class DashboardRepository {
       `);
 
       return result.rows;
-    } catch (err) {
+    } catch {
       throw new DataAccessException();
     }
   }

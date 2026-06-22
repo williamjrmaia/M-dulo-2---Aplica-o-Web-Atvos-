@@ -13,6 +13,9 @@ import routes from './routes/index';
 
 const app = express();
 
+// Evita expor a versão do framework no header HTTP (X-Powered-By).
+app.disable('x-powered-by');
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
