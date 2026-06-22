@@ -27,7 +27,7 @@ export class UserService {
   async cadastraUsuario(data: CriarUsuarioInput): Promise<UsuarioComPerfil> {
     console.log(`[SERVICE] cadastraUsuario: ${data?.email}`);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@.]+\.[^\s@]+$/;
     if (!data || !data.nome?.trim() || !emailRegex.test(data.email ?? '') || !data.perfil_acesso_id) {
       throw new Error('Dados de entrada invalidos');
     }
@@ -86,7 +86,7 @@ export class UserService {
     }
 
     if (dados.email !== undefined) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[^\s@]+@[^\s@.]+\.[^\s@]+$/;
       if (!emailRegex.test(dados.email)) {
         throw new Error('Dados de entrada invalidos');
       }
