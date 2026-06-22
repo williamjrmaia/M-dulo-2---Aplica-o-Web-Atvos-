@@ -29,8 +29,12 @@ type RequestComUsuario = Request & {
   };
 };
 
+function perfilBruto(req: Request, res: Response): unknown {
+  return (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+}
+
 function obterPerfilAutenticado(req: Request, res: Response): string | undefined {
-  const perfil = (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+  const perfil = perfilBruto(req, res);
   return typeof perfil === 'string' ? perfil.trim().toLowerCase() : undefined;
 }
 
@@ -67,6 +71,112 @@ function validarStatusInativoCoordenador(perfil: string | undefined, statusNovo:
   }
 }
 
+function nenhumCampoFornecido(campos: Record<string, unknown>): boolean {
+  return Object.values(campos).every((valor) => valor === undefined);
+}
+
+function mapErroParaRespostaView(err: unknown, mensagemPadrao: string): { status: number; mensagem: string } {
+  const mensagem = err instanceof AppError ? err.message : mensagemPadrao;
+  const status = err instanceof AppError ? err.statusCode : 500;
+  return { status, mensagem };
+}
+
+const CAMPOS_EDITAVEIS_FORMULARIO = [
+  'nome',
+  'apelido',
+  'tipo_pessoa',
+  'cpf_cnpj',
+  'email',
+  'data_nascimento',
+  'nome_acompanhante',
+  'telefone',
+  'regiao',
+  'inscricao_estadual',
+  'usina_referencia',
+  'area_plantada',
+  'tch_medio',
+  'atr_medio',
+  'observacoes',
+  'status',
+] as const;
+
+function montarCamposEditaveis(body: Record<string, unknown>): Record<string, unknown> {
+  const camposEditaveis: Record<string, unknown> = {};
+  for (const campo of CAMPOS_EDITAVEIS_FORMULARIO) {
+    if (body[campo]) camposEditaveis[campo] = body[campo];
+  }
+  return camposEditaveis;
+}
+
+function validarCamposObrigatoriosCadastro(nome: unknown, tipoPessoa: unknown, cpfCnpj: unknown): void {
+  if (!nome || !tipoPessoa || !cpfCnpj) {
+    throw new ValidationError('Preencha os campos obrigatórios: nome, tipo_pessoa e CPF/CNPJ');
+  }
+  if (!['fisica', 'juridica'].includes(tipoPessoa as string)) {
+    throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
+  }
+}
+
+function validarEmailParaValidacao(enviarParaValidacao: boolean, email: unknown): void {
+  if (enviarParaValidacao && !email) {
+    throw new ValidationError('Preencha o e-mail antes de enviar o parceiro para validação');
+  }
+}
+
+function validarCadastroParceiro(
+  nome: unknown,
+  tipoPessoa: unknown,
+  cpfCnpj: unknown,
+  enviarParaValidacao: boolean,
+  email: unknown
+): void {
+  validarCamposObrigatoriosCadastro(nome, tipoPessoa, cpfCnpj);
+  validarEmailParaValidacao(enviarParaValidacao, email);
+}
+
+function validarEdicaoParceiro(camposEditaveis: Record<string, unknown>, tipoPessoa: unknown): void {
+  if (Object.keys(camposEditaveis).length === 0) {
+    throw new ValidationError('Preencha ao menos um campo para alterar');
+  }
+  if (tipoPessoa && !['fisica', 'juridica'].includes(tipoPessoa as string)) {
+    throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
+  }
+}
+
+function validarTipoPessoa(tipoPessoa: unknown): void {
+  if (!['fisica', 'juridica'].includes(tipoPessoa as string)) {
+    throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
+  }
+}
+
+function validarEntradaCreateParceiro(
+  nome: unknown,
+  tipoPessoa: unknown,
+  cpfCnpj: unknown,
+  criadoPor: unknown
+): void {
+  if (!nome || !tipoPessoa || !cpfCnpj || !criadoPor) {
+    throw new ValidationError('Campos obrigatórios: nome, tipo_pessoa, cpf_cnpj, criado_por');
+  }
+  validarTipoPessoa(tipoPessoa);
+}
+
+function statusInicialParceiro(status: unknown): 'pendente' | 'rascunho' {
+  return status === 'pendente' ? 'pendente' : 'rascunho';
+}
+
+function comentarioDoBody(req: Request): string {
+  return typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+}
+
+function statusDoErro(err: unknown): number {
+  return err instanceof AppError ? err.statusCode : 500;
+}
+
+function mensagemDoErro(err: unknown, fallback: string): string {
+  return err instanceof AppError ? err.message : fallback;
+}
+
 // ─── API JSON ────────────────────────────────────────────────────────────────
 
 export const createParceiro = asyncHandler(async (req: Request, res: Response) => {
@@ -90,13 +200,7 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     status,
   } = req.body;
 
-  if (!nome || !tipo_pessoa || !cpf_cnpj || !criado_por) {
-    throw new ValidationError('Campos obrigatórios: nome, tipo_pessoa, cpf_cnpj, criado_por');
-  }
-
-  if (!['fisica', 'juridica'].includes(tipo_pessoa)) {
-    throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
-  }
+  validarEntradaCreateParceiro(nome, tipo_pessoa, cpf_cnpj, criado_por);
 
   const parceiro = await cadastrarParceiro({
     nome,
@@ -115,7 +219,7 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     tch_medio: textoOpcional(tch_medio),
     atr_medio: textoOpcional(atr_medio),
     observacoes: textoOpcional(observacoes),
-    status: status === 'pendente' ? 'pendente' : 'rascunho',
+    status: statusInicialParceiro(status),
   });
 
   res.status(201).json(parceiro);
@@ -148,22 +252,24 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
   }
 
   if (
-    nome === undefined &&
-    apelido === undefined &&
-    tipo_pessoa === undefined &&
-    cpf_cnpj === undefined &&
-    email === undefined &&
-    data_nascimento === undefined &&
-    nome_acompanhante === undefined &&
-    telefone === undefined &&
-    regiao === undefined &&
-    inscricao_estadual === undefined &&
-    usina_referencia === undefined &&
-    area_plantada === undefined &&
-    tch_medio === undefined &&
-    atr_medio === undefined &&
-    observacoes === undefined &&
-    status === undefined
+    nenhumCampoFornecido({
+      nome,
+      apelido,
+      tipo_pessoa,
+      cpf_cnpj,
+      email,
+      data_nascimento,
+      nome_acompanhante,
+      telefone,
+      regiao,
+      inscricao_estadual,
+      usina_referencia,
+      area_plantada,
+      tch_medio,
+      atr_medio,
+      observacoes,
+      status,
+    })
   ) {
     throw new ValidationError('Pelo menos um campo deve ser fornecido para atualização');
   }
@@ -220,10 +326,8 @@ export const listarParceiros = asyncHandler(async (req: Request, res: Response) 
 });
 
 export const listarRascunhosDevolvidosAnalista = asyncHandler(async (req: Request, res: Response) => {
-  const usuarioAutenticadoId =
-    (req as RequestComUsuario).usuario?.id ??
-    res.locals.usuarioAutenticado?.id ??
-    (typeof req.query.analista_id === 'string' ? req.query.analista_id : undefined);
+  const analistaIdQuery = typeof req.query.analista_id === 'string' ? req.query.analista_id : undefined;
+  const usuarioAutenticadoId = obterUsuarioAutenticadoIdOpcional(req, res) ?? analistaIdQuery;
 
   const parceiros = await obterRascunhosDevolvidosDoAnalista(usuarioAutenticadoId ?? '');
   res.status(200).json(parceiros);
@@ -360,15 +464,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
   const usuarioId = obterUsuarioAutenticadoId(req);
 
   try {
-    if (!nome || !tipo_pessoa || !cpf_cnpj) {
-      throw new ValidationError('Preencha os campos obrigatórios: nome, tipo_pessoa e CPF/CNPJ');
-    }
-    if (!['fisica', 'juridica'].includes(tipo_pessoa)) {
-      throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
-    }
-    if (enviarParaValidacao && !email) {
-      throw new ValidationError('Preencha o e-mail antes de enviar o parceiro para validação');
-    }
+    validarCadastroParceiro(nome, tipo_pessoa, cpf_cnpj, enviarParaValidacao, email);
 
     await cadastrarParceiro({
       nome,
@@ -395,8 +491,8 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
       : 'Rascunho salvo com sucesso.';
     res.redirect(`/parceiros?info=${encodeURIComponent(info)}`);
   } catch (err) {
-    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao cadastrar parceiro';
-    res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/new', {
+    const { status, mensagem } = mapErroParaRespostaView(err, 'Erro inesperado ao cadastrar parceiro');
+    res.status(status).render('parceiros/new', {
       error: mensagem,
       dados: req.body,
     });
@@ -451,51 +547,13 @@ export const renderFormEdicao = asyncHandler(async (req: Request, res: Response)
 
 export const processarEdicao = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const {
-    nome,
-    apelido,
-    tipo_pessoa,
-    cpf_cnpj,
-    email,
-    data_nascimento,
-    nome_acompanhante,
-    telefone,
-    regiao,
-    inscricao_estadual,
-    usina_referencia,
-    area_plantada,
-    tch_medio,
-    atr_medio,
-    observacoes,
-    status,
-  } = req.body;
+  const { tipo_pessoa, status } = req.body;
   const usuarioId = obterUsuarioAutenticadoId(req);
-
-  const camposEditaveis: Record<string, unknown> = {};
-  if (nome) camposEditaveis.nome = nome;
-  if (apelido) camposEditaveis.apelido = apelido;
-  if (tipo_pessoa) camposEditaveis.tipo_pessoa = tipo_pessoa;
-  if (cpf_cnpj) camposEditaveis.cpf_cnpj = cpf_cnpj;
-  if (email) camposEditaveis.email = email;
-  if (data_nascimento) camposEditaveis.data_nascimento = data_nascimento;
-  if (nome_acompanhante) camposEditaveis.nome_acompanhante = nome_acompanhante;
-  if (telefone) camposEditaveis.telefone = telefone;
-  if (regiao) camposEditaveis.regiao = regiao;
-  if (inscricao_estadual) camposEditaveis.inscricao_estadual = inscricao_estadual;
-  if (usina_referencia) camposEditaveis.usina_referencia = usina_referencia;
-  if (area_plantada) camposEditaveis.area_plantada = area_plantada;
-  if (tch_medio) camposEditaveis.tch_medio = tch_medio;
-  if (atr_medio) camposEditaveis.atr_medio = atr_medio;
-  if (observacoes) camposEditaveis.observacoes = observacoes;
-  if (status) camposEditaveis.status = status;
+  const camposEditaveis = montarCamposEditaveis(req.body);
 
   try {
-    if (Object.keys(camposEditaveis).length === 0) {
-      throw new ValidationError('Preencha ao menos um campo para alterar');
-    }
-    if (tipo_pessoa && !['fisica', 'juridica'].includes(tipo_pessoa)) {
-      throw new ValidationError('tipo_pessoa deve ser "fisica" ou "juridica"');
-    }
+    validarEdicaoParceiro(camposEditaveis, tipo_pessoa);
+
     const perfilAutenticado = obterPerfilAutenticado(req, res);
     validarStatusInativoCoordenador(perfilAutenticado, status);
 
@@ -512,8 +570,8 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 
     res.redirect('/parceiros');
   } catch (err) {
-    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao editar parceiro';
-    res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/edit', {
+    const { status: statusResposta, mensagem } = mapErroParaRespostaView(err, 'Erro inesperado ao editar parceiro');
+    res.status(statusResposta).render('parceiros/edit', {
       id,
       error: mensagem,
       dados: req.body,
@@ -547,7 +605,7 @@ export const renderRevisar = asyncHandler(async (req: Request, res: Response) =>
 
 export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  const comentario = comentarioDoBody(req);
   const usuarioId = obterUsuarioAutenticadoId(req);
   try {
     await aprovarParceiroService(id, {
@@ -556,12 +614,12 @@ export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, re
     });
     res.redirect('/validacao');
   } catch (err) {
-    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao aprovar registro';
+    const mensagem = mensagemDoErro(err, 'Erro inesperado ao aprovar registro');
     const parceiro = await obterParceiroPorIdService(id).catch(() => null);
     const terras = await obterTerrasDoParceiro(id, {
       incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
     }).catch(() => []);
-    res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
+    res.status(statusDoErro(err)).render('parceiros/revisar', {
       parceiro,
       terras,
       naoEncontrado: !parceiro,
@@ -572,7 +630,7 @@ export const aprovarParceiroViaFormulario = asyncHandler(async (req: Request, re
 
 export const devolverParceiroViaFormulario = asyncHandler(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const comentario = typeof req.body.comentario === 'string' ? req.body.comentario.trim() : '';
+  const comentario = comentarioDoBody(req);
   const usuarioId = obterUsuarioAutenticadoId(req);
   try {
     await devolverParceiroService(id, {
@@ -581,12 +639,12 @@ export const devolverParceiroViaFormulario = asyncHandler(async (req: Request, r
     });
     res.redirect('/validacao');
   } catch (err) {
-    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao devolver registro';
+    const mensagem = mensagemDoErro(err, 'Erro inesperado ao devolver registro');
     const parceiro = await obterParceiroPorIdService(id).catch(() => null);
     const terras = await obterTerrasDoParceiro(id, {
       incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
     }).catch(() => []);
-    res.status(err instanceof AppError ? err.statusCode : 500).render('parceiros/revisar', {
+    res.status(statusDoErro(err)).render('parceiros/revisar', {
       parceiro,
       terras,
       naoEncontrado: !parceiro,

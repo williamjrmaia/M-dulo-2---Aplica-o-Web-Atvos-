@@ -15,6 +15,12 @@ function validarSenha(senha: string): void {
   }
 }
 
+function podeDefinirPrimeiraSenha(
+  usuario: { ativo?: boolean; senha_hash?: string | null } | null | undefined
+): boolean {
+  return Boolean(usuario && usuario.ativo && !usuario.senha_hash);
+}
+
 export class PrimeiroAcessoService {
   constructor(
     private readonly userRepository: UserRepository,
@@ -53,12 +59,12 @@ export class PrimeiroAcessoService {
     }
 
     const usuario = await this.userRepository.buscarPorId(registro.usuario_id);
-    if (!usuario || !usuario.ativo || usuario.senha_hash) {
+    if (!podeDefinirPrimeiraSenha(usuario)) {
       throw new Error('Token inválido ou expirado');
     }
 
     const senhaHash = await bcrypt.hash(senha, 10);
-    await this.userRepository.definirSenha(usuario.id, senhaHash);
+    await this.userRepository.definirSenha(usuario!.id, senhaHash);
     await this.primeiroAcessoRepository.marcarComoUsado(registro.id);
   }
 

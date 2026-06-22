@@ -39,6 +39,76 @@ export class UserRepository {
     );
   }
 
+  // Centraliza o fluxo transacional auditado (BEGIN, SELECT FOR UPDATE, UPDATE
+  // específico via callback, registro de alteração e COMMIT/ROLLBACK).
+  private async executarComAuditoria(
+    id: string,
+    comentario: string,
+    aplicar: (client: PoolClient, dadosAnteriores: UsuarioComPerfil) => Promise<UsuarioComPerfil | null>,
+  ): Promise<UsuarioComPerfil | null> {
+    const client = await pool.connect();
+
+    try {
+      await client.query('BEGIN');
+
+      const anterior = await client.query<UsuarioComPerfil>(
+        `SELECT id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em
+           FROM usuarios
+          WHERE id = $1
+          FOR UPDATE`,
+        [id],
+      );
+
+      const dadosAnteriores = anterior.rows[0] ?? null;
+      if (!dadosAnteriores) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      const usuario = await aplicar(client, dadosAnteriores);
+      if (!usuario) {
+        await client.query('ROLLBACK');
+        return null;
+      }
+
+      await this.registrarAlteracaoUsuario(client, id, dadosAnteriores, usuario, comentario);
+
+      await client.query('COMMIT');
+      return usuario;
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  // Monta o trecho dinâmico do UPDATE: colunas são nomes fixos (seguros) e os
+  // valores entram parametrizados ($N), preservando a query parametrizada.
+  private montarAtualizacaoUsuario(
+    dados: AtualizarUsuarioDTO,
+  ): { campos: string[]; valores: unknown[]; proximoIndice: number } {
+    const colunas: Array<[string, unknown]> = [
+      ['nome', dados.nome],
+      ['email', dados.email],
+      ['ativo', dados.ativo],
+      ['perfil_acesso_id', dados.perfil_acesso_id],
+    ];
+
+    const campos: string[] = [];
+    const valores: unknown[] = [];
+    let contador = 1;
+
+    for (const [coluna, valor] of colunas) {
+      if (valor !== undefined) {
+        campos.push(`${coluna} = $${contador++}`);
+        valores.push(valor);
+      }
+    }
+
+    return { campos, valores, proximoIndice: contador };
+  }
+
   async buscarPorEmail(email: string): Promise<Usuario | null> {
     const result = await pool.query<Usuario>(
       'SELECT id, nome, email, senha_hash, ativo, perfil_acesso_id FROM usuarios WHERE email = $1',
@@ -101,25 +171,8 @@ export class UserRepository {
 
   async atualizaPerfilDeAcesso(id: string, role_id: string): Promise<UsuarioComPerfil | null> {
     console.log(`[REPOSITORY] atualizaPerfilDeAcesso usuario: ${id}, perfil: ${role_id}`);
-    const client = await pool.connect();
 
-    try {
-      await client.query('BEGIN');
-
-      const anterior = await client.query<UsuarioComPerfil>(
-        `SELECT id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em
-           FROM usuarios
-          WHERE id = $1
-          FOR UPDATE`,
-        [id],
-      );
-
-      const dadosAnteriores = anterior.rows[0] ?? null;
-      if (!dadosAnteriores) {
-        await client.query('ROLLBACK');
-        return null;
-      }
-
+    return this.executarComAuditoria(id, 'Perfil de acesso atualizado', async (client) => {
       const result = await client.query<UsuarioComPerfil>(
         `UPDATE usuarios
             SET perfil_acesso_id = $1
@@ -127,118 +180,32 @@ export class UserRepository {
           RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
         [role_id, id],
       );
-      const usuario = result.rows[0] ?? null;
-      if (!usuario) {
-        await client.query('ROLLBACK');
-        return null;
-      }
-
-      await this.registrarAlteracaoUsuario(client, id, dadosAnteriores, usuario, 'Perfil de acesso atualizado');
-
-      await client.query('COMMIT');
-      return usuario;
-    } catch (err) {
-      await client.query('ROLLBACK');
-      throw err;
-    } finally {
-      client.release();
-    }
+      return result.rows[0] ?? null;
+    });
   }
 
   async atualizaUsuario(id: string, dados: AtualizarUsuarioDTO): Promise<UsuarioComPerfil | null> {
     console.log(`[REPOSITORY] atualizaUsuario: ${id}`);
 
-    const campos: string[] = [];
-    const valores: unknown[] = [];
-    let contador = 1;
-
-    if (dados.nome !== undefined) {
-      campos.push(`nome = $${contador++}`);
-      valores.push(dados.nome);
-    }
-
-    if (dados.email !== undefined) {
-      campos.push(`email = $${contador++}`);
-      valores.push(dados.email);
-    }
-
-    if (dados.ativo !== undefined) {
-      campos.push(`ativo = $${contador++}`);
-      valores.push(dados.ativo);
-    }
-
-    if (dados.perfil_acesso_id !== undefined) {
-      campos.push(`perfil_acesso_id = $${contador++}`);
-      valores.push(dados.perfil_acesso_id);
-    }
-
+    const { campos, valores, proximoIndice } = this.montarAtualizacaoUsuario(dados);
     valores.push(id);
 
-    const client = await pool.connect();
-
-    try {
-      await client.query('BEGIN');
-
-      const anterior = await client.query<UsuarioComPerfil>(
-        `SELECT id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em
-           FROM usuarios
-          WHERE id = $1
-          FOR UPDATE`,
-        [id],
-      );
-
-      const dadosAnteriores = anterior.rows[0] ?? null;
-      if (!dadosAnteriores) {
-        await client.query('ROLLBACK');
-        return null;
-      }
-
+    return this.executarComAuditoria(id, 'Dados de usuário atualizados', async (client) => {
       const result = await client.query<UsuarioComPerfil>(
         `UPDATE usuarios
             SET ${campos.join(', ')}
-          WHERE id = $${contador}
+          WHERE id = $${proximoIndice}
           RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
         valores,
       );
-      const usuario = result.rows[0] ?? null;
-      if (!usuario) {
-        await client.query('ROLLBACK');
-        return null;
-      }
-
-      await this.registrarAlteracaoUsuario(client, id, dadosAnteriores, usuario, 'Dados de usuário atualizados');
-
-      await client.query('COMMIT');
-      return usuario;
-    } catch (err) {
-      await client.query('ROLLBACK');
-      throw err;
-    } finally {
-      client.release();
-    }
+      return result.rows[0] ?? null;
+    });
   }
 
   async inativarUsuario(id: string): Promise<UsuarioComPerfil | null> {
     console.log(`[REPOSITORY] inativarUsuario: ${id}`);
-    const client = await pool.connect();
 
-    try {
-      await client.query('BEGIN');
-
-      const anterior = await client.query<UsuarioComPerfil>(
-        `SELECT id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em
-           FROM usuarios
-          WHERE id = $1
-          FOR UPDATE`,
-        [id],
-      );
-
-      const dadosAnteriores = anterior.rows[0] ?? null;
-      if (!dadosAnteriores) {
-        await client.query('ROLLBACK');
-        return null;
-      }
-
+    return this.executarComAuditoria(id, 'Usuário inativado', async (client) => {
       const result = await client.query<UsuarioComPerfil>(
         `UPDATE usuarios
             SET ativo = FALSE
@@ -246,22 +213,8 @@ export class UserRepository {
           RETURNING id, perfil_acesso_id, nome, email, senha_hash, ativo, criado_em`,
         [id],
       );
-      const usuario = result.rows[0] ?? null;
-      if (!usuario) {
-        await client.query('ROLLBACK');
-        return null;
-      }
-
-      await this.registrarAlteracaoUsuario(client, id, dadosAnteriores, usuario, 'Usuário inativado');
-
-      await client.query('COMMIT');
-      return usuario;
-    } catch (err) {
-      await client.query('ROLLBACK');
-      throw err;
-    } finally {
-      client.release();
-    }
+      return result.rows[0] ?? null;
+    });
   }
 
   async definirSenha(id: string, senhaHash: string): Promise<Usuario | null> {

@@ -29,6 +29,62 @@ function extrairCookie(req: Request, nome: string): string | undefined {
     .find((cookie) => cookie.nome === nome)?.valor;
 }
 
+function mensagemValidacaoLogin(email?: string, senha?: string): string {
+  if (email && senha) return 'Formato de e-mail inválido';
+  return 'E-mail e senha são obrigatórios';
+}
+
+function extrairCredenciaisBrutas(body: unknown): { email?: string; senha?: string } {
+  const dados = body as Record<string, unknown> | undefined;
+  const email = typeof dados?.email === 'string' ? dados.email : undefined;
+  const senha = typeof dados?.senha === 'string' ? dados.senha : undefined;
+  return { email, senha };
+}
+
+function responderLogin(
+  res: Response,
+  loginWeb: boolean,
+  status: number,
+  payload: { error: string; email?: string }
+) {
+  if (loginWeb) {
+    return res.status(status).render('login/index', payload);
+  }
+  return res.status(status).json({ error: payload.error });
+}
+
+function mapErroLogin(error: unknown): { status: number; message: string } {
+  const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+
+  if (message === 'Credenciais inválidas') {
+    return { status: 401, message };
+  }
+  if (message === 'JWT_SECRET nao configurado') {
+    return { status: 500, message: 'Configuração de autenticação ausente' };
+  }
+  return { status: 500, message: 'Erro interno do servidor' };
+}
+
+function extrairIdParam(req: Request): string {
+  const id = req.params.id;
+  return Array.isArray(id) ? id[0] : id;
+}
+
+const STATUS_POR_ERRO_SESSAO: Record<string, number> = {
+  'Sessao nao encontrada': 404,
+  'Sessao ja encerrada': 409,
+  'Usuario revogador nao encontrado': 422,
+};
+
+function responderErroEncerrarSessao(res: Response, error: unknown): Response {
+  const message = error instanceof Error ? error.message : 'Erro interno do servidor';
+  const status = STATUS_POR_ERRO_SESSAO[message];
+  if (status) {
+    return res.status(status).json({ error: message });
+  }
+  return res.status(500).json({ error: 'Erro interno do servidor' });
+}
+
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -37,26 +93,12 @@ export class AuthController {
     const parsed = loginSchema.safeParse(req.body);
 
     if (!parsed.success) {
-      const email = typeof req.body?.email === 'string' ? req.body.email : undefined;
-      const senha = typeof req.body?.senha === 'string' ? req.body.senha : undefined;
+      const { email, senha } = extrairCredenciaisBrutas(req.body);
 
-      if (email && senha) {
-        if (loginWeb) {
-          return res.status(400).render('login/index', {
-            error: 'Formato de e-mail inválido',
-            email,
-          });
-        }
-        return res.status(400).json({ error: 'Formato de e-mail inválido' });
-      }
-
-      if (loginWeb) {
-        return res.status(400).render('login/index', {
-          error: 'E-mail e senha são obrigatórios',
-          email,
-        });
-      }
-      return res.status(400).json({ error: 'E-mail e senha são obrigatórios' });
+      return responderLogin(res, loginWeb, 400, {
+        error: mensagemValidacaoLogin(email, senha),
+        email,
+      });
     }
 
     const { email, senha } = parsed.data;
@@ -73,27 +115,17 @@ export class AuthController {
 
       return res.status(200).json(resultado);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Erro interno do servidor';
+      const { status, message } = mapErroLogin(error);
 
-      if (message === 'Credenciais inválidas') {
-        if (loginWeb) {
-          return res.status(401).render('login/index', {
-            error: 'Credenciais inválidas',
-            email,
-          });
-        }
-        return res.status(401).json({ error: message });
+      if (status === 401) {
+        return responderLogin(res, loginWeb, status, { error: message, email });
       }
-      if (message === 'JWT_SECRET nao configurado') {
-        return res.status(500).json({ error: 'Configuração de autenticação ausente' });
-      }
-      return res.status(500).json({ error: 'Erro interno do servidor' });
+      return res.status(status).json({ error: message });
     }
   };
 
   encerrarSessao = async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const id = extrairIdParam(req);
     const parsed = encerrarSessaoSchema.safeParse(req.body ?? {});
     if (!parsed.success) {
       return res.status(400).json({ error: 'Dados de entrada invalidos' });
@@ -104,19 +136,7 @@ export class AuthController {
       const sessao = await this.authService.encerrarSessao(id, revogadaPor);
       return res.status(200).json({ success: 'Sessao encerrada', sessao });
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Erro interno do servidor';
-
-      if (message === 'Sessao nao encontrada') {
-        return res.status(404).json({ error: message });
-      }
-      if (message === 'Sessao ja encerrada') {
-        return res.status(409).json({ error: message });
-      }
-      if (message === 'Usuario revogador nao encontrado') {
-        return res.status(422).json({ error: message });
-      }
-      return res.status(500).json({ error: 'Erro interno do servidor' });
+      return responderErroEncerrarSessao(res, error);
     }
   };
 
@@ -128,19 +148,24 @@ export class AuthController {
       secure: process.env.NODE_ENV === 'production',
     };
 
-    if (sessaoId) {
-      try {
-        await this.authService.encerrarSessao(sessaoId);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : '';
-        if (message !== 'Sessao nao encontrada' && message !== 'Sessao ja encerrada') {
-          return res.status(500).json({ error: 'Erro interno do servidor' });
-        }
-      }
+    if (sessaoId && !(await this.encerrarSessaoBestEffort(sessaoId))) {
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
 
     res.clearCookie(AUTH_TOKEN_COOKIE, clearCookieOptions);
     res.clearCookie(AUTH_SESSION_COOKIE, clearCookieOptions);
     return res.redirect('/login');
   };
+
+  // Encerra a sessão tolerando erros benignos (sessão inexistente ou já
+  // encerrada); retorna false apenas em erro inesperado, que vira 500.
+  private async encerrarSessaoBestEffort(sessaoId: string): Promise<boolean> {
+    try {
+      await this.authService.encerrarSessao(sessaoId);
+      return true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '';
+      return message === 'Sessao nao encontrada' || message === 'Sessao ja encerrada';
+    }
+  }
 }

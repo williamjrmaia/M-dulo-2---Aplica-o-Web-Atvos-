@@ -30,7 +30,33 @@ import {
   UpdateParceiroInput,
   VincularTerraAoParceiroInput,
 } from '../models/parceiro';
-import { ConflictError, NotFoundError, UnprocessableEntityError, ValidationError } from '../errors/AppError';
+import { AppError, ConflictError, NotFoundError, UnprocessableEntityError, ValidationError } from '../errors/AppError';
+
+type TratamentoErroParceiro = {
+  fkMessage?: string;
+  uniqueMessage?: string;
+};
+
+const FABRICAS_ERRO_PARCEIRO: Record<string, (t: TratamentoErroParceiro) => AppError | undefined> = {
+  '22P02': () => new NotFoundError('Parceiro não encontrado'),
+  '23505': (t) => (t.uniqueMessage ? new ConflictError(t.uniqueMessage) : undefined),
+  '23503': (t) => (t.fkMessage ? new UnprocessableEntityError(t.fkMessage) : undefined),
+};
+
+// Reaproveita o tratamento de catch dos services de parceiro: re-lança AppError do
+// domínio e traduz códigos do Postgres (id inválido, FK e unicidade) para AppError.
+function lancarErroParceiroTraduzido(err: unknown, tratamento: TratamentoErroParceiro = {}): never {
+  if (err instanceof AppError) {
+    throw err;
+  }
+  const code = String((err as { code?: string }).code);
+  const fabrica = FABRICAS_ERRO_PARCEIRO[code];
+  const erroTraduzido = fabrica ? fabrica(tratamento) : undefined;
+  if (erroTraduzido) {
+    throw erroTraduzido;
+  }
+  throw err;
+}
 
 function validarCamposObrigatoriosParaValidacao(parceiro: Parceiro): void {
   const camposAusentes: string[] = [];
@@ -151,16 +177,7 @@ export async function enviarParceiroParaValidacao(
 
     return parceiro;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError || err instanceof ConflictError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Parceiro não encontrado');
-    }
-    if ((err as { code?: string }).code === '23503') {
-      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
-    }
-    throw err;
+    lancarErroParceiroTraduzido(err, { fkMessage: 'atualizado_por não referencia um usuário existente' });
   }
 }
 
@@ -182,16 +199,7 @@ export async function aprovarParceiro(id: string, data: AprovarParceiroInput): P
 
     return parceiro;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError || err instanceof ConflictError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Parceiro não encontrado');
-    }
-    if ((err as { code?: string }).code === '23503') {
-      throw new UnprocessableEntityError('aprovado_por não referencia um usuário existente');
-    }
-    throw err;
+    lancarErroParceiroTraduzido(err, { fkMessage: 'aprovado_por não referencia um usuário existente' });
   }
 }
 
@@ -213,16 +221,7 @@ export async function devolverParceiro(id: string, data: DevolverParceiroInput):
 
     return parceiro;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError || err instanceof ConflictError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Parceiro não encontrado');
-    }
-    if ((err as { code?: string }).code === '23503') {
-      throw new UnprocessableEntityError('devolvido_por não referencia um usuário existente');
-    }
-    throw err;
+    lancarErroParceiroTraduzido(err, { fkMessage: 'devolvido_por não referencia um usuário existente' });
   }
 }
 
@@ -244,16 +243,7 @@ export async function excluirParceiro(id: string, data: ExcluirParceiroInput): P
 
     return parceiro;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError || err instanceof ConflictError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Parceiro não encontrado');
-    }
-    if ((err as { code?: string }).code === '23503') {
-      throw new UnprocessableEntityError('atualizado_por não referencia um usuário existente');
-    }
-    throw err;
+    lancarErroParceiroTraduzido(err, { fkMessage: 'atualizado_por não referencia um usuário existente' });
   }
 }
 
@@ -268,13 +258,7 @@ export async function obterTerrasDoParceiro(
     }
     return terras;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Parceiro não encontrado');
-    }
-    throw err;
+    lancarErroParceiroTraduzido(err);
   }
 }
 
@@ -289,18 +273,9 @@ export async function vincularTerraAoParceiro(
     }
     return vinculo;
   } catch (err: unknown) {
-    if (err instanceof NotFoundError) {
-      throw err;
-    }
-    if ((err as { code?: string }).code === '22P02') {
-      throw new NotFoundError('Parceiro não encontrado');
-    }
-    if ((err as { code?: string }).code === '23505') {
-      throw new ConflictError('Terra já vinculada ao parceiro');
-    }
-    if ((err as { code?: string }).code === '23503') {
-      throw new UnprocessableEntityError('terra_id não referencia uma terra existente');
-    }
-    throw err;
+    lancarErroParceiroTraduzido(err, {
+      uniqueMessage: 'Terra já vinculada ao parceiro',
+      fkMessage: 'terra_id não referencia uma terra existente',
+    });
   }
 }

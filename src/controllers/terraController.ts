@@ -20,15 +20,18 @@ type RequestComUsuario = Request & {
   usuario?: { id?: string; perfil?: string };
 };
 
+function perfilBruto(req: Request, res: Response): unknown {
+  return (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+}
+
 function perfilAtual(req: Request, res: Response): string | undefined {
-  const perfil = (req as RequestComUsuario).usuario?.perfil ?? res.locals?.usuarioAutenticado?.perfil;
+  const perfil = perfilBruto(req, res);
   return typeof perfil === 'string' ? perfil.trim().toLowerCase() : undefined;
 }
 
 function usuarioAtualId(req: Request, res: Response): string {
   return (
-    (req as RequestComUsuario).usuario?.id ??
-    res.locals.usuarioAutenticado?.id ??
+    usuarioAtualIdOpcional(req, res) ??
     req.body.criado_por ??
     req.body.atualizado_por ??
     SEED_USER_ID
@@ -51,6 +54,33 @@ function validarStatusInativoCoordenador(perfil: string | undefined, statusNovo:
   if (perfil === 'coordenador' && statusNovo === 'inativo') {
     throw new ForbiddenError('Coordenador não pode inativar registros');
   }
+}
+
+function aplicarRegraStatusAnalista(
+  perfil: string | undefined,
+  statusNovo: unknown,
+  statusAtual: string
+): void {
+  if (perfil === 'analista' && statusNovo !== undefined) {
+    validarAlteracaoStatusAnalista(statusAtual, statusNovo);
+  }
+}
+
+function extrairIdParam(req: Request): string {
+  const id = req.params.id;
+  return Array.isArray(id) ? id[0] : id;
+}
+
+function comentarioOpcional(comentario: unknown): string | undefined {
+  return typeof comentario === 'string' && comentario.trim() ? comentario.trim() : undefined;
+}
+
+function statusDoErro(err: unknown): number {
+  return err instanceof AppError ? err.statusCode : 500;
+}
+
+function mensagemDoErro(err: unknown, fallback: string): string {
+  return err instanceof AppError ? err.message : fallback;
 }
 
 export const createTerra = asyncHandler(async (req: Request, res: Response) => {
@@ -84,7 +114,7 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
     throw new ValidationError(detalhes);
   }
 
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = extrairIdParam(req);
   const perfilAutenticado = perfilAtual(req, res);
   validarStatusInativoCoordenador(perfilAutenticado, parsed.data.status);
 
@@ -92,9 +122,7 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
     rascunhosUsuarioId: usuarioAtualIdOpcional(req, res),
   });
 
-  if (perfilAutenticado === 'analista' && parsed.data.status !== undefined) {
-    validarAlteracaoStatusAnalista(terraAtual.status, parsed.data.status);
-  }
+  aplicarRegraStatusAnalista(perfilAutenticado, parsed.data.status, terraAtual.status);
 
   const terra = await editarTerra(id, parsed.data);
 
@@ -102,7 +130,7 @@ export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const excluirTerra = asyncHandler(async (req: Request, res: Response) => {
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = extrairIdParam(req);
   const { atualizado_por, comentario } = req.body;
 
   if (perfilAtual(req, res) === 'coordenador') {
@@ -115,14 +143,14 @@ export const excluirTerra = asyncHandler(async (req: Request, res: Response) => 
 
   const terra = await excluirTerraService(id, {
     atualizado_por,
-    comentario: typeof comentario === 'string' && comentario.trim() ? comentario.trim() : undefined,
+    comentario: comentarioOpcional(comentario),
   });
 
   res.status(200).json(terra);
 });
 
 export const listarParceirosDaTerra = asyncHandler(async (req: Request, res: Response) => {
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = extrairIdParam(req);
   const parceiros = await obterParceirosDaTerra(id, {
     incluirInativos: perfilAtual(req, res) === 'administrador',
   });
@@ -138,7 +166,7 @@ export const vincularParceiroATerra = asyncHandler(async (req: Request, res: Res
     throw new ValidationError(detalhes);
   }
 
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = extrairIdParam(req);
   const vinculo = await vincularParceiroATerraService(id, parsed.data);
 
   res.status(201).location(`/api/terras/${id}/parceiros/${vinculo.parceiro_id}`).json(vinculo);
@@ -226,9 +254,7 @@ export const processarEdicaoTerra = asyncHandler(async (req: Request, res: Respo
       rascunhosUsuarioId: usuarioAtualIdOpcional(req, res),
     });
 
-    if (perfilAutenticado === 'analista' && parsed.data.status !== undefined) {
-      validarAlteracaoStatusAnalista(terraAtual.status, parsed.data.status);
-    }
+    aplicarRegraStatusAnalista(perfilAutenticado, parsed.data.status, terraAtual.status);
 
     await editarTerra(id, parsed.data);
     return res.redirect('/terras?info=Terra%20atualizada%20com%20sucesso');
@@ -236,8 +262,8 @@ export const processarEdicaoTerra = asyncHandler(async (req: Request, res: Respo
     const terra = await obterTerraPorId(id, {
       rascunhosUsuarioId: usuarioAtualIdOpcional(req, res),
     }).catch(() => null);
-    const mensagem = err instanceof AppError ? err.message : 'Erro inesperado ao editar terra';
-    return res.status(err instanceof AppError ? err.statusCode : 500).render('terras/edit', {
+    const mensagem = mensagemDoErro(err, 'Erro inesperado ao editar terra');
+    return res.status(statusDoErro(err)).render('terras/edit', {
       terra,
       error: mensagem,
       dados: { id, ...req.body },
