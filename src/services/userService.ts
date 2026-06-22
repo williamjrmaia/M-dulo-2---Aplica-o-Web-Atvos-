@@ -103,7 +103,7 @@ export class UserService {
   }
 
   private emailValido(email: string | undefined): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@.]+\.[^\s@]+$/;
     return emailRegex.test(email ?? '');
   }
 
