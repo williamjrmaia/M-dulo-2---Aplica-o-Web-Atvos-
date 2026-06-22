@@ -75,25 +75,47 @@ As permissões são verificadas no backend pelos middlewares de autenticação e
 
 ```text
 g06/
-├── documentos/              # WAD, documentação de endpoints e evidências
+├── assets/                  # Imagens institucionais usadas na documentação
+├── documentos/              # WAD, documentação técnica, evidências e materiais do projeto
+│   ├── assets/              # Imagens, diagramas, wireframes, personas e guia de estilos
+│   └── outros/              # Documentos complementares
 ├── public/
-│   ├── css/atvos.css        # Estilos da interface
-│   ├── js/app.js            # Busca, máscaras, modais e feedbacks
-│   └── docs/                # Documentação estática gerada
+│   ├── css/                 # Estilos da interface renderizada no servidor
+│   ├── docs/                # Documentação estática da API
+│   └── js/                  # Scripts de busca, máscaras, modais e feedbacks visuais
 ├── src/
-│   ├── config/              # Banco e autenticação
-│   ├── controllers/         # Entrada HTTP e renderização
-│   ├── db/                  # Migration e seed
-│   ├── middlewares/         # Autenticação e tratamento de erros
-│   ├── models/              # Tipos do domínio
-│   ├── repositories/        # Persistência PostgreSQL
-│   ├── routes/              # APIs, views e formulários
-│   ├── schemas/             # Validação Zod
-│   ├── services/            # Regras de negócio
-│   ├── test/ e tests/       # Testes automatizados
-│   └── views/               # Templates EJS
+│   ├── app.ts               # Configuração do Express, middlewares, rotas e views
+│   ├── server.ts            # Inicialização do servidor HTTP
+│   ├── config/              # Configurações de autenticação e conexão com PostgreSQL/Supabase
+│   ├── controllers/         # Camada de entrada HTTP: APIs JSON, formulários e renderização
+│   ├── db/                  # Scripts de migration, seed e SQL versionado
+│   │   └── migrations/      # Migrations adicionais e dados iniciais versionados
+│   ├── errors/              # Classes e mensagens de erro da aplicação
+│   ├── helpers/             # Utilitários compartilhados, como tratamento assíncrono
+│   ├── middlewares/         # Autenticação, autorização e tratamento centralizado de erros
+│   ├── models/              # Tipos, interfaces e entidades do domínio
+│   ├── repositories/        # Camada de persistência e consultas ao banco
+│   ├── routes/              # Mapeamento de rotas HTML e endpoints JSON
+│   ├── schemas/             # Schemas Zod para validação de entrada
+│   ├── services/            # Regras de negócio e orquestração entre domínio e persistência
+│   ├── test/                # Testes legados mantidos no projeto
+│   ├── tests/               # Suíte principal de testes automatizados
+│   │   └── helpers/         # Helpers usados pelos testes
+│   └── views/               # Templates EJS da camada de apresentação
+│       ├── errors/          # Páginas de erro
+│       ├── home/            # Tela inicial autenticada
+│       ├── layouts/         # Layouts base
+│       ├── login/           # Login e primeiro acesso
+│       ├── parceiros/       # Telas de parceiros e validação
+│       ├── partials/        # Partials reutilizáveis, como cabeçalho e rodapé
+│       ├── terras/          # Telas de terras e vínculo com parceiros
+│       └── usuarios/        # Telas de gestão de usuários
 ├── .env.example
+├── eslint.config.js
+├── jest.config.js
 ├── package.json
+├── requests.http
+├── tsconfig.json
 └── README.md
 ```
 
