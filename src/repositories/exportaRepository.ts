@@ -59,7 +59,7 @@ export class ExportaRepository {
       `);
 
       return result.rows;
-    } catch (err) {
+    } catch {
       throw new DataAccessException();
     }
   }
