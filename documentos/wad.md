@@ -3777,7 +3777,122 @@ Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao regis
 
 ### 5.2.1. Relatório de testes de guerrilha
 
-*Posicione aqui as tabelas com enunciados de tarefas, etapas e resultados de testes de usabilidade. Ou utilize um link para seu relatório de testes (mantenha o link sempre público para visualização).*
+Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma T24 de Inteli, 1 aluno do 2º ano de Ciência da Computação e 1 aluna do 2º ano de Engenharia de Software. Os testes foram conduzidos presencialmente, com cada participante executando as tarefas de forma independente enquanto o observador registrava ocorrências. Nenhuma instrução adicional foi fornecida durante a execução das tarefas.
+
+[📊 Relatório de Testes de Usabilidade — Safra Control](https://docs.google.com/spreadsheets/d/1MnqTU2OktA61bAK_owX0Iv-jNSDWqAM_2zLPRQ-fUa4/edit?usp=sharing)
+
+---
+
+#### Tarefa 1 — Cadastrar fornecedor de cana e enviar para validação
+
+**Enunciado:** Suponha que você é um analista de negócios agrícolas da ATVOS e precisa registrar um novo fornecedor de cana no sistema. Utilize o sistema para cadastrar esse fornecedor, salvar como rascunho e enviá-lo para validação do coordenador.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Encontrar onde cadastrar um novo fornecedor de cana | Navega até o formulário correto sem precisar de ajuda |
+| 2 | Preencher os campos do formulário sem orientação externa | Entende o que cada campo pede e completa sem erro |
+| 3 | Descobrir como salvar o registro como rascunho | Localiza e aciona a opção de rascunho sem indicação |
+| 4 | Encontrar o rascunho salvo e enviá-lo para validação | Localiza o rascunho na seção correta e aciona o envio para validação com sucesso |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Conseguiu com dificuldade | Confundiu fornecedor com parceiro, clicou em "parceiro" inicialmente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
+| 2 | Maria Clara Bosschart | Aluna T24 | Conseguiu com dificuldade | Encontrou o botão de fornecedor corretamente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Conseguiu com dificuldade | Encontrou novo fornecedor com facilidade | Preenchido com facilidade | Registro salvo, mas sem feedback imediato ao usuário | Opção não intuitiva; usuário teve dificuldades para encontrá-la |
+| 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
+
+---
+
+#### Tarefa 2 — Cadastrar proprietário de terra e enviar para validação
+
+**Enunciado:** Suponha que você é um analista de negócios agrícolas da ATVOS e precisa registrar um novo proprietário de terra parceiro no sistema. Utilize o sistema para cadastrá-lo, salvar como rascunho e enviar para validação.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Encontrar onde cadastrar um proprietário de terra (distinto do cadastro de fornecedor) | Identifica a área correta sem confundir com outros cadastros |
+| 2 | Preencher os dados do proprietário no formulário | Completa os campos sem dúvidas sobre o que é esperado |
+| 3 | Salvar o registro como rascunho | Aciona a opção correta e percebe que o rascunho foi salvo |
+| 4 | Enviar o proprietário cadastrado para validação | Encontra o rascunho e conclui o envio para a fila do coordenador |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrado com facilidade após a confusão anterior | Preenchido facilmente | Salvo com facilidade | Envio feito após a experiência da tarefa anterior |
+| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrado com facilidade após a confusão anterior | Preenchido facilmente | Salvo com facilidade | Feito com facilidade após a dificuldade anterior |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Sucesso | Encontrou com facilidade | Dados preenchidos facilmente | Registro salvo sem dificuldades | Feito com facilidade após a dificuldade anterior |
+| 4 | Raissa Guimarães | Aluna T24 | Conseguiu com dificuldade | Encontrou com facilidade | Concluída com sucesso, mas surgiu dúvida sobre cadastrar alguém como proprietário e parceiro simultaneamente; tentativa gerou erro | Registro salvo com alguma dificuldade para localizar a opção | Feito com facilidade após a dificuldade anterior |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Sucesso | Encontrou com facilidade | Concluída com sucesso | Registro salvo com facilidade | Feito com facilidade após a dificuldade anterior |
+
+---
+
+#### Tarefa 3 — Registrar interação com um parceiro
+
+**Enunciado:** Suponha que você é um analista de negócios agrícolas da ATVOS e acabou de ter uma reunião com um parceiro ativo. Utilize o sistema para registrar essa interação no perfil desse parceiro.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Localizar o parceiro ativo no sistema | Encontra o parceiro correto sem dificuldade |
+| 2 | Encontrar onde registrar uma nova interação no perfil do parceiro | Localiza a opção sem precisar de indicação |
+| 3 | Preencher os dados da interação (data, tipo, descrição) | Entende os campos e preenche sem dúvidas |
+| 4 | Confirmar o registro e verificar que apareceu no histórico | Identifica o feedback do sistema e encontra a interação listada no histórico do parceiro |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 2 | Maria Clara Bosschart | Aluna T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+
+---
+
+#### Tarefa 4 — Visualizar perfil detalhado de um parceiro ativo
+
+**Enunciado:** Suponha que você é uma coordenadora de estratégia de terras da ATVOS e precisa consultar rapidamente as informações de um parceiro ativo antes de uma reunião de decisão. Utilize o sistema para encontrar esse parceiro e visualizar seu perfil completo.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Encontrar a listagem de parceiros ativos no sistema | Navega até a área correta sem ajuda |
+| 2 | Selecionar um parceiro específico para ver mais detalhes | Identifica como acessar o perfil individual sem instrução |
+| 3 | Localizar os dados cadastrais e o histórico de interações no perfil | Encontra todas as informações na tela sem precisar procurar em outros lugares |
+| 4 | Avaliar se as informações estão claras o suficiente para uma decisão | Consegue interpretar os dados exibidos sem dificuldade |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 4 | Raissa Guimarães | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+
+---
+
+### Priorização de melhorias
+
+| Tarefa | Severidade | Descrição do problema e potencial melhoria | Participantes afetados |
+|--------|-----------|---------------------------------------------|----------------------|
+| Tarefa 3 | **4 — Catastrófico** | O histórico de interações não está sendo registrado após o cadastro. A interação é aparentemente salva, mas não aparece listada no perfil do parceiro. Deve ser corrigido imediatamente antes de qualquer entrega do produto. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 1 | **3 — Grave** | O botão/caminho para "Enviar para validação" não é intuitivo. Todos os participantes tiveram dificuldade ou falharam nessa etapa. Reavaliar nomenclatura, posicionamento ou destaque visual da ação. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 2 | **3 — Grave** | Campos de texto do cadastro de parceiros não possuem validação adequada de tipo (apenas letras ou apenas números em determinados campos), permitindo entradas inválidas. | Participante 4 |
+| Tarefa 2 | **3 — Grave** | O sistema não permite usar o mesmo CPF para cadastrar uma pessoa como fornecedor e como proprietário simultaneamente. É necessário definir se esse comportamento é uma regra de negócio válida ou um bug a ser corrigido. | Participante 4 |
+
+---
 
 ### 5.2.2. Relatório de testes SUS (System Usability Scale)
 
