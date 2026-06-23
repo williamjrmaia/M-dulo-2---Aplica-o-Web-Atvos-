@@ -3128,14 +3128,14 @@ Também deveriam ser priorizados os seguintes pontos:
 
 | Próximo passo | Objetivo |
 | --- | --- |
-| Implementar as telas principais do sistema | Criar a interface para login, gestão de usuários, cadastro/listagem/edição de parceiros, terras, interações, exportação e dashboard. |
-| Integrar frontend e backend | Consumir os endpoints implementados e validar o fluxo completo da aplicação. |
-| Revisar autenticação e autorização nas rotas | Garantir que cada perfil acesse apenas as funcionalidades permitidas. |
+| Implementar as telas principais do sistema | Criar a interface para login, gestão de usuários, cadastro, listagem e edição de parceiros, terras, interações, exportação e dashboard. |
+| Integrar frontend e backend | Consumir os endpoints implementados e validar os fluxos completos da aplicação. |
+| Revisar autenticação e autorização nas rotas | Garantir que cada perfil acessasse apenas as funcionalidades permitidas. |
 | Padronizar feedbacks de erro e sucesso | Exibir mensagens claras para validações, conflitos e ações concluídas. |
-| Consolidar a suíte de testes | Garantir que todos os testes esperados sejam descobertos e executados no ambiente local e no ambiente dos demais integrantes. |
-| Refinar documentação técnica | Atualizar endpoints, exemplos de uso e evidências de execução conforme a evolução da aplicação. |
+| Consolidar a suíte de testes | Garantir que todos os testes previstos fossem identificados e executados nos ambientes locais dos integrantes da equipe. |
+| Refinar a documentação técnica | Atualizar os endpoints, os exemplos de uso e as evidências de execução conforme a evolução da aplicação. |
 
-Com isso, a primeira versão entrega a base técnica do sistema: banco integrado, API estruturada, regras de negócio implementadas e testes automatizados iniciados. As próximas versões deverão se concentrar principalmente na implementação da interface e na integração completa entre frontend e backend.
+Dessa forma, a primeira versão entregou a base técnica do sistema, composta pela integração com o banco de dados, pela API estruturada, pelas regras de negócio implementadas e por uma suíte inicial de testes automatizados. Esses resultados serviram de base para que as versões seguintes se concentrassem na implementação da interface e na integração entre frontend e backend.
 
 ## 4.2. Segunda versão da aplicação web (sprint 4)
 
