@@ -3798,6 +3798,16 @@ Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos te
 | Q9 | Eu me senti confiante ao usar o sistema. |
 | Q10 | Eu precisei aprender várias coisas antes de conseguir usar o sistema. |
 
+**Respostas por participante:**
+
+| # | Participante | Q1 | Q2 | Q3 | Q4 | Q5 | Q6 | Q7 | Q8 | Q9 | Q10 |
+|---|-------------|----|----|----|----|----|----|----|----|----|----|
+| 1 | Pablo Oliveira Garcia | 5 | 2 | 4 | 1 | 4 | 1 | 5 | 1 | 4 | 1 |
+| 2 | Maria Clara Bosschart | 5 | 2 | 5 | 1 | 5 | 1 | 5 | 1 | 5 | 1 |
+| 3 | Messias Olivindo | 4 | 1 | 4 | 2 | 4 | 2 | 5 | 1 | 4 | 2 |
+| 4 | Raissa Guimarães | 4 | 3 | 2 | 4 | 4 | 2 | 4 | 1 | 4 | 1 |
+| 5 | Mariana Lacerda | 4 | 2 | 4 | 1 | 4 | 1 | 4 | 1 | 5 | 1 |
+
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
 ## 6.1 Resumo Executivo
