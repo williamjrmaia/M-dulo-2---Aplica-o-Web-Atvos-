@@ -69,7 +69,7 @@ A rivalidade entre concorrentes é alta. O setor disputa terras, fornecedores e 
 
 A ameaça de produtos substitutos é moderada e crescente. Com 80% da cana destinada ao etanol (ATVOS, 2023), a empresa é vulnerável a veículos elétricos, que podem reduzir a demanda em até 40% até 2035 (Brasilagro, 2021), ao etanol de milho (AgFeed, 2023) e ao biometano para transporte pesado (Eixo, 2025).
 
-Em resumo, o CRM proposto atua diretamente na redução de vulnerabilidades operacionais da ATVOS: preserva o histórico com parceiros estratégicos, padroniza cadastros e viabiliza decisões mais ágeis frente à concorrência.
+Em resumo, a solução desenvolvida atua diretamente na redução de vulnerabilidades operacionais da ATVOS, preservando o histórico de relacionamento com parceiros estratégicos, padronizando cadastros e fornecendo uma base estruturada para decisões mais ágeis e fundamentadas.
 
 ### 2.1.2. Análise SWOT da Instituição Parceira (sprint 1)
 
@@ -105,19 +105,19 @@ Os dados estão disponíveis no SharePoint da área de Estratégia de Terras da 
 
 #### c) Solução proposta
 
-Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações. O acesso será controlado por três perfis distintos: administrador, analista e coordenador.
+Foi desenvolvida uma aplicação web full stack para centralizar a gestão de parceiros agrícolas da ATVOS. A solução foi implementada com front-end web, back-end em Node.js com TypeScript e persistência de dados em PostgreSQL/Supabase. A aplicação centraliza os cadastros de parceiros, terras e usuários, registra o histórico de interações e alterações realizadas no sistema e disponibiliza mecanismos de consulta, filtragem, exportação e validação de registros. O acesso é controlado por três perfis distintos: administrador, analista e coordenador.
 
 #### d) Forma de utilização da solução
 
 A aplicação será utilizada via navegador web pelos times internos da área de Negócios Agrícolas. Cada perfil terá acesso às funcionalidades correspondentes ao seu nível de permissão: cadastro e edição de parceiros, registro de interações, aplicação de filtros por nome, região e tipo de parceiro e exportação de listas.
 
-#### e) Benefícios esperados
+#### e) Benefícios alcançados
 
-Centralização e padronização dos cadastros de parceiros; eliminação de planilhas dispersas e redução de retrabalho operacional; preservação do histórico de relacionamento ao longo das safras independente de mudanças no time; e agilidade na consulta e análise de dados para suporte à tomada de decisão estratégica.
+A solução entregou a centralização e padronização dos cadastros de parceiros, reduzindo a dependência de planilhas dispersas e minimizando retrabalho operacional. O histórico de relacionamento passou a ser preservado de forma estruturada, independentemente de mudanças na equipe, aumentando a rastreabilidade das informações. Além disso, a aplicação proporcionou maior agilidade na consulta e análise de dados, fortalecendo a governança das informações e oferecendo suporte mais eficiente à tomada de decisão.
 
-#### f) Critério de sucesso e como será avaliado
+#### f) Critério de sucesso e forma de avaliação
 
-O sucesso será avaliado pela entrega do MVP funcional com os três módulos operacionais (cadastro, histórico e controle de acesso); pela redução mensurável do tempo de consulta a dados de parceiros frente ao modelo de planilhas; e pela validação com usuários internos da ATVOS em testes de usabilidade, com taxa de conclusão de tarefas acima de 80%.
+O sucesso do projeto foi avaliado por meio da entrega da aplicação funcional contemplando os módulos de gestão de parceiros, histórico de interações, controle de acesso, validação de registros e administração de usuários. Também foram considerados os resultados obtidos durante as validações realizadas com o parceiro, a aderência aos requisitos definidos ao longo do projeto, a cobertura dos fluxos críticos identificados no levantamento inicial e a capacidade da solução de substituir o modelo anteriormente baseado em planilhas dispersas.
 
 ### 2.1.4. Value Proposition Canvas (sprint 1)
 
@@ -177,7 +177,9 @@ O problema central da ATVOS é mais relacional do que transacional: o risco não
 
 ### 2.1.5. Matriz de Riscos do Projeto (sprint 1)
 
-A matriz de riscos é uma ferramenta fundamental de gestão de projetos, utilizada para identificar, classificar e planejar respostas a eventos que possam impactar negativamente (ameaças) ou positivamente (oportunidades) o desenvolvimento da aplicação Web. Ela permite visualizar, de forma estruturada, os principais riscos do projeto, avaliando sua probabilidade de ocorrência e o impacto potencial sobre os resultados. A análise e o acompanhamento contínuo desses riscos são essenciais para garantir a entrega do MVP no prazo, com qualidade e alinhamento aos objetivos do grupo.
+A matriz de riscos foi utilizada durante as etapas iniciais do projeto para identificar, classificar e planejar respostas para eventos que poderiam impactar o desenvolvimento da aplicação. O artefato serviu como instrumento de apoio ao planejamento e acompanhamento das atividades ao longo das sprints.
+
+Por se tratar da versão final da documentação, os riscos apresentados nesta seção devem ser interpretados como um registro histórico das análises realizadas durante a execução do projeto, bem como das estratégias de mitigação definidas pela equipe.
 
 #### 2.1.5.1 Classificação de Impacto, Probabilidade e Matriz de Risco
 
@@ -280,7 +282,9 @@ Com o histórico de interações centralizado e acessível para a ATVOS, ela pod
 
 ---
 
-A matriz de riscos permite à equipe antecipar ameaças, planejar respostas e aproveitar oportunidades. O acompanhamento dos riscos contribui para a organização do grupo, a entrega do MVP no prazo e a elevação da qualidade do produto. Aliada à comunicação eficiente e à definição clara de responsabilidades, é fundamental para o sucesso da aplicação web.
+A matriz de riscos contribuiu para que a equipe antecipasse ameaças, planejasse respostas e identificasse oportunidades durante o desenvolvimento da solução. O acompanhamento realizado ao longo das sprints auxiliou na organização das atividades, no cumprimento dos prazos estabelecidos e na manutenção da qualidade do produto entregue.
+
+Como resultado, a gestão dos riscos apoiou a condução do projeto desde as etapas iniciais até a entrega final da aplicação.
 
 ## 2.2. Personas (sprint 1)
 
