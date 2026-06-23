@@ -3821,6 +3821,8 @@ Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos te
 | 5 | Mariana Lacerda | 87,5 | Excelente |
 | — | **Média geral** | **85** | **Excelente** |
 
+A pontuação média de **85** indica boa usabilidade geral do sistema. O resultado mais baixo foi de Raissa Guimarães (67,5), participante que também apresentou mais dificuldades durante os testes de guerrilha, especialmente no fluxo de envio para validação e no cadastro de parceiros. Os demais participantes atingiram pontuações acima de 80, reforçando que os principais problemas identificados são pontuais e corrigíveis, não estruturais. A prioridade de correção recai sobre o bug de registro de interações (severidade catastrófica) e a falta de clareza no botão de envio para validação (severidade alta).
+
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
 ## 6.1 Resumo Executivo
