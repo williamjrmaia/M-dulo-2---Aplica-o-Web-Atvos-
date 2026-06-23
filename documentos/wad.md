@@ -3783,6 +3783,21 @@ Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao regis
 
 Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos testes de usabilidade. Cada participante respondeu 10 afirmações em escala de 1 (discordo totalmente) a 5 (concordo totalmente), alternando entre afirmações positivas e negativas conforme o modelo padrão SUS.
 
+**Perguntas aplicadas:**
+
+| # | Afirmação |
+|---|-----------|
+| Q1 | Eu acho que gostaria de usar esse sistema com frequência. |
+| Q2 | Eu acho o sistema desnecessariamente complexo. |
+| Q3 | Eu achei o sistema fácil de usar. |
+| Q4 | Eu acho que precisaria de ajuda de uma pessoa com conhecimentos técnicos para usar o sistema. |
+| Q5 | Eu acho que as várias funções do sistema estão bem integradas. |
+| Q6 | Eu acho que o sistema apresenta muita inconsistência. |
+| Q7 | Eu imagino que a maioria das pessoas aprenderia a usar esse sistema rapidamente. |
+| Q8 | Eu achei o sistema muito complicado de usar. |
+| Q9 | Eu me senti confiante ao usar o sistema. |
+| Q10 | Eu precisei aprender várias coisas antes de conseguir usar o sistema. |
+
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
 ## 6.1 Resumo Executivo
