@@ -4,6 +4,7 @@ import { AUTH_TOKEN_COOKIE, getJwtSecret } from '../config/auth';
 import type { NomePerfilAcesso } from '../models/PerfilAcesso';
 import { AuthSessionRepository } from '../repositories/authSessionRepository';
 import { UserRepository } from '../repositories/userRepository';
+import { extrairCookie } from '../helpers/cookies';
 
 type UsuarioAutenticado = {
   id: string;
@@ -14,24 +15,6 @@ type UsuarioAutenticado = {
 };
 
 type RequestComUsuario = Request & { usuario?: UsuarioAutenticado };
-
-function extrairCookie(req: Request, nome: string): string | undefined {
-  const cookies = req.headers.cookie;
-  if (!cookies) return undefined;
-
-  return cookies
-    .split(';')
-    .map((cookie) => cookie.trim())
-    .filter((cookie) => cookie.includes('='))
-    .map((cookie) => {
-      const separador = cookie.indexOf('=');
-      return {
-        nome: cookie.slice(0, separador),
-        valor: decodeURIComponent(cookie.slice(separador + 1)),
-      };
-    })
-    .find((cookie) => cookie.nome === nome)?.valor;
-}
 
 function extrairToken(req: Request): string | undefined {
   const authorization = req.headers.authorization;

@@ -13,6 +13,7 @@ import { obterParceiros } from '../services/parceiroService';
 import { createTerraSchema, updateTerraSchema } from '../schemas/terra.schema';
 import { vincularParceiroATerraSchema } from '../schemas/terraParceiro.schema';
 import { AppError, ForbiddenError, NotFoundError, ValidationError } from '../errors/AppError';
+import { parseOrThrow } from '../helpers/validacaoZod';
 
 const SEED_USER_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -106,25 +107,19 @@ export const listarTerras = asyncHandler(async (req: Request, res: Response) => 
 });
 
 export const updateTerra = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = updateTerraSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const detalhes = parsed.error.issues
-      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
-      .join('; ');
-    throw new ValidationError(detalhes);
-  }
+  const dados = parseOrThrow(updateTerraSchema, req.body);
 
   const id = extrairIdParam(req);
   const perfilAutenticado = perfilAtual(req, res);
-  validarStatusInativoCoordenador(perfilAutenticado, parsed.data.status);
+  validarStatusInativoCoordenador(perfilAutenticado, dados.status);
 
   const terraAtual = await obterTerraPorId(id, {
     rascunhosUsuarioId: usuarioAtualIdOpcional(req, res),
   });
 
-  aplicarRegraStatusAnalista(perfilAutenticado, parsed.data.status, terraAtual.status);
+  aplicarRegraStatusAnalista(perfilAutenticado, dados.status, terraAtual.status);
 
-  const terra = await editarTerra(id, parsed.data);
+  const terra = await editarTerra(id, dados);
 
   res.status(200).json(terra);
 });
@@ -158,16 +153,10 @@ export const listarParceirosDaTerra = asyncHandler(async (req: Request, res: Res
 });
 
 export const vincularParceiroATerra = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = vincularParceiroATerraSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const detalhes = parsed.error.issues
-      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
-      .join('; ');
-    throw new ValidationError(detalhes);
-  }
+  const dados = parseOrThrow(vincularParceiroATerraSchema, req.body);
 
   const id = extrairIdParam(req);
-  const vinculo = await vincularParceiroATerraService(id, parsed.data);
+  const vinculo = await vincularParceiroATerraService(id, dados);
 
   res.status(201).location(`/api/terras/${id}/parceiros/${vinculo.parceiro_id}`).json(vinculo);
 });
