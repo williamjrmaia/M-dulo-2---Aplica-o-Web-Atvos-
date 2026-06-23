@@ -3122,9 +3122,9 @@ Também houve dificuldade na padronização dos contratos da API, principalmente
 
 ### 4.1.4. Próximos passos
 
-O principal próximo passo para a próxima versão é implementar o frontend da aplicação, conectando as telas aos endpoints já construídos no backend. Essa etapa deve transformar os fluxos disponíveis via API em uma experiência navegável para os perfis de usuário definidos no projeto.
+O principal passo previsto para a próxima versão era implementar o frontend da aplicação, conectando as telas aos endpoints já construídos no backend. Essa etapa deveria transformar os fluxos disponíveis via API em uma experiência navegável para os perfis de usuário definidos no projeto.
 
-Também devem ser priorizados os seguintes pontos:
+Também deveriam ser priorizados os seguintes pontos:
 
 | Próximo passo | Objetivo |
 | --- | --- |
