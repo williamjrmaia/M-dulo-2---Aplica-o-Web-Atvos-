@@ -61,13 +61,9 @@ function statusErroCadastroFormulario(error: unknown): { status: number; message
 
 function statusErroAtualizaFormulario(error: unknown): { status: number; message: string } {
   const message = error instanceof Error ? error.message : 'Erro interno do servidor';
-  let status = 400;
-  if (message === 'Usuario nao localizado na base') {
-    status = 404;
-  } else if (message === 'Erro interno do servidor') {
-    status = 500;
-  }
-  return { status, message };
+  if (message === 'Usuario nao localizado na base') return { status: 404, message };
+  if (message === 'Erro interno do servidor') return { status: 500, message };
+  return { status: 400, message };
 }
 
 const ERRO_CRIA_USUARIO: Record<string, number> = {
