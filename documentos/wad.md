@@ -3912,6 +3912,7 @@ Agência Brasil. (2022, 4 de janeiro). Sancionada lei que autoriza postos a comp
 Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2024, 1 de fevereiro). Vendas de gasolina, diesel e etanol cresceram em 2023. https://www.poder360.com.br/energia/vendas-de-gasolina-diesel-e-etanol-cresceram-em-2023-diz-anp/
 
 Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2026, 31 de março). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026
+
 Aegro. (2026). Aegro: sistema de gestão rural. https://aegro.com.br/
 
 AgFeed. (2023). Fora da RJ, ATVOS refaz planos e mira biometano, etanol de milho e de aviação. https://agfeed.com.br/negocios/fora-da-rj-atvos-refaz-planos-e-mira-biometano-etanol-de-milho-e-de-aviacao/
@@ -3919,20 +3920,20 @@ AgFeed. (2023). Fora da RJ, ATVOS refaz planos e mira biometano, etanol de milho
 Agroadvance. (2025). 15 maiores grupos do setor sucroalcooleiro no Brasil em 2024/25. https://agroadvance.com.br/blog-maiores-grupos-do-setor-sucroalcooleiro/
 
 Agroadvance. (2025). Preço do ATR no CONSECANA-SP. https://agroadvance.com.br/blog-consecana-preco-do-atr/
+
 ATVOS. (2023). Reuters: ATVOS aposta em etanol, não em açúcar, em novo investimento em cana no Brasil. https://atvos.com/reuters-atvos-aposta-em-etanol-nao-em-acucar-em-novo-investimento-em-cana-no-brasil/
 
-ATVOS. (2023). Guia da marca Atvos [Material institucional]. Disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli).
+ATVOS. (2023). Guia da marca Atvos [Material institucional]. Material disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli).
 
 ATVOS. (2025, 14 de janeiro). Relatório anual da safra 2023/2024. https://www.udop.com.br/noticia/2025/01/14/atvos-divulga-relatorio-anual-da-safra-2023-2024.html
 
-Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 [Documento interno corporativo].
+Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 [Documento interno corporativo]. Estratégia de Terras e Fornecedores.
 
 Brasilagro. (2021). País terá dilema com carros elétricos em 2030: o que fazer com tanto etanol? https://www.brasilagro.com.br/conteudo/pais-tera-dilema-com-carros-eletricos-em-2030o-que-fazer-com-tanto-etanol.html
 
 Broto Notícias. (2026, abril). Pressão da safra 2026/27 e demanda retraída forçam queda nas cotações de etanol e açúcar em SP. https://noticias.broto.com.br/cotacoes/queda-cotacoes-etanol-acucar-safra-2026-27
 
-Bunge. (2024). Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. https://www.bunge.com/Press-Releases/
-Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil
+Bunge. (2024). Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil
 
 Canal Rural. (2026). Usinas ampliam canaviais por arrendamento. https://www.canalrural.com.br/agricultura/cana/usinas-ampliam-canaviais-por-arrendamento-e-mudam-estrutura-fundiaria-em-sao-paulo/
 
@@ -3952,9 +3953,13 @@ Grupo 6. (2026). Diagrama de Classes UML do Domínio ATVOS [Diagrama]. PlantUML.
 
 Instituto de Tecnologia e Liderança. (2023). Adalove. https://adalove.inteli.edu.br/feed
 
-Instituto de Tecnologia e Liderança. (2026). Projeto parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 [Documento de escopo de projeto].
+Instituto de Tecnologia e Liderança. (2026). Projeto parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 [Documento de escopo de projeto]. Campus Inteli.
 
 Instituto Nacional da Propriedade Industrial. (2025, 18 de setembro). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep
+
+Kotler, P., & Armstrong, G. (2015). Princípios de marketing (15a ed.). Pearson Education.
+
+Kotler, P., & Keller, K. L. (2012). Administração de marketing (14a ed.). Pearson Education.
 
 Microsoft. (2026). Dynamics 365 Customer Insights. https://www.microsoft.com/pt-br/dynamics-365/products/customer-insights
 
@@ -3972,52 +3977,6 @@ Porter, M. E. (1979). How competitive forces shape strategy. Harvard Business Re
 
 Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review, 86(1), 78–93.
 
-<<<<<<< HEAD
-UDOP. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. União Nacional da Bioenergia. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
-
-INTELI — INSTITUTO DE TECNOLOGIA E LIDERANÇA. Projeto Parceiro ATVOS: 1AMD2 — Aplicação Web. São Paulo, 2026.
-
-Grupo 6. (2026). Value Proposition Canvas ATVOS. Canva. https://canva.link/towo8wkfnm7kd6v
-
-Grupo 6. (2026). Diagrama de Classes UML do Domínio ATVOS. 
-https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYjsSGEjZExWFO18O64n0iIFm1uG23nX7ZXDV-4Ny9nBctYf9qEeYjjEpuNV-Vu-3kstrAQI9sdYQEPJYWQCxAM92KefiXDY59KeLYWiKYBFpWJZlCiUdFV1sHk64pyTvOpN7nRV1sYAt--n9S7RHAwqaWB9Dbwer7C98qq4znnr2F6Cm9OK6HmOAqbkyurzIF1v-mBYkwrLDI6nE8nuskq8ecYBKd2EDMVPnG9gJUY9U0YfefcwEBrjYD9-AF-Q4RYs3Y_UBcD2qif7ay4roMSYrS7HVfpoEgrI69RkjYmw16dIg6By_ksq1M9aEYPbylFaDzQuLxvwIKBVUaWz3Q97gsbo7bSAqzUC_-CHCYOodhqrV83eost5-N7UTfsJ7cUxl4xcRpYtRVzOdmV0xHR_NAXwLw_hxklzFpUVytuVNfRANh1yg5N5kAFtloWRWOJapL59nw4I2KfVYt-eke4GC7SPTWBbeafB9KW9LA4ffFgwptuUjfHks8yoXDHwqt2MU2vtZYSVUBY09TZU3RpWZ4sOmjlDiCT5tDDTAwwJl32lmhBNtwm--q5hh4UXpq8OGP1HAGnTsS-Td5OkuBzw7-u_TjxtxrSpd7buzQKJl7CzVnPE4SUkYg-3zpbPNXaQgT4HfH9eH05qp_Ay1Ho1UGxOeGrsQwgjr6k0pXZyGWjb_wu-ek3qGWI9M57LYDwkpoZrb9LiYXRkJpxj6j0Ky8IomS59XBSyXmJJGAY8fPIhiK8ZOccEnGu4cb6-8PmRTbjcD92iaZu88B545G1DFf4L-Apykl5YCH4QKdaSyzN0x3s965V4EbM4j48WFDKdW1LZu7dL3dwT9UlkboQR2R3USlghFgTKRshsL6xW2kfAijnr2tBNMfypYBMIOiPdR2qFIIk5PKtTGxQIJfhWcOtknHG7b4vb98AWXrwKofBpc8Iqxj4dbSctK637qFrG1fX1xN3QD1MGcbDRECgrsaY9ASHZO6s1d7TLFdi8g3fDM5Fm5nsnzSvaJ4ZbdOgOaYFGU02pKfYYdGmntKMBLo3iA79K1wJky7kxyhRrxsDQJUfZMbXwk4EI0RNjG-FI4hgdC5cUnUeOqnXdvEaHf_1WQ5srHCQsodqBMvsMqyQKKua4zZ4TqJaPNnrqBTIy7A-BBwQ-U7y52q37xg8PyWOkzvy7Xx7n4kL5py1F0KUgl0C9-F8S6Q7XGzkgKZ4R6tLsa2EOMk3qjj299Jm0xiUGBG6slkRoXLBAdJ7jWD9Fykfn9aKDzKcximFKqN0p6HueyHqnJYJC6tAO4hQ8nn8drdSFKJJGdjR_Gtq84MXbxnBrERuBCA1c6k8fi-NkqvnABzrE0VNEgzq_a_sx4wxZzHTOGv-V3yJxI7s8Rp_MxkITCtAfjsWWqZjvcMBMh7DAdE14zqvfHsJSxFK9bzuHGrdMVLK2_ljlJaFZZgdmoO1XdlD8OK9QI9-Rnu6BL4WReGr2alSOA_oje3JqN2Ajeh7qjlCkyIk7mRueHSiu9mvdVc1wq-nRuwP6ALm1c9P0gjOLYk1zOS-XZXHA0CgXoyFxXD85dzgStm68WOKoS4vdUrXy-JY1BrmTePExfsVlt3IFrIDq1lN3oxGFz_yW8p66ozTFt2SdbRR2_oqpm5T9nUbawDyj9hoqJx4BfggYGw6q4d0pi8-MGtPDhAxM-un_Uymsrmn2BNcxVzclSVSOi_ZKtI4eTDfVOFcTu7Qvvr1uyFRS-nDuUfQV0Tx4i-H6puiRzc7hu2xXJi_Vz2-IOzGhaY_S1kjvWvyGArxMQuK-t4s3hVNuahnbb23S04XUkzFBttNNBhnBL6MpnZbOvPORSlA2H6fdgq46hWIefLWJaeCSGDPYHJ-8saca8QB8dJnKmUkVIiXKs0w9EcAok9tS-8q3t9n_I1txW0hb6yeDOHheRL83GWxPKwBXg3c8i897Fp8ZbTWK9lzv_3Y5m7OpEiCt2zeOlYdmgVowwXw5JnrCi4Koa65Af0qhHY86FnaGgcSIISj_YuP6-nljhV-Q7lhHuePIYz-vbIeSyS9geaPC3kGFBGuj85KyU9NOcYzn29WNWddEuElYQOJXG8VZcbxoWJKpBgTD3b5PNYbXhDYJogz1lw1V9RSv5GCPJ1Mbmy3alHoNMT7qHmcvcOzOSbe1hwfMRq6bRD5PJ3KGPHF3QSGL8cJW15HZYcG-aq0hIalVZELP5nD1u0VhknB_46uN20_kFBdnVTNtgLvry78cqznyMtLU0-NUciFdtsqOJ4GvyUnUCpFEky7xJrigNLV4xgxUC3ZziIoen9BgrVgFRgm3AosxDXjUgjUFakVsItOiLkohL_LIfV2BGWrJM_fUbXSTmZ7QXYMSe_qTltLqhHwisFtwZtghVxeE6z1r7cQ_0i0
-
-MODESTO, Farina et al, Psicodinâmica das cores em comunicação. In: BLUCHER, [S.l.], 2011. Disponível em: https://search.worldcat.org/pt/title/1295699137. Acesso em: 20 maio 2026.
-
-ATVOS. *Guia da marca Atvos*. São Paulo: Atvos, 2023. Material institucional disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli) por meio do Google Drive da disciplina. Acesso em: 20 maio 2026.
-
-Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 (Documento interno corporativo). Estratégia de Terras e Fornecedores.
-
-AGÊNCIA NACIONAL DO PETRÓLEO, GÁS NATURAL E BIOCOMBUSTÍVEIS (ANP). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. Brasília, DF: ANP, 31 mar. 2026. Disponível em: https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026. Acesso em: 2 jun. 2026.
-
-COMPANHIA NACIONAL DE ABASTECIMENTO (CONAB). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. Brasília, DF: Conab, 17 abr. 2026. Disponível em: https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26. Acesso em: 2 jun. 2026.
-
-GRAND VIEW RESEARCH. Customer Relationship Management Market Size, Share & Trends Analysis Report, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/industry-analysis/customer-relationship-management-crm-market. Acesso em: 2 jun. 2026.
-
-GRAND VIEW RESEARCH. Latin America Customer Relationship Management Market Size & Outlook, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/horizon/outlook/customer-relationship-management-market/latin-america. Acesso em: 2 jun. 2026.
-
-Instituto de Tecnologia e Liderança [Inteli]. (2026). Projeto Parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 (Documento de escopo de projeto). Campus Inteli.
-
-INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
-
-Kotler, P., & Armstrong, G. (2015). Princípios de marketing (15a ed.). Pearson Education.
-
-Kotler, P., & Keller, K. L. (2012). Administração de marketing (14a ed.). Pearson Education.
-
-AEGRO. Aegro: sistema de gestão rural. Porto Alegre: Aegro, 2026. Disponível em: https://aegro.com.br/. Acesso em: 8 jun. 2026.
-
-BUNGE. Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. St. Louis: Bunge, 2024. Disponível em: https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil. Acesso em: 8 jun. 2026.
-
-MICROSOFT. Dynamics 365 Customer Insights. Redmond: Microsoft, 2026. Disponível em: https://www.microsoft.com/pt-br/dynamics-365/products/customer-insights. Acesso em: 8 jun. 2026.
-
-RAÍZEN. Sobre a Raízen. São Paulo: Raízen, 2026. Disponível em: https://www.raizen.com.br/sobre-a-raizen. Acesso em: 8 jun. 2026.
-
-SALESFORCE. What is CRM Software? San Francisco: Salesforce, 2026. Disponível em: https://www.salesforce.com/crm/what-is-crm/software/. Acesso em: 8 jun. 2026.
-
-SAP. Customer Experience and Customer Relationship Management. Walldorf: SAP, 2026. Disponível em: https://www.sap.com/products/crm.html. Acesso em: 8 jun. 2026.
-
-SÃO MARTINHO. São Martinho. São Paulo: São Martinho, 2026. Disponível em: https://www.saomartinho.com.br/. Acesso em: 8 jun. 2026.
-=======
 Raízen. (2026). Sobre a Raízen. https://www.raizen.com.br/sobre-a-raizen
 
 Ries, A., & Trout, J. (2001). Positioning: The battle for your mind (20th anniversary ed.). McGraw-Hill.
@@ -4029,7 +3988,6 @@ SAP. (2026). Customer experience and customer relationship management. https://w
 São Martinho. (2026). São Martinho. https://www.saomartinho.com.br/
 
 União Nacional da Bioenergia. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
->>>>>>> 800ed0a1d13753481425f5c3beea963ff1aed89e
 
 # <a name="c9"></a>Anexos
 
