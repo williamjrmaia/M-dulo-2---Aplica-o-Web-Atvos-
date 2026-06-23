@@ -105,7 +105,7 @@ Os dados estão disponíveis no SharePoint da área de Estratégia de Terras da 
 
 #### c) Solução proposta
 
-Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações. O acesso será controlado por três perfis distintos: administrador, analista e coordenador.
+Foi desenvolvida uma aplicação web full stack para centralizar a gestão de parceiros agrícolas da ATVOS. A solução foi implementada com front-end web, back-end em Node.js com TypeScript e persistência de dados em PostgreSQL/Supabase. A aplicação centraliza os cadastros de parceiros, terras e usuários, registra o histórico de interações e alterações realizadas no sistema e disponibiliza mecanismos de consulta, filtragem, exportação e validação de registros. O acesso é controlado por três perfis distintos: administrador, analista e coordenador.
 
 #### d) Forma de utilização da solução
 
