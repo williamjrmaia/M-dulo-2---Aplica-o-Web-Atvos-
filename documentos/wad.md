@@ -111,9 +111,9 @@ Foi desenvolvida uma aplicação web full stack para centralizar a gestão de pa
 
 A aplicação será utilizada via navegador web pelos times internos da área de Negócios Agrícolas. Cada perfil terá acesso às funcionalidades correspondentes ao seu nível de permissão: cadastro e edição de parceiros, registro de interações, aplicação de filtros por nome, região e tipo de parceiro e exportação de listas.
 
-#### e) Benefícios esperados
+#### e) Benefícios alcançados
 
-Centralização e padronização dos cadastros de parceiros; eliminação de planilhas dispersas e redução de retrabalho operacional; preservação do histórico de relacionamento ao longo das safras independente de mudanças no time; e agilidade na consulta e análise de dados para suporte à tomada de decisão estratégica.
+A solução entregou a centralização e padronização dos cadastros de parceiros, reduzindo a dependência de planilhas dispersas e minimizando retrabalho operacional. O histórico de relacionamento passou a ser preservado de forma estruturada, independentemente de mudanças na equipe, aumentando a rastreabilidade das informações. Além disso, a aplicação proporcionou maior agilidade na consulta e análise de dados, fortalecendo a governança das informações e oferecendo suporte mais eficiente à tomada de decisão.
 
 #### f) Critério de sucesso e como será avaliado
 
