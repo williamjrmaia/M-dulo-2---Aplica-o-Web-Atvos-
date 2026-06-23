@@ -3117,7 +3117,7 @@ Uma das principais dificuldades foi alinhar a modelagem do banco de dados com os
 
 Outro desafio foi lidar com a integração dos testes automatizados com o banco de dados. Os testes de integração precisam preparar dados, executar requisições, validar a persistência e limpar os registros criados, o que aumenta a complexidade em comparação com testes unitários isolados.
 
-Também houve dificuldade na padronização dos contratos da API, principalmente em endpoints com múltiplos cenários de erro, como cadastro, edição, vinculação de entidades e autenticação. Esses fluxos exigiram tratamento cuidadoso para retornar status HTTP coerentes, como `400`, `401`, `403`, `404`, `409` e `422`.
+Também houve dificuldade na padronização dos contratos da API, principalmente em endpoints com múltiplos cenários de erro, como cadastro, edição, vinculação de entidades e autenticação. Esses fluxos exigiram tratamento cuidadoso para retornar códigos de status HTTP coerentes, como `400`, `401`, `403`, `404`, `409` e `422`.
 
 
 ### 4.1.4. Próximos passos
