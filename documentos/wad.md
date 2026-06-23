@@ -115,9 +115,9 @@ A aplicação será utilizada via navegador web pelos times internos da área de
 
 A solução entregou a centralização e padronização dos cadastros de parceiros, reduzindo a dependência de planilhas dispersas e minimizando retrabalho operacional. O histórico de relacionamento passou a ser preservado de forma estruturada, independentemente de mudanças na equipe, aumentando a rastreabilidade das informações. Além disso, a aplicação proporcionou maior agilidade na consulta e análise de dados, fortalecendo a governança das informações e oferecendo suporte mais eficiente à tomada de decisão.
 
-#### f) Critério de sucesso e como será avaliado
+#### f) Critério de sucesso e forma de avaliação
 
-O sucesso será avaliado pela entrega do MVP funcional com os três módulos operacionais (cadastro, histórico e controle de acesso); pela redução mensurável do tempo de consulta a dados de parceiros frente ao modelo de planilhas; e pela validação com usuários internos da ATVOS em testes de usabilidade, com taxa de conclusão de tarefas acima de 80%.
+O sucesso do projeto foi avaliado por meio da entrega da aplicação funcional contemplando os módulos de gestão de parceiros, histórico de interações, controle de acesso, validação de registros e administração de usuários. Também foram considerados os resultados obtidos durante as validações realizadas com o parceiro, a aderência aos requisitos definidos ao longo do projeto, a cobertura dos fluxos críticos identificados no levantamento inicial e a capacidade da solução de substituir o modelo anteriormente baseado em planilhas dispersas.
 
 ### 2.1.4. Value Proposition Canvas (sprint 1)
 
