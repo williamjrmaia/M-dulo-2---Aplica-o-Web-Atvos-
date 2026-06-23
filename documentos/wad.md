@@ -3072,8 +3072,7 @@ A RTM registra a cadeia entre necessidade, interface, contrato HTTP, implementa�
 
 ## 4.1. Primeira versão da aplicação web (sprint 3)
 
-O desenvolvimento da primeira versão da aplicação web concentrou-se na construção do backend do CRM da ATVOS. O foco principal foi transformar os requisitos e fluxos definidos nas etapas anteriores em endpoints, regras de negócio, acesso ao banco de dados e testes automatizados, deixando a aplicação preparada para receber a interface na sprint seguinte. A camada de frontend ainda não foi implementada como experiência final do usuário; portanto, os resultados desta sprint devem ser avaliados principalmente pela API, pela estrutura do servidor e pela integração com o banco.
-
+O desenvolvimento da primeira versão da aplicação web concentrou-se na construção do backend do CRM da ATVOS. O foco principal foi transformar os requisitos e os fluxos definidos nas etapas anteriores em endpoints, regras de negócio, mecanismos de acesso ao banco de dados e testes automatizados, preparando a aplicação para incorporar a interface na sprint seguinte. Naquele momento, a camada de frontend ainda não havia sido implementada como interface destinada ao usuário final. Portanto, os resultados da sprint 3 devem ser avaliados principalmente com base na API, na arquitetura do backend e na integração com o banco de dados.
 ### 4.1.1. O que foi implementado
 
 Foi estruturada uma aplicação Node.js com Express e TypeScript, organizada em camadas de rotas, controllers, services, repositories, schemas e models. Essa separação permitiu isolar responsabilidades: as rotas recebem as requisições, os controllers tratam o fluxo HTTP, os services concentram as regras de negócio e os repositories fazem a comunicação com o banco PostgreSQL (SupaBase).
@@ -3109,11 +3108,11 @@ Os testes automatizados com Jest e Supertest foram desenvolvidos para validar fl
 
 ### 4.1.2. O que não foi concluído
 
-A interface final do sistema ainda não foi implementada nesta sprint. Embora existam estruturas auxiliares de views no projeto, a entrega da sprint 3 deve ser considerada como uma primeira versão funcional do backend, não como a aplicação web completa do ponto de vista visual e de experiência do usuário.
+A interface final do sistema ainda não havia sido implementada na Sprint 3. Embora já existissem estruturas auxiliares de views no projeto, a entrega dessa sprint deve ser considerada uma primeira versão funcional do backend, e não a aplicação web completa do ponto de vista visual e da experiência do usuário.
 
-Também permaneceram pontos de consolidação para as próximas etapas, como ajustes finos na integração entre todos os fluxos, revisão final dos retornos de erro, padronização completa das mensagens da API e validação dos endpoints em conjunto com as telas que serão construídas posteriormente.
+Permaneceram também pontos de consolidação para as etapas seguintes, como ajustes finos na integração entre os fluxos, revisão final dos retornos de erro, padronização completa das mensagens da API e validação dos endpoints em conjunto com as telas que seriam construídas posteriormente.
 
-Além disso, parte dos testes depende diretamente da correta configuração do ambiente local e da conexão com o banco. Por isso, a estabilidade da suíte automatizada ainda exige atenção à padronização das variáveis de ambiente, da base de teste e da organização dos arquivos de teste.
+Além disso, parte dos testes dependia diretamente da correta configuração do ambiente local e da conexão com o banco de dados. Por isso, a estabilidade da suíte automatizada ainda exigia atenção à padronização das variáveis de ambiente, da base de testes e da organização dos arquivos de teste.
 
 ### 4.1.3. Dificuldades técnicas enfrentadas
 
@@ -3126,20 +3125,20 @@ Também houve dificuldade na padronização dos contratos da API, principalmente
 
 ### 4.1.4. Próximos passos
 
-O principal próximo passo para a próxima versão é implementar o frontend da aplicação, conectando as telas aos endpoints já construídos no backend. Essa etapa deve transformar os fluxos disponíveis via API em uma experiência navegável para os perfis de usuário definidos no projeto.
+O principal passo previsto para a segunda versão era implementar o frontend da aplicação, conectando as telas aos endpoints construídos no backend. Essa etapa transformaria os fluxos disponíveis por meio da API em uma experiência navegável para os perfis de usuário definidos no projeto.
 
-Também devem ser priorizados os seguintes pontos:
+Também foram definidos os seguintes pontos prioritários:
 
 | Próximo passo | Objetivo |
 | --- | --- |
-| Implementar as telas principais do sistema | Criar a interface para login, gestão de usuários, cadastro/listagem/edição de parceiros, terras, interações, exportação e dashboard. |
-| Integrar frontend e backend | Consumir os endpoints implementados e validar o fluxo completo da aplicação. |
-| Revisar autenticação e autorização nas rotas | Garantir que cada perfil acesse apenas as funcionalidades permitidas. |
-| Padronizar feedbacks de erro e sucesso | Exibir mensagens claras para validações, conflitos e ações concluídas. |
-| Consolidar a suíte de testes | Garantir que todos os testes esperados sejam descobertos e executados no ambiente local e no ambiente dos demais integrantes. |
-| Refinar documentação técnica | Atualizar endpoints, exemplos de uso e evidências de execução conforme a evolução da aplicação. |
+| Implementar as principais telas do sistema | Criar interfaces para login, gestão de usuários, cadastro, listagem e edição de parceiros, terras, interações, exportação de dados e dashboard. |
+| Integrar frontend e backend | Consumir os endpoints implementados e validar os fluxos completos da aplicação. |
+| Revisar a autenticação e a autorização das rotas | Garantir que cada perfil tivesse acesso somente às funcionalidades permitidas. |
+| Padronizar mensagens de erro e sucesso | Apresentar mensagens claras para erros de validação, conflitos e ações concluídas. |
+| Consolidar a suíte de testes | Garantir que todos os testes previstos fossem identificados e executados nos ambientes locais dos integrantes da equipe. |
+| Refinar a documentação técnica | Atualizar os endpoints, os exemplos de uso e as evidências de execução conforme a evolução da aplicação. |
 
-Com isso, a primeira versão entrega a base técnica do sistema: banco integrado, API estruturada, regras de negócio implementadas e testes automatizados iniciados. As próximas versões deverão se concentrar principalmente na implementação da interface e na integração completa entre frontend e backend.
+Dessa forma, a primeira versão entregou a base técnica do sistema, composta pela integração com o banco de dados, pela API estruturada, pelas regras de negócio implementadas e por uma suíte inicial de testes automatizados. Esses resultados serviram de base para que as versões seguintes se concentrassem na implementação da interface e na integração entre frontend e backend.
 
 ## 4.2. Segunda versão da aplicação web (sprint 4)
 
@@ -4014,6 +4013,15 @@ O plano de divulgação interna será estruturado em três fases distintas:
 **Fase de Capacitação (Workshops de Engajamento):** Também será necessário realizar treinamentos técnicos  e orientações práticas nas 8 unidades agroindustriais para mitigar a resistência na susbtituíção de ferramentas antigas.
 
 **Fase de Sustentação (Marketing de Conteúdo Interno):** Manuais de usuário e guias interativos de UX/UI  disponibilizados no sistema corporativo.
+
+## 6.7 Business Model Canvas
+
+<div align="center">
+  <sub>Figura 6.7.1 Business Model Canvas</sub><br>
+  <img src="/documentos/assets/business_model_canvas_safra_control.png" width="100%" alt="Estrutura de Pastas do Backend"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
 
 
 # <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
