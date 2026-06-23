@@ -3808,6 +3808,19 @@ Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos te
 | 4 | Raissa Guimarães | 4 | 3 | 2 | 4 | 4 | 2 | 4 | 1 | 4 | 1 |
 | 5 | Mariana Lacerda | 4 | 2 | 4 | 1 | 4 | 1 | 4 | 1 | 5 | 1 |
 
+> **Fórmula de cálculo:** Para questões ímpares (Q1, Q3, Q5, Q7, Q9): subtrai 1 da resposta. Para questões pares (Q2, Q4, Q6, Q8, Q10): subtrai a resposta de 5. Soma-se todos os valores e multiplica por 2,5.
+
+**Pontuações finais:**
+
+| # | Participante | Pontuação SUS | Classificação |
+|---|-------------|--------------|---------------|
+| 1 | Pablo Oliveira Garcia | 90 | Excelente |
+| 2 | Maria Clara Bosschart | 97,5 | Excelente |
+| 3 | Messias Olivindo | 82,5 | Excelente |
+| 4 | Raissa Guimarães | 67,5 | Razoável |
+| 5 | Mariana Lacerda | 87,5 | Excelente |
+| — | **Média geral** | **85** | **Excelente** |
+
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
 ## 6.1 Resumo Executivo
