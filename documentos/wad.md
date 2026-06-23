@@ -3829,6 +3829,15 @@ Os pontos de maior satisfação identificados nas respostas foram a percepção 
 
 O ponto de menor satisfação foi a percepção de inconsistência do sistema (Q6) e a necessidade de suporte técnico (Q4), ambos puxados principalmente pela avaliação de Raissa Guimarães, que enfrentou mais dificuldades durante os testes. Isso reforça que o fluxo de envio para validação e o cadastro de parceiros ainda apresentam fricção para usuários menos familiarizados com o sistema.
 
+**Conclusões e sugestões de melhoria para próximas sprints:**
+
+Com base nos resultados dos testes SUS e de guerrilha, as seguintes melhorias são sugeridas para as próximas sprints:
+
+- **Correção crítica:** Resolver o bug de registro de interações no histórico do parceiro, identificado como severidade catastrófica e que resultou em falha total na tarefa 3 para todos os participantes.
+- **Melhoria de navegação:** Revisar o posicionamento e a nomenclatura do botão de envio para validação, tornando-o mais visível e compreensível sem necessidade de instrução externa.
+- **Validação de formulários:** Implementar validações de campo mais claras no cadastro de parceiros, especialmente quanto ao tipo de dado aceito e ao comportamento com CPFs duplicados entre categorias.
+- **Feedback do sistema:** Adicionar confirmações visuais imediatas ao salvar rascunhos, reduzindo a incerteza do usuário sobre o estado da operação.
+
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
 ## 6.1 Resumo Executivo
