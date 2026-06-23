@@ -10,7 +10,8 @@
     "lint": "eslint src/",
     "lint:complexity": "eslint src/ --rule \"complexity:[warn,5]\"",
     "cpd": "jscpd src",
-    "circular": "madge --circular src"
+    "circular": "madge --circular src",
+    "test:cov": "jest --runInBand --forceExit --coverage"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
