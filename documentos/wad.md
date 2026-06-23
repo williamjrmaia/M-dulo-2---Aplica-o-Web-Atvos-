@@ -177,7 +177,9 @@ O problema central da ATVOS é mais relacional do que transacional: o risco não
 
 ### 2.1.5. Matriz de Riscos do Projeto (sprint 1)
 
-A matriz de riscos é uma ferramenta fundamental de gestão de projetos, utilizada para identificar, classificar e planejar respostas a eventos que possam impactar negativamente (ameaças) ou positivamente (oportunidades) o desenvolvimento da aplicação Web. Ela permite visualizar, de forma estruturada, os principais riscos do projeto, avaliando sua probabilidade de ocorrência e o impacto potencial sobre os resultados. A análise e o acompanhamento contínuo desses riscos são essenciais para garantir a entrega do MVP no prazo, com qualidade e alinhamento aos objetivos do grupo.
+A matriz de riscos foi utilizada durante as etapas iniciais do projeto para identificar, classificar e planejar respostas para eventos que poderiam impactar o desenvolvimento da aplicação. O artefato serviu como instrumento de apoio ao planejamento e acompanhamento das atividades ao longo das sprints.
+
+Por se tratar da versão final da documentação, os riscos apresentados nesta seção devem ser interpretados como um registro histórico das análises realizadas durante a execução do projeto, bem como das estratégias de mitigação definidas pela equipe.
 
 #### 2.1.5.1 Classificação de Impacto, Probabilidade e Matriz de Risco
 
