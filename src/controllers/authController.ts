@@ -6,27 +6,10 @@ import {
 } from '../config/auth';
 import { encerrarSessaoSchema, loginSchema } from '../schemas/auth.schema';
 import { AuthService } from '../services/authService';
+import { extrairCookie } from '../helpers/cookies';
 
 function isFormWeb(req: Request): boolean {
   return req.is('application/x-www-form-urlencoded') === 'application/x-www-form-urlencoded';
-}
-
-function extrairCookie(req: Request, nome: string): string | undefined {
-  const cookies = req.headers.cookie;
-  if (!cookies) return undefined;
-
-  return cookies
-    .split(';')
-    .map((cookie) => cookie.trim())
-    .filter((cookie) => cookie.includes('='))
-    .map((cookie) => {
-      const separador = cookie.indexOf('=');
-      return {
-        nome: cookie.slice(0, separador),
-        valor: decodeURIComponent(cookie.slice(separador + 1)),
-      };
-    })
-    .find((cookie) => cookie.nome === nome)?.valor;
 }
 
 function mensagemValidacaoLogin(email?: string, senha?: string): string {

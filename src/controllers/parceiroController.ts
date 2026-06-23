@@ -21,6 +21,7 @@ import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
 import { devolverParceiroSchema } from '../schemas/parceiroDevolucao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
+import { parseOrThrow } from '../helpers/validacaoZod';
 
 type RequestComUsuario = Request & {
   usuario?: {
@@ -310,15 +311,9 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
 });
 
 export const listarParceiros = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = listarParceirosFiltrosSchema.safeParse(req.query);
-  if (!parsed.success) {
-    const detalhes = parsed.error.issues
-      .map((i) => `${i.path.join('.') || 'query'}: ${i.message}`)
-      .join('; ');
-    throw new ValidationError(detalhes);
-  }
+  const filtros = parseOrThrow(listarParceirosFiltrosSchema, req.query, 'query');
 
-  const parceiros = await obterParceiros(parsed.data, {
+  const parceiros = await obterParceiros(filtros, {
     incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
     rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
   });
@@ -348,46 +343,28 @@ export const listarHistoricoParceiro = asyncHandler(async (req: Request, res: Re
 });
 
 export const enviarParceiroParaValidacao = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = enviarParceiroValidacaoSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const detalhes = parsed.error.issues
-      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
-      .join('; ');
-    throw new ValidationError(detalhes);
-  }
+  const dados = parseOrThrow(enviarParceiroValidacaoSchema, req.body);
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-  const parceiro = await enviarParceiroParaValidacaoService(id, parsed.data);
+  const parceiro = await enviarParceiroParaValidacaoService(id, dados);
 
   res.status(200).json(parceiro);
 });
 
 export const aprovarParceiro = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = aprovarParceiroSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const detalhes = parsed.error.issues
-      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
-      .join('; ');
-    throw new ValidationError(detalhes);
-  }
+  const dados = parseOrThrow(aprovarParceiroSchema, req.body);
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-  const parceiro = await aprovarParceiroService(id, parsed.data);
+  const parceiro = await aprovarParceiroService(id, dados);
 
   res.status(200).json(parceiro);
 });
 
 export const devolverParceiro = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = devolverParceiroSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const detalhes = parsed.error.issues
-      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
-      .join('; ');
-    throw new ValidationError(detalhes);
-  }
+  const dados = parseOrThrow(devolverParceiroSchema, req.body);
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-  const parceiro = await devolverParceiroService(id, parsed.data);
+  const parceiro = await devolverParceiroService(id, dados);
 
   res.status(200).json(parceiro);
 });
@@ -421,16 +398,10 @@ export const listarTerrasDoParceiro = asyncHandler(async (req: Request, res: Res
 });
 
 export const vincularTerraAoParceiro = asyncHandler(async (req: Request, res: Response) => {
-  const parsed = vincularTerraAoParceiroSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const detalhes = parsed.error.issues
-      .map((i) => `${i.path.join('.') || 'body'}: ${i.message}`)
-      .join('; ');
-    throw new ValidationError(detalhes);
-  }
+  const dados = parseOrThrow(vincularTerraAoParceiroSchema, req.body);
 
   const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-  const vinculo = await vincularTerraAoParceiroService(id, parsed.data);
+  const vinculo = await vincularTerraAoParceiroService(id, dados);
 
   res.status(201).location(`/api/parceiros/${id}/terras/${vinculo.terra_id}`).json(vinculo);
 });
