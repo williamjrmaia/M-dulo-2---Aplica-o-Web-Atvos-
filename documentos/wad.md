@@ -69,7 +69,7 @@ A rivalidade entre concorrentes é alta. O setor disputa terras, fornecedores e 
 
 A ameaça de produtos substitutos é moderada e crescente. Com 80% da cana destinada ao etanol (ATVOS, 2023), a empresa é vulnerável a veículos elétricos, que podem reduzir a demanda em até 40% até 2035 (Brasilagro, 2021), ao etanol de milho (AgFeed, 2023) e ao biometano para transporte pesado (Eixo, 2025).
 
-Em resumo, o CRM proposto atua diretamente na redução de vulnerabilidades operacionais da ATVOS: preserva o histórico com parceiros estratégicos, padroniza cadastros e viabiliza decisões mais ágeis frente à concorrência.
+Em resumo, a solução desenvolvida atua diretamente na redução de vulnerabilidades operacionais da ATVOS, preservando o histórico de relacionamento com parceiros estratégicos, padronizando cadastros e fornecendo uma base estruturada para decisões mais ágeis e fundamentadas.
 
 ### 2.1.2. Análise SWOT da Instituição Parceira (sprint 1)
 
@@ -105,19 +105,19 @@ Os dados estão disponíveis no SharePoint da área de Estratégia de Terras da 
 
 #### c) Solução proposta
 
-Será desenvolvida uma aplicação web full stack com front-end em HTML, CSS e JavaScript, back-end em Node.js e banco de dados SQLite. A solução centralizará cadastros de parceiros, registrará o histórico de interações. O acesso será controlado por três perfis distintos: administrador, analista e coordenador.
+Foi desenvolvida uma aplicação web full stack para centralizar a gestão de parceiros agrícolas da ATVOS. A solução foi implementada com front-end web, back-end em Node.js com TypeScript e persistência de dados em PostgreSQL/Supabase. A aplicação centraliza os cadastros de parceiros, terras e usuários, registra o histórico de interações e alterações realizadas no sistema e disponibiliza mecanismos de consulta, filtragem, exportação e validação de registros. O acesso é controlado por três perfis distintos: administrador, analista e coordenador.
 
 #### d) Forma de utilização da solução
 
 A aplicação será utilizada via navegador web pelos times internos da área de Negócios Agrícolas. Cada perfil terá acesso às funcionalidades correspondentes ao seu nível de permissão: cadastro e edição de parceiros, registro de interações, aplicação de filtros por nome, região e tipo de parceiro e exportação de listas.
 
-#### e) Benefícios esperados
+#### e) Benefícios alcançados
 
-Centralização e padronização dos cadastros de parceiros; eliminação de planilhas dispersas e redução de retrabalho operacional; preservação do histórico de relacionamento ao longo das safras independente de mudanças no time; e agilidade na consulta e análise de dados para suporte à tomada de decisão estratégica.
+A solução entregou a centralização e padronização dos cadastros de parceiros, reduzindo a dependência de planilhas dispersas e minimizando retrabalho operacional. O histórico de relacionamento passou a ser preservado de forma estruturada, independentemente de mudanças na equipe, aumentando a rastreabilidade das informações. Além disso, a aplicação proporcionou maior agilidade na consulta e análise de dados, fortalecendo a governança das informações e oferecendo suporte mais eficiente à tomada de decisão.
 
-#### f) Critério de sucesso e como será avaliado
+#### f) Critério de sucesso e forma de avaliação
 
-O sucesso será avaliado pela entrega do MVP funcional com os três módulos operacionais (cadastro, histórico e controle de acesso); pela redução mensurável do tempo de consulta a dados de parceiros frente ao modelo de planilhas; e pela validação com usuários internos da ATVOS em testes de usabilidade, com taxa de conclusão de tarefas acima de 80%.
+O sucesso do projeto foi avaliado por meio da entrega da aplicação funcional contemplando os módulos de gestão de parceiros, histórico de interações, controle de acesso, validação de registros e administração de usuários. Também foram considerados os resultados obtidos durante as validações realizadas com o parceiro, a aderência aos requisitos definidos ao longo do projeto, a cobertura dos fluxos críticos identificados no levantamento inicial e a capacidade da solução de substituir o modelo anteriormente baseado em planilhas dispersas.
 
 ### 2.1.4. Value Proposition Canvas (sprint 1)
 
@@ -152,7 +152,7 @@ Esse profissional espera ter uma visão única e confiável de todos os parceiro
 
 #### 2. O Mapa de Valor
 
-Para responder diretamente à realidade desse cliente, a solução proposta é um CRM web desenvolvido sob medida para a área de Negócios Agrícolas da ATVOS. A aplicação é estruturada em torno de três pilares: o cadastro centralizado de parceiros, o histórico rastreável de interações e o controle de acesso por perfil. Juntos, esses pilares substituem o modelo fragmentado atual por um fluxo estruturado, padronizado e auditável de informações.
+Para responder diretamente à realidade desse cliente, foi desenvolvida uma aplicação CRM web sob medida para a área de Negócios Agrícolas da ATVOS. A solução foi estruturada em torno de três pilares principais: cadastro centralizado de parceiros, histórico rastreável de interações e controle de acesso por perfil. Em conjunto, esses pilares substituem o modelo fragmentado anteriormente utilizado por um fluxo estruturado, padronizado e auditável de informações.
 
 **Produtos e Serviços**
 
@@ -177,7 +177,9 @@ O problema central da ATVOS é mais relacional do que transacional: o risco não
 
 ### 2.1.5. Matriz de Riscos do Projeto (sprint 1)
 
-A matriz de riscos é uma ferramenta fundamental de gestão de projetos, utilizada para identificar, classificar e planejar respostas a eventos que possam impactar negativamente (ameaças) ou positivamente (oportunidades) o desenvolvimento da aplicação Web. Ela permite visualizar, de forma estruturada, os principais riscos do projeto, avaliando sua probabilidade de ocorrência e o impacto potencial sobre os resultados. A análise e o acompanhamento contínuo desses riscos são essenciais para garantir a entrega do MVP no prazo, com qualidade e alinhamento aos objetivos do grupo.
+A matriz de riscos foi utilizada durante as etapas iniciais do projeto para identificar, classificar e planejar respostas para eventos que poderiam impactar o desenvolvimento da aplicação. O artefato serviu como instrumento de apoio ao planejamento e acompanhamento das atividades ao longo das sprints.
+
+Por se tratar da versão final da documentação, os riscos apresentados nesta seção devem ser interpretados como um registro histórico das análises realizadas durante a execução do projeto, bem como das estratégias de mitigação definidas pela equipe.
 
 #### 2.1.5.1 Classificação de Impacto, Probabilidade e Matriz de Risco
 
@@ -280,7 +282,9 @@ Com o histórico de interações centralizado e acessível para a ATVOS, ela pod
 
 ---
 
-A matriz de riscos permite à equipe antecipar ameaças, planejar respostas e aproveitar oportunidades. O acompanhamento dos riscos contribui para a organização do grupo, a entrega do MVP no prazo e a elevação da qualidade do produto. Aliada à comunicação eficiente e à definição clara de responsabilidades, é fundamental para o sucesso da aplicação web.
+A matriz de riscos contribuiu para que a equipe antecipasse ameaças, planejasse respostas e identificasse oportunidades durante o desenvolvimento da solução. O acompanhamento realizado ao longo das sprints auxiliou na organização das atividades, no cumprimento dos prazos estabelecidos e na manutenção da qualidade do produto entregue.
+
+Como resultado, a gestão dos riscos apoiou a condução do projeto desde as etapas iniciais até a entrega final da aplicação.
 
 ## 2.2. Personas (sprint 1)
 
@@ -551,14 +555,14 @@ Para este projeto, os RNFs foram organizados nos oito eixos definidos para a doc
 | RNF-DESEMP-01 | Desempenho | As páginas e endpoints dos fluxos prioritários devem responder em até 3 segundos em ambiente local ou de homologação com base acadêmica de testes. | RF007, RF008, RF016, RF017; fluxos de listagem, filtros, perfil detalhado, dashboard e exportação. | Medir o tempo de resposta de `GET /api/parceiros`, `GET /api/parceiros/:id`, filtros combinados, `GET /dashboards/interacoes` e `GET /parceiros/exportar`; cada operação deve concluir em até 3 segundos sem travamento perceptível. |
 | RNF-DESEMP-02 | Desempenho | As consultas de listagem e filtros devem delegar filtragem e ordenação ao banco de dados, evitando processamento desnecessário na camada de controller ou view. | RF007, RF012, RF016; fluxos de listagem de parceiros, listagem de terras e aplicação de filtros. | Revisar repositories e testes de filtros para confirmar uso de parâmetros de consulta, `WHERE`, ordenação e exclusão de inativos no banco; não deve haver filtragem principal feita manualmente após carregar todos os registros. |
 | RNF-SUP-01 | Suportabilidade | Novas funcionalidades devem seguir a arquitetura em camadas documentada, separando rotas, controllers, services, repositories, schemas, models, errors e middlewares. | RF001 a RF023; todos os fluxos implementados na WebAPI. | Revisar a implementação de cada novo fluxo; regra de negócio deve ficar em service, acesso a banco em repository, validação em schema/controller e tratamento de falhas em errors/middleware. |
-| RNF-SUP-02 | Suportabilidade | Cada endpoint ou fluxo relevante deve possuir documentação objetiva e, quando aplicável, testes automatizados de sucesso, erro e persistência. | RF001, RF004, RF005, RF006, RF007, RF008, RF013, RF015, RF016, RF017, RF020, RF021, RF022, RF023; fluxos cobertos na documentação da WebAPI e RTM. | Conferir a existência de documentação em `documentos/`, tabela de endpoints na seção 3.7 e testes em `src/tests` ou `src/test`; alterações futuras devem atualizar a RTM e a documentação correspondente. |
+| RNF-SUP-02 | Suportabilidade | Cada endpoint ou fluxo relevante deve possuir documentação objetiva e, quando aplicável, testes automatizados de sucesso, erro e persistência. | RF001, RF004, RF005, RF006, RF007, RF008, RF013, RF015, RF016, RF017, RF020, RF021, RF022, RF023; fluxos cobertos na documentação da WebAPI e RTM. | Conferir a existência de documentação em `documentos/outros/`, tabela de endpoints na seção 3.7 e testes em `src/tests` ou `src/test`; alterações futuras devem atualizar a RTM e a documentação correspondente. |
 | RNF-SEG-01 | Segurança | O sistema deve exigir autenticação para acesso aos fluxos protegidos e impedir que usuários inativos mantenham sessões válidas. | RF011, RF020; fluxos de login, revogação de sessão e inativação de usuários. | Executar testes para credenciais válidas, senha incorreta, usuário inexistente, token ausente, sessão revogada e usuário inativo; operações protegidas devem retornar erro controlado quando a autenticação não for válida. |
 | RNF-SEG-02 | Segurança | O sistema deve aplicar controle de acesso por perfil no backend, impedindo operações administrativas ou de alteração por usuários sem permissão. | RF001, RF002, RF003, RF004, RF005, RF007, RF008, RF020; fluxos de gestão de usuários, edição de dados, consulta e inativação. | Verificar por testes e revisão de rotas/services que administrador, analista e coordenador acessam apenas as operações previstas; o frontend não pode ser a única barreira de autorização. |
 | RNF-CAP-01 | Capacidade | O sistema deve suportar uso interno simultâneo por pelo menos 20 usuários em operações básicas de consulta, cadastro e edição, sem indisponibilidade dos fluxos principais. | RF004, RF005, RF006, RF007, RF008, RF016; fluxos de cadastro, edição, registro de interações, listagem e filtros. | Realizar teste de carga simples em homologação ou local, simulando requisições concorrentes aos endpoints principais; não deve haver falhas críticas, perda de dados ou degradação que impeça o uso básico. |
 | RNF-CAP-02 | Capacidade | A base deve comportar crescimento gradual de registros de parceiros, terras, vínculos e interações sem exigir mudança estrutural imediata no MVP. | RF006, RF007, RF008, RF013, RF015, RF016, RF017; fluxos de histórico, vínculos N:N, consulta e exportação. | Popular a base de teste com volume representativo para o projeto acadêmico, por exemplo 1.000 parceiros, 1.000 terras e 5.000 interações, e verificar listagem, detalhe, histórico e exportação dentro do limite de desempenho definido. |
 | RNF-RAST-01 | Rastreabilidade | Cada requisito funcional deve manter vínculo documentado com regras de negócio, endpoint, tela ou fluxo, teste e evidência na matriz de rastreabilidade. | RF001 a RF023; RTM da seção 3.9, matriz RF -> RN -> Endpoint da seção 3.1.4 e documentação da WebAPI. | Revisar a RTM a cada sprint; nenhum fluxo central de usuários, parceiros, terras, validação, histórico, exportação ou dashboard deve ficar sem RF, RN, endpoint e teste/evidência associados. |
 | RNF-RAST-02 | Rastreabilidade | O sistema deve registrar autoria e data/hora em criações e alterações, preservando histórico consultável para auditoria dos cadastros. | RF013, RF018, RF019; fluxos de cadastro, edição, histórico de alterações e registro de interações. | Executar testes que confirmem persistência de `criado_por`, `atualizado_por`, timestamps e histórico em `GET /api/parceiros/:id/historico`; alterações anteriores devem permanecer acessíveis após edição. |
-| RNF-ORG-01 | Organização | A documentação do projeto deve manter separação clara entre análise de negócio, requisitos, arquitetura, modelagem, endpoints, testes, evidências e ativos visuais. | WAD, README, documentação em `documentos/`, RTM e seções 3.1, 3.2, 3.6, 3.7 e 3.9. | Verificar, antes de cada entrega, se novos conteúdos foram inseridos na seção correta, com nomenclatura consistente e sem duplicar informações conflitantes entre WAD, README e documentos de endpoints. |
+| RNF-ORG-01 | Organização | A documentação do projeto deve manter separação clara entre análise de negócio, requisitos, arquitetura, modelagem, endpoints, testes, evidências e ativos visuais. | WAD, README, documentação em `documentos/`, documentos complementares em `documentos/outros/`, RTM e seções 3.1, 3.2, 3.6, 3.7 e 3.9. | Verificar, antes de cada entrega, se novos conteúdos foram inseridos na seção correta, com nomenclatura consistente e sem duplicar informações conflitantes entre WAD, README e documentos de endpoints. |
 | RNF-ORG-02 | Organização | A estrutura do código e dos documentos deve manter nomenclatura coerente para módulos, RFs, RNs, RNFs, endpoints, testes e evidências. | RF001 a RF023; módulos de autenticação, usuários, parceiros, terras, interações, exportação e dashboard. | Revisar nomes de arquivos, tabelas e referências cruzadas; endpoints documentados devem corresponder às rotas implementadas e testes citados devem existir no repositório. |
 
 #### Restrições de Design
@@ -3068,8 +3072,7 @@ A RTM registra a cadeia entre necessidade, interface, contrato HTTP, implementa�
 
 ## 4.1. Primeira versão da aplicação web (sprint 3)
 
-O desenvolvimento da primeira versão da aplicação web concentrou-se na construção do backend do CRM da ATVOS. O foco principal foi transformar os requisitos e fluxos definidos nas etapas anteriores em endpoints, regras de negócio, acesso ao banco de dados e testes automatizados, deixando a aplicação preparada para receber a interface na sprint seguinte. A camada de frontend ainda não foi implementada como experiência final do usuário; portanto, os resultados desta sprint devem ser avaliados principalmente pela API, pela estrutura do servidor e pela integração com o banco.
-
+O desenvolvimento da primeira versão da aplicação web concentrou-se na construção do backend do CRM da ATVOS. O foco principal foi transformar os requisitos e os fluxos definidos nas etapas anteriores em endpoints, regras de negócio, mecanismos de acesso ao banco de dados e testes automatizados, preparando a aplicação para incorporar a interface na sprint seguinte. Naquele momento, a camada de frontend ainda não havia sido implementada como interface destinada ao usuário final. Portanto, os resultados da sprint 3 devem ser avaliados principalmente com base na API, na arquitetura do backend e na integração com o banco de dados.
 ### 4.1.1. O que foi implementado
 
 Foi estruturada uma aplicação Node.js com Express e TypeScript, organizada em camadas de rotas, controllers, services, repositories, schemas e models. Essa separação permitiu isolar responsabilidades: as rotas recebem as requisições, os controllers tratam o fluxo HTTP, os services concentram as regras de negócio e os repositories fazem a comunicação com o banco PostgreSQL (SupaBase).
@@ -3105,33 +3108,33 @@ Os testes automatizados com Jest e Supertest foram desenvolvidos para validar fl
 
 ### 4.1.2. O que não foi concluído
 
-A interface final do sistema ainda não foi implementada nesta sprint. Embora existam estruturas auxiliares de views no projeto, a entrega da sprint 3 deve ser considerada como uma primeira versão funcional do backend, não como a aplicação web completa do ponto de vista visual e de experiência do usuário.
+A interface final do sistema ainda não havia sido implementada na Sprint 3. Embora já existissem estruturas auxiliares de views no projeto, a entrega dessa sprint deve ser considerada uma primeira versão funcional do backend, e não a aplicação web completa do ponto de vista visual e da experiência do usuário.
 
-Também permaneceram pontos de consolidação para as próximas etapas, como ajustes finos na integração entre todos os fluxos, revisão final dos retornos de erro, padronização completa das mensagens da API e validação dos endpoints em conjunto com as telas que serão construídas posteriormente.
+Permaneceram também pontos de consolidação para as etapas seguintes, como ajustes finos na integração entre os fluxos, revisão final dos retornos de erro, padronização completa das mensagens da API e validação dos endpoints em conjunto com as telas que seriam construídas posteriormente.
 
-Além disso, parte dos testes depende diretamente da correta configuração do ambiente local e da conexão com o banco. Por isso, a estabilidade da suíte automatizada ainda exige atenção à padronização das variáveis de ambiente, da base de teste e da organização dos arquivos de teste.
+Além disso, parte dos testes dependia diretamente da correta configuração do ambiente local e da conexão com o banco de dados. Por isso, a estabilidade da suíte automatizada ainda exigia atenção à padronização das variáveis de ambiente, da base de testes e da organização dos arquivos de teste.
 
 ### 4.1.3. Dificuldades técnicas enfrentadas
 
 Uma das principais dificuldades foi alinhar a modelagem do banco de dados com os fluxos reais do sistema, especialmente nos relacionamentos entre parceiros, terras, vínculos comerciais, usuários responsáveis e histórico de alterações. Como o domínio possui regras de validação e rastreabilidade, foi necessário organizar o backend para evitar duplicação de lógica entre controllers, services e repositories.
 
-Outro desafio foi lidar com a integração dos testes automatizados com banco real. Os testes de integração precisam preparar dados, executar requisições, validar persistência e limpar registros criados, o que aumenta a complexidade em comparação com testes unitários isolados.
+Outro desafio foi lidar com a integração dos testes automatizados com o banco de dados. Os testes de integração precisam preparar dados, executar requisições, validar a persistência e limpar os registros criados, o que aumenta a complexidade em comparação com testes unitários isolados.
 
-Também houve dificuldade na padronização dos contratos da API, principalmente em endpoints com múltiplos cenários de erro, como cadastro, edição, vinculação de entidades e autenticação. Esses fluxos exigiram tratamento cuidadoso para retornar status HTTP coerentes, como `400`, `401`, `403`, `404`, `409` e `422`.
+Também houve dificuldade na padronização dos contratos da API, principalmente em endpoints com múltiplos cenários de erro, como cadastro, edição, vinculação de entidades e autenticação. Esses fluxos exigiram tratamento cuidadoso para retornar códigos de status HTTP coerentes, como `400`, `401`, `403`, `404`, `409` e `422`.
 
 
 ### 4.1.4. Próximos passos
 
-O principal passo previsto para a próxima versão era implementar o frontend da aplicação, conectando as telas aos endpoints já construídos no backend. Essa etapa deveria transformar os fluxos disponíveis via API em uma experiência navegável para os perfis de usuário definidos no projeto.
+O principal passo previsto para a segunda versão era implementar o frontend da aplicação, conectando as telas aos endpoints construídos no backend. Essa etapa transformaria os fluxos disponíveis por meio da API em uma experiência navegável para os perfis de usuário definidos no projeto.
 
-Também deveriam ser priorizados os seguintes pontos:
+Também foram definidos os seguintes pontos prioritários:
 
 | Próximo passo | Objetivo |
 | --- | --- |
-| Implementar as telas principais do sistema | Criar a interface para login, gestão de usuários, cadastro, listagem e edição de parceiros, terras, interações, exportação e dashboard. |
+| Implementar as principais telas do sistema | Criar interfaces para login, gestão de usuários, cadastro, listagem e edição de parceiros, terras, interações, exportação de dados e dashboard. |
 | Integrar frontend e backend | Consumir os endpoints implementados e validar os fluxos completos da aplicação. |
-| Revisar autenticação e autorização nas rotas | Garantir que cada perfil acessasse apenas as funcionalidades permitidas. |
-| Padronizar feedbacks de erro e sucesso | Exibir mensagens claras para validações, conflitos e ações concluídas. |
+| Revisar a autenticação e a autorização das rotas | Garantir que cada perfil tivesse acesso somente às funcionalidades permitidas. |
+| Padronizar mensagens de erro e sucesso | Apresentar mensagens claras para erros de validação, conflitos e ações concluídas. |
 | Consolidar a suíte de testes | Garantir que todos os testes previstos fossem identificados e executados nos ambientes locais dos integrantes da equipe. |
 | Refinar a documentação técnica | Atualizar os endpoints, os exemplos de uso e as evidências de execução conforme a evolução da aplicação. |
 
@@ -3777,7 +3780,122 @@ Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao regis
 
 ### 5.2.1. Relatório de testes de guerrilha
 
-*Posicione aqui as tabelas com enunciados de tarefas, etapas e resultados de testes de usabilidade. Ou utilize um link para seu relatório de testes (mantenha o link sempre público para visualização).*
+Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma T24 de Inteli, 1 aluno do 2º ano de Ciência da Computação e 1 aluna do 2º ano de Engenharia de Software. Os testes foram conduzidos presencialmente, com cada participante executando as tarefas de forma independente enquanto o observador registrava ocorrências. Nenhuma instrução adicional foi fornecida durante a execução das tarefas.
+
+[📊 Relatório de Testes de Usabilidade — Safra Control](https://docs.google.com/spreadsheets/d/1MnqTU2OktA61bAK_owX0Iv-jNSDWqAM_2zLPRQ-fUa4/edit?usp=sharing)
+
+---
+
+#### Tarefa 1 — Cadastrar fornecedor de cana e enviar para validação
+
+**Enunciado:** Suponha que você é um analista de negócios agrícolas da ATVOS e precisa registrar um novo fornecedor de cana no sistema. Utilize o sistema para cadastrar esse fornecedor, salvar como rascunho e enviá-lo para validação do coordenador.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Encontrar onde cadastrar um novo fornecedor de cana | Navega até o formulário correto sem precisar de ajuda |
+| 2 | Preencher os campos do formulário sem orientação externa | Entende o que cada campo pede e completa sem erro |
+| 3 | Descobrir como salvar o registro como rascunho | Localiza e aciona a opção de rascunho sem indicação |
+| 4 | Encontrar o rascunho salvo e enviá-lo para validação | Localiza o rascunho na seção correta e aciona o envio para validação com sucesso |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Conseguiu com dificuldade | Confundiu fornecedor com parceiro, clicou em "parceiro" inicialmente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
+| 2 | Maria Clara Bosschart | Aluna T24 | Conseguiu com dificuldade | Encontrou o botão de fornecedor corretamente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Conseguiu com dificuldade | Encontrou novo fornecedor com facilidade | Preenchido com facilidade | Registro salvo, mas sem feedback imediato ao usuário | Opção não intuitiva; usuário teve dificuldades para encontrá-la |
+| 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
+
+---
+
+#### Tarefa 2 — Cadastrar proprietário de terra e enviar para validação
+
+**Enunciado:** Suponha que você é um analista de negócios agrícolas da ATVOS e precisa registrar um novo proprietário de terra parceiro no sistema. Utilize o sistema para cadastrá-lo, salvar como rascunho e enviar para validação.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Encontrar onde cadastrar um proprietário de terra (distinto do cadastro de fornecedor) | Identifica a área correta sem confundir com outros cadastros |
+| 2 | Preencher os dados do proprietário no formulário | Completa os campos sem dúvidas sobre o que é esperado |
+| 3 | Salvar o registro como rascunho | Aciona a opção correta e percebe que o rascunho foi salvo |
+| 4 | Enviar o proprietário cadastrado para validação | Encontra o rascunho e conclui o envio para a fila do coordenador |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrado com facilidade após a confusão anterior | Preenchido facilmente | Salvo com facilidade | Envio feito após a experiência da tarefa anterior |
+| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrado com facilidade após a confusão anterior | Preenchido facilmente | Salvo com facilidade | Feito com facilidade após a dificuldade anterior |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Sucesso | Encontrou com facilidade | Dados preenchidos facilmente | Registro salvo sem dificuldades | Feito com facilidade após a dificuldade anterior |
+| 4 | Raissa Guimarães | Aluna T24 | Conseguiu com dificuldade | Encontrou com facilidade | Concluída com sucesso, mas surgiu dúvida sobre cadastrar alguém como proprietário e parceiro simultaneamente; tentativa gerou erro | Registro salvo com alguma dificuldade para localizar a opção | Feito com facilidade após a dificuldade anterior |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Sucesso | Encontrou com facilidade | Concluída com sucesso | Registro salvo com facilidade | Feito com facilidade após a dificuldade anterior |
+
+---
+
+#### Tarefa 3 — Registrar interação com um parceiro
+
+**Enunciado:** Suponha que você é um analista de negócios agrícolas da ATVOS e acabou de ter uma reunião com um parceiro ativo. Utilize o sistema para registrar essa interação no perfil desse parceiro.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Localizar o parceiro ativo no sistema | Encontra o parceiro correto sem dificuldade |
+| 2 | Encontrar onde registrar uma nova interação no perfil do parceiro | Localiza a opção sem precisar de indicação |
+| 3 | Preencher os dados da interação (data, tipo, descrição) | Entende os campos e preenche sem dúvidas |
+| 4 | Confirmar o registro e verificar que apareceu no histórico | Identifica o feedback do sistema e encontra a interação listada no histórico do parceiro |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 2 | Maria Clara Bosschart | Aluna T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
+
+---
+
+#### Tarefa 4 — Visualizar perfil detalhado de um parceiro ativo
+
+**Enunciado:** Suponha que você é uma coordenadora de estratégia de terras da ATVOS e precisa consultar rapidamente as informações de um parceiro ativo antes de uma reunião de decisão. Utilize o sistema para encontrar esse parceiro e visualizar seu perfil completo.
+
+**Etapas esperadas:**
+
+| # | Etapa | Critério de sucesso |
+|---|-------|---------------------|
+| 1 | Encontrar a listagem de parceiros ativos no sistema | Navega até a área correta sem ajuda |
+| 2 | Selecionar um parceiro específico para ver mais detalhes | Identifica como acessar o perfil individual sem instrução |
+| 3 | Localizar os dados cadastrais e o histórico de interações no perfil | Encontra todas as informações na tela sem precisar procurar em outros lugares |
+| 4 | Avaliar se as informações estão claras o suficiente para uma decisão | Consegue interpretar os dados exibidos sem dificuldade |
+
+**Registro dos testes:**
+
+| # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
+|---|-------------|--------|----------------|---------|---------|---------|---------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 3 | Messias Olivindo | Aluno 2º ano CC | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 4 | Raissa Guimarães | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+
+---
+
+### Priorização de melhorias
+
+| Tarefa | Severidade | Descrição do problema e potencial melhoria | Participantes afetados |
+|--------|-----------|---------------------------------------------|----------------------|
+| Tarefa 3 | **4 — Catastrófico** | O histórico de interações não está sendo registrado após o cadastro. A interação é aparentemente salva, mas não aparece listada no perfil do parceiro. Deve ser corrigido imediatamente antes de qualquer entrega do produto. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 1 | **3 — Grave** | O botão/caminho para "Enviar para validação" não é intuitivo. Todos os participantes tiveram dificuldade ou falharam nessa etapa. Reavaliar nomenclatura, posicionamento ou destaque visual da ação. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 2 | **3 — Grave** | Campos de texto do cadastro de parceiros não possuem validação adequada de tipo (apenas letras ou apenas números em determinados campos), permitindo entradas inválidas. | Participante 4 |
+| Tarefa 2 | **3 — Grave** | O sistema não permite usar o mesmo CPF para cadastrar uma pessoa como fornecedor e como proprietário simultaneamente. É necessário definir se esse comportamento é uma regra de negócio válida ou um bug a ser corrigido. | Participante 4 |
+
+---
 
 ### 5.2.2. Relatório de testes SUS (System Usability Scale)
 
@@ -3896,6 +4014,15 @@ O plano de divulgação interna será estruturado em três fases distintas:
 
 **Fase de Sustentação (Marketing de Conteúdo Interno):** Manuais de usuário e guias interativos de UX/UI  disponibilizados no sistema corporativo.
 
+## 6.7 Business Model Canvas
+
+<div align="center">
+  <sub>Figura 6.7.1 Business Model Canvas</sub><br>
+  <img src="/documentos/assets/business_model_canvas_safra_control.png" width="100%" alt="Estrutura de Pastas do Backend"><br>
+  <sup>Fonte: Material produzido pelos autores, 2026.</sup>
+</div><br>
+
+
 
 # <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
 
@@ -3912,6 +4039,7 @@ Agência Brasil. (2022, 4 de janeiro). Sancionada lei que autoriza postos a comp
 Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2024, 1 de fevereiro). Vendas de gasolina, diesel e etanol cresceram em 2023. https://www.poder360.com.br/energia/vendas-de-gasolina-diesel-e-etanol-cresceram-em-2023-diz-anp/
 
 Agência Nacional do Petróleo, Gás Natural e Biocombustíveis. (2026, 31 de março). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026
+
 Aegro. (2026). Aegro: sistema de gestão rural. https://aegro.com.br/
 
 AgFeed. (2023). Fora da RJ, ATVOS refaz planos e mira biometano, etanol de milho e de aviação. https://agfeed.com.br/negocios/fora-da-rj-atvos-refaz-planos-e-mira-biometano-etanol-de-milho-e-de-aviacao/
@@ -3919,20 +4047,20 @@ AgFeed. (2023). Fora da RJ, ATVOS refaz planos e mira biometano, etanol de milho
 Agroadvance. (2025). 15 maiores grupos do setor sucroalcooleiro no Brasil em 2024/25. https://agroadvance.com.br/blog-maiores-grupos-do-setor-sucroalcooleiro/
 
 Agroadvance. (2025). Preço do ATR no CONSECANA-SP. https://agroadvance.com.br/blog-consecana-preco-do-atr/
+
 ATVOS. (2023). Reuters: ATVOS aposta em etanol, não em açúcar, em novo investimento em cana no Brasil. https://atvos.com/reuters-atvos-aposta-em-etanol-nao-em-acucar-em-novo-investimento-em-cana-no-brasil/
 
-ATVOS. (2023). Guia da marca Atvos [Material institucional]. Disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli).
+ATVOS. (2023). Guia da marca Atvos [Material institucional]. Material disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli).
 
 ATVOS. (2025, 14 de janeiro). Relatório anual da safra 2023/2024. https://www.udop.com.br/noticia/2025/01/14/atvos-divulga-relatorio-anual-da-safra-2023-2024.html
 
-Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 [Documento interno corporativo].
+Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 [Documento interno corporativo]. Estratégia de Terras e Fornecedores.
 
 Brasilagro. (2021). País terá dilema com carros elétricos em 2030: o que fazer com tanto etanol? https://www.brasilagro.com.br/conteudo/pais-tera-dilema-com-carros-eletricos-em-2030o-que-fazer-com-tanto-etanol.html
 
 Broto Notícias. (2026, abril). Pressão da safra 2026/27 e demanda retraída forçam queda nas cotações de etanol e açúcar em SP. https://noticias.broto.com.br/cotacoes/queda-cotacoes-etanol-acucar-safra-2026-27
 
-Bunge. (2024). Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. https://www.bunge.com/Press-Releases/
-Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil
+Bunge. (2024). Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil
 
 Canal Rural. (2026). Usinas ampliam canaviais por arrendamento. https://www.canalrural.com.br/agricultura/cana/usinas-ampliam-canaviais-por-arrendamento-e-mudam-estrutura-fundiaria-em-sao-paulo/
 
@@ -3952,9 +4080,13 @@ Grupo 6. (2026). Diagrama de Classes UML do Domínio ATVOS [Diagrama]. PlantUML.
 
 Instituto de Tecnologia e Liderança. (2023). Adalove. https://adalove.inteli.edu.br/feed
 
-Instituto de Tecnologia e Liderança. (2026). Projeto parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 [Documento de escopo de projeto].
+Instituto de Tecnologia e Liderança. (2026). Projeto parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 [Documento de escopo de projeto]. Campus Inteli.
 
 Instituto Nacional da Propriedade Industrial. (2025, 18 de setembro). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep
+
+Kotler, P., & Armstrong, G. (2015). Princípios de marketing (15a ed.). Pearson Education.
+
+Kotler, P., & Keller, K. L. (2012). Administração de marketing (14a ed.). Pearson Education.
 
 Microsoft. (2026). Dynamics 365 Customer Insights. https://www.microsoft.com/pt-br/dynamics-365/products/customer-insights
 
@@ -3972,52 +4104,6 @@ Porter, M. E. (1979). How competitive forces shape strategy. Harvard Business Re
 
 Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review, 86(1), 78–93.
 
-<<<<<<< HEAD
-UDOP. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. União Nacional da Bioenergia. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
-
-INTELI — INSTITUTO DE TECNOLOGIA E LIDERANÇA. Projeto Parceiro ATVOS: 1AMD2 — Aplicação Web. São Paulo, 2026.
-
-Grupo 6. (2026). Value Proposition Canvas ATVOS. Canva. https://canva.link/towo8wkfnm7kd6v
-
-Grupo 6. (2026). Diagrama de Classes UML do Domínio ATVOS. 
-https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYjsSGEjZExWFO18O64n0iIFm1uG23nX7ZXDV-4Ny9nBctYf9qEeYjjEpuNV-Vu-3kstrAQI9sdYQEPJYWQCxAM92KefiXDY59KeLYWiKYBFpWJZlCiUdFV1sHk64pyTvOpN7nRV1sYAt--n9S7RHAwqaWB9Dbwer7C98qq4znnr2F6Cm9OK6HmOAqbkyurzIF1v-mBYkwrLDI6nE8nuskq8ecYBKd2EDMVPnG9gJUY9U0YfefcwEBrjYD9-AF-Q4RYs3Y_UBcD2qif7ay4roMSYrS7HVfpoEgrI69RkjYmw16dIg6By_ksq1M9aEYPbylFaDzQuLxvwIKBVUaWz3Q97gsbo7bSAqzUC_-CHCYOodhqrV83eost5-N7UTfsJ7cUxl4xcRpYtRVzOdmV0xHR_NAXwLw_hxklzFpUVytuVNfRANh1yg5N5kAFtloWRWOJapL59nw4I2KfVYt-eke4GC7SPTWBbeafB9KW9LA4ffFgwptuUjfHks8yoXDHwqt2MU2vtZYSVUBY09TZU3RpWZ4sOmjlDiCT5tDDTAwwJl32lmhBNtwm--q5hh4UXpq8OGP1HAGnTsS-Td5OkuBzw7-u_TjxtxrSpd7buzQKJl7CzVnPE4SUkYg-3zpbPNXaQgT4HfH9eH05qp_Ay1Ho1UGxOeGrsQwgjr6k0pXZyGWjb_wu-ek3qGWI9M57LYDwkpoZrb9LiYXRkJpxj6j0Ky8IomS59XBSyXmJJGAY8fPIhiK8ZOccEnGu4cb6-8PmRTbjcD92iaZu88B545G1DFf4L-Apykl5YCH4QKdaSyzN0x3s965V4EbM4j48WFDKdW1LZu7dL3dwT9UlkboQR2R3USlghFgTKRshsL6xW2kfAijnr2tBNMfypYBMIOiPdR2qFIIk5PKtTGxQIJfhWcOtknHG7b4vb98AWXrwKofBpc8Iqxj4dbSctK637qFrG1fX1xN3QD1MGcbDRECgrsaY9ASHZO6s1d7TLFdi8g3fDM5Fm5nsnzSvaJ4ZbdOgOaYFGU02pKfYYdGmntKMBLo3iA79K1wJky7kxyhRrxsDQJUfZMbXwk4EI0RNjG-FI4hgdC5cUnUeOqnXdvEaHf_1WQ5srHCQsodqBMvsMqyQKKua4zZ4TqJaPNnrqBTIy7A-BBwQ-U7y52q37xg8PyWOkzvy7Xx7n4kL5py1F0KUgl0C9-F8S6Q7XGzkgKZ4R6tLsa2EOMk3qjj299Jm0xiUGBG6slkRoXLBAdJ7jWD9Fykfn9aKDzKcximFKqN0p6HueyHqnJYJC6tAO4hQ8nn8drdSFKJJGdjR_Gtq84MXbxnBrERuBCA1c6k8fi-NkqvnABzrE0VNEgzq_a_sx4wxZzHTOGv-V3yJxI7s8Rp_MxkITCtAfjsWWqZjvcMBMh7DAdE14zqvfHsJSxFK9bzuHGrdMVLK2_ljlJaFZZgdmoO1XdlD8OK9QI9-Rnu6BL4WReGr2alSOA_oje3JqN2Ajeh7qjlCkyIk7mRueHSiu9mvdVc1wq-nRuwP6ALm1c9P0gjOLYk1zOS-XZXHA0CgXoyFxXD85dzgStm68WOKoS4vdUrXy-JY1BrmTePExfsVlt3IFrIDq1lN3oxGFz_yW8p66ozTFt2SdbRR2_oqpm5T9nUbawDyj9hoqJx4BfggYGw6q4d0pi8-MGtPDhAxM-un_Uymsrmn2BNcxVzclSVSOi_ZKtI4eTDfVOFcTu7Qvvr1uyFRS-nDuUfQV0Tx4i-H6puiRzc7hu2xXJi_Vz2-IOzGhaY_S1kjvWvyGArxMQuK-t4s3hVNuahnbb23S04XUkzFBttNNBhnBL6MpnZbOvPORSlA2H6fdgq46hWIefLWJaeCSGDPYHJ-8saca8QB8dJnKmUkVIiXKs0w9EcAok9tS-8q3t9n_I1txW0hb6yeDOHheRL83GWxPKwBXg3c8i897Fp8ZbTWK9lzv_3Y5m7OpEiCt2zeOlYdmgVowwXw5JnrCi4Koa65Af0qhHY86FnaGgcSIISj_YuP6-nljhV-Q7lhHuePIYz-vbIeSyS9geaPC3kGFBGuj85KyU9NOcYzn29WNWddEuElYQOJXG8VZcbxoWJKpBgTD3b5PNYbXhDYJogz1lw1V9RSv5GCPJ1Mbmy3alHoNMT7qHmcvcOzOSbe1hwfMRq6bRD5PJ3KGPHF3QSGL8cJW15HZYcG-aq0hIalVZELP5nD1u0VhknB_46uN20_kFBdnVTNtgLvry78cqznyMtLU0-NUciFdtsqOJ4GvyUnUCpFEky7xJrigNLV4xgxUC3ZziIoen9BgrVgFRgm3AosxDXjUgjUFakVsItOiLkohL_LIfV2BGWrJM_fUbXSTmZ7QXYMSe_qTltLqhHwisFtwZtghVxeE6z1r7cQ_0i0
-
-MODESTO, Farina et al, Psicodinâmica das cores em comunicação. In: BLUCHER, [S.l.], 2011. Disponível em: https://search.worldcat.org/pt/title/1295699137. Acesso em: 20 maio 2026.
-
-ATVOS. *Guia da marca Atvos*. São Paulo: Atvos, 2023. Material institucional disponibilizado pelo Instituto de Tecnologia e Liderança (Inteli) por meio do Google Drive da disciplina. Acesso em: 20 maio 2026.
-
-Atvos Agroindustrial Participações S.A. (2026). Atvos: Apresentação institucional 2026 (Documento interno corporativo). Estratégia de Terras e Fornecedores.
-
-AGÊNCIA NACIONAL DO PETRÓLEO, GÁS NATURAL E BIOCOMBUSTÍVEIS (ANP). RenovaBio: ANP divulga metas definitivas para as distribuidoras em 2026. Brasília, DF: ANP, 31 mar. 2026. Disponível em: https://www.gov.br/anp/pt-br/canais_atendimento/imprensa/noticias-comunicados/renovabio-anp-divulga-metas-definitivas-para-as-distribuidoras-em-2026. Acesso em: 2 jun. 2026.
-
-COMPANHIA NACIONAL DE ABASTECIMENTO (CONAB). Produção de cana-de-açúcar chega a 673,2 milhões de toneladas na safra 2025/26. Brasília, DF: Conab, 17 abr. 2026. Disponível em: https://www.gov.br/conab/pt-br/assuntos/noticias/producao-de-cana-de-acucar-chega-a-673-2-milhoes-de-toneladas-na-safra-2025-26. Acesso em: 2 jun. 2026.
-
-GRAND VIEW RESEARCH. Customer Relationship Management Market Size, Share & Trends Analysis Report, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/industry-analysis/customer-relationship-management-crm-market. Acesso em: 2 jun. 2026.
-
-GRAND VIEW RESEARCH. Latin America Customer Relationship Management Market Size & Outlook, 2030. San Francisco: Grand View Research, 2025. Disponível em: https://www.grandviewresearch.com/horizon/outlook/customer-relationship-management-market/latin-america. Acesso em: 2 jun. 2026.
-
-Instituto de Tecnologia e Liderança [Inteli]. (2026). Projeto Parceiro ATVOS: Aplicação web para gestão de relacionamento agrícola — 1AMD2 (Documento de escopo de projeto). Campus Inteli.
-
-INSTITUTO NACIONAL DA PROPRIEDADE INDUSTRIAL (INPI). Tecnologias de agricultura digital crescem três vezes mais rápido que a média, diz estudo da OEP. Brasília, DF: INPI, 18 set. 2025. Disponível em: https://www.gov.br/inpi/pt-br/central-de-conteudo/noticias/tecnologias-de-agricultura-digital-crescem-tres-vezes-mais-rapido-que-a-media-diz-estudo-da-oep. Acesso em: 2 jun. 2026.
-
-Kotler, P., & Armstrong, G. (2015). Princípios de marketing (15a ed.). Pearson Education.
-
-Kotler, P., & Keller, K. L. (2012). Administração de marketing (14a ed.). Pearson Education.
-
-AEGRO. Aegro: sistema de gestão rural. Porto Alegre: Aegro, 2026. Disponível em: https://aegro.com.br/. Acesso em: 8 jun. 2026.
-
-BUNGE. Bunge completes sale of its ownership share in BP Bunge Bioenergia joint venture in Brazil. St. Louis: Bunge, 2024. Disponível em: https://www.bunge.com/Press-Releases/Bunge-Completes-Sale-of-its-Ownership-Share-in-BP-Bunge-Bioenergia-Joint-Venture-in-Brazil. Acesso em: 8 jun. 2026.
-
-MICROSOFT. Dynamics 365 Customer Insights. Redmond: Microsoft, 2026. Disponível em: https://www.microsoft.com/pt-br/dynamics-365/products/customer-insights. Acesso em: 8 jun. 2026.
-
-RAÍZEN. Sobre a Raízen. São Paulo: Raízen, 2026. Disponível em: https://www.raizen.com.br/sobre-a-raizen. Acesso em: 8 jun. 2026.
-
-SALESFORCE. What is CRM Software? San Francisco: Salesforce, 2026. Disponível em: https://www.salesforce.com/crm/what-is-crm/software/. Acesso em: 8 jun. 2026.
-
-SAP. Customer Experience and Customer Relationship Management. Walldorf: SAP, 2026. Disponível em: https://www.sap.com/products/crm.html. Acesso em: 8 jun. 2026.
-
-SÃO MARTINHO. São Martinho. São Paulo: São Martinho, 2026. Disponível em: https://www.saomartinho.com.br/. Acesso em: 8 jun. 2026.
-=======
 Raízen. (2026). Sobre a Raízen. https://www.raizen.com.br/sobre-a-raizen
 
 Ries, A., & Trout, J. (2001). Positioning: The battle for your mind (20th anniversary ed.). McGraw-Hill.
@@ -4029,7 +4115,6 @@ SAP. (2026). Customer experience and customer relationship management. https://w
 São Martinho. (2026). São Martinho. https://www.saomartinho.com.br/
 
 União Nacional da Bioenergia. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
->>>>>>> 800ed0a1d13753481425f5c3beea963ff1aed89e
 
 # <a name="c9"></a>Anexos
 
