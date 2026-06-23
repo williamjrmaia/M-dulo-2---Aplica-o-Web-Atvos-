@@ -282,7 +282,9 @@ Com o histórico de interações centralizado e acessível para a ATVOS, ela pod
 
 ---
 
-A matriz de riscos permite à equipe antecipar ameaças, planejar respostas e aproveitar oportunidades. O acompanhamento dos riscos contribui para a organização do grupo, a entrega do MVP no prazo e a elevação da qualidade do produto. Aliada à comunicação eficiente e à definição clara de responsabilidades, é fundamental para o sucesso da aplicação web.
+A matriz de riscos contribuiu para que a equipe antecipasse ameaças, planejasse respostas e identificasse oportunidades durante o desenvolvimento da solução. O acompanhamento realizado ao longo das sprints auxiliou na organização das atividades, no cumprimento dos prazos estabelecidos e na manutenção da qualidade do produto entregue.
+
+Como resultado, a gestão dos riscos apoiou a condução do projeto desde as etapas iniciais até a entrega final da aplicação.
 
 ## 2.2. Personas (sprint 1)
 
