@@ -78,7 +78,7 @@ g06/
 ├── assets/                  # Imagens institucionais usadas na documentação
 ├── documentos/              # WAD, documentação técnica, evidências e materiais do projeto
 │   ├── assets/              # Imagens, diagramas, wireframes, personas e guia de estilos
-│   └── outros/              # Documentos complementares
+│   └── outros/              # Documentos complementares, endpoints e materiais auxiliares
 ├── public/
 │   ├── css/                 # Estilos da interface renderizada no servidor
 │   ├── docs/                # Documentação estática da API
@@ -214,7 +214,7 @@ Usuários administrativos podem ser cadastrados inicialmente sem senha. Nesse ca
 - `/auth/sessoes/:id`;
 - `/dashboards/interacoes`.
 
-Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em `documentos/`.
+Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em `documentos/outros/`.
 
 ## Testes e validações
 
@@ -251,7 +251,7 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 
 - [WAD](documentos/wad.md)
 - [Documentação estática da API](public/docs/index.html)
-- [Documentos de endpoints](documentos/)
+- [Documentos de endpoints](documentos/outros/)
 
 ## 🗃 Histórico de lançamentos
 
