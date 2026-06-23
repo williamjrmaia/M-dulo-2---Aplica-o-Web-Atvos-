@@ -69,7 +69,7 @@ A rivalidade entre concorrentes é alta. O setor disputa terras, fornecedores e 
 
 A ameaça de produtos substitutos é moderada e crescente. Com 80% da cana destinada ao etanol (ATVOS, 2023), a empresa é vulnerável a veículos elétricos, que podem reduzir a demanda em até 40% até 2035 (Brasilagro, 2021), ao etanol de milho (AgFeed, 2023) e ao biometano para transporte pesado (Eixo, 2025).
 
-Em resumo, o CRM proposto atua diretamente na redução de vulnerabilidades operacionais da ATVOS: preserva o histórico com parceiros estratégicos, padroniza cadastros e viabiliza decisões mais ágeis frente à concorrência.
+Em resumo, a solução desenvolvida atua diretamente na redução de vulnerabilidades operacionais da ATVOS, preservando o histórico de relacionamento com parceiros estratégicos, padronizando cadastros e fornecendo uma base estruturada para decisões mais ágeis e fundamentadas.
 
 ### 2.1.2. Análise SWOT da Instituição Parceira (sprint 1)
 
