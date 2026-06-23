@@ -3781,7 +3781,7 @@ Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao regis
 
 ### 5.2.2. Relatório de testes SUS (System Usability Scale)
 
-*Posicione aqui o relatório dos testes SUS realizados.*
+Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos testes de usabilidade. Cada participante respondeu 10 afirmações em escala de 1 (discordo totalmente) a 5 (concordo totalmente), alternando entre afirmações positivas e negativas conforme o modelo padrão SUS.
 
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
