@@ -152,7 +152,7 @@ Esse profissional espera ter uma visão única e confiável de todos os parceiro
 
 #### 2. O Mapa de Valor
 
-Para responder diretamente à realidade desse cliente, a solução proposta é um CRM web desenvolvido sob medida para a área de Negócios Agrícolas da ATVOS. A aplicação é estruturada em torno de três pilares: o cadastro centralizado de parceiros, o histórico rastreável de interações e o controle de acesso por perfil. Juntos, esses pilares substituem o modelo fragmentado atual por um fluxo estruturado, padronizado e auditável de informações.
+Para responder diretamente à realidade desse cliente, foi desenvolvida uma aplicação CRM web sob medida para a área de Negócios Agrícolas da ATVOS. A solução foi estruturada em torno de três pilares principais: cadastro centralizado de parceiros, histórico rastreável de interações e controle de acesso por perfil. Em conjunto, esses pilares substituem o modelo fragmentado anteriormente utilizado por um fluxo estruturado, padronizado e auditável de informações.
 
 **Produtos e Serviços**
 
