@@ -3823,6 +3823,12 @@ Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos te
 
 A pontuação média de **85** indica boa usabilidade geral do sistema. O resultado mais baixo foi de Raissa Guimarães (67,5), participante que também apresentou mais dificuldades durante os testes de guerrilha, especialmente no fluxo de envio para validação e no cadastro de parceiros. Os demais participantes atingiram pontuações acima de 80, reforçando que os principais problemas identificados são pontuais e corrigíveis, não estruturais. A prioridade de correção recai sobre o bug de registro de interações (severidade catastrófica) e a falta de clareza no botão de envio para validação (severidade alta).
 
+**Análise qualitativa dos pontos de maior e menor satisfação:**
+
+Os pontos de maior satisfação identificados nas respostas foram a percepção de facilidade de aprendizado (Q7) e a ausência de complexidade desnecessária (Q2), com médias altas entre os participantes. A maioria considerou o sistema intuitivo e confiante de usar, o que é coerente com os resultados positivos nas tarefas 2 e 4 dos testes de guerrilha.
+
+O ponto de menor satisfação foi a percepção de inconsistência do sistema (Q6) e a necessidade de suporte técnico (Q4), ambos puxados principalmente pela avaliação de Raissa Guimarães, que enfrentou mais dificuldades durante os testes. Isso reforça que o fluxo de envio para validação e o cadastro de parceiros ainda apresentam fricção para usuários menos familiarizados com o sistema.
+
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
 ## 6.1 Resumo Executivo
