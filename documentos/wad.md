@@ -3402,7 +3402,7 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 
 | Item | Descrição |
 |---|---|
-| Objetivo | Exibir o perfil detalhado do parceiro com histórico e interações. |
+| Objetivo | Exibir o perfil detalhado do parceiro, com dados cadastrais, histórico e interações. |
 | Persona/perfil | `analista`, `coordenador`, `administrador`. |
 | RF relacionado | RF008, RF013. |
 | User Story relacionada | US04, US05. |
@@ -3413,7 +3413,7 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Controller/Service/Repository | `renderDetalheParceiro`/`listarHistoricoParceiro` → `parceiroService` → `parceiroRepository`. |
 | Banco de dados | Consulta `parceiros`, `registro_alteracao` e `interacao`. |
 | Regra de negócio | Retorna `404` para parceiro inexistente, inválido ou inativo; reúne histórico de alterações e interações. |
-| Resultado esperado | Tela com dados, histórico de versões e interações. |
+| Resultado esperado | Tela com dados cadastrais, histórico de alterações e interações. |
 | Evidência | `src/tests/parceiroDetalheController.spec.ts`, `src/tests/parceiroHistoricoController.spec.ts`. |
 | Status | Implementado. |
 
