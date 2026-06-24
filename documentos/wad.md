@@ -3501,14 +3501,14 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Persona/perfil | `administrador`. |
 | RF relacionado | RF001, RF002, RF003. |
 | User Story relacionada | US08, US10. |
-| Tela inicial | Views `src/views/usuarios/index.ejs`, `new.ejs`, `edit.ejs`, `perfil.ejs`. |
+| Tela inicial | Views `src/views/usuarios/index.ejs`, `src/views/usuarios/new.ejs`, `src/views/usuarios/edit.ejs` e `src/views/usuarios/perfil.ejs`. |
 | Ação do usuário | Cadastra, edita e altera o perfil de usuários. |
-| Rota HTML/Form | `GET /usuarios`, `/usuarios/novo`, `POST /usuarios`, `/usuarios/:id/editar`, `/usuarios/:id/perfil`. |
+| Rota HTML/Form | `GET /usuarios`, `GET /usuarios/novo`, `POST /usuarios`, `GET /usuarios/:id/editar`, `POST /usuarios/:id`, `GET /usuarios/:id/perfil`, `POST /usuarios/:id/perfil`. |
 | Endpoint/API | `POST /api/usuarios`, `PUT /usuarios/:id`, `PUT /usuarios/:id/perfil`. |
 | Controller/Service/Repository | `userController` → `userService` → `userRepository`. |
-| Banco de dados | Insere/atualiza `usuarios`; usa `perfil_acesso`. |
-| Regra de negócio | Valida e-mail e perfil; alteração de perfil restrita ao administrador; registra responsável. |
-| Resultado esperado | Usuário criado/atualizado e habilitado conforme o perfil. |
+| Banco de dados | Insere e atualiza `usuarios`; usa `perfil_acesso`. |
+| Regra de negócio | Valida e-mail e perfil; criação, edição e alteração de perfil são restritas ao administrador. |
+| Resultado esperado | Usuário criado ou atualizado e habilitado conforme o perfil definido. |
 | Evidência | `src/tests/userController.spec.ts`, `src/tests/userCreateController.spec.ts`, `src/tests/userUpdateController.spec.ts`; captura `usuarios.png` (4.2.5). |
 | Status | Implementado. |
 
