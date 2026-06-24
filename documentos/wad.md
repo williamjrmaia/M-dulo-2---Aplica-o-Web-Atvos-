@@ -3214,7 +3214,7 @@ As capturas da interface da segunda versão web estão em `documentos/assets/apl
 ![Gestão de usuários](./assets/aplicacao_web_sprint4/usuarios.png)
 *Listagem e gestão de usuários.*
 
-Não foi possível produzir novas capturas neste ambiente porque não há navegador headless funcional instalado. Em vez de simular imagens, a validação foi feita com servidor real, banco configurado e sessão criada pelo endpoint de login.
+Não foi possível produzir novas capturas neste ambiente porque não havia navegador headless funcional instalado. Em vez de simular imagens, a validação foi feita com servidor real, banco configurado e sessão criada pela rota de login.
 
 | Evidência executada | Resultado observado |
 |---|---|
