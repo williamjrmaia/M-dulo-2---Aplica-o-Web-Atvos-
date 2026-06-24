@@ -3460,12 +3460,12 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Item | Descrição |
 |---|---|
 | Objetivo | Registrar interações de relacionamento com um parceiro. |
-| Persona/perfil | `analista` (usuário autenticado). |
+| Persona/perfil | Usuário autenticado (`analista`, `coordenador` ou `administrador`). |
 | RF relacionado | RF006, RF018, RF019. |
 | User Story relacionada | US03. |
 | Tela inicial | Detalhe do parceiro (`src/views/parceiros/show.ejs`). |
 | Ação do usuário | Registra uma interação pelo formulário/JS do detalhe. |
-| Rota HTML/Form | Envio por JavaScript a partir do detalhe. |
+| Rota HTML/Form | Envio por JavaScript a partir do detalhe do parceiro. |
 | Endpoint/API | `POST /parceiros/:id/interacoes`. |
 | Controller/Service/Repository | `interacaoController` → `interacaoService` → `interacaoRepository`. |
 | Banco de dados | Insere em `interacao`; valida existência do parceiro em `parceiros`. |
