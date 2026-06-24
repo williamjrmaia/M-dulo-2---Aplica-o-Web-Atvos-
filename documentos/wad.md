@@ -3578,17 +3578,17 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | RF relacionado | RF006. |
 | User Story relacionada | US03. |
 | Tela inicial | Não há tela EJS específica nesta versão. |
-| Ação do usuário | Consome o endpoint de métricas. |
+| Ação do usuário | Acessa as métricas por cliente HTTP ou por futura interface. |
 | Rota HTML/Form | Não há rota HTML dedicada. |
 | Endpoint/API | `GET /dashboards/interacoes`. |
-| Controller/Service/Repository | `dashboardInteracoesController` → `dashboardInteracoesService` → `dashboardInteracoesRepository`. |
+| Controller/Service/Repository | Módulo `dashboardInteracoes`: `DashboardController` → `DashboardService` → `DashboardRepository`. |
 | Banco de dados | Consulta `interacao`. |
-| Regra de negócio | Agrega métricas de interações; restrito a `coordenador`/`administrador`. |
+| Regra de negócio | Agrega métricas de interações; acesso restrito aos perfis `coordenador` e `administrador`. |
 | Resultado esperado | `200` com JSON de métricas. |
 | Evidência | `src/tests/dashboardInteracoesService.spec.ts`, `src/tests/dashboardInteracoes.test.ts`. |
 | Status | Parcialmente implementado (somente JSON, sem view). |
 
-> Observação sobre evidências: as capturas referenciadas (seção 4.2.5) ilustram telas reais da aplicação. As evidências de execução não usam `NODE_ENV=test` para simular autenticação como se fosse fluxo real autenticado; a comprovação de integração ponta a ponta se apoia nas rotas reais, na suíte automatizada (seção 4.2.7) e nas validações de execução já registradas em 4.2.5.
+> Observação sobre evidências: as capturas referenciadas na seção 4.2.5 ilustram telas reais da aplicação. A comprovação de integração ponta a ponta não depende de simulação de autenticação via `NODE_ENV=test`; ela se apoia nas rotas reais, na suíte automatizada descrita na seção 4.2.7 e nas validações de execução registradas na seção 4.2.5.
 
 ## 4.3. Versão final da aplicação web (sprint 5)
 
