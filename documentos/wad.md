@@ -3241,7 +3241,7 @@ Para a apresentação final, as capturas devem ser refeitas em navegador convenc
 
 ### 4.2.7. Testes e validações
 
-A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na revisão do Artefato 10, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 36 suítes e 293 testes, sem falhas. A execução completa levou cerca de 697 segundos devido ao uso de banco remoto (PostgreSQL/Supabase) em parte dos testes; a conexão exige a variável `DATABASE_URL` configurada no `.env`.
+A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na execução final registrada no WAD, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 40 suítes e 327 testes, sem falhas. A execução completa depende da conexão com o PostgreSQL/Supabase em parte dos testes; por isso, o ambiente exige a configuração correta das variáveis de banco, especialmente `DATABASE_URL_TEST` para a base de testes.
 
 ### 4.2.8. Limitações conhecidas e próximos passos
 
