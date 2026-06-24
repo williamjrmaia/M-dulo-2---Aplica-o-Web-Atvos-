@@ -182,6 +182,18 @@ A senha para todos os usuários é `demo123` (criada pelo seed). Essas contas s�
 
 Usuários administrativos podem ser cadastrados inicialmente sem senha. Nesse caso, o usuário acessa `GET /primeiro-acesso`, informa o e-mail cadastrado e define uma senha com pelo menos oito caracteres. O fluxo também possui endpoints JSON para emissão de token temporário e definição de senha; o token expira após 24 horas e só pode ser usado por usuário ativo que ainda não tenha senha.
 
+## Validação ponta a ponta (E2E)
+
+Roteiro para validar os fluxos autenticados do zero usando apenas a interface web, sem depender de chamadas manuais à API. Pressupõe o ambiente já preparado (`.env` configurado, `npm run migrate`, `npm run seed`) e o servidor em execução (`npm run dev`) em `http://localhost:3000`.
+
+1. **Login como analista.** Acesse `http://localhost:3000/login` e entre com `juliano.soares@atvos.com` e senha `demo123`. Após autenticar, a aplicação redireciona para a lista de parceiros (`/parceiros`).
+2. **Cadastrar um parceiro e enviar para validação.** Em `/parceiros`, clique em **Novo Fornecedor** (ou **Novo Proprietário**) para abrir o formulário (`/parceiros/novo`). Preencha os campos obrigatórios e finalize no botão **Enviar para Validação**: o parceiro é criado já com status `pendente` e entra na fila de validação. (O botão **Salvar Rascunho** criaria o registro como rascunho, sem enviar.)
+3. **Trocar de usuário.** Faça **logout** e entre novamente como coordenador: `bianca.souza@atvos.com` e senha `demo123`.
+4. **Aprovar o parceiro.** Abra **Validação** (`/validacao`), localize o parceiro pendente e clique em **Revisar** (`/validacao/:id`). Na tela de revisão, clique em **Aprovar** e confirme em **Confirmar Aprovação**. O registro passa a aprovado e sai da fila.
+5. **Exportar CSV.** Volte para **Parceiros** (`/parceiros`) e clique em **Exportar CSV** (disponível para coordenador e administrador). Confirme no modal em **Exportar** para baixar o arquivo `.csv`, que já reflete o parceiro aprovado.
+
+Concluídos os cinco passos, ficam validados de ponta a ponta os fluxos de autenticação, autorização por perfil, cadastro, envio para validação, aprovação e exportação — sem necessidade de contato com a equipe.
+
 ## Rotas principais
 
 ### Views e formulários HTML
@@ -221,9 +233,12 @@ Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em
 ```bash
 npx tsc --noEmit
 npm test
+npm run test:services
 ```
 
 A suíte usa `DATABASE_URL_TEST` quando definida e executa diversos testes com PostgreSQL real. Dependendo da latência do Supabase, a execução completa pode levar mais de dez minutos. Não aponte `DATABASE_URL_TEST` para um banco com dados que precisem ser preservados.
+
+`npm run test:services` roda a suíte com relatório de cobertura focado na camada de services (`src/services/`), gerado em `coverage/`.
 
 ## Troubleshooting
 
@@ -255,8 +270,13 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 
 ## 🗃 Histórico de lançamentos
 
-* 0.5.0 - XX/XX/2024
-    * 
+* 0.5.0 - 24/06/2026
+    * Versão final com foco em qualidade de código e documentação (Art. 14)
+    * Ferramentas de diagnóstico integradas ao projeto: ESLint com SonarJS, jscpd e madge
+    * Redução da complexidade ciclomática e refatoração com guard clauses em services e controllers
+    * Remoção de código duplicado e de dependências circulares
+    * Teste de carga com autocannon e melhorias de resiliência (timeout de requisição e resposta 503 para indisponibilidade do banco)
+    * README da raiz finalizado com roteiro de validação ponta a ponta
 * 0.4.0 - 12/06/2026
     * Segunda versão web com frontend renderizado no servidor (EJS) integrado ao backend
     * Autenticação com login, logout, primeiro acesso/definição de senha e proteção de rotas por perfil
