@@ -1489,7 +1489,11 @@ Além dos padrões apresentados, a implementação demonstra aderência a princ�
 | **OCP (Open/Closed Principle)**           | Novas funcionalidades podem ser incorporadas seguindo a estrutura existente, sem necessidade de alterar componentes consolidados.                  |
 | **Separation of Concerns (SoC)**          | Responsabilidades de autenticação, validação, persistência, negócio e apresentação permanecem desacopladas e organizadas em módulos independentes. |
 
-Dessa forma, os padrões adotados fornecem uma base arquitetural sólida para a continuidade do desenvolvimento da plataforma, garantindo que futuras evoluções possam ser realizadas de maneira controlada, consistente e alinhada aos requisitos de qualidade definidos para o projeto.
+Dessa forma, os padrões adotados contribuíram diretamente para a construção de uma arquitetura consistente, modular e alinhada aos atributos de qualidade definidos para o projeto.
+
+A utilização dessas abordagens favoreceu a separação de responsabilidades, a organização do código, a rastreabilidade das operações, a manutenção dos componentes e a implementação segura das funcionalidades entregues ao parceiro.
+
+Os resultados observados durante o desenvolvimento confirmaram a adequação dos padrões selecionados para os objetivos técnicos e de negócio estabelecidos para a plataforma.
 
 
 ## 3.3. Wireframes (sprint 2)
