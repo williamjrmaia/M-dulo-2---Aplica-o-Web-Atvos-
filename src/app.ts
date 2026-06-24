@@ -9,6 +9,7 @@ import {
   viewRouter as terraViewRoutes,
 } from './routes/terra.routes';
 import { errorHandler } from './middlewares/errorHandler';
+import { requestTimeout } from './middlewares/requestTimeout';
 import routes from './routes/index';
 
 const app = express();
@@ -18,6 +19,10 @@ app.disable('x-powered-by');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// Resiliência: encerra requisições que excedem o tempo limite com 503,
+// evitando que o banco lento/indisponível segure conexões indefinidamente.
+app.use(requestTimeout());
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.json());
