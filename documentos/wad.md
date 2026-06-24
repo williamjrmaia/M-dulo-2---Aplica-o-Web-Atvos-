@@ -3249,12 +3249,12 @@ A suíte automatizada cobre controllers, services, repositories integrados ao Po
 |---|---|
 | Dashboard disponível somente em JSON | Criar view com indicadores acessíveis e responsivos. |
 | Exclusão lógica sem ação dedicada nas views | Adicionar confirmação e botão apenas para perfis autorizados. |
-| Ausência do arquivo oficial de logotipo no diretório público | Incorporar ativo aprovado pela equipe e revisar contraste e dimensões. |
-| Upload de arquivos não implementado | Definir armazenamento, autorização, limites e auditoria antes da implementação. |
-| Notificação periódica não implementada | Definir scheduler, período e canal de notificação. |
-| Capturas autenticadas não geradas neste ambiente | Refazer evidências em navegador com sessão real antes da entrega final. |
+| Ausência do arquivo oficial de logotipo no diretório público | Incorporar o ativo aprovado pela equipe e revisar contraste e dimensões. |
+| Upload de arquivos não implementado | Validar se o recurso faz parte do escopo e, em caso positivo, definir armazenamento, autorização, limites e auditoria antes da implementação. |
+| Notificação periódica não implementada | Validar se o recurso faz parte do escopo e, em caso positivo, definir agendador, periodicidade e canal de notificação. |
+| Capturas autenticadas não geradas neste ambiente | Refazer as evidências em navegador com sessão real antes da entrega final. |
 
-A segunda versão atende ao objetivo de integrar backend e frontend nos fluxos centrais sem mocks de produção. As limitações acima são registradas como evolução, não como funcionalidades concluídas.
+A segunda versão atende ao objetivo de integrar backend e frontend nos fluxos centrais sem mocks de produção. As limitações acima são registradas como oportunidades de evolução, não como funcionalidades concluídas.
 
 ### 4.2.9. Fluxos principais ponta a ponta do MVP
 
