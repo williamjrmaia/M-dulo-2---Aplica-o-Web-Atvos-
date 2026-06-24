@@ -3536,17 +3536,17 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Item | Descrição |
 |---|---|
 | Objetivo | Gerenciar o cadastro de terras. |
-| Persona/perfil | `analista`, `coordenador`, `administrador` (cadastro/edição restrito a `analista`/`administrador`). |
+| Persona/perfil | `analista`, `coordenador`, `administrador` (cadastro restrito a `analista`/`administrador`; edição permitida aos três perfis, com regras de status por perfil). |
 | RF relacionado | RF012, RF014. |
 | User Story relacionada | US04, US06. |
-| Tela inicial | Views `src/views/terras/index.ejs`, `new.ejs`, `edit.ejs`. |
+| Tela inicial | Views `src/views/terras/index.ejs`, `src/views/terras/new.ejs` e `src/views/terras/edit.ejs`. |
 | Ação do usuário | Lista, cadastra e edita terras. |
-| Rota HTML/Form | `GET /terras`, `/terras/nova`, `POST /terras`, `/terras/:id/editar`. |
+| Rota HTML/Form | `GET /terras`, `GET /terras/nova`, `POST /terras`, `GET /terras/:id/editar`, `POST /terras/:id/editar`. |
 | Endpoint/API | `POST /api/terras`, `GET /api/terras`, `PUT /api/terras/:id`. |
 | Controller/Service/Repository | `terraController` → `terraService` → `terraRepository`. |
-| Banco de dados | Insere/atualiza/consulta `terras`; consultas padrão omitem inativas. |
-| Regra de negócio | Validação de entrada por schema; exclusão lógica (`POST /terras/:id/inativar`, `DELETE /api/terras/:id`). |
-| Resultado esperado | Terra persistida e visível na listagem. |
+| Banco de dados | Insere, atualiza e consulta `terras`; consultas padrão omitem inativas. |
+| Regra de negócio | Validação de entrada por schema; aplicação de regras de status conforme o perfil; exclusão lógica (`POST /terras/:id/inativar`, `DELETE /api/terras/:id`). |
+| Resultado esperado | Terra persistida ou atualizada e visível na listagem. |
 | Evidência | `src/tests/terraController.spec.ts`, `src/tests/terraControllerHtml.spec.ts`, `src/tests/terraService.spec.ts`. |
 | Status | Implementado. |
 
