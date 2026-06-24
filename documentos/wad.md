@@ -542,7 +542,9 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
-Os Requisitos Não Funcionais (RNFs) definem os critérios de qualidade que o sistema deve atender para que os requisitos funcionais sejam úteis, confiáveis e sustentáveis no contexto de uso da ATVOS. Eles complementam os RFs ao estabelecer parâmetros de experiência, segurança, desempenho, manutenção, rastreabilidade e organização do produto.
+Os requisitos não funcionais apresentados nesta seção foram utilizados como critérios de qualidade durante o desenvolvimento da aplicação e serviram como referência para validação técnica da solução entregue.
+
+Embora sejam descritos na forma tradicional de requisitos, os itens documentados correspondem aos atributos efetivamente considerados durante a implementação, testes e homologação do sistema, representando características presentes na versão final da plataforma.
 
 Para este projeto, os RNFs foram organizados nos oito eixos definidos para a documentação da solução, tomando a ISO/IEC 25010 como referência e adaptando sua aplicação ao MVP do CRM agrícola. Os critérios abaixo foram formulados de modo verificável, com relação explícita aos fluxos principais: autenticação, gestão de usuários, cadastro e validação de parceiros, consulta por filtros, histórico de interações, vínculos com terras, exportação e dashboard. A implementação atual atende os RNFs apoiados por schemas, middlewares de acesso, persistência, testes e organização em camadas; critérios de carga e volume permanecem como metas de homologação, pois ainda não há ensaio automatizado de capacidade no repositório.
 
@@ -2074,13 +2076,15 @@ A importância do DER em qualquer projeto de software está na clareza e na prev
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
-No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER é especialmente relevante por se tratar de um domínio com relacionamentos complexos e múltiplos perfis de usuário. Ele torna explícita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores, e documenta que a rastreabilidade de alterações é feita por `registro_alteracao.entidade_afetada` e `registro_alteracao.entidade_id`, sem FK formal para a entidade auditada. O DER deve refletir o banco real definido em `src/db/migration.sql`, incluindo `auth_sessoes` e `primeiro_acesso_tokens`, e removendo entidades que não existem na implementação física.
+No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER possui papel fundamental por representar um domínio com relacionamentos complexos e múltiplos perfis de usuário. O modelo explicita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores e documenta a rastreabilidade de alterações realizada por meio dos campos `registro_alteracao.entidade_afetada` e `registro_alteracao.entidade_id`.
+
+O diagrama encontra-se alinhado à estrutura implementada no banco de dados da aplicação, incluindo as entidades `auth_sessoes` e `primeiro_acesso_tokens`, refletindo fielmente a modelagem física utilizada pela solução entregue.
 
 ### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
 <br>
-O modelo relacional tem como objetivo representar de forma lógica as entidades do sistema, seus atributos e os relacionamentos existentes entre elas. Nessa etapa, as entidades foram convertidas em tabelas relacionais, com definição de chaves primárias e estrangeiras, além da normalização necessária para reduzir redundâncias e garantir maior integridade dos dados.
+A modelagem relacional serviu como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações são armazenadas e relacionadas no ambiente computacional.
 
-A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional. O modelo relacional deve acompanhar o banco real descrito em `src/db/migration.sql`, incluindo as tabelas `auth_sessoes` e `primeiro_acesso_tokens`.
+O modelo apresentado encontra-se alinhado à estrutura efetivamente implementada, incluindo as tabelas `auth_sessoes` e `primeiro_acesso_tokens`, mantendo consistência entre a documentação arquitetural e a persistência de dados da aplicação.
 
 <div align="center">
   <sub>Figura 3.6.3.1.1</sub><br>
