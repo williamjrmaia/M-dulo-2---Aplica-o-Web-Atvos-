@@ -3488,7 +3488,7 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Endpoint/API | `GET /parceiros/exportar` (resposta CSV). |
 | Controller/Service/Repository | `exportaController` → `exportaService` → `exportaRepository`. |
 | Banco de dados | Consulta `parceiros` e `telefone_parceiro`. |
-| Regra de negócio | Exporta nome, contato, tipo, região, telefone, e-mail e terra/unidade; restrito a validadores. |
+| Regra de negócio | Exporta nome, contato, tipo, região, telefone, e-mail e terra/unidade; acesso restrito aos perfis `coordenador` e `administrador`. |
 | Resultado esperado | Download de arquivo CSV com os campos definidos. |
 | Evidência | `src/tests/exportaService.spec.ts`, `src/tests/exporta.test.ts`. |
 | Status | Implementado. |
