@@ -3369,13 +3369,13 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | RF relacionado | RF004, RF009, RF010, RF018, RF019. |
 | User Story relacionada | US01, US02. |
 | Tela inicial | View `src/views/parceiros/new.ejs`, rota `GET /parceiros/novo`. |
-| Ação do usuário | Preenche o formulário e escolhe salvar rascunho ou enviar para validação. |
+| Ação do usuário | Preenche o formulário e escolhe salvar como rascunho ou enviar para validação. |
 | Rota HTML/Form | `POST /parceiros`. |
 | Endpoint/API | `POST /api/parceiros`. |
 | Controller/Service/Repository | `processarCadastro`/`createParceiro` → `parceiroService.cadastrarParceiro` → `parceiroRepository`. |
-| Banco de dados | Insere em `parceiros`; registra auditoria em `registro_alteracao`; grava `criado_por` e timestamps. |
-| Regra de negócio | Valida obrigatórios (nome, tipo_pessoa, CPF/CNPJ) por schema Zod; rejeita CPF/CNPJ duplicado (`23505` → conflito); status `rascunho` aceita incompleto e `pendente` exige campos obrigatórios (ex.: e-mail). |
-| Resultado esperado | Parceiro persistido e visível na listagem; mensagem de sucesso. |
+| Banco de dados | Insere em `parceiros`; registra auditoria em `registro_alteracao`; grava `criado_por` e datas de criação/atualização. |
+| Regra de negócio | Valida campos obrigatórios (nome, `tipo_pessoa`, CPF/CNPJ) por schema Zod; rejeita CPF/CNPJ duplicado (`23505` → conflito); o status `rascunho` permite cadastro incompleto, enquanto `pendente` exige campos obrigatórios adicionais, como e-mail. |
+| Resultado esperado | Parceiro persistido e visível na listagem, com mensagem de sucesso. |
 | Evidência | `src/test/parceiroController.spec.ts`, `src/tests/parceiroCadastroComplementar.spec.ts`; captura `novo-parceiro.png` (4.2.5). |
 | Status | Implementado. |
 
