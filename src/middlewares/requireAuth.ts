@@ -4,6 +4,7 @@ import { AUTH_TOKEN_COOKIE, getJwtSecret } from '../config/auth';
 import type { NomePerfilAcesso } from '../models/PerfilAcesso';
 import { AuthSessionRepository } from '../repositories/authSessionRepository';
 import { UserRepository } from '../repositories/userRepository';
+import { extrairCookie } from '../helpers/cookies';
 
 type UsuarioAutenticado = {
   id: string;
@@ -14,24 +15,6 @@ type UsuarioAutenticado = {
 };
 
 type RequestComUsuario = Request & { usuario?: UsuarioAutenticado };
-
-function extrairCookie(req: Request, nome: string): string | undefined {
-  const cookies = req.headers.cookie;
-  if (!cookies) return undefined;
-
-  return cookies
-    .split(';')
-    .map((cookie) => cookie.trim())
-    .filter((cookie) => cookie.includes('='))
-    .map((cookie) => {
-      const separador = cookie.indexOf('=');
-      return {
-        nome: cookie.slice(0, separador),
-        valor: decodeURIComponent(cookie.slice(separador + 1)),
-      };
-    })
-    .find((cookie) => cookie.nome === nome)?.valor;
-}
 
 function extrairToken(req: Request): string | undefined {
   const authorization = req.headers.authorization;
@@ -65,6 +48,65 @@ function responderNaoAutorizado(req: Request, res: Response) {
   return res.status(403).json({ error: 'Usuário sem permissão para acessar este recurso' });
 }
 
+function extrairUsuarioIdDoPayload(payload: JwtPayload): string | undefined {
+  return typeof payload.sub === 'string' ? payload.sub : undefined;
+}
+
+async function resolverSessaoValida(token: string, usuarioId: string) {
+  const sessao = await authSessionRepository.buscarSessaoAtivaPorToken(token);
+  if (!sessao || sessao.usuario_id !== usuarioId) return null;
+  return sessao;
+}
+
+async function resolverUsuarioAtivo(usuarioId: string) {
+  const usuario = await userRepository.buscarPorId(usuarioId);
+  if (!usuario || !usuario.ativo) return null;
+  return usuario;
+}
+
+async function resolverUsuarioAutenticado(token: string): Promise<UsuarioAutenticado | null> {
+  const payload = jwt.verify(token, getJwtSecret()) as JwtPayload;
+  const usuarioId = extrairUsuarioIdDoPayload(payload);
+  if (!usuarioId) return null;
+
+  const sessao = await resolverSessaoValida(token, usuarioId);
+  if (!sessao) return null;
+
+  const usuario = await resolverUsuarioAtivo(usuarioId);
+  if (!usuario) return null;
+
+  return {
+    id: usuario.id,
+    nome: usuario.nome,
+    email: usuario.email,
+    perfil: usuario.perfil,
+    sessaoId: sessao.id,
+  };
+}
+
+function isErroJwtSecretAusente(error: unknown): boolean {
+  return error instanceof Error && error.message === 'JWT_SECRET nao configurado';
+}
+
+type ResultadoAutenticacao = 'autenticado' | 'nao-autenticado' | 'erro-configuracao';
+
+async function autenticarRequisicao(
+  req: Request,
+  res: Response,
+  token: string
+): Promise<ResultadoAutenticacao> {
+  try {
+    const usuarioAutenticado = await resolverUsuarioAutenticado(token);
+    if (!usuarioAutenticado) return 'nao-autenticado';
+
+    res.locals.usuarioAutenticado = usuarioAutenticado;
+    (req as RequestComUsuario).usuario = usuarioAutenticado;
+    return 'autenticado';
+  } catch (error) {
+    return isErroJwtSecretAusente(error) ? 'erro-configuracao' : 'nao-autenticado';
+  }
+}
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction) {
   if (process.env.NODE_ENV === 'test') {
     return next();
@@ -75,41 +117,20 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
     return responderNaoAutenticado(req, res);
   }
 
-  try {
-    const payload = jwt.verify(token, getJwtSecret()) as JwtPayload;
-    const usuarioId = typeof payload.sub === 'string' ? payload.sub : undefined;
-    if (!usuarioId) {
-      return responderNaoAutenticado(req, res);
-    }
-
-    const sessao = await authSessionRepository.buscarSessaoAtivaPorToken(token);
-    if (!sessao || sessao.usuario_id !== usuarioId) {
-      return responderNaoAutenticado(req, res);
-    }
-
-    const usuario = await userRepository.buscarPorId(usuarioId);
-    if (!usuario || !usuario.ativo) {
-      return responderNaoAutenticado(req, res);
-    }
-
-    const usuarioAutenticado: UsuarioAutenticado = {
-      id: usuario.id,
-      nome: usuario.nome,
-      email: usuario.email,
-      perfil: usuario.perfil,
-      sessaoId: sessao.id,
-    };
-
-    res.locals.usuarioAutenticado = usuarioAutenticado;
-    (req as RequestComUsuario).usuario = usuarioAutenticado;
-    return next();
-  } catch (error) {
-    if (error instanceof Error && error.message === 'JWT_SECRET nao configurado') {
-      return res.status(500).json({ error: 'Configuração de autenticação ausente' });
-    }
-
+  const resultado = await autenticarRequisicao(req, res, token);
+  if (resultado === 'erro-configuracao') {
+    return res.status(500).json({ error: 'Configuração de autenticação ausente' });
+  }
+  if (resultado === 'nao-autenticado') {
     return responderNaoAutenticado(req, res);
   }
+  return next();
+}
+
+function extrairPerfilDaRequisicao(req: Request, res: Response): NomePerfilAcesso {
+  const perfilBruto =
+    (req as RequestComUsuario).usuario?.perfil ?? res.locals.usuarioAutenticado?.perfil ?? '';
+  return String(perfilBruto).trim().toLowerCase() as NomePerfilAcesso;
 }
 
 export function authorizeRoles(...roles: NomePerfilAcesso[]) {
@@ -118,11 +139,7 @@ export function authorizeRoles(...roles: NomePerfilAcesso[]) {
       return next();
     }
 
-    const perfil = String(
-      (req as RequestComUsuario).usuario?.perfil ??
-      res.locals.usuarioAutenticado?.perfil ??
-      ''
-    ).trim().toLowerCase() as NomePerfilAcesso;
+    const perfil = extrairPerfilDaRequisicao(req, res);
     if (!perfil || !roles.includes(perfil)) {
       return responderNaoAutorizado(req, res);
     }

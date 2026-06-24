@@ -27,20 +27,9 @@ export class UserService {
   async cadastraUsuario(data: CriarUsuarioInput): Promise<UsuarioComPerfil> {
     console.log(`[SERVICE] cadastraUsuario: ${data?.email}`);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!data || !data.nome?.trim() || !emailRegex.test(data.email ?? '') || !data.perfil_acesso_id) {
-      throw new Error('Dados de entrada invalidos');
-    }
-
-    const perfilExiste = await this.userRepository.checarExistenciaPerfil(data.perfil_acesso_id);
-    if (!perfilExiste) {
-      throw new Error('Perfil nao encontrado');
-    }
-
-    const emailExistente = await this.userRepository.buscarPorEmail(data.email.toLowerCase());
-    if (emailExistente) {
-      throw new Error('Email ja cadastrado');
-    }
+    this.validarEntradaCadastro(data);
+    await this.garantirPerfilExiste(data.perfil_acesso_id);
+    await this.garantirEmailDisponivel(data.email);
 
     return this.userRepository.criaUsuario({
       nome: data.nome.trim(),
@@ -73,40 +62,13 @@ export class UserService {
   async atualizaUsuario(id: string, dados: AtualizarUsuarioDTO): Promise<UsuarioComPerfil> {
     console.log(`[SERVICE] atualizaUsuario: ${id}`);
 
-    const temCampoParaAtualizar = Object.values(dados ?? {}).some(
-      (valor) => valor !== undefined,
-    );
-
-    if (!id || !dados || !temCampoParaAtualizar) {
-      throw new Error('Dados de entrada invalidos');
-    }
-
-    if (dados.nome !== undefined && !dados.nome.trim()) {
-      throw new Error('Dados de entrada invalidos');
-    }
-
-    if (dados.email !== undefined) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(dados.email)) {
-        throw new Error('Dados de entrada invalidos');
-      }
-    }
-
-    if (dados.ativo !== undefined && typeof dados.ativo !== 'boolean') {
-      throw new Error('Dados de entrada invalidos');
-    }
+    this.validarEntradaAtualizacao(id, dados);
 
     if (dados.perfil_acesso_id !== undefined) {
-      const perfilExiste = await this.userRepository.checarExistenciaPerfil(dados.perfil_acesso_id);
-      if (!perfilExiste) {
-        throw new Error('Perfil nao encontrado');
-      }
+      await this.garantirPerfilExiste(dados.perfil_acesso_id);
     }
 
-    const usuarioExistente = await this.userRepository.buscarPorId(id);
-    if (!usuarioExistente) {
-      throw new Error('Usuario nao localizado na base');
-    }
+    await this.garantirUsuarioExiste(id, 'Usuario nao localizado na base');
 
     const usuarioAtualizado = await this.userRepository.atualizaUsuario(id, dados);
     if (!usuarioAtualizado) {
@@ -138,5 +100,80 @@ export class UserService {
 
     console.log('[SERVICE] Usuario inativado com sucesso');
     return usuarioInativado;
+  }
+
+  private emailValido(email: string | undefined): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@.]+\.[^\s@]+$/;
+    return emailRegex.test(email ?? '');
+  }
+
+  private nomePreenchido(nome: string | undefined): boolean {
+    return Boolean(nome && nome.trim());
+  }
+
+  private validarEntradaCadastro(data: CriarUsuarioInput): void {
+    const dadosValidos = Boolean(
+      data && this.nomePreenchido(data.nome) && this.emailValido(data.email) && data.perfil_acesso_id,
+    );
+    if (!dadosValidos) {
+      throw new Error('Dados de entrada invalidos');
+    }
+  }
+
+  private validarNomeAtualizacao(nome: string | undefined): void {
+    if (nome !== undefined && !nome.trim()) {
+      throw new Error('Dados de entrada invalidos');
+    }
+  }
+
+  private validarEmailAtualizacao(email: string | undefined): void {
+    if (email === undefined) {
+      return;
+    }
+    if (!this.emailValido(email)) {
+      throw new Error('Dados de entrada invalidos');
+    }
+  }
+
+  private validarAtivoAtualizacao(ativo: boolean | undefined): void {
+    if (ativo !== undefined && typeof ativo !== 'boolean') {
+      throw new Error('Dados de entrada invalidos');
+    }
+  }
+
+  private validarEntradaAtualizacao(id: string, dados: AtualizarUsuarioDTO): void {
+    const temCampoParaAtualizar = Object.values(dados ?? {}).some(
+      (valor) => valor !== undefined,
+    );
+
+    if (!id || !dados || !temCampoParaAtualizar) {
+      throw new Error('Dados de entrada invalidos');
+    }
+
+    this.validarNomeAtualizacao(dados.nome);
+    this.validarEmailAtualizacao(dados.email);
+    this.validarAtivoAtualizacao(dados.ativo);
+  }
+
+  private async garantirPerfilExiste(perfilAcessoId: string): Promise<void> {
+    const perfilExiste = await this.userRepository.checarExistenciaPerfil(perfilAcessoId);
+    if (!perfilExiste) {
+      throw new Error('Perfil nao encontrado');
+    }
+  }
+
+  private async garantirEmailDisponivel(email: string): Promise<void> {
+    const emailExistente = await this.userRepository.buscarPorEmail(email.toLowerCase());
+    if (emailExistente) {
+      throw new Error('Email ja cadastrado');
+    }
+  }
+
+  private async garantirUsuarioExiste(id: string, mensagem: string): Promise<UsuarioComPerfil> {
+    const usuario = await this.userRepository.buscarPorId(id);
+    if (!usuario) {
+      throw new Error(mensagem);
+    }
+    return usuario;
   }
 }

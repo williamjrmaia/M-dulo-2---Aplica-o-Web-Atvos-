@@ -39,15 +39,78 @@ export async function criarUsuario(p: CriarUsuarioParams): Promise<{ id: string 
 }
 
 export async function removerUsuarioPorEmail(email: string): Promise<void> {
-  // Apaga primeiro os filhos em registro_alteracao (FK), depois o usuario.
-  await pool.query(
-    `DELETE FROM registro_alteracao
-      WHERE usuario_id = (SELECT id FROM usuarios WHERE email = $1)
-         OR aprovado_por = (SELECT id FROM usuarios WHERE email = $1)
-         OR entidade_id = (SELECT id FROM usuarios WHERE email = $1)`,
+  // Remove o usuario de teste e toda a cadeia de dados que o referencia.
+  // As FKs para usuarios (criado_por, atualizado_por, usuario_id, registrado_por,
+  // aprovado_por) NAO tem ON DELETE CASCADE, entao precisamos limpar na ordem certa.
+  // Auto-saneador: se um run anterior caiu (rede/timeout) e deixou orfaos, o
+  // proximo beforeEach -> criarUsuario -> este helper limpa tudo antes de recriar.
+  const { rows } = await pool.query<{ id: string }>(
+    'SELECT id FROM usuarios WHERE email = $1',
     [email]
   );
-  await pool.query('DELETE FROM usuarios WHERE email = $1', [email]);
+  if (rows.length === 0) return;
+  const usuarioId = rows[0].id;
+
+  // Parceiros e terras criados por este usuario (dado de teste, seguro apagar).
+  const { rows: parceiroRows } = await pool.query<{ id: string }>(
+    'SELECT id FROM parceiros WHERE criado_por = $1',
+    [usuarioId]
+  );
+  const { rows: terraRows } = await pool.query<{ id: string }>(
+    'SELECT id FROM terras WHERE criado_por = $1',
+    [usuarioId]
+  );
+  const parceiroIds = parceiroRows.map((r) => r.id);
+  const terraIds = terraRows.map((r) => r.id);
+
+  // Filhos de parceiros/terras.
+  await pool.query(
+    `DELETE FROM vinculo_comercial WHERE parceiro_id = ANY($1::uuid[]) OR terra_id = ANY($2::uuid[])`,
+    [parceiroIds, terraIds]
+  );
+  await pool.query(
+    `DELETE FROM parceiro_terra WHERE parceiro_id = ANY($1::uuid[]) OR terra_id = ANY($2::uuid[])`,
+    [parceiroIds, terraIds]
+  );
+  await pool.query(`DELETE FROM parceiro_unidade WHERE parceiro_id = ANY($1::uuid[])`, [parceiroIds]);
+  await pool.query(`DELETE FROM terra_unidade WHERE terra_id = ANY($1::uuid[])`, [terraIds]);
+  await pool.query(
+    `DELETE FROM telefone_parceiro WHERE parceiro_id = ANY($1::uuid[]) OR criado_por = $2 OR atualizado_por = $2`,
+    [parceiroIds, usuarioId]
+  );
+  await pool.query(
+    `DELETE FROM parceiro_coordenador WHERE parceiro_id = ANY($1::uuid[]) OR usuario_id = $2`,
+    [parceiroIds, usuarioId]
+  );
+  await pool.query(
+    `DELETE FROM interacao WHERE parceiro_id = ANY($1::uuid[]) OR registrado_por = $2`,
+    [parceiroIds, usuarioId]
+  );
+
+  // Registros de alteracao ligados ao usuario ou as entidades dele.
+  await pool.query(
+    `DELETE FROM registro_alteracao
+      WHERE usuario_id = $1 OR aprovado_por = $1 OR entidade_id = $1
+         OR entidade_id = ANY($2::uuid[]) OR entidade_id = ANY($3::uuid[])`,
+    [usuarioId, parceiroIds, terraIds]
+  );
+
+  // Solta FKs em linhas que o usuario apenas atualizou (sem ter criado).
+  await pool.query(
+    'UPDATE parceiros SET atualizado_por = NULL WHERE atualizado_por = $1 AND criado_por <> $1',
+    [usuarioId]
+  );
+  await pool.query(
+    'UPDATE terras SET atualizado_por = NULL WHERE atualizado_por = $1 AND criado_por <> $1',
+    [usuarioId]
+  );
+
+  // Parceiros e terras do usuario, depois vinculos diretos e o proprio usuario.
+  await pool.query(`DELETE FROM parceiros WHERE id = ANY($1::uuid[])`, [parceiroIds]);
+  await pool.query(`DELETE FROM terras WHERE id = ANY($1::uuid[])`, [terraIds]);
+  await pool.query('DELETE FROM usuario_unidade WHERE usuario_id = $1', [usuarioId]);
+  // auth_sessoes e primeiro_acesso_tokens caem por ON DELETE CASCADE.
+  await pool.query('DELETE FROM usuarios WHERE id = $1', [usuarioId]);
 }
 
 export async function lerUsuario(id: string): Promise<{

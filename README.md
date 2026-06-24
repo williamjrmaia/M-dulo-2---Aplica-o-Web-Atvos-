@@ -8,7 +8,7 @@
 
 Sistema web de CRM agrícola desenvolvido para a ATVOS no Módulo 2 do Inteli. A aplicação centraliza o cadastro e o relacionamento com fornecedores de cana-de-açúcar e proprietários cedentes, preservando histórico, responsáveis pelas alterações e vínculos com terras.
 
-## 🧑‍🎓 Integrantes
+## 🧑‍🎓 Integrantes do grupo Atwatts
 
 - <a href="https://www.linkedin.com/in/ant%C3%B4nio-neto-83971b23b/">Antonio de Souza Dantas Neto</a>
 - <a href="https://www.linkedin.com/in/gabriel-gomes-pimentel/">Gabriel Gomes Pimentel</a>
@@ -75,25 +75,47 @@ As permissões são verificadas no backend pelos middlewares de autenticação e
 
 ```text
 g06/
-├── documentos/              # WAD, documentação de endpoints e evidências
+├── assets/                  # Imagens institucionais usadas na documentação
+├── documentos/              # WAD, documentação técnica, evidências e materiais do projeto
+│   ├── assets/              # Imagens, diagramas, wireframes, personas e guia de estilos
+│   └── outros/              # Documentos complementares, endpoints e materiais auxiliares
 ├── public/
-│   ├── css/atvos.css        # Estilos da interface
-│   ├── js/app.js            # Busca, máscaras, modais e feedbacks
-│   └── docs/                # Documentação estática gerada
+│   ├── css/                 # Estilos da interface renderizada no servidor
+│   ├── docs/                # Documentação estática da API
+│   └── js/                  # Scripts de busca, máscaras, modais e feedbacks visuais
 ├── src/
-│   ├── config/              # Banco e autenticação
-│   ├── controllers/         # Entrada HTTP e renderização
-│   ├── db/                  # Migration e seed
-│   ├── middlewares/         # Autenticação e tratamento de erros
-│   ├── models/              # Tipos do domínio
-│   ├── repositories/        # Persistência PostgreSQL
-│   ├── routes/              # APIs, views e formulários
-│   ├── schemas/             # Validação Zod
-│   ├── services/            # Regras de negócio
-│   ├── test/ e tests/       # Testes automatizados
-│   └── views/               # Templates EJS
+│   ├── app.ts               # Configuração do Express, middlewares, rotas e views
+│   ├── server.ts            # Inicialização do servidor HTTP
+│   ├── config/              # Configurações de autenticação e conexão com PostgreSQL/Supabase
+│   ├── controllers/         # Camada de entrada HTTP: APIs JSON, formulários e renderização
+│   ├── db/                  # Scripts de migration, seed e SQL versionado
+│   │   └── migrations/      # Migrations adicionais e dados iniciais versionados
+│   ├── errors/              # Classes e mensagens de erro da aplicação
+│   ├── helpers/             # Utilitários compartilhados, como tratamento assíncrono
+│   ├── middlewares/         # Autenticação, autorização e tratamento centralizado de erros
+│   ├── models/              # Tipos, interfaces e entidades do domínio
+│   ├── repositories/        # Camada de persistência e consultas ao banco
+│   ├── routes/              # Mapeamento de rotas HTML e endpoints JSON
+│   ├── schemas/             # Schemas Zod para validação de entrada
+│   ├── services/            # Regras de negócio e orquestração entre domínio e persistência
+│   ├── test/                # Testes legados mantidos no projeto
+│   ├── tests/               # Suíte principal de testes automatizados
+│   │   └── helpers/         # Helpers usados pelos testes
+│   └── views/               # Templates EJS da camada de apresentação
+│       ├── errors/          # Páginas de erro
+│       ├── home/            # Tela inicial autenticada
+│       ├── layouts/         # Layouts base
+│       ├── login/           # Login e primeiro acesso
+│       ├── parceiros/       # Telas de parceiros e validação
+│       ├── partials/        # Partials reutilizáveis, como cabeçalho e rodapé
+│       ├── terras/          # Telas de terras e vínculo com parceiros
+│       └── usuarios/        # Telas de gestão de usuários
 ├── .env.example
+├── eslint.config.js
+├── jest.config.js
 ├── package.json
+├── requests.http
+├── tsconfig.json
 └── README.md
 ```
 
@@ -192,7 +214,7 @@ Usuários administrativos podem ser cadastrados inicialmente sem senha. Nesse ca
 - `/auth/sessoes/:id`;
 - `/dashboards/interacoes`.
 
-Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em `documentos/`.
+Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em `documentos/outros/`.
 
 ## Testes e validações
 
@@ -229,7 +251,7 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 
 - [WAD](documentos/wad.md)
 - [Documentação estática da API](public/docs/index.html)
-- [Documentos de endpoints](documentos/)
+- [Documentos de endpoints](documentos/outros/)
 
 ## 🗃 Histórico de lançamentos
 
@@ -259,4 +281,4 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 
 Projeto desenvolvido no Inteli em parceria com a ATVOS. O conteúdo está licenciado sob [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
 
-<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/Intelihub/Template_M2/">MODELO GIT INTELI</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.yggbrasil.com.br/vr">Inteli, Antonio, Gabriel, Haila, João, Mariana, Tiago, William</a> is licensed under <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Attribution 4.0 International</a>.</p>
+<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/Intelihub/Template_M2/">MODELO GIT INTELI</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.inteli.edu.br/">Inteli</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/ant%C3%B4nio-neto-83971b23b/">Antonio</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/gabriel-gomes-pimentel/">Gabriel</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/haila-falcao/">Haila</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/jo%C3%A3o-paulo-barreto-ferreira-andrade-rodrigues-de-paula-b483203aa/">João</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/marianamoussa/">Mariana</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/tiago-brun-de-arruda-17959a3a9/">Tiago</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/william-maia-95785b323/">William</a> is licensed under <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Attribution 4.0 International</a>.</p>

@@ -80,33 +80,25 @@ export async function getTerraById(
 }
 
 export async function updateTerra(id: string, data: UpdateTerraInput): Promise<Terra | null> {
+  // Colunas opcionais: nomes fixos (seguros) com valor parametrizado; o sufixo
+  // carrega o cast de tipo quando necessário (status).
+  const colunas: Array<[string, unknown, string]> = [
+    ['nome', data.nome, ''],
+    ['area_contratada_ha', data.area_contratada_ha, ''],
+    ['cidade', data.cidade, ''],
+    ['estado', data.estado, ''],
+    ['status', data.status, '::status_validacao'],
+  ];
+
   const campos: string[] = [];
   const valores: unknown[] = [];
   let contador = 1;
 
-  if (data.nome !== undefined) {
-    campos.push(`nome = $${contador++}`);
-    valores.push(data.nome);
-  }
-
-  if (data.area_contratada_ha !== undefined) {
-    campos.push(`area_contratada_ha = $${contador++}`);
-    valores.push(data.area_contratada_ha);
-  }
-
-  if (data.cidade !== undefined) {
-    campos.push(`cidade = $${contador++}`);
-    valores.push(data.cidade);
-  }
-
-  if (data.estado !== undefined) {
-    campos.push(`estado = $${contador++}`);
-    valores.push(data.estado);
-  }
-
-  if (data.status !== undefined) {
-    campos.push(`status = $${contador++}::status_validacao`);
-    valores.push(data.status);
+  for (const [coluna, valor, sufixo] of colunas) {
+    if (valor !== undefined) {
+      campos.push(`${coluna} = $${contador++}${sufixo}`);
+      valores.push(valor);
+    }
   }
 
   campos.push(`atualizado_por = $${contador++}`);
