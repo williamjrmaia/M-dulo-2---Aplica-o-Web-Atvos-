@@ -3169,18 +3169,16 @@ O login cria um JWT e uma sessão persistida. O middleware `requireAuth` valida 
 | Fluxo | Tela inicial | Endpoint/rota principal | Backend usado | Status |
 |---|---|---|---|---|
 | Login e logout | `/login` | `POST /login`, `POST /logout` | AuthController, AuthService e AuthSessionRepository | Implementado |
-| Primeiro acesso | `/primeiro-acesso` | `POST /primeiro-acesso` e endpoints de token | PrimeiroAcessoController, Service e Repository | Implementado |
-| Parceiros | `/parceiros` | Views em `/parceiros...` e API `/api/parceiros...` | parceiroController, parceiroService e parceiroRepository | Implementado |
-| Histórico e interações | `/parceiros/:id` | `GET /api/parceiros/:id/historico`, `POST /parceiros/:id/interacoes` | Módulos de parceiro e interação | Implementado |
-| Validação | `/validacao` | Views `/validacao...` e APIs `/api/parceiros/:id/...` | parceiroController, parceiroService e parceiroRepository | Implementado |
-| Usuários e perfis | `/usuarios` | Views `/usuarios...` e `POST /api/usuarios` | UserController, UserService e UserRepository | Implementado |
-| Terras | `/terras` | Views `/terras...` e API `/api/terras...` | TerraController, terraService e terraRepository | Implementado |
-| Vínculo parceiro-terra | `/terras/:id/vincular-parceiro` | APIs bidirecionais de parceiros e terras | Módulos de parceiro e terra | Implementado |
-| Exportação CSV | `/parceiros` | `GET /parceiros/exportar` | ExportaController, Service e Repository | Implementado |
-| Dashboard de interações | Sem tela específica | `GET /dashboards/interacoes` | DashboardController, Service e Repository | Parcial: somente JSON |
-| Exclusão lógica | Sem botão dedicado | `DELETE /api/parceiros/:id`, `DELETE /api/terras/:id` | Services e repositories correspondentes | Parcial na interface |
-| Upload de arquivos | Não existe | Não existe | Não implementado | Pendente |
-| Notificação periódica | Não existe | Não existe | Não implementado | Pendente |
+| Primeiro acesso | `/primeiro-acesso` | `POST /primeiro-acesso/solicitar`, `POST /primeiro-acesso/definir-senha` | PrimeiroAcessoController, PrimeiroAcessoService e PrimeiroAcessoRepository | Implementado |
+| Parceiros | `/parceiros` | Views em `/parceiros...` e API `/api/parceiros...` | ParceiroController, ParceiroService e ParceiroRepository | Implementado |
+| Histórico e interações | `/parceiros/:id` | `GET /api/parceiros/:id/historico`, `POST /parceiros/:id/interacoes` | ParceiroController, ParceiroService, ParceiroRepository, InteracaoController, InteracaoService e InteracaoRepository | Implementado |
+| Validação | `/validacao` | Views em `/validacao...` e APIs `/api/parceiros/:id/...` | ParceiroController, ParceiroService e ParceiroRepository | Implementado |
+| Usuários e perfis | `/usuarios` | Views em `/usuarios...` e `POST /api/usuarios` | UserController, UserService e UserRepository | Implementado |
+| Terras | `/terras` | Views em `/terras...` e API `/api/terras...` | TerraController, TerraService e TerraRepository | Implementado |
+| Vínculo parceiro-terra | `/terras/:id/vincular-parceiro` | APIs bidirecionais de parceiros e terras | ParceiroService, ParceiroRepository, TerraService e TerraRepository | Implementado |
+| Exportação CSV | `/parceiros` | `GET /parceiros/exportar` | ExportaController, ExportaService e ExportaRepository | Implementado |
+| Dashboard de interações | Sem tela específica | `GET /dashboards/interacoes` | DashboardInteracoesController, DashboardInteracoesService e DashboardInteracoesRepository | Parcial: somente JSON |
+| Exclusão lógica | Sem botão dedicado | `DELETE /api/parceiros/:id`, `DELETE /api/terras/:id` | ParceiroService, ParceiroRepository, TerraService e TerraRepository | Parcial na interface |
 
 ### 4.2.4. Telas implementadas
 
