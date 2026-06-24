@@ -3347,15 +3347,15 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 |---|---|
 | Objetivo | Listar os parceiros cadastrados, com busca e filtros. |
 | Persona/perfil | `analista`, `coordenador`, `administrador`. |
-| RF relacionado | RF007, RF008, RF012, RF016, RF017. |
-| User Story relacionada | US04, US06, US07. |
+| RF relacionado | RF007, RF008, RF012, RF016. |
+| User Story relacionada | US04, US06. |
 | Tela inicial | View `src/views/parceiros/index.ejs`, rota `GET /parceiros`. |
 | Ação do usuário | Acessa a listagem e aplica filtros por nome, tipo, status, região e usina. |
 | Rota HTML/Form | `GET /parceiros`. |
 | Endpoint/API | `GET /api/parceiros` (aceita filtros por query string). |
 | Controller/Service/Repository | `renderListaParceiros`/`listarParceiros` → `parceiroService.obterParceiros` → `parceiroRepository`. |
 | Banco de dados | Consulta `parceiros` (e `telefone_parceiro`); omite registros inativos. |
-| Regra de negócio | Exclusão lógica respeitada (inativos não aparecem); filtros validados por schema; busca client-side complementar. |
+| Regra de negócio | Exclusão lógica respeitada (inativos não aparecem); filtros validados por schema; busca no lado do cliente complementar. |
 | Resultado esperado | `200` com a lista filtrada renderizada ou em JSON. |
 | Evidência | `src/tests/parceiroFiltrosController.spec.ts`, `src/test/parceiroController.get.spec.ts`; captura `parceiros.png` (4.2.5). |
 | Status | Implementado. |
