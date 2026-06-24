@@ -3335,10 +3335,10 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Rota HTML/Form | `POST /primeiro-acesso`. |
 | Endpoint/API | `POST /primeiro-acesso/solicitar` e `POST /primeiro-acesso/definir-senha`. |
 | Controller/Service/Repository | `primeiroAcessoController` → `primeiroAcessoService` → `primeiroAcessoRepository`. |
-| Banco de dados | Consulta/atualiza `usuarios`; usa `primeiro_acesso_tokens`. |
+| Banco de dados | Consulta e atualiza `usuarios`; usa `primeiro_acesso_tokens`. |
 | Regra de negócio | Token de uso único com expiração de 24 horas; aceito apenas para usuário ativo que ainda não tem senha; senha com mínimo de oito caracteres. |
-| Resultado esperado | Senha definida e usuário habilitado a logar. |
-| Evidência | `src/tests/primeiroAcessoService.spec.ts`. |
+| Resultado esperado | Senha definida e usuário habilitado a fazer login. |
+| Evidência | `src/tests/primeiroAcessoService.spec.ts`, `src/tests/primeiroAcessoController.spec.ts`. |
 | Status | Implementado. |
 
 #### Fluxo: Listagem de parceiros com filtros
