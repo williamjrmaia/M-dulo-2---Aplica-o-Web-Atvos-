@@ -3421,7 +3421,7 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 
 | Item | Descrição |
 |---|---|
-| Objetivo | Enviar um parceiro em rascunho para a fila de validação do coordenador. |
+| Objetivo | Enviar um parceiro em rascunho ou devolvido para a fila de validação. |
 | Persona/perfil | `analista`, `administrador`. |
 | RF relacionado | RF010, RF021. |
 | User Story relacionada | US01, US02, US11. |
@@ -3431,8 +3431,8 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Endpoint/API | `PUT /api/parceiros/:id/validacao`. |
 | Controller/Service/Repository | `enviarParceiroParaValidacao` → `parceiroService` → `parceiroRepository`. |
 | Banco de dados | Atualiza `status` em `parceiros`; registra `envio` em `registro_alteracao`. |
-| Regra de negócio | Exige os campos obrigatórios para validação antes de mudar o status para `pendente`. |
-| Resultado esperado | Parceiro aparece na fila de pendentes do coordenador. |
+| Regra de negócio | Exige os campos obrigatórios para validação antes de mudar o status para `pendente`; apenas parceiros em `rascunho` ou `devolvido` podem ser enviados. |
+| Resultado esperado | Parceiro aparece na fila de pendentes dos validadores. |
 | Evidência | `src/tests/parceiroValidacaoController.spec.ts`, `src/tests/parceiroFilaValidacaoService.spec.ts`. |
 | Status | Implementado. |
 
