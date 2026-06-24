@@ -3444,14 +3444,14 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Persona/perfil | `coordenador`, `administrador`. |
 | RF relacionado | RF022, RF023. |
 | User Story relacionada | US11. |
-| Tela inicial | Views `src/views/parceiros/validacao.ejs` e `revisar.ejs`, rota `GET /validacao`. |
+| Tela inicial | Views `src/views/parceiros/validacao.ejs` e `revisar.ejs`, rotas `GET /validacao` e `GET /validacao/:id`. |
 | Ação do usuário | Abre a fila, revisa um registro e aprova ou devolve. |
 | Rota HTML/Form | `POST /validacao/:id/aprovar`, `POST /validacao/:id/devolver`. |
 | Endpoint/API | `PUT /api/parceiros/:id/aprovar`, `PUT /api/parceiros/:id/devolver`. |
-| Controller/Service/Repository | `renderValidacao`, `aprovarParceiroViaFormulario`, `devolverParceiroViaFormulario` → `parceiroService` → `parceiroRepository`. |
+| Controller/Service/Repository | `renderValidacao`, `renderRevisar`, `aprovarParceiroViaFormulario`, `devolverParceiroViaFormulario` → `parceiroService` → `parceiroRepository`. |
 | Banco de dados | Atualiza `status` em `parceiros`; registra `aprovado_por`/`devolvido_por` e o comentário em `registro_alteracao`. |
-| Regra de negócio | A fila busca apenas pendentes ordenados por data de envio; devolução permite comentário; ação restrita a validadores. |
-| Resultado esperado | Parceiro aprovado sai da fila; devolvido volta como rascunho com comentário. |
+| Regra de negócio | A fila busca apenas parceiros pendentes ordenados por data de envio; aprovação muda o status para `ativo`; devolução muda o status para `devolvido`; ação restrita a validadores. |
+| Resultado esperado | Parceiro aprovado sai da fila como ativo; parceiro devolvido sai da fila com status `devolvido` e comentário registrado. |
 | Evidência | `src/tests/parceiroAprovacaoController.spec.ts`, `src/tests/parceiroDevolucaoController.spec.ts`; captura `validacao.png` (4.2.5). |
 | Status | Implementado. |
 
