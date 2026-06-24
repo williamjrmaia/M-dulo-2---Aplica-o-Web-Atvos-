@@ -3554,17 +3554,17 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 
 | Item | Descrição |
 |---|---|
-| Objetivo | Associar parceiros e terras em relação muitos-para-muitos. |
+| Objetivo | Associar parceiros e terras em uma relação muitos-para-muitos. |
 | Persona/perfil | `analista`, `administrador`. |
 | RF relacionado | RF015. |
 | User Story relacionada | US01, US02. |
 | Tela inicial | View `src/views/terras/vincular.ejs`, rota `GET /terras/:id/vincular-parceiro`. |
-| Ação do usuário | Vincula um parceiro a uma terra (ou vice-versa). |
+| Ação do usuário | Vincula um parceiro a uma terra, ou uma terra a um parceiro. |
 | Rota HTML/Form | `POST /terras/:id/parceiros`. |
-| Endpoint/API | `POST /api/parceiros/:id/terras`, `GET /api/parceiros/:id/terras`, `POST /api/terras/:id/parceiros`. |
+| Endpoint/API | `POST /api/parceiros/:id/terras`, `GET /api/parceiros/:id/terras`, `POST /api/terras/:id/parceiros`, `GET /api/terras/:id/parceiros`. |
 | Controller/Service/Repository | `vincularTerraAoParceiro`/`processarVinculoTerra` → `parceiroService`/`terraService` → repositories. |
-| Banco de dados | Insere em `parceiro_terra` e, quando aplicável, `vinculo_comercial`; registra `registro_alteracao`. |
-| Regra de negócio | Permite múltiplos parceiros por terra e múltiplas terras por parceiro; grava auditoria do vínculo na mesma transação. |
+| Banco de dados | Insere em `parceiro_terra`; no vínculo criado a partir do parceiro, também pode registrar dados comerciais em `vinculo_comercial` e auditoria em `registro_alteracao`. |
+| Regra de negócio | Permite múltiplos parceiros por terra e múltiplas terras por parceiro; valida a existência das entidades antes de persistir o vínculo. |
 | Resultado esperado | Vínculo persistido e listável por parceiro e por terra. |
 | Evidência | `src/tests/parceiroTerraController.spec.ts`, `src/tests/terraParceiroController.spec.ts`. |
 | Status | Implementado. |
