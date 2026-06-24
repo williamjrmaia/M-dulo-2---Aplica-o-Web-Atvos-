@@ -1097,7 +1097,9 @@ Dessa forma, o diagrama permite visualizar como os principais fluxos identificad
 </div>
 
 
-Portanto, o Diagrama de Classes Arquitetural complementa o Diagrama de Classes do Domínio ao demonstrar a estrutura interna do backend e a comunicação entre as camadas Controller, Service, Repository e Model. Essa representação evidencia a organização modular da WebAPI e reforça a separação de responsabilidades adotada no projeto, facilitando a manutenção, os testes e a evolução dos fluxos principais do sistema.
+A estrutura apresentada no diagrama corresponde à arquitetura efetivamente implementada no backend da aplicação. Os componentes representados refletem a organização adotada no código-fonte, incluindo a separação entre controllers, services, repositories e modelos de domínio.
+
+Essa aderência entre documentação e implementação contribui para a rastreabilidade técnica da solução e facilita futuras atividades de manutenção, auditoria e evolução do sistema.
 
 ### 3.2.4. Diagrama de Sequência UML (sprint 3)
 
