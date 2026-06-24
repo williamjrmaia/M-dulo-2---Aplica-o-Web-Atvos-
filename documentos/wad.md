@@ -3312,13 +3312,13 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | RF relacionado | RF011, RF020. |
 | User Story relacionada | US09. |
 | Tela inicial | Ação disponível no cabeçalho autenticado (`src/views/partials/header.ejs`). |
-| Ação do usuário | Aciona "Sair". |
+| Ação do usuário | Aciona `Sair`. |
 | Rota HTML/Form | `POST /logout` (protegida por `requireAuth`). |
 | Endpoint/API | `PUT /auth/sessoes/:id` encerra uma sessão específica de forma programática. |
 | Controller/Service/Repository | `authController.logout` → `authService.encerrarSessao` → `authSessionRepository.encerrarSessao`. |
-| Banco de dados | Atualiza `auth_sessoes` marcando a sessão como encerrada/revogada. |
+| Banco de dados | Atualiza `auth_sessoes`, marcando a sessão como encerrada ou revogada. |
 | Regra de negócio | Revoga a sessão e limpa os cookies; sessões revogadas passam a ser rejeitadas pelo middleware. |
-| Resultado esperado | `302` para `/login`, sem acesso a rotas protegidas. |
+| Resultado esperado | `302` para `/login`, sem manter acesso às rotas protegidas. |
 | Evidência | `src/tests/auth.test.ts`, `src/tests/authSessionController.spec.ts`; validação manual `POST /logout` → `302`. |
 | Status | Implementado. |
 
