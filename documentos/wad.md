@@ -3228,7 +3228,7 @@ Não foi possível produzir novas capturas neste ambiente porque não havia nave
 | `GET /api/parceiros` e `GET /api/terras` autenticado | `200` em ambas as APIs. |
 | `POST /logout` | `302` para `/login`, com encerramento da sessão. |
 
-Para a apresentação final, as capturas devem ser refeitas em navegador convencional depois do login, usando dados de demonstração sem informações sensíveis. Os PNGs históricos restantes podem orientar enquadramento, mas não substituem essa evidência autenticada.
+Para a apresentação final, as capturas devem ser refeitas em navegador convencional depois do login, usando dados de demonstração sem informações sensíveis. As capturas históricas podem orientar o enquadramento, mas não substituem novas evidências geradas em sessão autenticada.
 
 ### 4.2.6. Decisões técnicas relevantes
 
