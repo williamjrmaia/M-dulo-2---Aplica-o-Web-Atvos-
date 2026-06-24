@@ -2080,9 +2080,9 @@ O diagrama encontra-se alinhado à estrutura implementada no banco de dados da a
 
 ### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
 <br>
-O modelo relacional tem como objetivo representar de forma lógica as entidades do sistema, seus atributos e os relacionamentos existentes entre elas. Nessa etapa, as entidades foram convertidas em tabelas relacionais, com definição de chaves primárias e estrangeiras, além da normalização necessária para reduzir redundâncias e garantir maior integridade dos dados.
+A modelagem relacional serviu como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações são armazenadas e relacionadas no ambiente computacional.
 
-A modelagem relacional serve como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações do sistema serão armazenadas e relacionadas no ambiente computacional. O modelo relacional deve acompanhar o banco real descrito em `src/db/migration.sql`, incluindo as tabelas `auth_sessoes` e `primeiro_acesso_tokens`.
+O modelo apresentado encontra-se alinhado à estrutura efetivamente implementada, incluindo as tabelas `auth_sessoes` e `primeiro_acesso_tokens`, mantendo consistência entre a documentação arquitetural e a persistência de dados da aplicação.
 
 <div align="center">
   <sub>Figura 3.6.3.1.1</sub><br>
