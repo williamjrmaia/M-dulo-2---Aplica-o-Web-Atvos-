@@ -3520,13 +3520,13 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Persona/perfil | `administrador`. |
 | RF relacionado | RF002, RF020. |
 | User Story relacionada | US09. |
-| Tela inicial | View `src/views/usuarios/inativar.ejs`. |
+| Tela inicial | View `src/views/usuarios/inativar.ejs`, rota `GET /usuarios/:id/inativar`. |
 | Ação do usuário | Confirma a inativação de um usuário. |
-| Rota HTML/Form | `POST /usuarios/:id/inativar`. |
+| Rota HTML/Form | `GET /usuarios/:id/inativar`, `POST /usuarios/:id/inativar`. |
 | Endpoint/API | `PUT /usuarios/:id/inativar`. |
 | Controller/Service/Repository | `userController` → `userService` → `userRepository` e `authSessionRepository`. |
 | Banco de dados | Marca `ativo=false` em `usuarios`; revoga registros em `auth_sessoes`. |
-| Regra de negócio | Inativação revoga sessões ativas; usuário inativo não consegue mais logar nem usar sessão existente. |
+| Regra de negócio | A inativação revoga sessões ativas; usuário inativo não consegue mais fazer login nem usar sessão existente. |
 | Resultado esperado | Acesso revogado de imediato; histórico preservado. |
 | Evidência | `src/tests/userInactivateController.spec.ts`, `src/tests/userServiceInactivateSessions.spec.ts`. |
 | Status | Implementado. |
