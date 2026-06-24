@@ -2074,7 +2074,9 @@ A importância do DER em qualquer projeto de software está na clareza e na prev
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
-No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER é especialmente relevante por se tratar de um domínio com relacionamentos complexos e múltiplos perfis de usuário. Ele torna explícita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores, e documenta que a rastreabilidade de alterações é feita por `registro_alteracao.entidade_afetada` e `registro_alteracao.entidade_id`, sem FK formal para a entidade auditada. O DER deve refletir o banco real definido em `src/db/migration.sql`, incluindo `auth_sessoes` e `primeiro_acesso_tokens`, e removendo entidades que não existem na implementação física.
+No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER possui papel fundamental por representar um domínio com relacionamentos complexos e múltiplos perfis de usuário. O modelo explicita a distinção entre vínculos contratuais formais e associações informais entre parceiros e terras, evidencia o fluxo de validação de cadastros entre analistas e coordenadores e documenta a rastreabilidade de alterações realizada por meio dos campos `registro_alteracao.entidade_afetada` e `registro_alteracao.entidade_id`.
+
+O diagrama encontra-se alinhado à estrutura implementada no banco de dados da aplicação, incluindo as entidades `auth_sessoes` e `primeiro_acesso_tokens`, refletindo fielmente a modelagem física utilizada pela solução entregue.
 
 ### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
 <br>
