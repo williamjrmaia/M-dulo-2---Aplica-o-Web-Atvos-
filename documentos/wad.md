@@ -4188,3 +4188,5 @@ União Nacional da Bioenergia. (2025, 26 de março). ATVOS obtém licença de in
 https://canva.link/1vkfsz6nre0h1iq
 
 ## Planilha de testes de usabilidade
+
+https://docs.google.com/spreadsheets/d/1MnqTU2OktA61bAK_owX0Iv-jNSDWqAM_2zLPRQ-fUa4/edit?usp=sharing
