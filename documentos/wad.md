@@ -3144,9 +3144,9 @@ Dessa forma, a primeira versão entregou a base técnica do sistema, composta pe
 
 ### 4.2.1. Objetivo e evolução
 
-A segunda versão transforma a WebAPI da sprint anterior em uma aplicação web navegável e integrada. O objetivo foi disponibilizar os fluxos prioritários por páginas EJS e formulários HTML sem duplicar regras de negócio: tanto as rotas JSON quanto as rotas de interface reutilizam controllers, services, repositories e schemas do backend.
+A segunda versão transforma a WebAPI entregue na sprint anterior em uma aplicação web navegável e integrada. O objetivo foi disponibilizar os fluxos prioritários por meio de páginas EJS e formulários HTML, sem duplicar regras de negócio: tanto as rotas JSON quanto as rotas de interface reutilizam controllers, services, repositories e schemas do backend.
 
-Em relação à primeira versão, foram acrescentados autenticação por navegador, cookies HttpOnly, navegação por perfil, telas de parceiros, usuários, terras e validação, estados vazios, feedbacks, máscaras, busca client-side e ações conectadas ao PostgreSQL/Supabase.
+Em relação à primeira versão, foram acrescentados autenticação via navegador, cookies HttpOnly, navegação por perfil, telas de parceiros, usuários, terras e validação, estados vazios, feedbacks, máscaras, busca no lado do cliente e ações conectadas ao PostgreSQL/Supabase.
 
 ### 4.2.2. Arquitetura técnica e integração
 
