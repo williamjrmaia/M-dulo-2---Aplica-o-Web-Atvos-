@@ -133,26 +133,27 @@ g06/
 
 ## Pré-requisitos
 
-- Node.js 20 ou versão compatível;
+- Node.js 20 ou versão compatível com TypeScript 5 e Express 5;
 - npm;
-- PostgreSQL acessível localmente ou por Supabase;
-- banco de testes separado para executar a suíte sem afetar dados de desenvolvimento.
+- PostgreSQL acessível localmente, por Supabase ou por outro provedor compatível;
+- banco de testes separado para executar a suíte sem afetar dados de desenvolvimento;
+- acesso de escrita ao banco para rodar migrations e seed.
 
 ## Configuração do ambiente
 
-1. Instale as dependências:
+1. Instale as dependências na raiz do projeto:
 
 ```bash
 npm install
 ```
 
-2. Crie o arquivo local de ambiente:
+2. Crie o arquivo local de ambiente na raiz:
 
 ```bash
 cp .env.example .env
 ```
 
-3. Preencha as variáveis sem versionar credenciais:
+3. Preencha as variáveis sem versionar credenciais. A forma recomendada é usar `DATABASE_URL`:
 
 ```dotenv
 DATABASE_URL=postgresql://usuario:senha@host:porta/banco
@@ -161,7 +162,23 @@ JWT_SECRET=valor-aleatorio-longo
 PORT=3000
 ```
 
-`JWT_SECRET` é obrigatório para assinar e validar os tokens. Um valor local pode ser gerado com `openssl rand -hex 32`. Nunca reutilize exemplos, tokens pessoais ou segredos de produção no repositório.
+Também é possível configurar a conexão por partes quando não houver URL única:
+
+```dotenv
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=safra_control
+DB_USER=postgres
+DB_PASSWORD=senha
+```
+
+`JWT_SECRET` é obrigatório para assinar e validar os tokens. Um valor local pode ser gerado com:
+
+```bash
+openssl rand -hex 32
+```
+
+Nunca reutilize exemplos, tokens pessoais ou segredos de produção no repositório. Em testes, `DATABASE_URL_TEST` tem prioridade quando `NODE_ENV=test`; se ela não existir, a suíte usa `DATABASE_URL`.
 
 4. Prepare a estrutura e os dados de demonstração:
 
@@ -170,7 +187,7 @@ npm run migrate
 npm run seed
 ```
 
-As migrations são idempotentes para o fluxo normal do projeto. O seed atualiza os perfis e recria a senha dos usuários de demonstração.
+O comando `npm run migrate` aplica `src/db/migration.sql` e, em seguida, os arquivos `.sql` em `src/db/migrations/`, em ordem alfabética. O seed atualiza os perfis e recria a senha dos usuários de demonstração.
 
 ## Execução
 
@@ -178,7 +195,9 @@ As migrations são idempotentes para o fluxo normal do projeto. O seed atualiza 
 npm run dev
 ```
 
-Por padrão, a aplicação fica disponível em `http://localhost:3000`. A porta pode ser alterada por `PORT`.
+Por padrão, a aplicação fica disponível em `http://localhost:3000`. A porta pode ser alterada por `PORT`. O servidor carrega variáveis de ambiente a partir de `.env` na raiz do projeto e também procura um `.env` no diretório pai.
+
+Antes de acessar as telas internas, faça login com um usuário de demonstração ou crie um usuário administrador pelo seed. As rotas internas redirecionam para `/login` quando não há sessão válida.
 
 ### 🔑 Usuários de demonstração
 
@@ -192,7 +211,7 @@ A senha para todos os usuários é `demo123` (criada pelo seed). Essas contas s�
 
 ### Primeiro acesso
 
-Usuários administrativos podem ser cadastrados inicialmente sem senha. Nesse caso, o usuário acessa `GET /primeiro-acesso`, informa o e-mail cadastrado e define uma senha com pelo menos oito caracteres. O fluxo também possui endpoints JSON para emissão de token temporário e definição de senha; o token expira após 24 horas e só pode ser usado por usuário ativo que ainda não tenha senha.
+Usuários podem ser cadastrados inicialmente sem senha. Nesse caso, o usuário acessa `GET /primeiro-acesso`, informa o e-mail cadastrado e define uma senha com pelo menos oito caracteres. O fluxo também possui endpoints JSON para emissão de token temporário e definição de senha; o token expira após 24 horas e só pode ser usado por usuário ativo que ainda não tenha senha.
 
 ## Rotas principais
 
@@ -211,6 +230,7 @@ Usuários administrativos podem ser cadastrados inicialmente sem senha. Nesse ca
 | GET | `/validacao` | Fila de parceiros pendentes. |
 | GET, POST | `/validacao/:id/...` | Revisar, aprovar ou devolver parceiro. |
 | GET, POST | `/terras` | Listar e cadastrar terras. |
+| GET | `/terras/nova` | Formulário de terra. |
 | GET, POST | `/terras/:id/editar` | Editar terra. |
 | GET, POST | `/terras/:id/vincular-parceiro` | Vincular parceiro a uma terra. |
 | GET, POST | `/usuarios...` | Gestão de usuários, perfis e inativação. |
@@ -232,7 +252,18 @@ Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em
 
 ```bash
 npx tsc --noEmit
+npm run lint
 npm test
+```
+
+Comandos auxiliares disponíveis:
+
+```bash
+npm run test:cov
+npm run test:services
+npm run lint:complexity
+npm run cpd
+npm run circular
 ```
 
 A suíte usa `DATABASE_URL_TEST` quando definida e executa diversos testes com PostgreSQL real. Dependendo da latência do Supabase, a execução completa pode levar mais de dez minutos. Não aponte `DATABASE_URL_TEST` para um banco com dados que precisem ser preservados.
@@ -241,13 +272,13 @@ A suíte usa `DATABASE_URL_TEST` quando definida e executa diversos testes com P
 
 ### `DATABASE_URL is not defined`
 
-Confirme que o `.env` existe na raiz e contém `DATABASE_URL`. Para testes, configure também `DATABASE_URL_TEST`.
+Confirme que o `.env` existe na raiz e contém `DATABASE_URL`. Como alternativa, configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` e `DB_PASSWORD`. Para testes, configure também `DATABASE_URL_TEST`.
 
 ### Falha de conexão com Supabase
 
 Confira host, usuário, senha com URL encoding, porta e modo de conexão. Para o pooler do Supabase, use a URI fornecida no painel do projeto e verifique se a porta corresponde ao modo escolhido.
 
-### `JWT_SECRET nao configurado`
+### `JWT_SECRET` não configurado
 
 Defina `JWT_SECRET` no `.env` e reinicie o servidor. Cookies emitidos com outro segredo deixam de ser válidos.
 
