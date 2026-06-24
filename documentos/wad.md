@@ -3392,8 +3392,8 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Rota HTML/Form | `POST /parceiros/:id/editar`. |
 | Endpoint/API | `PATCH /api/parceiros/:id`. |
 | Controller/Service/Repository | `processarEdicao`/`editarParceiro` → `parceiroService.editarParceiro` → `parceiroRepository`. |
-| Banco de dados | Atualiza `parceiros`; registra auditoria em `registro_alteracao` com `atualizado_por`. |
-| Regra de negócio | Rejeita corpo vazio; valida `tipo_pessoa`; rejeita duplicidade e parceiro inexistente. |
+| Banco de dados | Atualiza `parceiros`; registra auditoria em `registro_alteracao` com `atualizado_por` e data de atualização. |
+| Regra de negócio | Rejeita corpo vazio; valida `tipo_pessoa`; rejeita duplicidade e parceiro inexistente; aplica restrições de alteração conforme o perfil autenticado. |
 | Resultado esperado | Dados atualizados e refletidos no detalhe e na listagem. |
 | Evidência | `src/test/parceiroController.patch.spec.ts`. |
 | Status | Implementado. |
