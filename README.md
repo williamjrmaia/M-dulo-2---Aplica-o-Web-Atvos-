@@ -8,7 +8,7 @@
 
 Sistema web de CRM agrícola desenvolvido para a ATVOS no Módulo 2 do Inteli. A aplicação centraliza o cadastro e o relacionamento com fornecedores de cana-de-açúcar e proprietários cedentes, preservando histórico, responsáveis pelas alterações e vínculos com terras.
 
-## 🧑‍🎓 Integrantes
+## 🧑‍🎓 Integrantes do grupo Atwatts
 
 - <a href="https://www.linkedin.com/in/ant%C3%B4nio-neto-83971b23b/">Antonio de Souza Dantas Neto</a>
 - <a href="https://www.linkedin.com/in/gabriel-gomes-pimentel/">Gabriel Gomes Pimentel</a>

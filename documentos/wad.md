@@ -3,7 +3,7 @@
 
 # WAD - Web Application Document - Módulo 2 - Inteli
 
-## Grupo Safra Control
+## Grupo Atwatts
 
 #### Integrantes
 
