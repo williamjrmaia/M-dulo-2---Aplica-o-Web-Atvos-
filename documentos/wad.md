@@ -3200,7 +3200,7 @@ As capturas da interface da segunda versão web estão em `documentos/assets/apl
 *Tela de login.*
 
 ![Página inicial autenticada](./assets/aplicacao_web_sprint4/home.png)
-*Página inicial com atalhos por permissão.*
+*Página inicial com atalhos por perfil de acesso.*
 
 ![Listagem de parceiros](./assets/aplicacao_web_sprint4/parceiros.png)
 *Listagem de parceiros com busca e filtros.*
