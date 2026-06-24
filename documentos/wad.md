@@ -3232,12 +3232,12 @@ Para a apresentação final, as capturas devem ser refeitas em navegador convenc
 
 ### 4.2.6. Decisões técnicas relevantes
 
-1. EJS foi mantido para renderização server-side, reduzindo complexidade de infraestrutura e preservando a stack do projeto.
+1. EJS foi mantido para renderização no servidor, reduzindo a complexidade de infraestrutura e preservando a pilha tecnológica do projeto.
 2. API e formulários compartilham regras de negócio e persistência, evitando versões divergentes do mesmo fluxo.
-3. Autorização é aplicada nas rotas do backend, não apenas pela ocultação de botões.
-4. Cookies de autenticação são HttpOnly, `sameSite=lax` e `secure` em produção.
-5. Exclusões de parceiros e terras são lógicas, preservando auditoria e referências.
-6. CSS e JavaScript próprios concentram identidade, responsividade, máscaras, busca, modais e feedbacks sem bibliotecas externas.
+3. A autorização é aplicada nas rotas do backend, não apenas pela ocultação de botões.
+4. Os cookies de autenticação são `HttpOnly`, `sameSite=lax` e `secure` em produção.
+5. As exclusões de parceiros e terras são lógicas, preservando auditoria e referências.
+6. CSS e JavaScript próprios concentram identidade visual, responsividade, máscaras, busca, modais e feedbacks sem bibliotecas externas.
 
 ### 4.2.7. Testes e validações
 
