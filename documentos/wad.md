@@ -3184,15 +3184,15 @@ O login cria um JWT e uma sessão persistida. O middleware `requireAuth` valida 
 
 ### 4.2.4. Telas implementadas
 
-- login e primeiro acesso;
-- página inicial com atalhos por permissão;
+-- login e primeiro acesso;
+- página inicial com atalhos por perfil de acesso;
 - listagem, cadastro, edição e detalhe de parceiros;
 - fila e revisão de parceiros pendentes;
 - listagem, cadastro, edição, perfil e inativação de usuários;
 - listagem, cadastro, edição e vínculo de terras;
 - estados vazios, mensagens de erro e sucesso, badges, cards, tabelas e formulários responsivos.
 
-O protótipo de alta fidelidade apresenta um logotipo completo em imagem. A implementação atual não possui esse arquivo em `public/`; por isso, usa uma marca vetorial construída em CSS com as cores institucionais. Essa decisão evita referenciar um ativo inexistente, mas permanece como diferença visual conhecida em relação ao Figma.
+O protótipo de alta fidelidade apresenta um logotipo completo em imagem. A implementação atual não possui esse arquivo em `public/`; por isso, utiliza uma marca visual construída em CSS com as cores institucionais. Essa decisão evita referenciar um ativo inexistente, mas permanece registrada como diferença visual conhecida em relação ao Figma.
 
 ### 4.2.5. Evidências visuais e de execução
 
