@@ -542,7 +542,9 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
-Os Requisitos Não Funcionais (RNFs) definem os critérios de qualidade que o sistema deve atender para que os requisitos funcionais sejam úteis, confiáveis e sustentáveis no contexto de uso da ATVOS. Eles complementam os RFs ao estabelecer parâmetros de experiência, segurança, desempenho, manutenção, rastreabilidade e organização do produto.
+Os requisitos não funcionais apresentados nesta seção foram utilizados como critérios de qualidade durante o desenvolvimento da aplicação e serviram como referência para validação técnica da solução entregue.
+
+Embora sejam descritos na forma tradicional de requisitos, os itens documentados correspondem aos atributos efetivamente considerados durante a implementação, testes e homologação do sistema, representando características presentes na versão final da plataforma.
 
 Para este projeto, os RNFs foram organizados nos oito eixos definidos para a documentação da solução, tomando a ISO/IEC 25010 como referência e adaptando sua aplicação ao MVP do CRM agrícola. Os critérios abaixo foram formulados de modo verificável, com relação explícita aos fluxos principais: autenticação, gestão de usuários, cadastro e validação de parceiros, consulta por filtros, histórico de interações, vínculos com terras, exportação e dashboard. A implementação atual atende os RNFs apoiados por schemas, middlewares de acesso, persistência, testes e organização em camadas; critérios de carga e volume permanecem como metas de homologação, pois ainda não há ensaio automatizado de capacidade no repositório.
 
