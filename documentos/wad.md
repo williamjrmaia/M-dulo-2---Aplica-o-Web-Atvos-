@@ -3150,7 +3150,7 @@ Em relação à primeira versão, foram acrescentados autenticação por navegad
 
 ### 4.2.2. Arquitetura técnica e integração
 
-A aplicação utiliza TypeScript, Express, EJS, CSS próprio, JavaScript próprio e PostgreSQL/Supabase. `src/app.ts` registra os middlewares, arquivos públicos, rotas HTML e APIs. As routes recebem a requisição; controllers validam e escolhem resposta HTML ou JSON; services aplicam regras de negócio; repositories executam SQL; schemas Zod validam entradas; models descrevem o domínio.
+A aplicação utiliza TypeScript, Express, EJS, CSS e JavaScript próprios, além de PostgreSQL/Supabase. O arquivo `src/app.ts` registra os middlewares, os arquivos públicos, as rotas HTML e as rotas de API. As rotas recebem a requisição; os controllers validam os dados e escolhem entre resposta HTML ou JSON; os services aplicam as regras de negócio; os repositories executam SQL; os schemas Zod validam os dados de entrada; e os models descrevem o domínio.
 
 O login cria um JWT e uma sessão persistida. O middleware `requireAuth` valida token, sessão e usuário ativo. `authorizeRoles` aplica as permissões de `analista`, `coordenador` e `administrador` no backend. Views protegidas redirecionam visitantes para `/login`, enquanto APIs respondem com status HTTP e JSON.
 
