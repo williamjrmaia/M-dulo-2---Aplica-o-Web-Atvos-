@@ -3298,8 +3298,8 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 | Endpoint/API | O login é feito pelo formulário web; não há endpoint JSON separado de login. |
 | Controller/Service/Repository | `authController.login` → `authService.autenticar` → `userRepository` e `authSessionRepository`. |
 | Banco de dados | Consulta `usuarios` e `perfil_acesso`; cria registro em `auth_sessoes`. |
-| Regra de negócio | Valida a senha com hash (bcrypt); gera JWT; persiste a sessão; define cookies HttpOnly; mensagem genérica para credenciais inválidas, sem enumeração de e-mail. |
-| Resultado esperado | `302` para `/parceiros` com cookies de sessão; credenciais inválidas retornam erro na própria tela. |
+| Regra de negócio | Valida a senha com hash bcrypt; gera JWT; persiste a sessão; define cookies `HttpOnly`; usa mensagem genérica para credenciais inválidas, sem enumeração de e-mail. |
+| Resultado esperado | `302` para `/parceiros` com cookies de sessão; credenciais inválidas exibem erro na própria tela. |
 | Evidência | `src/tests/authService.spec.ts`, `src/tests/auth.test.ts`, `src/tests/parceiroControllerHtmlAuth.spec.ts`; captura `login.png` (4.2.5); validação manual `GET /login` → `200`. |
 | Status | Implementado. |
 
