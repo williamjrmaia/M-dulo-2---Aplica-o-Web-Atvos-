@@ -98,6 +98,7 @@ const CAMPOS_EDITAVEIS_FORMULARIO = [
   'tch_medio',
   'atr_medio',
   'observacoes',
+  'papel',
   'status',
 ] as const;
 
@@ -150,6 +151,20 @@ function validarTipoPessoa(tipoPessoa: unknown): void {
   }
 }
 
+const PAPEIS_VALIDOS = ['fornecedor', 'proprietario', 'ambos'] as const;
+type PapelParceiro = (typeof PAPEIS_VALIDOS)[number];
+
+// Normaliza o papel do parceiro (fornecedor | proprietario | ambos). Vazio/ausente
+// vira undefined; valor inválido lança erro. "ambos" permite que um único CPF
+// represente fornecedor e proprietário ao mesmo tempo.
+function normalizarPapel(papel: unknown): PapelParceiro | undefined {
+  if (papel === undefined || papel === null || papel === '') return undefined;
+  if (typeof papel === 'string' && (PAPEIS_VALIDOS as readonly string[]).includes(papel)) {
+    return papel as PapelParceiro;
+  }
+  throw new ValidationError('papel deve ser "fornecedor", "proprietario" ou "ambos"');
+}
+
 function validarEntradaCreateParceiro(
   nome: unknown,
   tipoPessoa: unknown,
@@ -198,6 +213,7 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     tch_medio,
     atr_medio,
     observacoes,
+    papel,
     status,
   } = req.body;
 
@@ -220,6 +236,7 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     tch_medio: textoOpcional(tch_medio),
     atr_medio: textoOpcional(atr_medio),
     observacoes: textoOpcional(observacoes),
+    papel: normalizarPapel(papel),
     status: statusInicialParceiro(status),
   });
 
@@ -429,6 +446,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
     tch_medio,
     atr_medio,
     observacoes,
+    papel,
     acao,
   } = req.body;
   const enviarParaValidacao = acao === 'validacao';
@@ -454,6 +472,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
       tch_medio: textoOpcional(tch_medio),
       atr_medio: textoOpcional(atr_medio),
       observacoes: textoOpcional(observacoes),
+      papel: normalizarPapel(papel),
       status: enviarParaValidacao ? 'pendente' : 'rascunho',
     });
 
@@ -524,6 +543,9 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 
   try {
     validarEdicaoParceiro(camposEditaveis, tipo_pessoa);
+    if (camposEditaveis.papel !== undefined) {
+      camposEditaveis.papel = normalizarPapel(camposEditaveis.papel);
+    }
 
     const perfilAutenticado = obterPerfilAutenticado(req, res);
     validarStatusInativoCoordenador(perfilAutenticado, status);
