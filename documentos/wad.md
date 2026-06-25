@@ -3738,7 +3738,7 @@ Os identificadores CT51 a CT67 correspondem aos casos numerados nos arquivos cit
 
 ### 5.1.4 Evidências de Execução
 
-Esta seção reúne as evidências que permitem verificar, de forma objetiva, se a suíte automatizada realmente sustentou os fluxos centrais da WebAPI. Em relatórios desse tipo, a função principal é transformar a execução dos testes em prova documentada de qualidade, cobertura e rastreabilidade, conectando o que foi testado ao que o sistema entrega.
+Esta seção reúne as evidências que permitem verificar, de forma objetiva, se a suíte automatizada realmente sustentou os fluxos centrais da WebAPI. Sua função principal é transformar a execução dos testes em prova documentada de qualidade, cobertura e rastreabilidade, conectando o que foi testado ao que o sistema entrega.
 
 A execução final da suíte automatizada foi concluída sem falhas. O comando npm test terminou com 40 suites aprovadas e 327 testes aprovados, sem snapshots.
 
@@ -3750,21 +3750,21 @@ Time:        777.986 s, estimated 847 s
 Ran all test suites.
 ```
 
-O relatório de cobertura gerado por npm test -- --coverage confirmou a cobertura por camada da WebAPI. O resultado geral ficou em 81.47% de statements, 68.15% de branches, 85.26% de functions e 82.64% de lines.
+O relatório de cobertura gerado por npm test -- --coverage confirmou a cobertura por camada da WebAPI. O resultado geral ficou em 81,47% de statements, 68,15% de branches, 85,26% de functions e 82,64% de lines.
 
 | Camada | Statements | Branches | Functions | Lines |
 |---|---|---|---|---|
-| controllers | 71.85% | 53.87% | 74.76% | 74.35% |
+| controllers | 71,85% | 53,87% | 74,76% | 74,35% |
 | helpers | 100% | 100% | 100% | 100% |
-| middlewares | 46.15% | 24.39% | 61.53% | 45.31% |
-| repositories | 84.45% | 70.08% | 97.95% | 84.38% |
-| services | 99.76% | 99.27% | 100% | 99.76% |
+| middlewares | 46,15% | 24,39% | 61,53% | 45,31% |
+| repositories | 84,45% | 70,08% | 97,95% | 84,38% |
+| services | 99,76% | 99,27% | 100% | 99,76% |
 
-Os resultados por camada mostram que a cobertura está concentrada nos services e repositories, que concentram as regras de negócio e a persistência do CRM. A camada de helpers permaneceu totalmente coberta, e a camada de middlewares aparece com menor percentual porque parte de seus caminhos depende de cenários de autenticação e de tratamento de erro que não se repetem em todos os fluxos de teste.
+Os resultados por camada mostram que a cobertura está concentrada nos services e repositories, onde se concentram as regras de negócio e a persistência do CRM. A camada de helpers permaneceu totalmente coberta, e a camada de middlewares aparece com menor percentual porque parte de seus caminhos depende de cenários de autenticação e de tratamento de erro que não se repetem em todos os fluxos de teste.
 
 ### 5.1.4.1 Mapeamento CT para RN para RF
 
-O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da sprint 1 com as regras de negócio e os requisitos funcionais já definidos nas seções 3.1.4 e 3.9. Os critérios CT11 e CT12 não entram nesta tabela porque não possuem RN associado e são tratados nos RNFs de desempenho e capacidade.
+O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da sprint 1 com as regras de negócio e os requisitos funcionais já definidos nas seções 3.1.4 e 3.9. Os critérios CT11 e CT12 não entram nesta tabela porque não possuem RN associada e são tratados nos RNFs de desempenho e capacidade.
 
 | CT | RN | RF | Endpoint relacionado | Teste ou evidência |
 |---|---|---|---|---|
@@ -3779,7 +3779,7 @@ O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da spri
 | CT09 | RN15 | RF020 | PUT /usuarios/:id/inativar; PUT /auth/sessoes/:id | src/tests/userInactivateController.spec.ts; src/tests/userServiceInactivateSessions.spec.ts |
 | CT10 | RN08, RN11 | RF007, RF008, RF012 | GET /api/parceiros; GET /api/parceiros/:id; GET /api/terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts; src/tests/terraController.spec.ts |
 
-Essa tabela fecha o elo entre os critérios técnicos, a matriz RF para RN para endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e em um conjunto de testes correspondente.
+Essa tabela fecha o elo entre os critérios técnicos, a matriz RF–RN–endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e no conjunto de testes correspondente.
 
 Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao registrar uma suíte completa sem falhas, a cobertura por camada do Jest e a rastreabilidade entre CT, RN e RF. No contexto do CRM da ATVOS, essas evidências confirmam que os fluxos críticos de cadastro, validação, autenticação, histórico e consulta ficaram amparados por testes e por documentação consistente, reduzindo o risco de regressão e reforçando a confiabilidade da WebAPI.
 
@@ -3787,7 +3787,7 @@ Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao regis
 
 ### 5.2.1. Relatório de testes de guerrilha
 
-Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma T24 de Inteli, 1 aluno do 2º ano de Ciência da Computação e 1 aluna do 2º ano de Engenharia de Software. Os testes foram conduzidos presencialmente, com cada participante executando as tarefas de forma independente enquanto o observador registrava ocorrências. Nenhuma instrução adicional foi fornecida durante a execução das tarefas.
+Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma T24 do Inteli, 1 aluno do 2º ano de Ciência da Computação e 1 aluna do 2º ano de Engenharia de Software. As sessões foram conduzidas presencialmente, com cada participante executando as tarefas de forma independente enquanto o observador registrava as ocorrências. Nenhuma instrução adicional foi fornecida durante a execução das tarefas.
 
 [📊 Relatório de Testes de Usabilidade — Safra Control](https://docs.google.com/spreadsheets/d/1MnqTU2OktA61bAK_owX0Iv-jNSDWqAM_2zLPRQ-fUa4/edit?usp=sharing)
 
@@ -3810,8 +3810,8 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 
 | # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
 |---|-------------|--------|----------------|---------|---------|---------|---------|
-| 1 | Pablo Oliveira Garcia | Aluno T24 | Conseguiu com dificuldade | Confundiu fornecedor com parceiro, clicou em "parceiro" inicialmente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
-| 2 | Maria Clara Bosschart | Aluna T24 | Conseguiu com dificuldade | Encontrou o botão de fornecedor corretamente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Conseguiu com dificuldade | Confundiu fornecedor com parceiro, clicou em "parceiro" inicialmente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muita confusão |
+| 2 | Maria Clara Bosschart | Aluna T24 | Conseguiu com dificuldade | Encontrou o botão de fornecedor corretamente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muita confusão |
 | 3 | Messias Olivindo | Aluno 2º ano CC | Conseguiu com dificuldade | Encontrou novo fornecedor com facilidade | Preenchido com facilidade | Registro salvo, mas sem feedback imediato ao usuário | Opção não intuitiva; usuário teve dificuldades para encontrá-la |
 | 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
 | 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
@@ -3835,7 +3835,7 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 
 | # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
 |---|-------------|--------|----------------|---------|---------|---------|---------|
-| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrado com facilidade após a confusão anterior | Preenchido facilmente | Salvo com facilidade | Envio feito após a experiência da tarefa anterior |
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrado com facilidade após a confusão anterior | Preenchido facilmente | Salvo com facilidade | Envio concluído com base na experiência da tarefa anterior |
 | 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrado com facilidade após a confusão anterior | Preenchido facilmente | Salvo com facilidade | Feito com facilidade após a dificuldade anterior |
 | 3 | Messias Olivindo | Aluno 2º ano CC | Sucesso | Encontrou com facilidade | Dados preenchidos facilmente | Registro salvo sem dificuldades | Feito com facilidade após a dificuldade anterior |
 | 4 | Raissa Guimarães | Aluna T24 | Conseguiu com dificuldade | Encontrou com facilidade | Concluída com sucesso, mas surgiu dúvida sobre cadastrar alguém como proprietário e parceiro simultaneamente; tentativa gerou erro | Registro salvo com alguma dificuldade para localizar a opção | Feito com facilidade após a dificuldade anterior |
@@ -3865,115 +3865,115 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 | 3 | Messias Olivindo | Aluno 2º ano CC | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
 | 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
 | 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
-
 ---
 
-#### Tarefa 4 — Visualizar perfil detalhado de um parceiro ativo
+#### Tarefa 4 — Visualizar o perfil detalhado de um parceiro ativo
 
-**Enunciado:** Suponha que você é uma coordenadora de estratégia de terras da ATVOS e precisa consultar rapidamente as informações de um parceiro ativo antes de uma reunião de decisão. Utilize o sistema para encontrar esse parceiro e visualizar seu perfil completo.
+**Enunciado:** Suponha que você seja uma coordenadora de estratégia de terras da ATVOS e precise consultar rapidamente as informações de um parceiro ativo antes de uma reunião de decisão. Utilize o sistema para encontrar esse parceiro e visualizar seu perfil completo.
 
 **Etapas esperadas:**
 
 | # | Etapa | Critério de sucesso |
 |---|-------|---------------------|
 | 1 | Encontrar a listagem de parceiros ativos no sistema | Navega até a área correta sem ajuda |
-| 2 | Selecionar um parceiro específico para ver mais detalhes | Identifica como acessar o perfil individual sem instrução |
-| 3 | Localizar os dados cadastrais e o histórico de interações no perfil | Encontra todas as informações na tela sem precisar procurar em outros lugares |
-| 4 | Avaliar se as informações estão claras o suficiente para uma decisão | Consegue interpretar os dados exibidos sem dificuldade |
+| 2 | Selecionar um parceiro específico para visualizar mais detalhes | Identifica como acessar o perfil individual sem instruções |
+| 3 | Localizar os dados cadastrais e o histórico de interações no perfil | Encontra todas as informações na tela sem precisar procurá-las em outros lugares |
+| 4 | Avaliar se as informações estão claras o suficiente para a tomada de decisão | Consegue interpretar os dados exibidos sem dificuldade |
 
 **Registro dos testes:**
 
 | # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
-|---|-------------|--------|----------------|---------|---------|---------|---------|
-| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 3 | Messias Olivindo | Aluno 2º ano CC | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 4 | Raissa Guimarães | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+|---|--------------|--------|-----------------|----------|----------|----------|----------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 3 | Messias Olivindo | Aluno do 2º ano de CC | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 4 | Raissa Guimarães | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 5 | Mariana Lacerda | Aluna do 2º ano de Eng. de Software | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
 
 ---
 
 ### Priorização de melhorias
 
 | Tarefa | Severidade | Descrição do problema e potencial melhoria | Participantes afetados |
-|--------|-----------|---------------------------------------------|----------------------|
-| Tarefa 3 | **4 — Catastrófico** | O histórico de interações não está sendo registrado após o cadastro. A interação é aparentemente salva, mas não aparece listada no perfil do parceiro. Deve ser corrigido imediatamente antes de qualquer entrega do produto. | Todos (1, 2, 3, 4, 5) |
-| Tarefa 1 | **3 — Grave** | O botão/caminho para "Enviar para validação" não é intuitivo. Todos os participantes tiveram dificuldade ou falharam nessa etapa. Reavaliar nomenclatura, posicionamento ou destaque visual da ação. | Todos (1, 2, 3, 4, 5) |
-| Tarefa 2 | **3 — Grave** | Campos de texto do cadastro de parceiros não possuem validação adequada de tipo (apenas letras ou apenas números em determinados campos), permitindo entradas inválidas. | Participante 4 |
-| Tarefa 2 | **3 — Grave** | O sistema não permite usar o mesmo CPF para cadastrar uma pessoa como fornecedor e como proprietário simultaneamente. É necessário definir se esse comportamento é uma regra de negócio válida ou um bug a ser corrigido. | Participante 4 |
+|--------|------------|---------------------------------------------|------------------------|
+| Tarefa 3 | **4 — Catastrófico** | O histórico de interações não está sendo registrado após o cadastro. A interação aparentemente é salva, mas não aparece listada no perfil do parceiro. Esse problema deve ser corrigido imediatamente antes de qualquer entrega do produto. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 1 | **3 — Grave** | O botão ou caminho para "Enviar para validação" não é intuitivo. Todos os participantes tiveram dificuldade ou falharam nessa etapa. Recomenda-se reavaliar a nomenclatura, o posicionamento ou o destaque visual da ação. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 2 | **3 — Grave** | Os campos de texto do cadastro de parceiros não possuem validação adequada quanto ao tipo de dado (apenas letras ou apenas números em determinados campos), permitindo a inserção de entradas inválidas. | Participante 4 |
+| Tarefa 2 | **3 — Grave** | O sistema não permite utilizar o mesmo CPF para cadastrar uma pessoa como fornecedora e como proprietária simultaneamente. É necessário definir se esse comportamento corresponde a uma regra de negócio válida ou se é um bug que deve ser corrigido. | Participante 4 |
 
 ---
 
 ### 5.2.2. Relatório de testes SUS (System Usability Scale)
 
-Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos testes de usabilidade. Cada participante respondeu 10 afirmações em escala de 1 (discordo totalmente) a 5 (concordo totalmente), alternando entre afirmações positivas e negativas conforme o modelo padrão SUS.
+Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos testes de usabilidade. Cada participante respondeu a 10 afirmações em uma escala de 1 (discordo totalmente) a 5 (concordo totalmente), alternando entre afirmações positivas e negativas, conforme o modelo padrão SUS.
 
 **Perguntas aplicadas:**
 
-| # | Afirmação |
-|---|-----------|
-| Q1 | Eu acho que gostaria de usar esse sistema com frequência. |
-| Q2 | Eu acho o sistema desnecessariamente complexo. |
-| Q3 | Eu achei o sistema fácil de usar. |
-| Q4 | Eu acho que precisaria de ajuda de uma pessoa com conhecimentos técnicos para usar o sistema. |
-| Q5 | Eu acho que as várias funções do sistema estão bem integradas. |
-| Q6 | Eu acho que o sistema apresenta muita inconsistência. |
-| Q7 | Eu imagino que a maioria das pessoas aprenderia a usar esse sistema rapidamente. |
-| Q8 | Eu achei o sistema muito complicado de usar. |
-| Q9 | Eu me senti confiante ao usar o sistema. |
-| Q10 | Eu precisei aprender várias coisas antes de conseguir usar o sistema. |
+| #   | Afirmação                                                                                     |
+| --- | --------------------------------------------------------------------------------------------- |
+| Q1  | Eu acho que gostaria de usar esse sistema com frequência.                                     |
+| Q2  | Eu acho o sistema desnecessariamente complexo.                                                |
+| Q3  | Eu achei o sistema fácil de usar.                                                             |
+| Q4  | Eu acho que precisaria da ajuda de uma pessoa com conhecimentos técnicos para usar o sistema. |
+| Q5  | Eu acho que as várias funções do sistema estão bem integradas.                                |
+| Q6  | Eu acho que o sistema apresenta muita inconsistência.                                         |
+| Q7  | Eu imagino que a maioria das pessoas aprenderia a usar esse sistema rapidamente.              |
+| Q8  | Eu achei o sistema muito complicado de usar.                                                  |
+| Q9  | Eu me senti confiante ao usar o sistema.                                                      |
+| Q10 | Eu precisei aprender várias coisas antes de conseguir usar o sistema.                         |
 
 **Respostas por participante:**
 
-| # | Participante | Q1 | Q2 | Q3 | Q4 | Q5 | Q6 | Q7 | Q8 | Q9 | Q10 |
-|---|-------------|----|----|----|----|----|----|----|----|----|----|
-| 1 | Pablo Oliveira Garcia | 5 | 2 | 4 | 1 | 4 | 1 | 5 | 1 | 4 | 1 |
-| 2 | Maria Clara Bosschart | 5 | 2 | 5 | 1 | 5 | 1 | 5 | 1 | 5 | 1 |
-| 3 | Messias Olivindo | 4 | 1 | 4 | 2 | 4 | 2 | 5 | 1 | 4 | 2 |
-| 4 | Raissa Guimarães | 4 | 3 | 2 | 4 | 4 | 2 | 4 | 1 | 4 | 1 |
-| 5 | Mariana Lacerda | 4 | 2 | 4 | 1 | 4 | 1 | 4 | 1 | 5 | 1 |
+| # | Participante          | Q1 | Q2 | Q3 | Q4 | Q5 | Q6 | Q7 | Q8 | Q9 | Q10 |
+| - | --------------------- | -- | -- | -- | -- | -- | -- | -- | -- | -- | --- |
+| 1 | Pablo Oliveira Garcia | 5  | 2  | 4  | 1  | 4  | 1  | 5  | 1  | 4  | 1   |
+| 2 | Maria Clara Bosschart | 5  | 2  | 5  | 1  | 5  | 1  | 5  | 1  | 5  | 1   |
+| 3 | Messias Olivindo      | 4  | 1  | 4  | 2  | 4  | 2  | 5  | 1  | 4  | 2   |
+| 4 | Raissa Guimarães      | 4  | 3  | 2  | 4  | 4  | 2  | 4  | 1  | 4  | 1   |
+| 5 | Mariana Lacerda       | 4  | 2  | 4  | 1  | 4  | 1  | 4  | 1  | 5  | 1   |
 
-> **Fórmula de cálculo:** Para questões ímpares (Q1, Q3, Q5, Q7, Q9): subtrai 1 da resposta. Para questões pares (Q2, Q4, Q6, Q8, Q10): subtrai a resposta de 5. Soma-se todos os valores e multiplica por 2,5.
+> **Fórmula de cálculo:** Para questões ímpares (Q1, Q3, Q5, Q7, Q9), subtrai-se 1 da resposta. Para questões pares (Q2, Q4, Q6, Q8, Q10), subtrai-se a resposta de 5. Em seguida, somam-se todos os valores e multiplica-se o resultado por 2,5.
 
 **Pontuações finais:**
 
-| # | Participante | Pontuação SUS | Classificação |
-|---|-------------|--------------|---------------|
-| 1 | Pablo Oliveira Garcia | 90 | Excelente |
-| 2 | Maria Clara Bosschart | 97,5 | Excelente |
-| 3 | Messias Olivindo | 82,5 | Excelente |
-| 4 | Raissa Guimarães | 67,5 | Razoável |
-| 5 | Mariana Lacerda | 87,5 | Excelente |
-| — | **Média geral** | **85** | **Excelente** |
+| # | Participante          | Pontuação SUS | Classificação |
+| - | --------------------- | ------------- | ------------- |
+| 1 | Pablo Oliveira Garcia | 90            | Excelente     |
+| 2 | Maria Clara Bosschart | 97,5          | Excelente     |
+| 3 | Messias Olivindo      | 82,5          | Excelente     |
+| 4 | Raissa Guimarães      | 67,5          | Razoável      |
+| 5 | Mariana Lacerda       | 87,5          | Excelente     |
+| — | **Média geral**       | **85**        | **Excelente** |
 
-A pontuação média de **85** indica boa usabilidade geral do sistema. O resultado mais baixo foi de Raissa Guimarães (67,5), participante que também apresentou mais dificuldades durante os testes de guerrilha, especialmente no fluxo de envio para validação e no cadastro de parceiros. Os demais participantes atingiram pontuações acima de 80, reforçando que os principais problemas identificados são pontuais e corrigíveis, não estruturais. A prioridade de correção recai sobre o bug de registro de interações (severidade catastrófica) e a falta de clareza no botão de envio para validação (severidade alta).
+A pontuação média de **85** indica boa usabilidade geral do sistema. O resultado mais baixo foi o de Raissa Guimarães (67,5), participante que também apresentou mais dificuldades durante os testes de guerrilha, especialmente no fluxo de envio para validação e no cadastro de parceiros. Os demais participantes atingiram pontuações acima de 80, reforçando que os principais problemas identificados são pontuais e corrigíveis, não estruturais. A prioridade de correção recai sobre o bug de registro de interações, classificado com severidade catastrófica, e sobre a falta de clareza no botão de envio para validação, classificada com severidade alta.
 
 **Análise qualitativa dos pontos de maior e menor satisfação:**
 
-Os pontos de maior satisfação identificados nas respostas foram a percepção de facilidade de aprendizado (Q7) e a ausência de complexidade desnecessária (Q2), com médias altas entre os participantes. A maioria considerou o sistema intuitivo e confiante de usar, o que é coerente com os resultados positivos nas tarefas 2 e 4 dos testes de guerrilha.
+Os pontos de maior satisfação identificados nas respostas foram a percepção de facilidade de aprendizado (Q7) e a ausência de complexidade desnecessária (Q2), com médias altas entre os participantes. A maioria considerou o sistema intuitivo e sentiu-se confiante ao usá-lo, o que é coerente com os resultados positivos nas tarefas 2 e 4 dos testes de guerrilha.
 
-O ponto de menor satisfação foi a percepção de inconsistência do sistema (Q6) e a necessidade de suporte técnico (Q4), ambos puxados principalmente pela avaliação de Raissa Guimarães, que enfrentou mais dificuldades durante os testes. Isso reforça que o fluxo de envio para validação e o cadastro de parceiros ainda apresentam fricção para usuários menos familiarizados com o sistema.
+O ponto de menor satisfação foi a percepção de inconsistência do sistema (Q6) e a necessidade de suporte técnico (Q4), ambos influenciados principalmente pela avaliação de Raissa Guimarães, que enfrentou mais dificuldades durante os testes. Isso reforça que o fluxo de envio para validação e o cadastro de parceiros ainda apresentam fricção para usuários menos familiarizados com o sistema.
 
 **Conclusões e sugestões de melhoria:**
 
 Com base nos resultados dos testes SUS e de guerrilha, as seguintes melhorias são indicadas para a versão final do sistema:
 
-- **Correção crítica:** Resolver o bug de registro de interações no histórico do parceiro, identificado como severidade catastrófica e que resultou em falha total na tarefa 3 para todos os participantes.
-- **Melhoria de navegação:** Revisar o posicionamento e a nomenclatura do botão de envio para validação, tornando-o mais visível e compreensível sem necessidade de instrução externa.
-- **Validação de formulários:** Implementar validações de campo mais claras no cadastro de parceiros, especialmente quanto ao tipo de dado aceito e ao comportamento com CPFs duplicados entre categorias.
-- **Feedback do sistema:** Adicionar confirmações visuais imediatas ao salvar rascunhos, reduzindo a incerteza do usuário sobre o estado da operação.
+* **Correção crítica:** resolver o bug de registro de interações no histórico do parceiro, identificado com severidade catastrófica e que resultou em falha total na tarefa 3 para todos os participantes.
+* **Melhoria de navegação:** revisar o posicionamento e a nomenclatura do botão de envio para validação, tornando-o mais visível e compreensível, sem necessidade de instrução externa.
+* **Validação de formulários:** implementar validações de campo mais claras no cadastro de parceiros, especialmente quanto ao tipo de dado aceito e ao comportamento com CPFs duplicados entre categorias.
+* **Feedback do sistema:** adicionar confirmações visuais imediatas ao salvar rascunhos, reduzindo a incerteza do usuário sobre o estado da operação.
 
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
 ## 6.1 Resumo Executivo
 
-A aplicação web proposta foi desenvolvida para apoiar a ATVOS na gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. Identificou-se como principal oportunidade de mercado a crescente necessidade de digitalização, rastreabilidade e centralização de informações no setor sucroenergético, especialmente em um contexto no qual a eficiência operacional, a governança de dados e a continuidade dos relacionamentos agrícolas tornam-se fatores estratégicos para a competitividade.
+A aplicação web proposta foi desenvolvida para apoiar a ATVOS na gestão do relacionamento com parceiros de terras e fornecedores de cana-de-açúcar. Identificou-se como principal oportunidade de mercado a crescente necessidade de digitalização, rastreabilidade e centralização de informações no setor sucroenergético, especialmente em um contexto no qual a eficiência operacional, a governança de dados e a continuidade dos relacionamentos agrícolas se tornam fatores estratégicos para a competitividade.
 
 Foi observado que o modelo atual, baseado em planilhas, e-mails e registros individuais, compromete a padronização dos cadastros, dificulta a consulta rápida de informações e gera perda de histórico quando há mudanças na equipe responsável. Diante desse cenário, a solução proposta busca transformar dados dispersos em uma base única, confiável e acessível aos usuários internos da empresa.
 
-Como diferencial competitivo, a aplicação reúne funcionalidades de cadastro centralizado, registro de histórico de interações, filtros de consulta, exportação de listas e controle de acesso por perfil. Dessa forma, o sistema contribui para reduzir retrabalho operacional, preservar informações estratégicas ao longo das safras e fortalecer a rastreabilidade das ações realizadas.
+Como diferencial competitivo, a aplicação reúne funcionalidades de cadastro centralizado, registro de histórico de interações, filtros de consulta, exportação de listas e controle de acesso por perfil. Dessa forma, o sistema contribui para reduzir o retrabalho operacional, preservar informações estratégicas ao longo das safras e fortalecer a rastreabilidade das ações realizadas.
 
-Os objetivos estratégicos pretendidos envolvem aumentar a eficiência da gestão de parceiros, apoiar decisões baseadas em dados estruturados, melhorar a continuidade dos relacionamentos agrícolas e oferecer uma solução alinhada às demandas de transformação digital do agronegócio. Concluiu-se que o CRM proposto agrega valor ao tornar o relacionamento com parceiros um ativo institucional, e não dependente apenas do conhecimento individual dos colaboradores. 
+Os objetivos estratégicos pretendidos envolvem aumentar a eficiência da gestão de parceiros, apoiar decisões baseadas em dados estruturados, melhorar a continuidade dos relacionamentos agrícolas e oferecer uma solução alinhada às demandas de transformação digital do agronegócio. Concluiu-se que o CRM proposto agrega valor ao tornar o relacionamento com parceiros um ativo institucional, e não algo dependente apenas do conhecimento individual dos colaboradores.
+
 
 ## 6.2 Análise de Mercado
 
