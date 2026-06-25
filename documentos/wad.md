@@ -528,7 +528,7 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 | RN07 | A exclusão de dados é lógica: o registro não é apagado, apenas marcado como excluído. | RF012, RF014 |
 | RN08 | Registros excluídos logicamente não devem aparecer em consultas padrão do sistema. | RF012 |
 | RN09 | O sistema deve rejeitar registros duplicados com base nos identificadores únicos: CPF, CNPJ e e-mail. | RF009 |
-| RN10 | Parceiros enviados para validação devem possuir nome, CPF/CNPJ, e-mail e tipo de parceiro; terras devem respeitar nome, município, UF e área positiva conforme o schema. Rascunhos podem ser salvos com os campos opcionais ainda incompletos. | RF010, RF021 |
+| RN10 | Parceiros enviados para validação devem possuir nome, CPF/CNPJ, e-mail e tipo de parceiro; terras devem respeitar nome, município, UF e área positiva conforme o schema. Rascunhos podem ser salvos com os campos opcionais ainda incompletos. A interface de cadastro/edição sinaliza essa obrigatoriedade condicional (o e-mail é indicado como opcional no rascunho e obrigatório para o envio à validação), em linha com a RNF-USAB-01. | RF010, RF021 |
 | RN11 | Toda criação ou alteração de registro deve armazenar data, hora e o identificador do usuário responsável. | RF018, RF019 |
 | RN12 | Alterações de dados devem manter versões anteriores disponíveis para consulta. | RF013 |
 | RN13 | Um parceiro pode possuir múltiplas terras associadas. | RF015 |
