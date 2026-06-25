@@ -3671,6 +3671,15 @@ As capturas da versão final estão em `documentos/assets/aplicacao_web_sprint5/
 ![Gestão de usuários](./assets/aplicacao_web_sprint5/usuarios.png)
 *Gestão de usuários: a opção "Inativar" não aparece na linha do próprio usuário autenticado.*
 
+![Histórico de interações do parceiro](./assets/aplicacao_web_sprint5/historico-interacao.png)
+*Detalhe do parceiro com o histórico de interações listado de forma cronológica.*
+
+![Fila de validação](./assets/aplicacao_web_sprint5/fila-validacao.png)
+*Fila de parceiros pendentes e revisão pelo coordenador, com ação explícita de validação.*
+
+![Erro de login legível](./assets/aplicacao_web_sprint5/login-erro.png)
+*Camada de autenticação tratando credenciais inválidas com mensagem legível na própria tela de login.*
+
 # <a name="c5"></a>5. Testes
 
 ## 5.1. Relatório de testes de integração de endpoints automatizados (sprint 4)
