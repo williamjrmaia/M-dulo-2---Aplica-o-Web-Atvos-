@@ -22,11 +22,11 @@
 
 [2. Visão Geral da Aplicação Web](#c2)
 
-[3. Projeto Técnico da Aplicação Web](#c3)
+[3. Projeto da Aplicação Web](#c3)
 
 [4. Desenvolvimento da Aplicação Web](#c4)
 
-[5. Testes da Aplicação Web](#c5)
+[5. Testes](#c5)
 
 [6. Estudo de Mercado e Plano de Marketing](#c6)
 
@@ -34,7 +34,7 @@
 
 [8. Referências](#c8)
 
-[Anexos](#c9)
+[9. Anexos](#c9)
 
 <br>
 
@@ -539,6 +539,8 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 | RN18 | Registros ativos sem alteração por período configurável deverão gerar notificações para analistas, coordenadores e administradores quando o processo automático for implementado. | RF025 |
 | RN19 | Requisições de edição de parceiro sem nenhum campo editável no corpo devem ser rejeitadas com erro 400. | RF005 |
 | RN20 | Tentativas de edição de parceiros inexistentes devem ser rejeitadas com erro 404. | RF005 |
+| RN21 | Um parceiro pode atuar como fornecedor, proprietário ou ambos. Quando for os dois papéis, é representado por um único registro (mesmo CPF/CNPJ) com `papel = 'ambos'`, preservando a unicidade do documento. | RF004, RF005 |
+| RN22 | No cadastro/edição de parceiros, o nome do acompanhante deve conter apenas letras e o telefone apenas números (com símbolos de máscara), com validação no front e no back. | RF004, RF005 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
@@ -1079,6 +1081,8 @@ As dependências foram usadas para indicar o uso de enumerações por determinad
 A herança não foi aplicada no diagrama porque os diferentes papéis comerciais de um parceiro não representam subclasses fixas de `Parceiro`. No domínio do sistema, um parceiro pode atuar como fornecedor de cana, arrendador de terra ou exercer mais de um papel ao mesmo tempo. Se fossem criadas subclasses como `Fornecedor` e `Arrendador`, haveria risco de duplicar a identidade do parceiro ou restringir indevidamente sua atuação.
 
 Por esse motivo, a modelagem utiliza a classe `VinculoComercial` para representar o papel exercido pelo parceiro em cada relação. Essa abordagem é mais flexível, evita generalizações artificiais e permite que os tipos de vínculo sejam evoluídos sem alterar a identidade principal do parceiro. Assim, a ausência de herança é uma decisão de modelagem intencional, alinhada ao funcionamento real do domínio.
+
+Complementarmente, a tabela `parceiros` possui o campo cadastral `papel` (`fornecedor` | `proprietario` | `ambos`), preenchido no cadastro como uma classificação rápida do parceiro. Ele **não substitui** o `VinculoComercial` — que permanece como fonte autoritativa do papel exercido em cada vínculo de terra —, servindo como indicador denormalizado de conveniência (por exemplo, para exibição na listagem). O valor `ambos` reforça, no nível do registro, que um mesmo parceiro (mesmo CPF/CNPJ) pode ser fornecedor e proprietário simultaneamente, em coerência com a decisão de não especializar `Parceiro` por herança.
 
 #### 3.2.3.1. Diagrama de Classes Arquitetural (sprint 3)
 
@@ -2230,7 +2234,7 @@ CREATE TABLE unidades (
 
 #### 06. TABELA parceiros
 <br>
-A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador.
+A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador. O campo `papel` indica o papel do parceiro no relacionamento — `fornecedor`, `proprietario` ou `ambos` — permitindo que um mesmo parceiro (mesmo CPF/CNPJ) atue como fornecedor e proprietário em um único registro, sem duplicar o documento.
 <br><br>
 Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome, ao tipo_pessoa, à região e à usina de referência.
 <br>
@@ -2253,6 +2257,7 @@ CREATE TABLE parceiros (
   tch_medio        VARCHAR,
   atr_medio        VARCHAR,
   observacoes      TEXT,
+  papel            VARCHAR,  -- 'fornecedor' | 'proprietario' | 'ambos' (validado na camada de aplicação)
   status           status_validacao NOT NULL DEFAULT 'rascunho',
   criado_em        TIMESTAMP NOT NULL DEFAULT NOW(),
   atualizado_em    TIMESTAMP,
@@ -2505,7 +2510,7 @@ CREATE INDEX idx_registro_status    ON registro_alteracao(status);
 CREATE INDEX idx_registro_operacao    ON registro_alteracao(tipo_operacao);
 ```
 
-## 3.6.4. Consultas SQL e lógica proposicional
+### 3.6.4. Consultas SQL e lógica proposicional
 
 Esta seção apresenta consultas SQL compostas realizadas pelo back-end da aplicação web, acompanhadas de sua respectiva lógica proposicional. As consultas foram elaboradas a partir das entidades modeladas no banco de dados, em especial, `parceiros`, `usuarios`, `perfil_acesso`, `terras`, `parceiro_terra`, `vinculo_comercial` e `registro_alteracao`.
 
@@ -3038,19 +3043,35 @@ O acesso à aplicação é controlado por uma combinação de JWT, sessão persi
 
 ### 3.8.1. Autenticação
 
-*Descreva o fluxo de autenticação implementado: persistência de senha com hash bcrypt/argon2 (parâmetros de custo explícitos e justificados), validação de credenciais e criação de sessão. Senhas em texto plano no banco não são aceitas.*
+A autenticação do Safra Control é centralizada no fluxo de login por e-mail e senha, exposto em `GET /login` e `POST /login`. A requisição passa primeiro pela validação de payload (`loginSchema`), garantindo que apenas credenciais no formato esperado cheguem à camada de serviço. Em seguida, o `AuthService` normaliza o e-mail, consulta o usuário no repositório e aplica a mesma resposta genérica para usuário inexistente, usuário inativo, senha ausente ou senha incorreta: `Credenciais inválidas`. Essa abordagem reduz a exposição de informações sobre quais contas existem ou estão ativas no sistema.
+
+As senhas persistidas no banco não são armazenadas em texto plano. O projeto utiliza `bcrypt` para hash de senha e valida as credenciais com `bcrypt.compare`, comparando a senha informada com o campo `senha_hash` do usuário. Nos fluxos de criação/definição de senha, como primeiro acesso, a senha é persistida com `bcrypt.hash(senha, 10)`. O custo 10 foi adotado por equilibrar segurança e desempenho para o contexto do sistema: torna ataques de força bruta mais custosos, sem degradar de forma perceptível o login e a criação de usuários no volume esperado da aplicação.
+
+Quando as credenciais são válidas, o backend gera um JWT assinado com `JWT_SECRET`, contendo apenas dados mínimos de identificação (`sub`, com o id do usuário, e `email`). O token tem expiração de 8 horas. Para acessos via formulário web, o sistema grava os cookies `auth_token` e `auth_session_id` com `httpOnly`, `sameSite: lax`, `secure` em produção e `maxAge` compatível com a expiração de 8 horas. Para consumo JSON/API, o token, os dados públicos do usuário autenticado e o identificador da sessão são retornados no corpo da resposta. O sistema também possui fluxo de primeiro acesso com token aleatório de 32 bytes, armazenado no banco apenas como hash SHA-256, com validade de 24 horas e uso único para definição inicial de senha.
 
 ### 3.8.2. Controle de sessão
 
-*Descreva o controle de sessão baseado em `session id` persistido em tabela própria, com expiração. Se optar por JWT, justifique a escolha explicando os trade-offs (stateless, não revogável, payload exposto).*
+O controle de sessão combina JWT com uma sessão persistida em tabela própria (`auth_sessoes`). Essa escolha evita depender de um JWT puramente stateless: embora o token assinado facilite o transporte da autenticação por cookie ou cabeçalho `Authorization: Bearer`, a sessão no banco permite revogação, expiração controlada e verificação de vínculo com um usuário ainda ativo.
+
+A cada login bem-sucedido, o sistema cria uma sessão com `usuario_id`, `token`, flag `ativa`, data de criação, data de expiração e campos de revogação (`revogada_em` e `revogada_por`). Em rotas protegidas, o middleware `requireAuth` extrai o token do cabeçalho Bearer ou do cookie `auth_token`, valida a assinatura e a expiração do JWT, consulta uma sessão ativa pelo token e confirma que o usuário da sessão corresponde ao `sub` do JWT. Depois disso, o usuário é recarregado do banco e precisa continuar ativo para que a requisição prossiga.
+
+Esse desenho assume os trade-offs do uso de JWT de forma controlada. O token continua sendo um artefato portátil e assinado, mas seu payload é mínimo e não carrega informações sensíveis. A principal desvantagem é a necessidade de consultar o banco em cada rota protegida, porém esse custo é intencional para permitir revogação imediata. O logout encerra a sessão e remove os cookies; a rota `PUT /auth/sessoes/:id` permite revogação explícita; e a inativação de um usuário encerra todas as suas sessões ativas, impedindo que um token ainda dentro da validade continue acessando o sistema.
 
 ### 3.8.3. Autorização
 
-*Descreva as regras de autorização por rota e por operação, baseadas no perfil do usuário autenticado. A verificação deve ocorrer no backend — o frontend nunca é fonte de verdade para autorização.*
+A autorização é aplicada no backend por meio dos middlewares `requireAuth` e `authorizeRoles`. O frontend pode ocultar ou exibir ações para melhorar a experiência do usuário, mas não é fonte de verdade para autorização: toda rota protegida precisa passar pela autenticação e, quando necessário, pela checagem explícita de perfil antes de executar a operação.
+
+O sistema trabalha com três perfis principais: `analista`, `coordenador` e `administrador`. Rotas de usuários (`/usuarios` e `/api/usuarios`) são restritas ao perfil `administrador`, pois envolvem criação, edição, alteração de perfil e inativação de contas. Em parceiros e terras, operações de cadastro, vínculo, envio para validação e remoção lógica são liberadas para `analista` e `administrador`, enquanto consultas, listagens e edições operacionais podem ser acessadas pelos perfis autorizados no respectivo fluxo (`analista`, `coordenador` e `administrador`). As ações de validação, aprovação, devolução, exportação e dashboards gerenciais são restritas a `coordenador` e `administrador`.
+
+Quando um usuário não autenticado tenta acessar uma rota protegida, o backend redireciona para `/login` em fluxos HTML ou retorna `401` em chamadas JSON/API. Quando o usuário está autenticado, mas não possui o perfil exigido, o backend retorna `403` para API ou renderiza a página de erro apropriada no fluxo web. Assim, as permissões ficam concentradas nas rotas e operações do servidor, e não em controles visuais do cliente.
 
 ### 3.8.4. Estratégias de Resiliência
 
-*Descreva as estratégias aplicadas no tratamento de falhas de rede: timeout, retry com backoff exponencial, circuit breaker e idempotência em operações críticas (`PUT`, `DELETE`, operações de pagamento etc.).*
+O backend possui estratégias de resiliência voltadas principalmente para contenção de requisições lentas e tratamento uniforme de falhas transitórias. O middleware `requestTimeout` define um limite de tempo por requisição, configurável por `REQUEST_TIMEOUT_MS` e com padrão de 15 segundos. Quando esse limite é atingido antes de uma resposta, o servidor retorna `503 Service Unavailable` com cabeçalho `Retry-After: 5`, indicando ao cliente que a operação pode ser tentada novamente após curto intervalo. O temporizador é limpo nos eventos de `finish` e `close`, evitando vazamento de recursos.
+
+O tratamento global de erros (`errorHandler`) diferencia erros de domínio, erros inesperados e falhas de infraestrutura. Códigos comuns de rede, como `ECONNREFUSED`, `ENOTFOUND`, `ETIMEDOUT`, `EAI_AGAIN`, `ECONNRESET` e `EPIPE`, além de códigos SQLSTATE associados a indisponibilidade ou interrupção do PostgreSQL, são mapeados para `503` com `Retry-After: 5`. Erros conhecidos da aplicação preservam seus status específicos, enquanto falhas inesperadas são convertidas em resposta genérica `500`, sem expor detalhes internos ao usuário final.
+
+O projeto não implementa, nesta versão, um mecanismo interno de retry com backoff exponencial nem circuit breaker no backend. Em vez disso, sinaliza falhas transitórias de forma padronizada para que o cliente ou a camada de chamada possa decidir quando repetir a operação. Nas operações críticas implementadas, a resiliência é reforçada por validações de estado e identificador: encerramento de sessão já revogada retorna conflito controlado, exclusões são tratadas como inativação lógica quando aplicável, e atualizações `PUT` passam por validação de schema antes de alterar dados. Para operações futuras com maior risco de duplicidade, como pagamentos ou integrações externas sensíveis, recomenda-se acrescentar chaves de idempotência e política formal de retry/backoff.
 
 ## 3.9. Matriz de Rastreabilidade (RTM) (sprints 3 a 5)
 
@@ -3598,12 +3619,6 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 
 ## 5.1. Relatório de testes de integração de endpoints automatizados (sprint 4)
 
-*Liste e descreva os testes automatizados dos endpoints criados e planejados para sua solução, implementados com **Jest**. Cubra as duas abordagens:*
-
-- ***White-box*** *— testes unitários de Service que exercitam ramos internos, exceções e regras de negócio (conhecimento da implementação).*
-- ***Black-box*** *— testes de integração dos endpoints via Jest + Supertest, verificando apenas o contrato HTTP (status, body, efeito observável), sem depender da implementação interna.*
-
-*Posicione aqui também o relatório de cobertura de testes Jest se houver (através de link ou transcrito para estrutura markdown).*
 
 ### 5.1.1 Estratégia de Testes
 
@@ -4005,14 +4020,14 @@ Outra tendência relevante é a valorização da rastreabilidade e da governanç
 
 ## 6.3 Análise da Concorrência
 
-## 6.3.1 Principais concorrentes
+### 6.3.1 Principais concorrentes
 
 A análise da concorrência foi organizada em dois eixos: empresas do setor sucroenergético que concorrem diretamente com a ATVOS e soluções digitais que poderiam substituir parcialmente a aplicação proposta. No primeiro grupo, foram identificadas a Raízen, a BP Bioenergy e a São Martinho. A Raízen foi considerada concorrente direta por atuar de forma integrada na produção de açúcar, etanol e bioenergia, além da distribuição de combustíveis sob a marca Shell (RAÍZEN, 2026). A BP Bioenergy também foi considerada relevante, pois a bp passou a deter 100% da antiga BP Bunge Bioenergia, fortalecendo sua presença no mercado brasileiro de biocombustíveis (BUNGE, 2024). A São Martinho foi incluída por sua atuação nos segmentos de açúcar, etanol, energia elétrica e subprodutos da cana-de-açúcar (SÃO MARTINHO, 2026).
 
 No segundo grupo, foram analisados concorrentes indiretos ligados à gestão de relacionamento e dados. Salesforce, Microsoft Dynamics 365 e SAP Customer Experience oferecem recursos de CRM, unificação de dados de clientes, jornadas e suporte à experiência do cliente (SALESFORCE, 2026; MICROSOFT, 2026; SAP, 2026). O Aegro também foi considerado por oferecer gestão rural com controle financeiro, operacional e fiscal, além de dados de campo e integrações (AEGRO, 2026). Apesar disso, essas soluções não foram concebidas especificamente para o relacionamento entre usinas, fornecedores de cana-de-açúcar e proprietários de terras.
 
 
-## 6.3.2 Vantagens competitivas da aplicação web
+### 6.3.2 Vantagens competitivas da aplicação web
 
 Identificou-se que a principal vantagem competitiva da aplicação web está na especialização ao contexto da ATVOS. Enquanto CRMs generalistas são desenvolvidos para múltiplos setores e demandam parametrizações, a solução proposta foi estruturada para atender diretamente à gestão de parceiros agrícolas, fornecedores de cana-de-açúcar e proprietários de terras. Assim, o sistema não se limita ao registro de contatos, mas também organiza cadastros, histórico de interações, status de validação, permissões de acesso e rastreabilidade de alterações.
 
@@ -4047,7 +4062,7 @@ As principais dores estão relacionadas à falta de governança de dados e à pe
 
 ## 6.5 Posicionamento
 
-#### 6.5.1 Proposta de valor única (até 250 palavras)
+### 6.5.1 Proposta de valor única (até 250 palavras)
 
 A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento com parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no *Value Proposition Canvas*, de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida (Osterwalder et al., 2014). A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados (Inteli, 2026). Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e os 108 fornecedores é garantida de forma integral (ATVOS, 2026). Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
 
@@ -4057,7 +4072,7 @@ O risco de perda de dados e de informações essenciais para negociações e par
 **b) Criadores de ganhos (*Gain Creators*):**
 A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e de painéis nativos de visualização de dados estatísticos. Tais ferramentas dão suporte direto à realização de consultas rápidas e à geração de listas segmentadas (Osterwalder et al., 2014).
 
-#### 6.5.2 Posicionamento e diferenciação
+### 6.5.2 Posicionamento e diferenciação
 
 No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Relacionamento Agrícola, estruturado como uma solução *Business-to-Employee* (B2E), visando à ocupação de um espaço mental e funcional único na rotina operacional (Ries & Trout, 2001). Dessa maneira, identificou-se que a principal diferenciação da aplicação desenvolvida está na modernização das alternativas utilizadas no mercado, em contraste com planilhas e outros sistemas corporativos tradicionais, os quais podem gerar erros e dispersão de dados, além de possuírem telas genéricas e custos elevados (Inteli, 2026).
 
@@ -4065,7 +4080,7 @@ O desenvolvimento do protótipo foi voltado especificamente para agilizar o trab
 
 ## 6.6 Estratégia de Marketing 
 
-#### 6.6.1 Produto/serviço
+### 6.6.1 Produto/serviço
 
 O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituída por uma arquitetura *full-stack* com banco de dados SQL nativo. O sistema tem como principais funções o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações por meio de painéis dinâmicos, que permitem uma análise estatística.
 
@@ -4073,7 +4088,7 @@ A plataforma busca eliminar a dependência de planilhas eletrônicas e controles
 
 Segundo Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, com valor central na transformação de dados dispersos em ativos estratégicos.
 
-#### 6.6.2 Preço
+### 6.6.2 Preço
 
 Como a plataforma foi projetada para ser uma solução exclusivamente corporativa e voltada ao uso interno do tipo B2E, o modelo de monetização por licenciamento comercial ou assinatura (*SaaS*) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de desenvolvimento interno proprietário (*in-house software*).
 
@@ -4081,13 +4096,13 @@ A aplicação desse modelo baseia-se na eliminação de empecilhos financeiros e
 
 Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
-#### 6.6.3 Praça
+### 6.6.3 Praça
 
 Com base em uma estratégia de canal direto intracorporativo, focada exclusivamente no ambiente digital fechado, definiu-se a Praça. O sistema web será disponibilizado por meio de servidores de nuvem privada integrados à estrutura tecnológica interna da companhia. Os usuários terão acesso restrito e seguro por meio de qualquer navegador web adotado como padrão pela empresa, sendo exigidos autenticação corporativa única (SSO) e perfis específicos para cada nível de acesso e atuação. As oito unidades agroindustriais e os dois escritórios corporativos da ATVOS são formalizados como canais de entrega.
 
 A distribuição digital direta garante a governança dos dados e a sincronização das interações em tempo real. Segundo a teoria dos canais de Kotler e Keller (2012), essa configuração de nível zero garante o controle sobre a governança das informações e a segurança dos dados sensíveis da ATVOS, de seus 1.137 parceiros de terras e de seus 108 fornecedores.
 
-#### 6.6.4 Promoção
+### 6.6.4 Promoção
 
 O plano estratégico de promoção da solução foi construído sob a ótica do endomarketing estratégico e da gestão de mudança corporativa, já que o público-alvo se resume aos colaboradores das áreas de Negócios Agrícolas e Estratégia de Terras. Campanhas de publicidade pública ou marketing digital, como redes sociais e mídia paga, não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
 
@@ -4201,7 +4216,7 @@ São Martinho. (2026). São Martinho. https://www.saomartinho.com.br/
 
 União Nacional da Bioenergia. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
 
-# <a name="c9"></a>Anexos
+# <a name="c9"></a>9. Anexos
 
 ## Classificação de Impacto, Probabilidade e Matriz de Risco
 

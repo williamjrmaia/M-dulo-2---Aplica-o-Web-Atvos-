@@ -45,6 +45,7 @@ const CAMPOS_ATUALIZAVEIS_PARCEIRO: CampoAtualizavelParceiro[] = [
   { chave: 'tch_medio', coluna: 'tch_medio', transformar: vazioComoNull as never },
   { chave: 'atr_medio', coluna: 'atr_medio', transformar: vazioComoNull as never },
   { chave: 'observacoes', coluna: 'observacoes', transformar: vazioComoNull as never },
+  { chave: 'papel', coluna: 'papel', transformar: vazioComoNull as never },
   { chave: 'status', coluna: 'status' },
 ];
 
@@ -182,9 +183,10 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
           atr_medio,
           observacoes,
           status,
-          criado_por
+          criado_por,
+          papel
          )
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::status_validacao, $16)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::status_validacao, $16, $17)
        RETURNING *`,
       [
         data.nome,
@@ -203,6 +205,7 @@ export async function createParceiro(data: CreateParceiroInput): Promise<Parceir
         vazioComoNull(data.observacoes),
         data.status ?? 'rascunho',
         data.criado_por,
+        vazioComoNull(data.papel),
       ]
     );
 
