@@ -339,6 +339,12 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
     validarAlteracaoStatusAnalista(parceiroAtual.status, status);
   }
 
+  // RN10: enviar para validação (status -> pendente) exige e-mail; considera o
+  // valor informado na edição ou, se ausente, o já salvo.
+  if (status === 'pendente') {
+    validarEmailParaValidacao(true, email !== undefined ? email : parceiroAtual.email);
+  }
+
   const parceiro = await editarParceiroService(id, {
     nome,
     apelido,
@@ -597,6 +603,16 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 
     if (perfilAutenticado === 'analista' && status) {
       validarAlteracaoStatusAnalista(parceiroAtual.status, status);
+    }
+
+    // RN10: ao enviar o registro para validação (status -> pendente), o e-mail
+    // é obrigatório. Considera o valor resultante (o informado na edição ou,
+    // se não alterado, o que já está salvo). Fecha a inconsistência entre o
+    // aviso da UI e o back-end neste caminho de edição.
+    if (status === 'pendente') {
+      const emailResultante =
+        camposEditaveis.email !== undefined ? camposEditaveis.email : parceiroAtual.email;
+      validarEmailParaValidacao(true, emailResultante);
     }
 
     await editarParceiroService(id, { ...camposEditaveis, atualizado_por: usuarioId });
