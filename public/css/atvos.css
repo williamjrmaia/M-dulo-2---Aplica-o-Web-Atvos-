@@ -1213,6 +1213,12 @@ button.logout-link {
   flex-wrap: wrap;
 }
 
+/* Form usado apenas como wrapper de uma ação (ex.: inativar): não gera caixa
+   própria, para o botão participar diretamente do flex da linha de ações. */
+.inline-form {
+  display: contents;
+}
+
 .list-item-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
