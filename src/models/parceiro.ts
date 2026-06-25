@@ -15,6 +15,7 @@ export interface Parceiro {
     tch_medio?: string | null;
     atr_medio?: string | null;
     observacoes?: string | null;
+    papel?: 'fornecedor' | 'proprietario' | 'ambos' | null;
     status: string;
     criado_por: string;
     criado_por_nome?: string | null;
@@ -42,6 +43,7 @@ export interface CreateParceiroInput {
     tch_medio?: string;
     atr_medio?: string;
     observacoes?: string;
+    papel?: 'fornecedor' | 'proprietario' | 'ambos';
     status?: 'rascunho' | 'pendente';
     criado_por: string;
 }
@@ -62,6 +64,7 @@ export interface UpdateParceiroInput {
     tch_medio?: string;
     atr_medio?: string;
     observacoes?: string;
+    papel?: 'fornecedor' | 'proprietario' | 'ambos';
     status?: string;
     atualizado_por: string;
 }
