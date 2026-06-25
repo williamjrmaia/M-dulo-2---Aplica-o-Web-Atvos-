@@ -3232,16 +3232,16 @@ Para a apresentação final, as capturas devem ser refeitas em navegador convenc
 
 ### 4.2.6. Decisões técnicas relevantes
 
-1. EJS foi mantido para renderização server-side, reduzindo complexidade de infraestrutura e preservando a stack do projeto.
+1. EJS foi mantido para renderização no servidor, reduzindo a complexidade de infraestrutura e preservando a pilha tecnológica do projeto.
 2. API e formulários compartilham regras de negócio e persistência, evitando versões divergentes do mesmo fluxo.
-3. Autorização é aplicada nas rotas do backend, não apenas pela ocultação de botões.
-4. Cookies de autenticação são HttpOnly, `sameSite=lax` e `secure` em produção.
-5. Exclusões de parceiros e terras são lógicas, preservando auditoria e referências.
-6. CSS e JavaScript próprios concentram identidade, responsividade, máscaras, busca, modais e feedbacks sem bibliotecas externas.
+3. A autorização é aplicada nas rotas do backend, não apenas pela ocultação de botões.
+4. Os cookies de autenticação são `HttpOnly`, `sameSite=lax` e `secure` em produção.
+5. As exclusões de parceiros e terras são lógicas, preservando auditoria e referências.
+6. CSS e JavaScript próprios concentram identidade visual, responsividade, máscaras, busca, modais e feedbacks sem bibliotecas externas.
 
 ### 4.2.7. Testes e validações
 
-A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na revisão do Artefato 10, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 36 suítes e 293 testes, sem falhas. A execução completa levou cerca de 697 segundos devido ao uso de banco remoto (PostgreSQL/Supabase) em parte dos testes; a conexão exige a variável `DATABASE_URL` configurada no `.env`.
+A suíte automatizada cobre controllers, services, repositories integrados ao PostgreSQL, schemas, autenticação, usuários, parceiros, terras, vínculos, validação, histórico, interações, exportação, dashboard e exclusão lógica. Na execução final registrada no WAD, `npx tsc --noEmit` terminou sem erros e `npm test` aprovou 40 suítes e 327 testes, sem falhas. A execução completa depende da conexão com o PostgreSQL/Supabase em parte dos testes; por isso, o ambiente exige a configuração correta das variáveis de banco, especialmente `DATABASE_URL_TEST` para a base de testes.
 
 ### 4.2.8. Limitações conhecidas e próximos passos
 
