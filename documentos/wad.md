@@ -3788,7 +3788,7 @@ Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao regis
 
 ### 5.2.1. Relatório de testes de guerrilha
 
-Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma T24 de Inteli, 1 aluno do 2º ano de Ciência da Computação e 1 aluna do 2º ano de Engenharia de Software. Os testes foram conduzidos presencialmente, com cada participante executando as tarefas de forma independente enquanto o observador registrava ocorrências. Nenhuma instrução adicional foi fornecida durante a execução das tarefas.
+Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma T24 do Inteli, 1 aluno do 2º ano de Ciência da Computação e 1 aluna do 2º ano de Engenharia de Software. As sessões foram conduzidas presencialmente, com cada participante executando as tarefas de forma independente enquanto o observador registrava as ocorrências. Nenhuma instrução adicional foi fornecida durante a execução das tarefas.
 
 [📊 Relatório de Testes de Usabilidade — Safra Control](https://docs.google.com/spreadsheets/d/1MnqTU2OktA61bAK_owX0Iv-jNSDWqAM_2zLPRQ-fUa4/edit?usp=sharing)
 
