@@ -3646,8 +3646,8 @@ Casos do parceiroService:
 | CT20 | RN04 | feliz | lista os parceiros existentes |
 | CT09 | RN08 | falha | consulta de parceiro inexistente |
 | CT10 | RN08 | falha | consulta com id malformado |
-| CT07 | RN09 | falha | cadastro com cpf ou cnpj duplicado |
-| CT23 | RN09 | falha | edição que deixaria o cpf duplicado |
+| CT07 | RN09 | falha | cadastro com CPF ou CNPJ duplicado |
+| CT23 | RN09 | falha | edição que deixaria o CPF duplicado |
 | CT01 | RN10 | feliz | cadastra um parceiro novo em rascunho |
 | CT14 | RN12 | falha | histórico de parceiro inexistente |
 | CT21 | RN12 | feliz | histórico de parceiro existente |
@@ -3679,7 +3679,7 @@ Casos dos services de usuário (userService, userUpdateService e userInactivateS
 | CT31 | RN03 | falha | valida os campos obrigatórios antes de consultar o banco |
 | CT39 | RN03 | falha | valida o perfil quando perfil_acesso_id é enviado |
 | CT32 | RN06 | falha | informa quando o usuário do perfil não existe |
-| CT33 | RN06 | feliz | inativa o usuário e grava ativo como falso |
+| CT33 | RN06 | feliz | inativa o usuário e grava ativo como false |
 | CT34 | RN06 | falha | rejeita a inativação quando o id não é informado |
 | CT35 | RN06 | falha | rejeita a inativação de usuário inexistente |
 | CT36 | RN06 | feliz | atualiza o usuário com dados válidos |
