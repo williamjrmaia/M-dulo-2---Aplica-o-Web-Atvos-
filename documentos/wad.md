@@ -1082,6 +1082,8 @@ A herança não foi aplicada no diagrama porque os diferentes papéis comerciais
 
 Por esse motivo, a modelagem utiliza a classe `VinculoComercial` para representar o papel exercido pelo parceiro em cada relação. Essa abordagem é mais flexível, evita generalizações artificiais e permite que os tipos de vínculo sejam evoluídos sem alterar a identidade principal do parceiro. Assim, a ausência de herança é uma decisão de modelagem intencional, alinhada ao funcionamento real do domínio.
 
+Complementarmente, a tabela `parceiros` possui o campo cadastral `papel` (`fornecedor` | `proprietario` | `ambos`), preenchido no cadastro como uma classificação rápida do parceiro. Ele **não substitui** o `VinculoComercial` — que permanece como fonte autoritativa do papel exercido em cada vínculo de terra —, servindo como indicador denormalizado de conveniência (por exemplo, para exibição na listagem). O valor `ambos` reforça, no nível do registro, que um mesmo parceiro (mesmo CPF/CNPJ) pode ser fornecedor e proprietário simultaneamente, em coerência com a decisão de não especializar `Parceiro` por herança.
+
 #### 3.2.3.1. Diagrama de Classes Arquitetural (sprint 3)
 
 
