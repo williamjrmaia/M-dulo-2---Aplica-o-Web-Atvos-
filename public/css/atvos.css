@@ -1031,6 +1031,21 @@ button.logout-link {
   color: var(--status-devolvido-text);
 }
 
+.badge-fornecedor {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+.badge-proprietario {
+  background: #EDE9FE;
+  color: #6D28D9;
+}
+
+.badge-ambos {
+  background: var(--status-ativo-bg);
+  color: var(--status-ativo-text);
+}
+
 /* =========================================================
    11. Tabelas e listagens
    ========================================================= */

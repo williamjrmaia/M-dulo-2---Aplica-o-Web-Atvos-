@@ -123,9 +123,9 @@
               <%# Analista nao altera o status por aqui: usa o botao explicito "Enviar para validacao". %>
               <input type="hidden" name="status" id="status" value="" />
               <% if (['rascunho', 'devolvido'].includes(dados.status)) { %>
-                <p class="form-hint">Para enviar este registro para validação, use o botão <strong>“Enviar para validação”</strong> abaixo.</p>
+                <p class="form-help">Para enviar este registro para validação, use o botão <strong>“Enviar para validação”</strong> abaixo.</p>
               <% } else { %>
-                <p class="form-hint">Status atual: <strong><%= dados.status %></strong></p>
+                <p class="form-help">Status atual: <strong><%= dados.status %></strong></p>
               <% } %>
             <% } else { %>
               <select class="form-select" id="status" name="status">
