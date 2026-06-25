@@ -4065,27 +4065,39 @@ O desenvolvimento do protótipo foi voltado especificamente para agilizar o trab
 
 ## 6.6 Estratégia de Marketing 
 
-#### 6.6.1 Produto/Serviço
-O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituído por uma arquitetura full-stack com banco de dados SQL nativo. O sistema tem como principais funções: o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações através de painéis dinâmicos que permitem uma análise estatística. A plataforma busca eliminar a dependência completa em planilhas eletrônicas e controles manuais informais, que podem acarretar falhas crônicas, inconsistência entre os dados e perda do histórico de relacionamentos. A principal diferenciação em relação aos outros sistemas CRM disponíveis no mercado, que são caros e com interfaces rígidas, é que toda a proposta foi baseada na experiência do usuário (UX/UI), voltada especialmente para o fluxo de governança e homologação de 100% das informações dos parceiros agrícolas. Segundo os autores Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, que tem um valor central na transformação de dados dispersos em ativos estratégicos.
+#### 6.6.1 Produto/serviço
+
+O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituída por uma arquitetura *full-stack* com banco de dados SQL nativo. O sistema tem como principais funções o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações por meio de painéis dinâmicos, que permitem uma análise estatística.
+
+A plataforma busca eliminar a dependência de planilhas eletrônicas e controles manuais informais, que podem acarretar falhas crônicas, inconsistências entre os dados e perda do histórico de relacionamentos. A principal diferenciação em relação aos outros sistemas de CRM disponíveis no mercado, que são caros e possuem interfaces rígidas, é que toda a proposta foi baseada na experiência do usuário (UX/UI), voltada especialmente para o fluxo de governança e homologação de 100% das informações dos parceiros agrícolas.
+
+Segundo Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, com valor central na transformação de dados dispersos em ativos estratégicos.
 
 #### 6.6.2 Preço
-Como a plataforma foi projetada para ser uma solução somente corporativa e voltada para uso interno do tipo B2E, o modelo de monetização de licenciamento comercial ou assinatura (SaaS) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de Desenvolvimento Interno Proprietário (In-house Software). A aplicação desse determinado modelo é baseada na eliminação de empecilhos financeiros e custos frequentes com fornecedores de softwares externos; o valor de investimento foi centrado no custo do desenvolvimento de software pelas equipes e na manutenção preventiva.
-Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar os riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
+
+Como a plataforma foi projetada para ser uma solução exclusivamente corporativa e voltada ao uso interno do tipo B2E, o modelo de monetização por licenciamento comercial ou assinatura (*SaaS*) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de desenvolvimento interno proprietário (*in-house software*).
+
+A aplicação desse modelo baseia-se na eliminação de empecilhos financeiros e de custos recorrentes com fornecedores de softwares externos. Dessa forma, o valor de investimento foi centrado no custo de desenvolvimento do software pelas equipes e na manutenção preventiva.
+
+Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
 #### 6.6.3 Praça
-Tendo como base uma estratégia de Canal Direto Intracorporativo, focado de forma exclusiva no ambiente digital fechado para definir a Praça. O sistema web será disponibilizado através de servidores de nuvem privada integrados à estrutura tecnológica interna da companhia. Os usuários terão acesso de forma restrita e segura através de qualquer navegador web que seja o padrão da empresa, sendo exigida a autenticação corporativa única (SSO) e perfis específicos para cada nível de acesso e atuação. As oito unidades agroindustriais e os dois escritórios corporativos da Atvos são formalizados como os canais de entrega.
-A distribuição digital direta garante a governança sobre os dados e a sincronização das interações em tempo real. Segundo a teoria dos canais dos autores Kotler e Keller (2012), tal configuração de nível zero garante o controle sobre a governança de informações e a segurança das informações sensíveis da Atvos e seus 1.137 parceiros de terras e 108 fornecedores.
+
+Com base em uma estratégia de canal direto intracorporativo, focada exclusivamente no ambiente digital fechado, definiu-se a Praça. O sistema web será disponibilizado por meio de servidores de nuvem privada integrados à estrutura tecnológica interna da companhia. Os usuários terão acesso restrito e seguro por meio de qualquer navegador web adotado como padrão pela empresa, sendo exigidos autenticação corporativa única (SSO) e perfis específicos para cada nível de acesso e atuação. As oito unidades agroindustriais e os dois escritórios corporativos da ATVOS são formalizados como canais de entrega.
+
+A distribuição digital direta garante a governança dos dados e a sincronização das interações em tempo real. Segundo a teoria dos canais de Kotler e Keller (2012), essa configuração de nível zero garante o controle sobre a governança das informações e a segurança dos dados sensíveis da ATVOS, de seus 1.137 parceiros de terras e de seus 108 fornecedores.
 
 #### 6.6.4 Promoção
-O plano estratégico de promoção da solução foi construída sob a ótica do Endomarketing Estratégico e Gestão de Mudança Corporativa, já que o público-alvo se resume a colaboradores nas áreas de Negócios Agrícolas e Estratégias de Terras. Campanhas de publicidade públicas ou marketing digital (como redes sociais e mídia paga) não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
+
+O plano estratégico de promoção da solução foi construído sob a ótica do endomarketing estratégico e da gestão de mudança corporativa, já que o público-alvo se resume aos colaboradores das áreas de Negócios Agrícolas e Estratégia de Terras. Campanhas de publicidade pública ou marketing digital, como redes sociais e mídia paga, não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
 
 O plano de divulgação interna será estruturado em três fases distintas:
 
-**Fase de Sensibilização (Teasers e Eventos de Lançamento):** A proposta é realizar seminários e videoconferências institucionais e comunicados internos nas plataformas oficiais de comunicação da empresa, apresentando a solução.
+**Fase de sensibilização (teasers e eventos de lançamento):** A proposta é realizar seminários, videoconferências institucionais e comunicados internos nas plataformas oficiais de comunicação da empresa, apresentando a solução.
 
-**Fase de Capacitação (Workshops de Engajamento):** Também será necessário realizar treinamentos técnicos  e orientações práticas nas 8 unidades agroindustriais para mitigar a resistência na susbtituíção de ferramentas antigas.
+**Fase de capacitação (workshops de engajamento):** Também será necessário realizar treinamentos técnicos e orientações práticas nas 8 unidades agroindustriais, a fim de mitigar a resistência à substituição de ferramentas antigas.
 
-**Fase de Sustentação (Marketing de Conteúdo Interno):** Manuais de usuário e guias interativos de UX/UI  disponibilizados no sistema corporativo.
+**Fase de sustentação (marketing de conteúdo interno):** Serão disponibilizados manuais de usuário e guias interativos de UX/UI no sistema corporativo.
 
 ## 6.7 Business Model Canvas
 
