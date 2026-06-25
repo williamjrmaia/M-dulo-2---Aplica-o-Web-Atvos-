@@ -3907,62 +3907,62 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 
 ### 5.2.2. Relatório de testes SUS (System Usability Scale)
 
-Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos testes de usabilidade. Cada participante respondeu 10 afirmações em escala de 1 (discordo totalmente) a 5 (concordo totalmente), alternando entre afirmações positivas e negativas conforme o modelo padrão SUS.
+Os testes SUS foram aplicados aos mesmos 5 participantes que participaram dos testes de usabilidade. Cada participante respondeu a 10 afirmações em uma escala de 1 (discordo totalmente) a 5 (concordo totalmente), alternando entre afirmações positivas e negativas, conforme o modelo padrão SUS.
 
 **Perguntas aplicadas:**
 
-| # | Afirmação |
-|---|-----------|
-| Q1 | Eu acho que gostaria de usar esse sistema com frequência. |
-| Q2 | Eu acho o sistema desnecessariamente complexo. |
-| Q3 | Eu achei o sistema fácil de usar. |
-| Q4 | Eu acho que precisaria de ajuda de uma pessoa com conhecimentos técnicos para usar o sistema. |
-| Q5 | Eu acho que as várias funções do sistema estão bem integradas. |
-| Q6 | Eu acho que o sistema apresenta muita inconsistência. |
-| Q7 | Eu imagino que a maioria das pessoas aprenderia a usar esse sistema rapidamente. |
-| Q8 | Eu achei o sistema muito complicado de usar. |
-| Q9 | Eu me senti confiante ao usar o sistema. |
-| Q10 | Eu precisei aprender várias coisas antes de conseguir usar o sistema. |
+| #   | Afirmação                                                                                     |
+| --- | --------------------------------------------------------------------------------------------- |
+| Q1  | Eu acho que gostaria de usar esse sistema com frequência.                                     |
+| Q2  | Eu acho o sistema desnecessariamente complexo.                                                |
+| Q3  | Eu achei o sistema fácil de usar.                                                             |
+| Q4  | Eu acho que precisaria da ajuda de uma pessoa com conhecimentos técnicos para usar o sistema. |
+| Q5  | Eu acho que as várias funções do sistema estão bem integradas.                                |
+| Q6  | Eu acho que o sistema apresenta muita inconsistência.                                         |
+| Q7  | Eu imagino que a maioria das pessoas aprenderia a usar esse sistema rapidamente.              |
+| Q8  | Eu achei o sistema muito complicado de usar.                                                  |
+| Q9  | Eu me senti confiante ao usar o sistema.                                                      |
+| Q10 | Eu precisei aprender várias coisas antes de conseguir usar o sistema.                         |
 
 **Respostas por participante:**
 
-| # | Participante | Q1 | Q2 | Q3 | Q4 | Q5 | Q6 | Q7 | Q8 | Q9 | Q10 |
-|---|-------------|----|----|----|----|----|----|----|----|----|----|
-| 1 | Pablo Oliveira Garcia | 5 | 2 | 4 | 1 | 4 | 1 | 5 | 1 | 4 | 1 |
-| 2 | Maria Clara Bosschart | 5 | 2 | 5 | 1 | 5 | 1 | 5 | 1 | 5 | 1 |
-| 3 | Messias Olivindo | 4 | 1 | 4 | 2 | 4 | 2 | 5 | 1 | 4 | 2 |
-| 4 | Raissa Guimarães | 4 | 3 | 2 | 4 | 4 | 2 | 4 | 1 | 4 | 1 |
-| 5 | Mariana Lacerda | 4 | 2 | 4 | 1 | 4 | 1 | 4 | 1 | 5 | 1 |
+| # | Participante          | Q1 | Q2 | Q3 | Q4 | Q5 | Q6 | Q7 | Q8 | Q9 | Q10 |
+| - | --------------------- | -- | -- | -- | -- | -- | -- | -- | -- | -- | --- |
+| 1 | Pablo Oliveira Garcia | 5  | 2  | 4  | 1  | 4  | 1  | 5  | 1  | 4  | 1   |
+| 2 | Maria Clara Bosschart | 5  | 2  | 5  | 1  | 5  | 1  | 5  | 1  | 5  | 1   |
+| 3 | Messias Olivindo      | 4  | 1  | 4  | 2  | 4  | 2  | 5  | 1  | 4  | 2   |
+| 4 | Raissa Guimarães      | 4  | 3  | 2  | 4  | 4  | 2  | 4  | 1  | 4  | 1   |
+| 5 | Mariana Lacerda       | 4  | 2  | 4  | 1  | 4  | 1  | 4  | 1  | 5  | 1   |
 
-> **Fórmula de cálculo:** Para questões ímpares (Q1, Q3, Q5, Q7, Q9): subtrai 1 da resposta. Para questões pares (Q2, Q4, Q6, Q8, Q10): subtrai a resposta de 5. Soma-se todos os valores e multiplica por 2,5.
+> **Fórmula de cálculo:** Para questões ímpares (Q1, Q3, Q5, Q7, Q9), subtrai-se 1 da resposta. Para questões pares (Q2, Q4, Q6, Q8, Q10), subtrai-se a resposta de 5. Em seguida, somam-se todos os valores e multiplica-se o resultado por 2,5.
 
 **Pontuações finais:**
 
-| # | Participante | Pontuação SUS | Classificação |
-|---|-------------|--------------|---------------|
-| 1 | Pablo Oliveira Garcia | 90 | Excelente |
-| 2 | Maria Clara Bosschart | 97,5 | Excelente |
-| 3 | Messias Olivindo | 82,5 | Excelente |
-| 4 | Raissa Guimarães | 67,5 | Razoável |
-| 5 | Mariana Lacerda | 87,5 | Excelente |
-| — | **Média geral** | **85** | **Excelente** |
+| # | Participante          | Pontuação SUS | Classificação |
+| - | --------------------- | ------------- | ------------- |
+| 1 | Pablo Oliveira Garcia | 90            | Excelente     |
+| 2 | Maria Clara Bosschart | 97,5          | Excelente     |
+| 3 | Messias Olivindo      | 82,5          | Excelente     |
+| 4 | Raissa Guimarães      | 67,5          | Razoável      |
+| 5 | Mariana Lacerda       | 87,5          | Excelente     |
+| — | **Média geral**       | **85**        | **Excelente** |
 
-A pontuação média de **85** indica boa usabilidade geral do sistema. O resultado mais baixo foi de Raissa Guimarães (67,5), participante que também apresentou mais dificuldades durante os testes de guerrilha, especialmente no fluxo de envio para validação e no cadastro de parceiros. Os demais participantes atingiram pontuações acima de 80, reforçando que os principais problemas identificados são pontuais e corrigíveis, não estruturais. A prioridade de correção recai sobre o bug de registro de interações (severidade catastrófica) e a falta de clareza no botão de envio para validação (severidade alta).
+A pontuação média de **85** indica boa usabilidade geral do sistema. O resultado mais baixo foi o de Raissa Guimarães (67,5), participante que também apresentou mais dificuldades durante os testes de guerrilha, especialmente no fluxo de envio para validação e no cadastro de parceiros. Os demais participantes atingiram pontuações acima de 80, reforçando que os principais problemas identificados são pontuais e corrigíveis, não estruturais. A prioridade de correção recai sobre o bug de registro de interações, classificado com severidade catastrófica, e sobre a falta de clareza no botão de envio para validação, classificada com severidade alta.
 
 **Análise qualitativa dos pontos de maior e menor satisfação:**
 
-Os pontos de maior satisfação identificados nas respostas foram a percepção de facilidade de aprendizado (Q7) e a ausência de complexidade desnecessária (Q2), com médias altas entre os participantes. A maioria considerou o sistema intuitivo e confiante de usar, o que é coerente com os resultados positivos nas tarefas 2 e 4 dos testes de guerrilha.
+Os pontos de maior satisfação identificados nas respostas foram a percepção de facilidade de aprendizado (Q7) e a ausência de complexidade desnecessária (Q2), com médias altas entre os participantes. A maioria considerou o sistema intuitivo e sentiu-se confiante ao usá-lo, o que é coerente com os resultados positivos nas tarefas 2 e 4 dos testes de guerrilha.
 
-O ponto de menor satisfação foi a percepção de inconsistência do sistema (Q6) e a necessidade de suporte técnico (Q4), ambos puxados principalmente pela avaliação de Raissa Guimarães, que enfrentou mais dificuldades durante os testes. Isso reforça que o fluxo de envio para validação e o cadastro de parceiros ainda apresentam fricção para usuários menos familiarizados com o sistema.
+O ponto de menor satisfação foi a percepção de inconsistência do sistema (Q6) e a necessidade de suporte técnico (Q4), ambos influenciados principalmente pela avaliação de Raissa Guimarães, que enfrentou mais dificuldades durante os testes. Isso reforça que o fluxo de envio para validação e o cadastro de parceiros ainda apresentam fricção para usuários menos familiarizados com o sistema.
 
 **Conclusões e sugestões de melhoria:**
 
 Com base nos resultados dos testes SUS e de guerrilha, as seguintes melhorias são indicadas para a versão final do sistema:
 
-- **Correção crítica:** Resolver o bug de registro de interações no histórico do parceiro, identificado como severidade catastrófica e que resultou em falha total na tarefa 3 para todos os participantes.
-- **Melhoria de navegação:** Revisar o posicionamento e a nomenclatura do botão de envio para validação, tornando-o mais visível e compreensível sem necessidade de instrução externa.
-- **Validação de formulários:** Implementar validações de campo mais claras no cadastro de parceiros, especialmente quanto ao tipo de dado aceito e ao comportamento com CPFs duplicados entre categorias.
-- **Feedback do sistema:** Adicionar confirmações visuais imediatas ao salvar rascunhos, reduzindo a incerteza do usuário sobre o estado da operação.
+* **Correção crítica:** resolver o bug de registro de interações no histórico do parceiro, identificado com severidade catastrófica e que resultou em falha total na tarefa 3 para todos os participantes.
+* **Melhoria de navegação:** revisar o posicionamento e a nomenclatura do botão de envio para validação, tornando-o mais visível e compreensível, sem necessidade de instrução externa.
+* **Validação de formulários:** implementar validações de campo mais claras no cadastro de parceiros, especialmente quanto ao tipo de dado aceito e ao comportamento com CPFs duplicados entre categorias.
+* **Feedback do sistema:** adicionar confirmações visuais imediatas ao salvar rascunhos, reduzindo a incerteza do usuário sobre o estado da operação.
 
 # <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
 
