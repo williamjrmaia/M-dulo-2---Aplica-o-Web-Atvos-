@@ -539,6 +539,8 @@ A aplicação não substitui sistemas corporativos externos da ATVOS nem realiza
 | RN18 | Registros ativos sem alteração por período configurável deverão gerar notificações para analistas, coordenadores e administradores quando o processo automático for implementado. | RF025 |
 | RN19 | Requisições de edição de parceiro sem nenhum campo editável no corpo devem ser rejeitadas com erro 400. | RF005 |
 | RN20 | Tentativas de edição de parceiros inexistentes devem ser rejeitadas com erro 404. | RF005 |
+| RN21 | Um parceiro pode atuar como fornecedor, proprietário ou ambos. Quando for os dois papéis, é representado por um único registro (mesmo CPF/CNPJ) com `papel = 'ambos'`, preservando a unicidade do documento. | RF004, RF005 |
+| RN22 | No cadastro/edição de parceiros, o nome do acompanhante deve conter apenas letras e o telefone apenas números (com símbolos de máscara), com validação no front e no back. | RF004, RF005 |
 
 ### 3.1.3. Requisitos Não Funcionais — 8 Eixos ISO/IEC 25010 (sprints 1 a 5)
 
@@ -1079,6 +1081,8 @@ As dependências foram usadas para indicar o uso de enumerações por determinad
 A herança não foi aplicada no diagrama porque os diferentes papéis comerciais de um parceiro não representam subclasses fixas de `Parceiro`. No domínio do sistema, um parceiro pode atuar como fornecedor de cana, arrendador de terra ou exercer mais de um papel ao mesmo tempo. Se fossem criadas subclasses como `Fornecedor` e `Arrendador`, haveria risco de duplicar a identidade do parceiro ou restringir indevidamente sua atuação.
 
 Por esse motivo, a modelagem utiliza a classe `VinculoComercial` para representar o papel exercido pelo parceiro em cada relação. Essa abordagem é mais flexível, evita generalizações artificiais e permite que os tipos de vínculo sejam evoluídos sem alterar a identidade principal do parceiro. Assim, a ausência de herança é uma decisão de modelagem intencional, alinhada ao funcionamento real do domínio.
+
+Complementarmente, a tabela `parceiros` possui o campo cadastral `papel` (`fornecedor` | `proprietario` | `ambos`), preenchido no cadastro como uma classificação rápida do parceiro. Ele **não substitui** o `VinculoComercial` — que permanece como fonte autoritativa do papel exercido em cada vínculo de terra —, servindo como indicador denormalizado de conveniência (por exemplo, para exibição na listagem). O valor `ambos` reforça, no nível do registro, que um mesmo parceiro (mesmo CPF/CNPJ) pode ser fornecedor e proprietário simultaneamente, em coerência com a decisão de não especializar `Parceiro` por herança.
 
 #### 3.2.3.1. Diagrama de Classes Arquitetural (sprint 3)
 
@@ -2230,7 +2234,7 @@ CREATE TABLE unidades (
 
 #### 06. TABELA parceiros
 <br>
-A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador.
+A tabela parceiro é a principal do sistema. Ela quem armazena os principais dados cadastrais dos parceiros agrícolas — tanto fornecedores de cana quanto arrendadores de terra. O campo status controla o ciclo de validação do cadastro, desde o rascunho até a aprovação ou devolução pelo coordenador. O campo `papel` indica o papel do parceiro no relacionamento — `fornecedor`, `proprietario` ou `ambos` — permitindo que um mesmo parceiro (mesmo CPF/CNPJ) atue como fornecedor e proprietário em um único registro, sem duplicar o documento.
 <br><br>
 Além disso, já foram também explicitados os índices para os parceiros, sendo eles relacionados ao status, ao cpf_cnpj, ao nome, ao tipo_pessoa, à região e à usina de referência.
 <br>
@@ -2253,6 +2257,7 @@ CREATE TABLE parceiros (
   tch_medio        VARCHAR,
   atr_medio        VARCHAR,
   observacoes      TEXT,
+  papel            VARCHAR,  -- 'fornecedor' | 'proprietario' | 'ambos' (validado na camada de aplicação)
   status           status_validacao NOT NULL DEFAULT 'rascunho',
   criado_em        TIMESTAMP NOT NULL DEFAULT NOW(),
   atualizado_em    TIMESTAMP,
