@@ -3765,7 +3765,7 @@ Os resultados por camada mostram que a cobertura está concentrada nos services 
 
 ### 5.1.4.1 Mapeamento CT para RN para RF
 
-O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da sprint 1 com as regras de negócio e os requisitos funcionais já definidos nas seções 3.1.4 e 3.9. Os critérios CT11 e CT12 não entram nesta tabela porque não possuem RN associado e são tratados nos RNFs de desempenho e capacidade.
+O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da sprint 1 com as regras de negócio e os requisitos funcionais já definidos nas seções 3.1.4 e 3.9. Os critérios CT11 e CT12 não entram nesta tabela porque não possuem RN associada e são tratados nos RNFs de desempenho e capacidade.
 
 | CT | RN | RF | Endpoint relacionado | Teste ou evidência |
 |---|---|---|---|---|
@@ -3780,7 +3780,7 @@ O mapeamento abaixo consolida a rastreabilidade dos critérios técnicos da spri
 | CT09 | RN15 | RF020 | PUT /usuarios/:id/inativar; PUT /auth/sessoes/:id | src/tests/userInactivateController.spec.ts; src/tests/userServiceInactivateSessions.spec.ts |
 | CT10 | RN08, RN11 | RF007, RF008, RF012 | GET /api/parceiros; GET /api/parceiros/:id; GET /api/terras | src/test/parceiroController.get.spec.ts; src/tests/parceiroDetalheController.spec.ts; src/tests/terraController.spec.ts |
 
-Essa tabela fecha o elo entre os critérios técnicos, a matriz RF para RN para endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e em um conjunto de testes correspondente.
+Essa tabela fecha o elo entre os critérios técnicos, a matriz RF–RN–endpoint e a RTM, de modo que cada critério documentado na seção 3.1.5 possa ser localizado em um requisito funcional, em uma regra de negócio e no conjunto de testes correspondente.
 
 Com isso, a seção 5.1.4 consolida a entrega final da sprint de testes ao registrar uma suíte completa sem falhas, a cobertura por camada do Jest e a rastreabilidade entre CT, RN e RF. No contexto do CRM da ATVOS, essas evidências confirmam que os fluxos críticos de cadastro, validação, autenticação, histórico e consulta ficaram amparados por testes e por documentação consistente, reduzindo o risco de regressão e reforçando a confiabilidade da WebAPI.
 
