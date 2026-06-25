@@ -3038,19 +3038,35 @@ O acesso à aplicação é controlado por uma combinação de JWT, sessão persi
 
 ### 3.8.1. Autenticação
 
-*Descreva o fluxo de autenticação implementado: persistência de senha com hash bcrypt/argon2 (parâmetros de custo explícitos e justificados), validação de credenciais e criação de sessão. Senhas em texto plano no banco não são aceitas.*
+A autenticação do Safra Control é centralizada no fluxo de login por e-mail e senha, exposto em `GET /login` e `POST /login`. A requisição passa primeiro pela validação de payload (`loginSchema`), garantindo que apenas credenciais no formato esperado cheguem à camada de serviço. Em seguida, o `AuthService` normaliza o e-mail, consulta o usuário no repositório e aplica a mesma resposta genérica para usuário inexistente, usuário inativo, senha ausente ou senha incorreta: `Credenciais inválidas`. Essa abordagem reduz a exposição de informações sobre quais contas existem ou estão ativas no sistema.
+
+As senhas persistidas no banco não são armazenadas em texto plano. O projeto utiliza `bcrypt` para hash de senha e valida as credenciais com `bcrypt.compare`, comparando a senha informada com o campo `senha_hash` do usuário. Nos fluxos de criação/definição de senha, como primeiro acesso, a senha é persistida com `bcrypt.hash(senha, 10)`. O custo 10 foi adotado por equilibrar segurança e desempenho para o contexto do sistema: torna ataques de força bruta mais custosos, sem degradar de forma perceptível o login e a criação de usuários no volume esperado da aplicação.
+
+Quando as credenciais são válidas, o backend gera um JWT assinado com `JWT_SECRET`, contendo apenas dados mínimos de identificação (`sub`, com o id do usuário, e `email`). O token tem expiração de 8 horas. Para acessos via formulário web, o sistema grava os cookies `auth_token` e `auth_session_id` com `httpOnly`, `sameSite: lax`, `secure` em produção e `maxAge` compatível com a expiração de 8 horas. Para consumo JSON/API, o token, os dados públicos do usuário autenticado e o identificador da sessão são retornados no corpo da resposta. O sistema também possui fluxo de primeiro acesso com token aleatório de 32 bytes, armazenado no banco apenas como hash SHA-256, com validade de 24 horas e uso único para definição inicial de senha.
 
 ### 3.8.2. Controle de sessão
 
-*Descreva o controle de sessão baseado em `session id` persistido em tabela própria, com expiração. Se optar por JWT, justifique a escolha explicando os trade-offs (stateless, não revogável, payload exposto).*
+O controle de sessão combina JWT com uma sessão persistida em tabela própria (`auth_sessoes`). Essa escolha evita depender de um JWT puramente stateless: embora o token assinado facilite o transporte da autenticação por cookie ou cabeçalho `Authorization: Bearer`, a sessão no banco permite revogação, expiração controlada e verificação de vínculo com um usuário ainda ativo.
+
+A cada login bem-sucedido, o sistema cria uma sessão com `usuario_id`, `token`, flag `ativa`, data de criação, data de expiração e campos de revogação (`revogada_em` e `revogada_por`). Em rotas protegidas, o middleware `requireAuth` extrai o token do cabeçalho Bearer ou do cookie `auth_token`, valida a assinatura e a expiração do JWT, consulta uma sessão ativa pelo token e confirma que o usuário da sessão corresponde ao `sub` do JWT. Depois disso, o usuário é recarregado do banco e precisa continuar ativo para que a requisição prossiga.
+
+Esse desenho assume os trade-offs do uso de JWT de forma controlada. O token continua sendo um artefato portátil e assinado, mas seu payload é mínimo e não carrega informações sensíveis. A principal desvantagem é a necessidade de consultar o banco em cada rota protegida, porém esse custo é intencional para permitir revogação imediata. O logout encerra a sessão e remove os cookies; a rota `PUT /auth/sessoes/:id` permite revogação explícita; e a inativação de um usuário encerra todas as suas sessões ativas, impedindo que um token ainda dentro da validade continue acessando o sistema.
 
 ### 3.8.3. Autorização
 
-*Descreva as regras de autorização por rota e por operação, baseadas no perfil do usuário autenticado. A verificação deve ocorrer no backend — o frontend nunca é fonte de verdade para autorização.*
+A autorização é aplicada no backend por meio dos middlewares `requireAuth` e `authorizeRoles`. O frontend pode ocultar ou exibir ações para melhorar a experiência do usuário, mas não é fonte de verdade para autorização: toda rota protegida precisa passar pela autenticação e, quando necessário, pela checagem explícita de perfil antes de executar a operação.
+
+O sistema trabalha com três perfis principais: `analista`, `coordenador` e `administrador`. Rotas de usuários (`/usuarios` e `/api/usuarios`) são restritas ao perfil `administrador`, pois envolvem criação, edição, alteração de perfil e inativação de contas. Em parceiros e terras, operações de cadastro, vínculo, envio para validação e remoção lógica são liberadas para `analista` e `administrador`, enquanto consultas, listagens e edições operacionais podem ser acessadas pelos perfis autorizados no respectivo fluxo (`analista`, `coordenador` e `administrador`). As ações de validação, aprovação, devolução, exportação e dashboards gerenciais são restritas a `coordenador` e `administrador`.
+
+Quando um usuário não autenticado tenta acessar uma rota protegida, o backend redireciona para `/login` em fluxos HTML ou retorna `401` em chamadas JSON/API. Quando o usuário está autenticado, mas não possui o perfil exigido, o backend retorna `403` para API ou renderiza a página de erro apropriada no fluxo web. Assim, as permissões ficam concentradas nas rotas e operações do servidor, e não em controles visuais do cliente.
 
 ### 3.8.4. Estratégias de Resiliência
 
-*Descreva as estratégias aplicadas no tratamento de falhas de rede: timeout, retry com backoff exponencial, circuit breaker e idempotência em operações críticas (`PUT`, `DELETE`, operações de pagamento etc.).*
+O backend possui estratégias de resiliência voltadas principalmente para contenção de requisições lentas e tratamento uniforme de falhas transitórias. O middleware `requestTimeout` define um limite de tempo por requisição, configurável por `REQUEST_TIMEOUT_MS` e com padrão de 15 segundos. Quando esse limite é atingido antes de uma resposta, o servidor retorna `503 Service Unavailable` com cabeçalho `Retry-After: 5`, indicando ao cliente que a operação pode ser tentada novamente após curto intervalo. O temporizador é limpo nos eventos de `finish` e `close`, evitando vazamento de recursos.
+
+O tratamento global de erros (`errorHandler`) diferencia erros de domínio, erros inesperados e falhas de infraestrutura. Códigos comuns de rede, como `ECONNREFUSED`, `ENOTFOUND`, `ETIMEDOUT`, `EAI_AGAIN`, `ECONNRESET` e `EPIPE`, além de códigos SQLSTATE associados a indisponibilidade ou interrupção do PostgreSQL, são mapeados para `503` com `Retry-After: 5`. Erros conhecidos da aplicação preservam seus status específicos, enquanto falhas inesperadas são convertidas em resposta genérica `500`, sem expor detalhes internos ao usuário final.
+
+O projeto não implementa, nesta versão, um mecanismo interno de retry com backoff exponencial nem circuit breaker no backend. Em vez disso, sinaliza falhas transitórias de forma padronizada para que o cliente ou a camada de chamada possa decidir quando repetir a operação. Nas operações críticas implementadas, a resiliência é reforçada por validações de estado e identificador: encerramento de sessão já revogada retorna conflito controlado, exclusões são tratadas como inativação lógica quando aplicável, e atualizações `PUT` passam por validação de schema antes de alterar dados. Para operações futuras com maior risco de duplicidade, como pagamentos ou integrações externas sensíveis, recomenda-se acrescentar chaves de idempotência e política formal de retry/backoff.
 
 ## 3.9. Matriz de Rastreabilidade (RTM) (sprints 3 a 5)
 
@@ -3598,12 +3614,6 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 
 ## 5.1. Relatório de testes de integração de endpoints automatizados (sprint 4)
 
-*Liste e descreva os testes automatizados dos endpoints criados e planejados para sua solução, implementados com **Jest**. Cubra as duas abordagens:*
-
-- ***White-box*** *— testes unitários de Service que exercitam ramos internos, exceções e regras de negócio (conhecimento da implementação).*
-- ***Black-box*** *— testes de integração dos endpoints via Jest + Supertest, verificando apenas o contrato HTTP (status, body, efeito observável), sem depender da implementação interna.*
-
-*Posicione aqui também o relatório de cobertura de testes Jest se houver (através de link ou transcrito para estrutura markdown).*
 
 ### 5.1.1 Estratégia de Testes
 
@@ -4004,77 +4014,100 @@ Também foi observado um avanço nas tecnologias de agricultura digital. Segundo
 Outra tendência relevante é a valorização da rastreabilidade e da governança de dados. No setor sucroenergético, essas práticas tornam-se ainda mais importantes em razão do RenovaBio, dos CBIOs e da necessidade de comprovar eficiência produtiva e ambiental. Dessa forma, concluiu-se que a aplicação web proposta está alinhada às demandas atuais do mercado, pois transforma informações dispersas em uma base centralizada, auditável e útil para decisões estratégicas.
 
 ## 6.3 Análise da Concorrência
-## 6.3.1 Principais Concorrentes
 
-A análise da concorrência foi organizada em dois eixos: empresas do setor sucroenergético que concorrem diretamente com a ATVOS e soluções digitais que poderiam substituir parcialmente a aplicação proposta. No primeiro grupo, foram identificadas Raízen, BP Bioenergy e São Martinho. A Raízen foi considerada concorrente direta por atuar de forma integrada na produção de açúcar, etanol e bioenergia, além da distribuição de combustíveis sob a marca Shell (RAÍZEN, 2026). A BP Bioenergy também foi considerada relevante, pois a bp passou a deter 100% da antiga BP Bunge Bioenergia, fortalecendo sua presença no mercado brasileiro de biocombustíveis (BUNGE, 2024). A São Martinho foi incluída pela sua atuação em açúcar, etanol, energia elétrica e subprodutos da cana-de-açúcar (SÃO MARTINHO, 2026).
+## 6.3.1 Principais concorrentes
 
-No segundo grupo, foram analisados concorrentes indiretos ligados à gestão de relacionamento e dados. Salesforce, Microsoft Dynamics 365 e SAP Customer Experience oferecem recursos de CRM, unificação de dados de clientes, jornadas e suporte à experiência do cliente (SALESFORCE, 2026; MICROSOFT, 2026; SAP, 2026). O Aegro também foi considerado por oferecer gestão rural com controle financeiro, operacional, fiscal, dados de campo e integrações (AEGRO, 2026). Apesar disso, essas soluções não foram concebidas especificamente para o relacionamento entre usinas, fornecedores de cana e proprietários de terra.
+A análise da concorrência foi organizada em dois eixos: empresas do setor sucroenergético que concorrem diretamente com a ATVOS e soluções digitais que poderiam substituir parcialmente a aplicação proposta. No primeiro grupo, foram identificadas a Raízen, a BP Bioenergy e a São Martinho. A Raízen foi considerada concorrente direta por atuar de forma integrada na produção de açúcar, etanol e bioenergia, além da distribuição de combustíveis sob a marca Shell (RAÍZEN, 2026). A BP Bioenergy também foi considerada relevante, pois a bp passou a deter 100% da antiga BP Bunge Bioenergia, fortalecendo sua presença no mercado brasileiro de biocombustíveis (BUNGE, 2024). A São Martinho foi incluída por sua atuação nos segmentos de açúcar, etanol, energia elétrica e subprodutos da cana-de-açúcar (SÃO MARTINHO, 2026).
 
-## 6.3.2 Vantagens Competitivas da Aplicação Web
+No segundo grupo, foram analisados concorrentes indiretos ligados à gestão de relacionamento e dados. Salesforce, Microsoft Dynamics 365 e SAP Customer Experience oferecem recursos de CRM, unificação de dados de clientes, jornadas e suporte à experiência do cliente (SALESFORCE, 2026; MICROSOFT, 2026; SAP, 2026). O Aegro também foi considerado por oferecer gestão rural com controle financeiro, operacional e fiscal, além de dados de campo e integrações (AEGRO, 2026). Apesar disso, essas soluções não foram concebidas especificamente para o relacionamento entre usinas, fornecedores de cana-de-açúcar e proprietários de terras.
 
-Identificou-se que a principal vantagem competitiva da aplicação web está na especialização ao contexto da ATVOS. Enquanto CRMs generalistas são desenvolvidos para múltiplos setores e demandam parametrizações, a solução proposta foi estruturada para atender diretamente à gestão de parceiros agrícolas, fornecedores de cana-de-açúcar e proprietários de terra. Assim, o sistema não se limita ao registro de contatos, mas organiza cadastros, histórico de interações, status de validação, permissões de acesso e rastreabilidade de alterações.
+
+## 6.3.2 Vantagens competitivas da aplicação web
+
+Identificou-se que a principal vantagem competitiva da aplicação web está na especialização ao contexto da ATVOS. Enquanto CRMs generalistas são desenvolvidos para múltiplos setores e demandam parametrizações, a solução proposta foi estruturada para atender diretamente à gestão de parceiros agrícolas, fornecedores de cana-de-açúcar e proprietários de terras. Assim, o sistema não se limita ao registro de contatos, mas também organiza cadastros, histórico de interações, status de validação, permissões de acesso e rastreabilidade de alterações.
 
 Foi observado que essa aderência ao domínio do negócio reduz uma fragilidade operacional já identificada no projeto: a dispersão de informações em planilhas, e-mails e registros individuais. Com a centralização dos dados, o histórico do relacionamento passa a ser preservado como ativo institucional, e não como conhecimento dependente de cada analista. Esse diferencial fortalece a continuidade das negociações ao longo das safras e melhora a confiabilidade das consultas internas.
 
-Também se destaca o recorte do MVP. A aplicação foi planejada para uso via navegador, sem exigir integração inicial com ERP, SharePoint ou outros sistemas corporativos. Com isso, a implantação tende a ser menos complexa do que a adoção de plataformas amplas de CRM ou gestão rural. Concluiu-se que a vantagem competitiva da aplicação está na combinação entre simplicidade, rastreabilidade, controle de acesso, alinhamento às regras de negócio da ATVOS e foco no relacionamento agrícola estratégico.
+Também se destaca o recorte do MVP. A aplicação foi planejada para uso via navegador, sem exigir integração inicial com ERP, SharePoint ou outros sistemas corporativos. Com isso, a implantação tende a ser menos complexa do que a adoção de plataformas amplas de CRM ou de gestão rural. Concluiu-se que a vantagem competitiva da aplicação está na combinação entre simplicidade, rastreabilidade, controle de acesso, alinhamento às regras de negócio da ATVOS e foco no relacionamento agrícola estratégico.
 
 ## 6.4 Público-Alvo
 
-### 6.4.1 Segmentação de Mercado (até 250 palavras)
+### 6.4.1 Segmentação de mercado (até 250 palavras)
 
-A proposta de aplicação web atende ao mercado no setor agroindustrial e de bioenergia brasileiro, sendo segmentado com base em critérios institucionais e operacionais especificos da área. A macro-segmentação é voltada para o ambiente de grandes corporações agrícolas que gerenciam altos contratos com arrendadores de terras, fornecedores de insumos e parceiros agrícolas. Nossa pesquisa tomou a ATVOS como referência, sendo o mercado analisado em grande escala, composta por 8 unidades agroindustriais e 2 escritórios corporativos espalhados pelas regiões sudeste e centro-oeste do país. 
-Já na micro-segmentação nossa solução direciona-se de forma exclusiva para os departamentos internos dessas corporações. Sendo os segmentos prioritários as áreas de Estratégia de Terras e Fornecedores e os times de Negócios Agrícolas. A aplicação web foi pensada para atender uma média de 20 a 30 usuários simultâneos, que atuam na governança dos dados cadastrais e no relacionamento em campo dos mais de 1.137 parceiros agrícolas e 108 fornecedores, distribuídos em mais de 180mil hectares de terras cultivadas (ATVOS, 2026).
-Com a União da Indústria de Cana-de-Açúcar e Bioenergia (ÚNICA) e o Centro de Estudos Avançados em Economia Aplicada (CEPEA-ESALQ/USP) sendo fontes confiáveis para validar essa segmentação, que demandam ferramentas de gestão mais complexas e completas do que as usadas atualmente, que não atendem a competitividade e alta regulamentação do mercado sucroenergético.
+A proposta de aplicação web atende ao mercado do setor agroindustrial e de bioenergia brasileiro, sendo segmentada com base em critérios institucionais e operacionais específicos da área. A macrosegmentação é voltada para o ambiente de grandes corporações agrícolas que gerenciam altos volumes de contratos com arrendadores de terras, fornecedores de insumos e parceiros agrícolas. Nossa pesquisa tomou a ATVOS como referência, considerando um mercado analisado em grande escala, composto por 8 unidades agroindustriais e 2 escritórios corporativos espalhados pelas regiões Sudeste e Centro-Oeste do país.
 
-### 6.4.2 Perfil do Público-Alvo (até 250 palavras)
+Já na microsegmentação, nossa solução direciona-se de forma exclusiva aos departamentos internos dessas corporações. Os segmentos prioritários são as áreas de Estratégia de Terras e Fornecedores e os times de Negócios Agrícolas. A aplicação web foi pensada para atender a uma média de 20 a 30 usuários simultâneos, que atuam na governança dos dados cadastrais e no relacionamento em campo com os mais de 1.137 parceiros agrícolas e 108 fornecedores, distribuídos em mais de 180 mil hectares de terras cultivadas (ATVOS, 2026).
 
-#### Aspectos Demográficos
-Analisando os profissionais das áreas de Estratégias de Terras e Fornecedores, é notórios, em ambos os genêros, que a média de idade varia predominantemente de 25 a 55 anos. 
-Em relação a formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e nas 8 unidades nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo (ATVOS,2026).
+A União da Indústria de Cana-de-Açúcar e Bioenergia (ÚNICA) e o Centro de Estudos Avançados em Economia Aplicada (CEPEA-ESALQ/USP) foram considerados fontes confiáveis para validar essa segmentação, pois representam um setor que demanda ferramentas de gestão mais complexas e completas do que as utilizadas atualmente, as quais não atendem plenamente às exigências de competitividade e à alta regulamentação do mercado sucroenergético.
 
-#### Aspectos Psicográficos e Comportamentais
-Durante as pesquisas foi observado uma forte busca cultural pela manutenção das ferramentas e dos métodos tradicionais de controle, as equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e informções. Os times demonstram alto senso de responsabilidade e urgência, entretanto também demonstram sofrimento com fadiga operacional advinda do retrabalho.
 
-#### Dores e Necessidades
-As principais dores se voltam para a falta de governança de dados e na perda do histórico de relacionamento com fornecedores e parceiros agrícolas. No TAPI acordado entre a instituição e a ATVOS foi indicada a necessidade de uma interface intuitiva e amigável (UX/UI), capaz de fornecer uma centralização dos cadastros e integrar paineis de dados estatísticos integrados, já que 100% dos parceiros possuem dados críticos e essenciais para negociações e tomadas de decisões, a visualização agíl dos dados é essencial para o perfil avaliado.
+### 6.4.2 Perfil do público-alvo (até 250 palavras)
+
+#### Aspectos demográficos
+
+Ao analisar os profissionais das áreas de Estratégia de Terras e Fornecedores, nota-se, em ambos os gêneros, que a média de idade varia predominantemente de 25 a 55 anos. Em relação à formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e as 8 unidades localizadas nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo (ATVOS, 2026).
+
+#### Aspectos psicográficos e comportamentais
+
+Durante as pesquisas, foi observada uma forte tendência cultural à manutenção das ferramentas e dos métodos tradicionais de controle. As equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e das informações. Os times demonstram alto senso de responsabilidade e urgência, entretanto também apresentam sinais de fadiga operacional decorrente do retrabalho.
+
+#### Dores e necessidades
+
+As principais dores estão relacionadas à falta de governança de dados e à perda do histórico de relacionamento com fornecedores e parceiros agrícolas. No TAPI acordado entre a instituição e a ATVOS, foi indicada a necessidade de uma interface intuitiva e amigável (UX/UI), capaz de centralizar cadastros e integrar painéis de dados estatísticos. Como 100% dos parceiros possuem dados críticos e essenciais para negociações e tomadas de decisão, a visualização ágil dessas informações é essencial para o perfil avaliado.
 
 ## 6.5 Posicionamento
 
-#### 6.5.1 Proposta de Valor Única (até 250 palavras)
-A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento de parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no Value Proposition Canvas de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida (Osterwalder et al., 2014). A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados (Inteli, 2026). Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e 108 fornecedores é garantida de forma integral (Atvos, 2026). Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
+#### 6.5.1 Proposta de valor única (até 250 palavras)
 
-**a) Minimizadores de Dores (Pain Relievers):**
-O risco de perda de dados e de informações essenciais para negociações e para a manutenção de relacionamentos de longo prazo com parceiros e fornecedores é mitigado. Dessa forma, o retrabalho ligado à distribuição de dados em múltiplos arquivos individuais é evitado (Inteli, 2026)
+A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento com parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no *Value Proposition Canvas*, de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida (Osterwalder et al., 2014). A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados (Inteli, 2026). Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e os 108 fornecedores é garantida de forma integral (ATVOS, 2026). Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
 
-**b) Criadores de ganhos (Gain Creators):**
-A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e de painéis de visualização de dados estatísticos nativos. Tais ferramentas dão suporte direto para a realização de consultas rápidas e para a geração de listas segmentadas (Osterwalder et al., 2014).
+**a) Minimizadores de dores (*Pain Relievers*):**
+O risco de perda de dados e de informações essenciais para negociações e para a manutenção de relacionamentos de longo prazo com parceiros e fornecedores é mitigado. Dessa forma, o retrabalho ligado à distribuição de dados em múltiplos arquivos individuais é evitado (Inteli, 2026).
 
-#### 6.5.2 Posicionamento e Diferenciação
-No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Relacionamento Agrícola, moldado estritamente como uma solução Business-to-Employee (B2E), visando à ocupação de um espaço mental e funcional único na rotina operacional (Ries & Trout, 2001). Dessa maneira, identificou-se que a principal diferenciação da aplicação desenvolvida está na modernização das alternativas utilizadas no mercado, diferentemente de planilhas e outros sistemas corporativos tradicionais, os quais podem gerar erros e dispersão de dados, além de possuírem telas genéricas e custos altos (Inteli, 2026). O desenvolvimento do protótipo foi voltado especificamente para agilizar o trabalho do setor sucroenergético (Atvos, 2026). Diante disso, o produto aposta em uma identidade eficiente, ágil e sustentável, para garantir que a ferramenta facilite a rotina diária dos times de Negócios Agrícolas (Ries & Trout, 2001). Conclui-se, portanto, que essa entrega consolida um produto completo, com um banco de dados estruturado e painéis de visualização autênticos, que funciona de forma independente e não exige contratação ou custos à parte com softwares externos.
+**b) Criadores de ganhos (*Gain Creators*):**
+A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e de painéis nativos de visualização de dados estatísticos. Tais ferramentas dão suporte direto à realização de consultas rápidas e à geração de listas segmentadas (Osterwalder et al., 2014).
+
+#### 6.5.2 Posicionamento e diferenciação
+
+No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Relacionamento Agrícola, estruturado como uma solução *Business-to-Employee* (B2E), visando à ocupação de um espaço mental e funcional único na rotina operacional (Ries & Trout, 2001). Dessa maneira, identificou-se que a principal diferenciação da aplicação desenvolvida está na modernização das alternativas utilizadas no mercado, em contraste com planilhas e outros sistemas corporativos tradicionais, os quais podem gerar erros e dispersão de dados, além de possuírem telas genéricas e custos elevados (Inteli, 2026).
+
+O desenvolvimento do protótipo foi voltado especificamente para agilizar o trabalho do setor sucroenergético (ATVOS, 2026). Diante disso, o produto aposta em uma identidade eficiente, ágil e sustentável, a fim de garantir que a ferramenta facilite a rotina diária dos times de Negócios Agrícolas (Ries & Trout, 2001). Conclui-se, portanto, que essa entrega consolida um produto completo, com banco de dados estruturado e painéis de visualização próprios, que funciona de forma independente e não exige contratação ou custos adicionais com softwares externos.
 
 ## 6.6 Estratégia de Marketing 
 
-#### 6.6.1 Produto/Serviço
-O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituído por uma arquitetura full-stack com banco de dados SQL nativo. O sistema tem como principais funções: o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações através de painéis dinâmicos que permitem uma análise estatística. A plataforma busca eliminar a dependência completa em planilhas eletrônicas e controles manuais informais, que podem acarretar falhas crônicas, inconsistência entre os dados e perda do histórico de relacionamentos. A principal diferenciação em relação aos outros sistemas CRM disponíveis no mercado, que são caros e com interfaces rígidas, é que toda a proposta foi baseada na experiência do usuário (UX/UI), voltada especialmente para o fluxo de governança e homologação de 100% das informações dos parceiros agrícolas. Segundo os autores Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, que tem um valor central na transformação de dados dispersos em ativos estratégicos.
+#### 6.6.1 Produto/serviço
+
+O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituída por uma arquitetura *full-stack* com banco de dados SQL nativo. O sistema tem como principais funções o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações por meio de painéis dinâmicos, que permitem uma análise estatística.
+
+A plataforma busca eliminar a dependência de planilhas eletrônicas e controles manuais informais, que podem acarretar falhas crônicas, inconsistências entre os dados e perda do histórico de relacionamentos. A principal diferenciação em relação aos outros sistemas de CRM disponíveis no mercado, que são caros e possuem interfaces rígidas, é que toda a proposta foi baseada na experiência do usuário (UX/UI), voltada especialmente para o fluxo de governança e homologação de 100% das informações dos parceiros agrícolas.
+
+Segundo Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, com valor central na transformação de dados dispersos em ativos estratégicos.
 
 #### 6.6.2 Preço
-Como a plataforma foi projetada para ser uma solução somente corporativa e voltada para uso interno do tipo B2E, o modelo de monetização de licenciamento comercial ou assinatura (SaaS) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de Desenvolvimento Interno Proprietário (In-house Software). A aplicação desse determinado modelo é baseada na eliminação de empecilhos financeiros e custos frequentes com fornecedores de softwares externos; o valor de investimento foi centrado no custo do desenvolvimento de software pelas equipes e na manutenção preventiva.
-Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar os riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
+
+Como a plataforma foi projetada para ser uma solução exclusivamente corporativa e voltada ao uso interno do tipo B2E, o modelo de monetização por licenciamento comercial ou assinatura (*SaaS*) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de desenvolvimento interno proprietário (*in-house software*).
+
+A aplicação desse modelo baseia-se na eliminação de empecilhos financeiros e de custos recorrentes com fornecedores de softwares externos. Dessa forma, o valor de investimento foi centrado no custo de desenvolvimento do software pelas equipes e na manutenção preventiva.
+
+Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
 #### 6.6.3 Praça
-Tendo como base uma estratégia de Canal Direto Intracorporativo, focado de forma exclusiva no ambiente digital fechado para definir a Praça. O sistema web será disponibilizado através de servidores de nuvem privada integrados à estrutura tecnológica interna da companhia. Os usuários terão acesso de forma restrita e segura através de qualquer navegador web que seja o padrão da empresa, sendo exigida a autenticação corporativa única (SSO) e perfis específicos para cada nível de acesso e atuação. As oito unidades agroindustriais e os dois escritórios corporativos da Atvos são formalizados como os canais de entrega.
-A distribuição digital direta garante a governança sobre os dados e a sincronização das interações em tempo real. Segundo a teoria dos canais dos autores Kotler e Keller (2012), tal configuração de nível zero garante o controle sobre a governança de informações e a segurança das informações sensíveis da Atvos e seus 1.137 parceiros de terras e 108 fornecedores.
+
+Com base em uma estratégia de canal direto intracorporativo, focada exclusivamente no ambiente digital fechado, definiu-se a Praça. O sistema web será disponibilizado por meio de servidores de nuvem privada integrados à estrutura tecnológica interna da companhia. Os usuários terão acesso restrito e seguro por meio de qualquer navegador web adotado como padrão pela empresa, sendo exigidos autenticação corporativa única (SSO) e perfis específicos para cada nível de acesso e atuação. As oito unidades agroindustriais e os dois escritórios corporativos da ATVOS são formalizados como canais de entrega.
+
+A distribuição digital direta garante a governança dos dados e a sincronização das interações em tempo real. Segundo a teoria dos canais de Kotler e Keller (2012), essa configuração de nível zero garante o controle sobre a governança das informações e a segurança dos dados sensíveis da ATVOS, de seus 1.137 parceiros de terras e de seus 108 fornecedores.
 
 #### 6.6.4 Promoção
-O plano estratégico de promoção da solução foi construída sob a ótica do Endomarketing Estratégico e Gestão de Mudança Corporativa, já que o público-alvo se resume a colaboradores nas áreas de Negócios Agrícolas e Estratégias de Terras. Campanhas de publicidade públicas ou marketing digital (como redes sociais e mídia paga) não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
+
+O plano estratégico de promoção da solução foi construído sob a ótica do endomarketing estratégico e da gestão de mudança corporativa, já que o público-alvo se resume aos colaboradores das áreas de Negócios Agrícolas e Estratégia de Terras. Campanhas de publicidade pública ou marketing digital, como redes sociais e mídia paga, não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
 
 O plano de divulgação interna será estruturado em três fases distintas:
 
-**Fase de Sensibilização (Teasers e Eventos de Lançamento):** A proposta é realizar seminários e videoconferências institucionais e comunicados internos nas plataformas oficiais de comunicação da empresa, apresentando a solução.
+**Fase de sensibilização (teasers e eventos de lançamento):** A proposta é realizar seminários, videoconferências institucionais e comunicados internos nas plataformas oficiais de comunicação da empresa, apresentando a solução.
 
-**Fase de Capacitação (Workshops de Engajamento):** Também será necessário realizar treinamentos técnicos  e orientações práticas nas 8 unidades agroindustriais para mitigar a resistência na susbtituíção de ferramentas antigas.
+**Fase de capacitação (workshops de engajamento):** Também será necessário realizar treinamentos técnicos e orientações práticas nas 8 unidades agroindustriais, a fim de mitigar a resistência à substituição de ferramentas antigas.
 
-**Fase de Sustentação (Marketing de Conteúdo Interno):** Manuais de usuário e guias interativos de UX/UI  disponibilizados no sistema corporativo.
+**Fase de sustentação (marketing de conteúdo interno):** Serão disponibilizados manuais de usuário e guias interativos de UX/UI no sistema corporativo.
 
 ## 6.7 Business Model Canvas
 

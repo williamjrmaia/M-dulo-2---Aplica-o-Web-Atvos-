@@ -16,12 +16,16 @@ import {
   vincularTerraAoParceiro as vincularTerraAoParceiroService,
 } from '../services/parceiroService';
 import { AppError, ForbiddenError, NotFoundError, ValidationError } from '../errors/AppError';
+import { InteracaoService } from '../services/interacaoService';
+import { InteracaoRepository } from '../repositories/interacaoRepository';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
 import { devolverParceiroSchema } from '../schemas/parceiroDevolucao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 import { parseOrThrow } from '../helpers/validacaoZod';
+
+const interacaoService = new InteracaoService(new InteracaoRepository());
 
 type RequestComUsuario = Request & {
   usuario?: {
@@ -519,11 +523,14 @@ export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Resp
   const id = req.params.id as string;
 
   try {
+    const usuarioId = obterUsuarioAutenticadoIdOpcional(req, res);
     const parceiro = await obterParceiroPorIdService(id, {
       incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
-      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+      rascunhosUsuarioId: usuarioId,
     });
-    res.render('parceiros/show', { parceiro, naoEncontrado: false });
+    // Carrega as interações registradas para exibir no "Histórico de Interações".
+    const interacoes = await interacaoService.listarInteracoesPorParceiro(id);
+    res.render('parceiros/show', { parceiro, interacoes, usuarioId, naoEncontrado: false });
   } catch (err) {
     if (err instanceof NotFoundError) {
       res.status(404).render('parceiros/show', { parceiro: null, naoEncontrado: true });
