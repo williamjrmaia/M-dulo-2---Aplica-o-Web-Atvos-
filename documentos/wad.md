@@ -4077,15 +4077,16 @@ Com base em uma estratégia de canal direto intracorporativo, focada exclusivame
 A distribuição digital direta garante a governança dos dados e a sincronização das interações em tempo real. Segundo a teoria dos canais de Kotler e Keller (2012), essa configuração de nível zero garante o controle sobre a governança das informações e a segurança dos dados sensíveis da ATVOS, de seus 1.137 parceiros de terras e de seus 108 fornecedores.
 
 #### 6.6.4 Promoção
-O plano estratégico de promoção da solução foi construída sob a ótica do Endomarketing Estratégico e Gestão de Mudança Corporativa, já que o público-alvo se resume a colaboradores nas áreas de Negócios Agrícolas e Estratégias de Terras. Campanhas de publicidade públicas ou marketing digital (como redes sociais e mídia paga) não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
+
+O plano estratégico de promoção da solução foi construído sob a ótica do endomarketing estratégico e da gestão de mudança corporativa, já que o público-alvo se resume aos colaboradores das áreas de Negócios Agrícolas e Estratégia de Terras. Campanhas de publicidade pública ou marketing digital, como redes sociais e mídia paga, não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
 
 O plano de divulgação interna será estruturado em três fases distintas:
 
-**Fase de Sensibilização (Teasers e Eventos de Lançamento):** A proposta é realizar seminários e videoconferências institucionais e comunicados internos nas plataformas oficiais de comunicação da empresa, apresentando a solução.
+**Fase de sensibilização (teasers e eventos de lançamento):** A proposta é realizar seminários, videoconferências institucionais e comunicados internos nas plataformas oficiais de comunicação da empresa, apresentando a solução.
 
-**Fase de Capacitação (Workshops de Engajamento):** Também será necessário realizar treinamentos técnicos  e orientações práticas nas 8 unidades agroindustriais para mitigar a resistência na susbtituíção de ferramentas antigas.
+**Fase de capacitação (workshops de engajamento):** Também será necessário realizar treinamentos técnicos e orientações práticas nas 8 unidades agroindustriais, a fim de mitigar a resistência à substituição de ferramentas antigas.
 
-**Fase de Sustentação (Marketing de Conteúdo Interno):** Manuais de usuário e guias interativos de UX/UI  disponibilizados no sistema corporativo.
+**Fase de sustentação (marketing de conteúdo interno):** Serão disponibilizados manuais de usuário e guias interativos de UX/UI no sistema corporativo.
 
 ## 6.7 Business Model Canvas
 
