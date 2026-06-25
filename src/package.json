@@ -2,15 +2,15 @@
   "name": "safra-control",
   "version": "1.0.0",
   "scripts": {
-    "migrate": "ts-node src/db/migrate.ts",
-    "seed": "ts-node src/db/seed.ts",
+    "migrate": "ts-node db/migrate.ts",
+    "seed": "ts-node db/seed.ts",
     "test": "jest --runInBand --forceExit",
-    "test:services": "jest --runInBand --forceExit --coverage --collectCoverageFrom='src/services/**/*.ts' --testPathPatterns='Service'",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "lint": "eslint src/",
-    "lint:complexity": "eslint src/ --rule \"complexity:[warn,5]\"",
-    "cpd": "jscpd src",
-    "circular": "madge --circular src",
+    "test:services": "jest --runInBand --forceExit --coverage --collectCoverageFrom='services/**/*.ts' --testPathPatterns='Service'",
+    "dev": "ts-node-dev --respawn --transpile-only server.ts",
+    "lint": "eslint .",
+    "lint:complexity": "eslint . --rule \"complexity:[warn,5]\"",
+    "cpd": "jscpd . --gitignore",
+    "circular": "madge --circular .",
     "test:cov": "jest --runInBand --forceExit --coverage"
   },
   "dependencies": {

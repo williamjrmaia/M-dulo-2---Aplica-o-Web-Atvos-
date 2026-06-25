@@ -91,11 +91,7 @@ g06/
 ├── documentos/              # WAD, documentação técnica, evidências e materiais do projeto
 │   ├── assets/              # Imagens, diagramas, wireframes, personas e guia de estilos
 │   └── outros/              # Documentos complementares, endpoints e materiais auxiliares
-├── public/
-│   ├── css/                 # Estilos da interface renderizada no servidor
-│   ├── docs/                # Documentação estática da API
-│   └── js/                  # Scripts de busca, máscaras, modais e feedbacks visuais
-├── src/
+├── src/                     # Código-fonte e configurações da aplicação (npm roda a partir daqui)
 │   ├── app.ts               # Configuração do Express, middlewares, rotas e views
 │   ├── server.ts            # Inicialização do servidor HTTP
 │   ├── config/              # Configurações de autenticação e conexão com PostgreSQL/Supabase
@@ -106,6 +102,10 @@ g06/
 │   ├── helpers/             # Utilitários compartilhados, como tratamento assíncrono
 │   ├── middlewares/         # Autenticação, autorização e tratamento centralizado de erros
 │   ├── models/              # Tipos, interfaces e entidades do domínio
+│   ├── public/              # Assets estáticos servidos pelo Express (express.static)
+│   │   ├── css/             # Estilos da interface renderizada no servidor
+│   │   ├── docs/            # Documentação estática da API
+│   │   └── js/              # Scripts de busca, máscaras, modais e feedbacks visuais
 │   ├── repositories/        # Camada de persistência e consultas ao banco
 │   ├── routes/              # Mapeamento de rotas HTML e endpoints JSON
 │   ├── schemas/             # Schemas Zod para validação de entrada
@@ -113,21 +113,23 @@ g06/
 │   ├── test/                # Testes legados mantidos no projeto
 │   ├── tests/               # Suíte principal de testes automatizados
 │   │   └── helpers/         # Helpers usados pelos testes
-│   └── views/               # Templates EJS da camada de apresentação
-│       ├── errors/          # Páginas de erro
-│       ├── home/            # Tela inicial autenticada
-│       ├── layouts/         # Layouts base
-│       ├── login/           # Login e primeiro acesso
-│       ├── parceiros/       # Telas de parceiros e validação
-│       ├── partials/        # Partials reutilizáveis, como cabeçalho e rodapé
-│       ├── terras/          # Telas de terras e vínculo com parceiros
-│       └── usuarios/        # Telas de gestão de usuários
+│   ├── views/               # Templates EJS da camada de apresentação
+│   │   ├── errors/          # Páginas de erro
+│   │   ├── home/            # Tela inicial autenticada
+│   │   ├── layouts/         # Layouts base
+│   │   ├── login/           # Login e primeiro acesso
+│   │   ├── parceiros/       # Telas de parceiros e validação
+│   │   ├── partials/        # Partials reutilizáveis, como cabeçalho e rodapé
+│   │   ├── terras/          # Telas de terras e vínculo com parceiros
+│   │   └── usuarios/        # Telas de gestão de usuários
+│   ├── eslint.config.js     # Configuração do ESLint (SonarJS)
+│   ├── jest.config.js       # Configuração do Jest
+│   ├── package.json         # Dependências e scripts npm
+│   ├── requests.http        # Coleção de requisições para teste manual da API
+│   └── tsconfig.json        # Configuração do TypeScript
 ├── .env.example
-├── eslint.config.js
-├── jest.config.js
-├── package.json
-├── requests.http
-├── tsconfig.json
+├── .gitattributes
+├── .gitignore
 └── README.md
 ```
 
@@ -141,19 +143,15 @@ g06/
 
 ## Configuração do ambiente
 
-1. Instale as dependências na raiz do projeto:
+> **Importante:** o `package.json` fica em `src/`, então **todos os comandos `npm` deste guia são executados a partir de `src/`** (ex.: `cd src && npm install`). O `.env` permanece na raiz do projeto.
 
-```bash
-npm install
-```
-
-2. Crie o arquivo local de ambiente na raiz:
+1. Crie o arquivo local de ambiente na raiz (onde ficam o `.env.example` e o `.env`):
 
 ```bash
 cp .env.example .env
 ```
 
-3. Preencha as variáveis sem versionar credenciais. A forma recomendada é usar `DATABASE_URL`:
+2. Preencha as variáveis sem versionar credenciais. A forma recomendada é usar `DATABASE_URL`:
 
 ```dotenv
 DATABASE_URL=postgresql://usuario:senha@host:porta/banco
@@ -180,7 +178,14 @@ openssl rand -hex 32
 
 Nunca reutilize exemplos, tokens pessoais ou segredos de produção no repositório. Em testes, `DATABASE_URL_TEST` tem prioridade quando `NODE_ENV=test`; se ela não existir, a suíte usa `DATABASE_URL`.
 
-4. Prepare a estrutura e os dados de demonstração:
+3. Entre em `src/` e instale as dependências (os comandos `npm` daqui em diante rodam a partir de `src/`):
+
+```bash
+cd src
+npm install
+```
+
+4. Prepare a estrutura e os dados de demonstração (ainda em `src/`):
 
 ```bash
 npm run migrate
@@ -195,7 +200,7 @@ O comando `npm run migrate` aplica `src/db/migration.sql` e, em seguida, os arqu
 npm run dev
 ```
 
-Por padrão, a aplicação fica disponível em `http://localhost:3000`. A porta pode ser alterada por `PORT`. O servidor carrega variáveis de ambiente a partir de `.env` na raiz do projeto e também procura um `.env` no diretório pai.
+Por padrão, a aplicação fica disponível em `http://localhost:3000`. A porta pode ser alterada por `PORT`. O servidor procura o `.env` no diretório atual e no diretório pai; como os comandos rodam a partir de `src/`, ele carrega o `.env` mantido na raiz do projeto.
 
 Antes de acessar as telas internas, faça login com um usuário de demonstração ou crie um usuário administrador pelo seed. As rotas internas redirecionam para `/login` quando não há sessão válida.
 
@@ -263,6 +268,7 @@ Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em
 ## Testes e validações
 
 ```bash
+cd src
 npx tsc --noEmit
 npm run lint
 npm test
@@ -281,7 +287,7 @@ npm run circular
 
 A suíte usa `DATABASE_URL_TEST` quando definida e executa diversos testes com PostgreSQL real. Dependendo da latência do Supabase, a execução completa pode levar mais de dez minutos. Não aponte `DATABASE_URL_TEST` para um banco com dados que precisem ser preservados.
 
-`npm run test:services` roda a suíte com relatório de cobertura focado na camada de services (`src/services/`), gerado em `coverage/`.
+`npm run test:services` roda a suíte com relatório de cobertura focado na camada de services (`src/services/`), gerado em `src/coverage/`.
 
 ## Troubleshooting
 
