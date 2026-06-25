@@ -3866,7 +3866,6 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 | 3 | Messias Olivindo | Aluno 2º ano CC | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
 | 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
 | 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
-
 ---
 
 #### Tarefa 4 — Visualizar perfil detalhado de um parceiro ativo
