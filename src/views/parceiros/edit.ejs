@@ -109,13 +109,17 @@
 
           <div class="form-group">
             <label class="form-label" for="status">Status</label>
-            <select class="form-select" id="status" name="status">
-              <option value="">(não alterar)</option>
-              <% if (analistaAtual) { %>
-                <% if (['rascunho', 'devolvido'].includes(dados.status)) { %>
-                  <option value="pendente">Enviar para validação</option>
-                <% } %>
+            <% if (analistaAtual) { %>
+              <%# Analista nao altera o status por aqui: usa o botao explicito "Enviar para validacao". %>
+              <input type="hidden" name="status" id="status" value="" />
+              <% if (['rascunho', 'devolvido'].includes(dados.status)) { %>
+                <p class="form-hint">Para enviar este registro para validação, use o botão <strong>“Enviar para validação”</strong> abaixo.</p>
               <% } else { %>
+                <p class="form-hint">Status atual: <strong><%= dados.status %></strong></p>
+              <% } %>
+            <% } else { %>
+              <select class="form-select" id="status" name="status">
+                <option value="">(não alterar)</option>
                 <option value="rascunho" <%= dados.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
                 <option value="pendente" <%= dados.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
                 <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
@@ -123,8 +127,8 @@
                 <% if (!coordenadorAtual) { %>
                   <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
                 <% } %>
-              <% } %>
-            </select>
+              </select>
+            <% } %>
           </div>
 
           <div class="form-group span-2">
@@ -147,8 +151,24 @@
     <div class="form-actions">
       <a href="/parceiros/<%= id %>" class="btn btn-secondary">Cancelar</a>
       <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+      <% if (analistaAtual && ['rascunho', 'devolvido'].includes(dados.status)) { %>
+        <button type="submit" class="btn btn-export" data-enviar-validacao>Enviar para validação</button>
+      <% } %>
     </div>
   </form>
+
+  <% if (analistaAtual) { %>
+    <script>
+      (function () {
+        var btn = document.querySelector('[data-enviar-validacao]');
+        var statusInput = document.getElementById('status');
+        if (btn && statusInput) {
+          // Ao clicar no botao explicito, marca o envio para validacao (status=pendente).
+          btn.addEventListener('click', function () { statusInput.value = 'pendente'; });
+        }
+      })();
+    </script>
+  <% } %>
 </section>
 
 <%- include('../partials/footer') %>
