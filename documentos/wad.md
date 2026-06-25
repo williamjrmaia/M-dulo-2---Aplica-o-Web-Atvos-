@@ -3200,7 +3200,7 @@ As capturas da interface da segunda versão web estão em `documentos/assets/apl
 *Tela de login.*
 
 ![Página inicial autenticada](./assets/aplicacao_web_sprint4/home.png)
-*Página inicial com atalhos por permissão.*
+*Página inicial com atalhos por perfil de acesso.*
 
 ![Listagem de parceiros](./assets/aplicacao_web_sprint4/parceiros.png)
 *Listagem de parceiros com busca e filtros.*
@@ -3214,7 +3214,7 @@ As capturas da interface da segunda versão web estão em `documentos/assets/apl
 ![Gestão de usuários](./assets/aplicacao_web_sprint4/usuarios.png)
 *Listagem e gestão de usuários.*
 
-Não foi possível produzir novas capturas neste ambiente porque não há navegador headless funcional instalado. Em vez de simular imagens, a validação foi feita com servidor real, banco configurado e sessão criada pelo endpoint de login.
+Não foi possível produzir novas capturas neste ambiente porque não havia navegador headless funcional instalado. Em vez de simular imagens, a validação foi feita com servidor real, banco configurado e sessão criada pela rota de login.
 
 | Evidência executada | Resultado observado |
 |---|---|
@@ -3228,7 +3228,7 @@ Não foi possível produzir novas capturas neste ambiente porque não há navega
 | `GET /api/parceiros` e `GET /api/terras` autenticado | `200` em ambas as APIs. |
 | `POST /logout` | `302` para `/login`, com encerramento da sessão. |
 
-Para a apresentação final, as capturas devem ser refeitas em navegador convencional depois do login, usando dados de demonstração sem informações sensíveis. Os PNGs históricos restantes podem orientar enquadramento, mas não substituem essa evidência autenticada.
+Para a apresentação final, as capturas devem ser refeitas em navegador convencional depois do login, usando dados de demonstração sem informações sensíveis. As capturas históricas podem orientar o enquadramento, mas não substituem novas evidências geradas em sessão autenticada.
 
 ### 4.2.6. Decisões técnicas relevantes
 
