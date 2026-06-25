@@ -119,6 +119,13 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
 
   const resultado = await autenticarRequisicao(req, res, token);
   if (resultado === 'erro-configuracao') {
+    // Em requisições web, mostra uma página de erro legível; nas chamadas de
+    // API, mantém a resposta JSON.
+    if (deveRetornarHtml(req)) {
+      return res.status(500).render('login/error', {
+        message: 'Configuração de autenticação ausente',
+      });
+    }
     return res.status(500).json({ error: 'Configuração de autenticação ausente' });
   }
   if (resultado === 'nao-autenticado') {
