@@ -3659,11 +3659,14 @@ As capturas da versão final estão em `documentos/assets/aplicacao_web_sprint5/
 ![Tela de login](./assets/aplicacao_web_sprint5/login.png)
 *Tela de login da versão final.*
 
-![Listagem de parceiros](./assets/aplicacao_web_sprint5/parceiros-lista.png)
+![Listagem de parceiros](./assets/aplicacao_web_sprint5/lista-parceiros.png)
 *Listagem de parceiros com badge de papel (fornecedor/proprietário/ambos) e botão único "Cadastrar Parceiro".*
 
-![Cadastro de parceiro](./assets/aplicacao_web_sprint5/novo-parceiro.png)
-*Formulário de cadastro com seletor de papel e aviso de que o e-mail é opcional no rascunho e obrigatório no envio à validação.*
+![Cadastro de parceiro - parte 1](./assets/aplicacao_web_sprint5/novo-parceiro-1.png)
+*Formulário de cadastro de parceiro (parte 1): seletor de papel e dados principais.*
+
+![Cadastro de parceiro - parte 2](./assets/aplicacao_web_sprint5/novo-parceiro-2.png)
+*Formulário de cadastro de parceiro (parte 2): demais campos, com o aviso de que o e-mail é opcional no rascunho e obrigatório no envio à validação.*
 
 ![Envio para validação sem e-mail](./assets/aplicacao_web_sprint5/envio-validacao-email.png)
 *Tentativa de enviar para validação sem e-mail: a regra (RN10) é aplicada com mensagem clara.*
