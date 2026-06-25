@@ -3811,8 +3811,8 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 
 | # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
 |---|-------------|--------|----------------|---------|---------|---------|---------|
-| 1 | Pablo Oliveira Garcia | Aluno T24 | Conseguiu com dificuldade | Confundiu fornecedor com parceiro, clicou em "parceiro" inicialmente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
-| 2 | Maria Clara Bosschart | Aluna T24 | Conseguiu com dificuldade | Encontrou o botão de fornecedor corretamente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muito conflito |
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Conseguiu com dificuldade | Confundiu fornecedor com parceiro, clicou em "parceiro" inicialmente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muita confusão |
+| 2 | Maria Clara Bosschart | Aluna T24 | Conseguiu com dificuldade | Encontrou o botão de fornecedor corretamente | Campos intuitivos, preenchidos com facilidade | Salvo após o preenchimento dos dados | Opção "Enviar para validação" não encontrada facilmente; gerou muita confusão |
 | 3 | Messias Olivindo | Aluno 2º ano CC | Conseguiu com dificuldade | Encontrou novo fornecedor com facilidade | Preenchido com facilidade | Registro salvo, mas sem feedback imediato ao usuário | Opção não intuitiva; usuário teve dificuldades para encontrá-la |
 | 4 | Raissa Guimarães | Aluna T24 | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
 | 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Encontrou novo fornecedor com facilidade | Preenchido com facilidade, bem intuitivo | Registro salvo com clareza | Precisou de ajuda; não encontrou a opção |
