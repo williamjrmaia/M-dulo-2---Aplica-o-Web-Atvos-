@@ -3868,28 +3868,28 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 | 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Não conseguiu | Localizou facilmente | Encontrou sem problemas | Dados preenchidos com facilidade | Interação registrada, mas não aparece no histórico |
 ---
 
-#### Tarefa 4 — Visualizar perfil detalhado de um parceiro ativo
+#### Tarefa 4 — Visualizar o perfil detalhado de um parceiro ativo
 
-**Enunciado:** Suponha que você é uma coordenadora de estratégia de terras da ATVOS e precisa consultar rapidamente as informações de um parceiro ativo antes de uma reunião de decisão. Utilize o sistema para encontrar esse parceiro e visualizar seu perfil completo.
+**Enunciado:** Suponha que você seja uma coordenadora de estratégia de terras da ATVOS e precise consultar rapidamente as informações de um parceiro ativo antes de uma reunião de decisão. Utilize o sistema para encontrar esse parceiro e visualizar seu perfil completo.
 
 **Etapas esperadas:**
 
 | # | Etapa | Critério de sucesso |
 |---|-------|---------------------|
 | 1 | Encontrar a listagem de parceiros ativos no sistema | Navega até a área correta sem ajuda |
-| 2 | Selecionar um parceiro específico para ver mais detalhes | Identifica como acessar o perfil individual sem instrução |
-| 3 | Localizar os dados cadastrais e o histórico de interações no perfil | Encontra todas as informações na tela sem precisar procurar em outros lugares |
-| 4 | Avaliar se as informações estão claras o suficiente para uma decisão | Consegue interpretar os dados exibidos sem dificuldade |
+| 2 | Selecionar um parceiro específico para visualizar mais detalhes | Identifica como acessar o perfil individual sem instruções |
+| 3 | Localizar os dados cadastrais e o histórico de interações no perfil | Encontra todas as informações na tela sem precisar procurá-las em outros lugares |
+| 4 | Avaliar se as informações estão claras o suficiente para a tomada de decisão | Consegue interpretar os dados exibidos sem dificuldade |
 
 **Registro dos testes:**
 
 | # | Participante | Perfil | Resultado geral | Etapa 1 | Etapa 2 | Etapa 3 | Etapa 4 |
-|---|-------------|--------|----------------|---------|---------|---------|---------|
-| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 3 | Messias Olivindo | Aluno 2º ano CC | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 4 | Raissa Guimarães | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
-| 5 | Mariana Lacerda | Aluna 2º ano Eng. Software | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação feita com clareza |
+|---|--------------|--------|-----------------|----------|----------|----------|----------|
+| 1 | Pablo Oliveira Garcia | Aluno T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 2 | Maria Clara Bosschart | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 3 | Messias Olivindo | Aluno do 2º ano de CC | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 4 | Raissa Guimarães | Aluna T24 | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
+| 5 | Mariana Lacerda | Aluna do 2º ano de Eng. de Software | Sucesso | Encontrou facilmente | Parceiro selecionado | Dados visualizados | Avaliação realizada com clareza |
 
 ---
 
