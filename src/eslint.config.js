@@ -2,8 +2,8 @@ const tseslint = require('typescript-eslint');
 const sonarjs = require('eslint-plugin-sonarjs');
 
 module.exports = tseslint.config({
-  files: ['src/**/*.ts'],
-  ignores: ['src/test/**', 'src/tests/**'],
+  files: ['**/*.ts'],
+  ignores: ['test/**', 'tests/**'],
   plugins: { sonarjs },
   languageOptions: {
     parser: tseslint.parser,
