@@ -89,6 +89,8 @@ ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS area_plantada VARCHAR;
 ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS tch_medio VARCHAR;
 ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS atr_medio VARCHAR;
 ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS observacoes TEXT;
+-- Papel do parceiro: fornecedor, proprietario ou ambos (validado na camada de aplicação).
+ALTER TABLE parceiros ADD COLUMN IF NOT EXISTS papel VARCHAR;
 
 CREATE INDEX IF NOT EXISTS idx_parceiro_status ON parceiros(status);
 CREATE INDEX IF NOT EXISTS idx_parceiro_cpf_cnpj ON parceiros(cpf_cnpj);

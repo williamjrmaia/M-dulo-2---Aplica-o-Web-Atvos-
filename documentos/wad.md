@@ -22,11 +22,11 @@
 
 [2. Visão Geral da Aplicação Web](#c2)
 
-[3. Projeto Técnico da Aplicação Web](#c3)
+[3. Projeto da Aplicação Web](#c3)
 
 [4. Desenvolvimento da Aplicação Web](#c4)
 
-[5. Testes da Aplicação Web](#c5)
+[5. Testes](#c5)
 
 [6. Estudo de Mercado e Plano de Marketing](#c6)
 
@@ -34,7 +34,7 @@
 
 [8. Referências](#c8)
 
-[Anexos](#c9)
+[9. Anexos](#c9)
 
 <br>
 
@@ -2505,7 +2505,7 @@ CREATE INDEX idx_registro_status    ON registro_alteracao(status);
 CREATE INDEX idx_registro_operacao    ON registro_alteracao(tipo_operacao);
 ```
 
-## 3.6.4. Consultas SQL e lógica proposicional
+### 3.6.4. Consultas SQL e lógica proposicional
 
 Esta seção apresenta consultas SQL compostas realizadas pelo back-end da aplicação web, acompanhadas de sua respectiva lógica proposicional. As consultas foram elaboradas a partir das entidades modeladas no banco de dados, em especial, `parceiros`, `usuarios`, `perfil_acesso`, `terras`, `parceiro_terra`, `vinculo_comercial` e `registro_alteracao`.
 
@@ -4015,14 +4015,14 @@ Outra tendência relevante é a valorização da rastreabilidade e da governanç
 
 ## 6.3 Análise da Concorrência
 
-## 6.3.1 Principais concorrentes
+### 6.3.1 Principais concorrentes
 
 A análise da concorrência foi organizada em dois eixos: empresas do setor sucroenergético que concorrem diretamente com a ATVOS e soluções digitais que poderiam substituir parcialmente a aplicação proposta. No primeiro grupo, foram identificadas a Raízen, a BP Bioenergy e a São Martinho. A Raízen foi considerada concorrente direta por atuar de forma integrada na produção de açúcar, etanol e bioenergia, além da distribuição de combustíveis sob a marca Shell (RAÍZEN, 2026). A BP Bioenergy também foi considerada relevante, pois a bp passou a deter 100% da antiga BP Bunge Bioenergia, fortalecendo sua presença no mercado brasileiro de biocombustíveis (BUNGE, 2024). A São Martinho foi incluída por sua atuação nos segmentos de açúcar, etanol, energia elétrica e subprodutos da cana-de-açúcar (SÃO MARTINHO, 2026).
 
 No segundo grupo, foram analisados concorrentes indiretos ligados à gestão de relacionamento e dados. Salesforce, Microsoft Dynamics 365 e SAP Customer Experience oferecem recursos de CRM, unificação de dados de clientes, jornadas e suporte à experiência do cliente (SALESFORCE, 2026; MICROSOFT, 2026; SAP, 2026). O Aegro também foi considerado por oferecer gestão rural com controle financeiro, operacional e fiscal, além de dados de campo e integrações (AEGRO, 2026). Apesar disso, essas soluções não foram concebidas especificamente para o relacionamento entre usinas, fornecedores de cana-de-açúcar e proprietários de terras.
 
 
-## 6.3.2 Vantagens competitivas da aplicação web
+### 6.3.2 Vantagens competitivas da aplicação web
 
 Identificou-se que a principal vantagem competitiva da aplicação web está na especialização ao contexto da ATVOS. Enquanto CRMs generalistas são desenvolvidos para múltiplos setores e demandam parametrizações, a solução proposta foi estruturada para atender diretamente à gestão de parceiros agrícolas, fornecedores de cana-de-açúcar e proprietários de terras. Assim, o sistema não se limita ao registro de contatos, mas também organiza cadastros, histórico de interações, status de validação, permissões de acesso e rastreabilidade de alterações.
 
@@ -4057,7 +4057,7 @@ As principais dores estão relacionadas à falta de governança de dados e à pe
 
 ## 6.5 Posicionamento
 
-#### 6.5.1 Proposta de valor única
+### 6.5.1 Proposta de valor única
 
 A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento com parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no *Value Proposition Canvas*, de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida (Osterwalder et al., 2014). A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados (Inteli, 2026). Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e os 108 fornecedores é garantida de forma integral (ATVOS, 2026). Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
 
@@ -4067,7 +4067,7 @@ O risco de perda de dados e de informações essenciais para negociações e par
 **b) Criadores de ganhos (*Gain Creators*):**
 A aplicação é dotada de uma interface amigável e intuitiva (UX/UI) e de painéis nativos de visualização de dados estatísticos. Tais ferramentas dão suporte direto à realização de consultas rápidas e à geração de listas segmentadas (Osterwalder et al., 2014).
 
-#### 6.5.2 Posicionamento e diferenciação
+### 6.5.2 Posicionamento e diferenciação
 
 No mercado, o sistema posiciona-se como um Hub Estratégico de Governança de Relacionamento Agrícola, estruturado como uma solução *Business-to-Employee* (B2E), visando à ocupação de um espaço mental e funcional único na rotina operacional (Ries & Trout, 2001). Dessa maneira, identificou-se que a principal diferenciação da aplicação desenvolvida está na modernização das alternativas utilizadas no mercado, em contraste com planilhas e outros sistemas corporativos tradicionais, os quais podem gerar erros e dispersão de dados, além de possuírem telas genéricas e custos elevados (Inteli, 2026).
 
@@ -4075,7 +4075,7 @@ O desenvolvimento do protótipo foi voltado especificamente para agilizar o trab
 
 ## 6.6 Estratégia de Marketing 
 
-#### 6.6.1 Produto/serviço
+### 6.6.1 Produto/serviço
 
 O produto desenvolvido é uma aplicação web voltada para a gestão, visualização e cadastro dos dados de parceiros de terras e fornecedores do setor sucroenergético, constituída por uma arquitetura *full-stack* com banco de dados SQL nativo. O sistema tem como principais funções o cadastro de dados de parceiros e fornecedores, o registro de interações e negociações e a visualização de informações por meio de painéis dinâmicos, que permitem uma análise estatística.
 
@@ -4083,7 +4083,7 @@ A plataforma busca eliminar a dependência de planilhas eletrônicas e controles
 
 Segundo Kotler e Keller (2021), o protótipo é classificado como um bem de assistência corporativa, com valor central na transformação de dados dispersos em ativos estratégicos.
 
-#### 6.6.2 Preço
+### 6.6.2 Preço
 
 Como a plataforma foi projetada para ser uma solução exclusivamente corporativa e voltada ao uso interno do tipo B2E, o modelo de monetização por licenciamento comercial ou assinatura (*SaaS*) não foi considerado o mais adequado. Sendo assim, a estratégia de precificação adotada foi planejada a partir do modelo de desenvolvimento interno proprietário (*in-house software*).
 
@@ -4091,13 +4091,13 @@ A aplicação desse modelo baseia-se na eliminação de empecilhos financeiros e
 
 Sob a ótica de Kotler e Armstrong (2015), o preço deve ser avaliado com base no valor percebido pela organização, em que o custo de implementação é compensado pelo retorno financeiro indireto. Tal retorno é materializado pelo ganho de até 35% na produtividade das equipes agrícolas e de campo, além de mitigar riscos jurídicos e prejuízos operacionais decorrentes da perda de contratos com parceiros e fornecedores.
 
-#### 6.6.3 Praça
+### 6.6.3 Praça
 
 Com base em uma estratégia de canal direto intracorporativo, focada exclusivamente no ambiente digital fechado, definiu-se a Praça. O sistema web será disponibilizado por meio de servidores de nuvem privada integrados à estrutura tecnológica interna da companhia. Os usuários terão acesso restrito e seguro por meio de qualquer navegador web adotado como padrão pela empresa, sendo exigidos autenticação corporativa única (SSO) e perfis específicos para cada nível de acesso e atuação. As oito unidades agroindustriais e os dois escritórios corporativos da ATVOS são formalizados como canais de entrega.
 
 A distribuição digital direta garante a governança dos dados e a sincronização das interações em tempo real. Segundo a teoria dos canais de Kotler e Keller (2012), essa configuração de nível zero garante o controle sobre a governança das informações e a segurança dos dados sensíveis da ATVOS, de seus 1.137 parceiros de terras e de seus 108 fornecedores.
 
-#### 6.6.4 Promoção
+### 6.6.4 Promoção
 
 O plano estratégico de promoção da solução foi construído sob a ótica do endomarketing estratégico e da gestão de mudança corporativa, já que o público-alvo se resume aos colaboradores das áreas de Negócios Agrícolas e Estratégia de Terras. Campanhas de publicidade pública ou marketing digital, como redes sociais e mídia paga, não se alinham ao escopo da aplicação e tornam-se irrelevantes para a promoção do produto.
 
@@ -4211,7 +4211,7 @@ São Martinho. (2026). São Martinho. https://www.saomartinho.com.br/
 
 União Nacional da Bioenergia. (2025, 26 de março). ATVOS obtém licença de instalação para sua primeira fábrica de biometano em Mato Grosso do Sul. https://www.udop.com.br/noticia/2025/3/26/atvos-obtem-licenca-de-instalacao-para-sua-primeira-fabrica-de-biometano-em-mato-grosso-do-sul
 
-# <a name="c9"></a>Anexos
+# <a name="c9"></a>9. Anexos
 
 ## Classificação de Impacto, Probabilidade e Matriz de Risco
 
