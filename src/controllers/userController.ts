@@ -83,6 +83,13 @@ const ERRO_INATIVA_USUARIO: Record<string, number> = {
   'Usuario nao encontrado': 404,
 };
 
+const MSG_AUTO_INATIVACAO = 'Nao e permitido inativar o proprio usuario';
+
+// Id do usuário autenticado (preenchido por requireAuth em req.usuario).
+function obterUsuarioAutenticadoId(req: Request): string | undefined {
+  return (req as Request & { usuario?: { id?: string } }).usuario?.id;
+}
+
 const ERRO_ATUALIZA_PERFIL: Record<string, number> = {
   'Dados obrigatorios ausentes': 400,
   'Perfil nao encontrado': 400,
@@ -240,6 +247,9 @@ export class UserController {
     if (respostaPermissao) {
       return respostaPermissao;
     }
+    if (obterUsuarioAutenticadoId(req) === id) {
+      return res.status(409).json({ error: MSG_AUTO_INATIVACAO });
+    }
     try {
       const usuario = await this.userService.inativarUsuario(id);
       console.log('[CONTROLLER] Retornando 200');
@@ -267,6 +277,12 @@ export class UserController {
   inativarUsuarioViaFormulario = async (req: Request, res: Response) => {
     const id = extrairIdParam(req);
     console.log(`[CONTROLLER] POST formulario inativacao usuario: ${id}`);
+    if (obterUsuarioAutenticadoId(req) === id) {
+      return res.status(409).render('usuarios/inativar', {
+        error: MSG_AUTO_INATIVACAO,
+        usuario: await this.montarUsuarioFormulario(id),
+      });
+    }
     try {
       await this.userService.inativarUsuario(id);
       return res.redirect(`/usuarios/${id}/inativar`);
