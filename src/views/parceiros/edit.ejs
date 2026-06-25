@@ -53,6 +53,16 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label" for="papel">Papel</label>
+            <select class="form-select" id="papel" name="papel">
+              <option value="">(não alterar)</option>
+              <option value="fornecedor" <%= dados.papel === 'fornecedor' ? 'selected' : '' %>>Fornecedor</option>
+              <option value="proprietario" <%= dados.papel === 'proprietario' ? 'selected' : '' %>>Proprietário</option>
+              <option value="ambos" <%= dados.papel === 'ambos' ? 'selected' : '' %>>Ambos (fornecedor e proprietário)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="form-label" for="apelido">Apelido</label>
             <input class="form-control" type="text" id="apelido" name="apelido" value="<%= dados.apelido || '' %>" />
           </div>
