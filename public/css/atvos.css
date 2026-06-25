@@ -1031,6 +1031,21 @@ button.logout-link {
   color: var(--status-devolvido-text);
 }
 
+.badge-fornecedor {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+.badge-proprietario {
+  background: #EDE9FE;
+  color: #6D28D9;
+}
+
+.badge-ambos {
+  background: var(--status-ativo-bg);
+  color: var(--status-ativo-text);
+}
+
 /* =========================================================
    11. Tabelas e listagens
    ========================================================= */
@@ -1196,6 +1211,12 @@ button.logout-link {
   display: flex;
   gap: var(--space-2);
   flex-wrap: wrap;
+}
+
+/* Form usado apenas como wrapper de uma ação (ex.: inativar): não gera caixa
+   própria, para o botão participar diretamente do flex da linha de ações. */
+.inline-form {
+  display: contents;
 }
 
 .list-item-grid {

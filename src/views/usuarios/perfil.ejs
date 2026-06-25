@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <%- include('../partials/flash', { error: error }) %>
+  <%- include('../partials/flash', { error: locals.error }) %>
 
   <% if (usuario) { %>
     <form method="POST" action="/usuarios/<%= usuario.id %>/perfil" novalidate>
@@ -26,7 +26,7 @@
           <div class="form-group">
             <label class="form-label" for="role_id">Perfil <span class="required">*</span></label>
             <select class="form-select" id="role_id" name="role_id" required>
-              <% perfis.forEach((perfil) => { %>
+              <% (perfis || []).forEach((perfil) => { %>
                 <option value="<%= perfil.id %>" <%= usuario.perfil_acesso_id === perfil.id ? 'selected' : '' %>>
                   <%= perfil.nome %>
                 </option>

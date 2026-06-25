@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <%- include('../partials/flash', { error: error }) %>
+  <%- include('../partials/flash', { error: locals.error }) %>
 
   <% if (usuario) { %>
     <form method="POST" action="/usuarios/<%= usuario.id %>" novalidate>

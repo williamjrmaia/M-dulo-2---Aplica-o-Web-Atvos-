@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="flash flash-info" role="note">
+  <div class="flash flash-info" role="status">
     <span class="flash-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
     <span class="flash-text"><strong>Preencha apenas os campos que deseja alterar.</strong> Campos em branco não serão modificados (comportamento PATCH).</span>
   </div>
@@ -123,9 +123,9 @@
               <%# Analista nao altera o status por aqui: usa o botao explicito "Enviar para validacao". %>
               <input type="hidden" name="status" id="status" value="" />
               <% if (['rascunho', 'devolvido'].includes(dados.status)) { %>
-                <p class="form-hint">Para enviar este registro para validação, use o botão <strong>“Enviar para validação”</strong> abaixo.</p>
+                <p class="form-help">Para enviar este registro para validação, use o botão <strong>“Enviar para validação”</strong> abaixo.</p>
               <% } else { %>
-                <p class="form-hint">Status atual: <strong><%= dados.status %></strong></p>
+                <p class="form-help">Status atual: <strong><%= dados.status %></strong></p>
               <% } %>
             <% } else { %>
               <select class="form-select" id="status" name="status">
@@ -149,7 +149,7 @@
           <% if (analistaAtual && dados.status === 'devolvido' && dados.comentario_devolucao) { %>
             <div class="form-group span-2">
               <label class="form-label">Comentário da devolução</label>
-              <div class="flash flash-warning" role="note">
+              <div class="flash flash-warning" role="status">
                 <span class="flash-text"><%= dados.comentario_devolucao %></span>
               </div>
             </div>
