@@ -150,6 +150,37 @@ function validarTipoPessoa(tipoPessoa: unknown): void {
   }
 }
 
+// Apenas letras (com espaços, acentos, apóstrofo, ponto e hífen) — para nomes de pessoa.
+const REGEX_APENAS_LETRAS = /^[A-Za-zÀ-ÿ\s'.-]+$/;
+// Apenas números e símbolos de máscara de telefone (parênteses, +, hífen, espaço).
+const REGEX_TELEFONE = /^[0-9()+\-\s]+$/;
+
+// Valida o formato de campos específicos do cadastro de parceiro:
+// nome_acompanhante deve ter apenas letras; telefone apenas números (e máscara).
+// Campos vazios/ausentes são ignorados (validação de obrigatoriedade é separada).
+function validarFormatoCamposParceiro(campos: {
+  nome_acompanhante?: unknown;
+  telefone?: unknown;
+}): void {
+  const nomeAcompanhante = campos.nome_acompanhante;
+  if (
+    typeof nomeAcompanhante === 'string' &&
+    nomeAcompanhante.trim() !== '' &&
+    !REGEX_APENAS_LETRAS.test(nomeAcompanhante.trim())
+  ) {
+    throw new ValidationError('Nome do acompanhante deve conter apenas letras');
+  }
+
+  const telefone = campos.telefone;
+  if (
+    typeof telefone === 'string' &&
+    telefone.trim() !== '' &&
+    !REGEX_TELEFONE.test(telefone.trim())
+  ) {
+    throw new ValidationError('Telefone deve conter apenas números');
+  }
+}
+
 function validarEntradaCreateParceiro(
   nome: unknown,
   tipoPessoa: unknown,
@@ -202,6 +233,7 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
   } = req.body;
 
   validarEntradaCreateParceiro(nome, tipo_pessoa, cpf_cnpj, criado_por);
+  validarFormatoCamposParceiro({ nome_acompanhante, telefone });
 
   const parceiro = await cadastrarParceiro({
     nome,
@@ -436,6 +468,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
 
   try {
     validarCadastroParceiro(nome, tipo_pessoa, cpf_cnpj, enviarParaValidacao, email);
+    validarFormatoCamposParceiro({ nome_acompanhante, telefone });
 
     await cadastrarParceiro({
       nome,
@@ -524,6 +557,7 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 
   try {
     validarEdicaoParceiro(camposEditaveis, tipo_pessoa);
+    validarFormatoCamposParceiro(camposEditaveis);
 
     const perfilAutenticado = obterPerfilAutenticado(req, res);
     validarStatusInativoCoordenador(perfilAutenticado, status);
