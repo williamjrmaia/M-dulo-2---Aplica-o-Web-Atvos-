@@ -3738,7 +3738,7 @@ Os identificadores CT51 a CT67 correspondem aos casos numerados nos arquivos cit
 
 ### 5.1.4 Evidências de Execução
 
-Esta seção reúne as evidências que permitem verificar, de forma objetiva, se a suíte automatizada realmente sustentou os fluxos centrais da WebAPI. Em relatórios desse tipo, a função principal é transformar a execução dos testes em prova documentada de qualidade, cobertura e rastreabilidade, conectando o que foi testado ao que o sistema entrega.
+Esta seção reúne as evidências que permitem verificar, de forma objetiva, se a suíte automatizada realmente sustentou os fluxos centrais da WebAPI. Sua função principal é transformar a execução dos testes em prova documentada de qualidade, cobertura e rastreabilidade, conectando o que foi testado ao que o sistema entrega.
 
 A execução final da suíte automatizada foi concluída sem falhas. O comando npm test terminou com 40 suites aprovadas e 327 testes aprovados, sem snapshots.
 
@@ -3750,17 +3750,17 @@ Time:        777.986 s, estimated 847 s
 Ran all test suites.
 ```
 
-O relatório de cobertura gerado por npm test -- --coverage confirmou a cobertura por camada da WebAPI. O resultado geral ficou em 81.47% de statements, 68.15% de branches, 85.26% de functions e 82.64% de lines.
+O relatório de cobertura gerado por npm test -- --coverage confirmou a cobertura por camada da WebAPI. O resultado geral ficou em 81,47% de statements, 68,15% de branches, 85,26% de functions e 82,64% de lines.
 
 | Camada | Statements | Branches | Functions | Lines |
 |---|---|---|---|---|
-| controllers | 71.85% | 53.87% | 74.76% | 74.35% |
+| controllers | 71,85% | 53,87% | 74,76% | 74,35% |
 | helpers | 100% | 100% | 100% | 100% |
-| middlewares | 46.15% | 24.39% | 61.53% | 45.31% |
-| repositories | 84.45% | 70.08% | 97.95% | 84.38% |
-| services | 99.76% | 99.27% | 100% | 99.76% |
+| middlewares | 46,15% | 24,39% | 61,53% | 45,31% |
+| repositories | 84,45% | 70,08% | 97,95% | 84,38% |
+| services | 99,76% | 99,27% | 100% | 99,76% |
 
-Os resultados por camada mostram que a cobertura está concentrada nos services e repositories, que concentram as regras de negócio e a persistência do CRM. A camada de helpers permaneceu totalmente coberta, e a camada de middlewares aparece com menor percentual porque parte de seus caminhos depende de cenários de autenticação e de tratamento de erro que não se repetem em todos os fluxos de teste.
+Os resultados por camada mostram que a cobertura está concentrada nos services e repositories, onde se concentram as regras de negócio e a persistência do CRM. A camada de helpers permaneceu totalmente coberta, e a camada de middlewares aparece com menor percentual porque parte de seus caminhos depende de cenários de autenticação e de tratamento de erro que não se repetem em todos os fluxos de teste.
 
 ### 5.1.4.1 Mapeamento CT para RN para RF
 
