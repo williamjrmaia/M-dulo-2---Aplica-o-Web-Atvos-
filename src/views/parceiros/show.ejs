@@ -131,7 +131,7 @@
             <h2 class="card-title" id="historico">Histórico de Interações</h2>
           </div>
           <div class="card-body">
-            <% var historico = (typeof parceiro.historico !== 'undefined' && parceiro.historico) ? parceiro.historico : []; %>
+            <% var historico = (typeof interacoes !== 'undefined' && interacoes) ? interacoes : []; %>
             <% if (historico.length === 0) { %>
               <div class="empty-state">
                 <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
@@ -189,35 +189,75 @@
     </div>
   </section>
 
-  <!-- Modal: Registrar Interação (visual — sem rota de submissão no backend atual) -->
+  <!-- Modal: Registrar Interação -->
   <div class="modal-backdrop" id="modal-interacao" role="dialog" aria-modal="true" aria-labelledby="modal-interacao-title">
     <div class="modal-card">
       <div class="modal-header">
         <h2 class="modal-title" id="modal-interacao-title">Registrar Interação</h2>
         <button type="button" class="modal-close" data-modal-close aria-label="Fechar">&times;</button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="interacao-tipo">Tipo de interação</label>
-          <select class="form-select" id="interacao-tipo">
-            <option>Visita</option>
-            <option>Ligação</option>
-            <option>WhatsApp</option>
-            <option>Reunião</option>
-            <option>Observação</option>
-          </select>
+      <form id="form-interacao" data-parceiro-id="<%= parceiro.id %>" data-usuario-id="<%= typeof usuarioId !== 'undefined' && usuarioId ? usuarioId : '' %>">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="interacao-tipo">Tipo de interação</label>
+            <select class="form-select" id="interacao-tipo" name="tipo" required>
+              <option value="Visita">Visita</option>
+              <option value="Ligação">Ligação</option>
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Reunião">Reunião</option>
+              <option value="Observação">Observação</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="interacao-desc">Descrição</label>
+            <textarea class="form-textarea" id="interacao-desc" name="descricao" required placeholder="Descreva a interação com o parceiro..."></textarea>
+          </div>
+          <p class="form-error" id="interacao-erro" role="alert" hidden></p>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="interacao-desc">Descrição</label>
-          <textarea class="form-textarea" id="interacao-desc" placeholder="Descreva a interação com o parceiro..."></textarea>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Interação</button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-modal-close>Cancelar</button>
-        <button type="button" class="btn btn-primary" data-modal-close>Salvar Interação</button>
-      </div>
+      </form>
     </div>
   </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('form-interacao');
+      if (!form) return;
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var erro = document.getElementById('interacao-erro');
+        erro.hidden = true;
+        var parceiroId = form.getAttribute('data-parceiro-id');
+        var hoje = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        var payload = {
+          registrado_por: form.getAttribute('data-usuario-id'),
+          tipo: form.querySelector('[name="tipo"]').value,
+          descricao: form.querySelector('[name="descricao"]').value.trim(),
+          data: hoje,
+        };
+        try {
+          var resp = await fetch('/parceiros/' + parceiroId + '/interacoes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (resp.ok) {
+            window.location.reload();
+            return;
+          }
+          var corpo = await resp.json().catch(function () { return {}; });
+          erro.textContent = corpo.error || 'Não foi possível registrar a interação.';
+          erro.hidden = false;
+        } catch (err) {
+          erro.textContent = 'Falha de conexão ao registrar a interação.';
+          erro.hidden = false;
+        }
+      });
+    })();
+  </script>
 <% } %>
 
 <%- include('../partials/footer') %>
