@@ -4029,17 +4029,19 @@ Já na microsegmentação, nossa solução direciona-se de forma exclusiva aos d
 A União da Indústria de Cana-de-Açúcar e Bioenergia (ÚNICA) e o Centro de Estudos Avançados em Economia Aplicada (CEPEA-ESALQ/USP) foram considerados fontes confiáveis para validar essa segmentação, pois representam um setor que demanda ferramentas de gestão mais complexas e completas do que as utilizadas atualmente, as quais não atendem plenamente às exigências de competitividade e à alta regulamentação do mercado sucroenergético.
 
 
-### 6.4.2 Perfil do Público-Alvo (até 250 palavras)
+### 6.4.2 Perfil do público-alvo (até 250 palavras)
 
-#### Aspectos Demográficos
-Analisando os profissionais das áreas de Estratégias de Terras e Fornecedores, é notórios, em ambos os genêros, que a média de idade varia predominantemente de 25 a 55 anos. 
-Em relação a formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e nas 8 unidades nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo (ATVOS,2026).
+#### Aspectos demográficos
 
-#### Aspectos Psicográficos e Comportamentais
-Durante as pesquisas foi observado uma forte busca cultural pela manutenção das ferramentas e dos métodos tradicionais de controle, as equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e informções. Os times demonstram alto senso de responsabilidade e urgência, entretanto também demonstram sofrimento com fadiga operacional advinda do retrabalho.
+Ao analisar os profissionais das áreas de Estratégia de Terras e Fornecedores, nota-se, em ambos os gêneros, que a média de idade varia predominantemente de 25 a 55 anos. Em relação à formação acadêmica, há certa concentração dos times nas áreas de Engenharia Agronômica, Administração de Empresas, Análise de Dados e Gestão Comercial. Já geograficamente, as equipes estão divididas entre os escritórios na cidade de São Paulo e as 8 unidades localizadas nos estados de Goiás, Mato Grosso, Mato Grosso do Sul e São Paulo (ATVOS, 2026).
 
-#### Dores e Necessidades
-As principais dores se voltam para a falta de governança de dados e na perda do histórico de relacionamento com fornecedores e parceiros agrícolas. No TAPI acordado entre a instituição e a ATVOS foi indicada a necessidade de uma interface intuitiva e amigável (UX/UI), capaz de fornecer uma centralização dos cadastros e integrar paineis de dados estatísticos integrados, já que 100% dos parceiros possuem dados críticos e essenciais para negociações e tomadas de decisões, a visualização agíl dos dados é essencial para o perfil avaliado.
+#### Aspectos psicográficos e comportamentais
+
+Durante as pesquisas, foi observada uma forte tendência cultural à manutenção das ferramentas e dos métodos tradicionais de controle. As equipes são historicamente dependentes de planilhas eletrônicas e cadernos de campo para o registro dos dados e das informações. Os times demonstram alto senso de responsabilidade e urgência, entretanto também apresentam sinais de fadiga operacional decorrente do retrabalho.
+
+#### Dores e necessidades
+
+As principais dores estão relacionadas à falta de governança de dados e à perda do histórico de relacionamento com fornecedores e parceiros agrícolas. No TAPI acordado entre a instituição e a ATVOS, foi indicada a necessidade de uma interface intuitiva e amigável (UX/UI), capaz de centralizar cadastros e integrar painéis de dados estatísticos. Como 100% dos parceiros possuem dados críticos e essenciais para negociações e tomadas de decisão, a visualização ágil dessas informações é essencial para o perfil avaliado.
 
 ## 6.5 Posicionamento
 
