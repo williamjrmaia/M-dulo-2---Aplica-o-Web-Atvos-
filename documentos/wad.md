@@ -3719,7 +3719,7 @@ A validação do ambiente é feita pela própria suíte. Os specs de controller 
 
 #### Casos cobertos por endpoint
 
-Os casos de integração foram organizados em quatro categorias, seguindo o contrato HTTP de cada endpoint: sucesso (200 ou 201), falha de validação de contrato (400 ou 422), regra de negócio violada (409) e recurso não encontrado (404). A tabela abaixo consolida onde cada categoria está coberta nos endpoints principais da seção 3.1.4. Quando a categoria não faz sentido para o endpoint, como um conflito de duplicidade em uma consulta, a célula indica que o cenário não se aplica.
+Os casos de integração foram organizados em quatro categorias, seguindo o contrato HTTP de cada endpoint: sucesso (200 ou 201), falha de validação de contrato (400 ou 422), regra de negócio violada (409) e recurso não encontrado (404). A tabela abaixo consolida em que cada categoria está coberta nos endpoints principais da seção 3.1.4. Quando a categoria não faz sentido para o endpoint, como um conflito de duplicidade em uma consulta, a célula indica que o cenário não se aplica.
 
 | Endpoint principal | Sucesso (200/201) | Validação (400/422) | Regra de negócio (409) | Não encontrado (404) |
 |---|---|---|---|---|
