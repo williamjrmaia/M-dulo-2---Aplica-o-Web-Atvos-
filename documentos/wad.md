@@ -188,19 +188,19 @@ Os critérios de classificação de impacto seguem uma escala de cinco níveis: 
 
 <div align="center">
   <sub>Figura 2.1.5.1 - Classificação de Impacto</sub><br>
-  <img src="./assets/matriz_de_risco/classificacao_de_impacto.png" width="100%" alt="Descrição breve"><br>
+  <img src="./assets/matriz_de_risco/classificacao_de_impacto.png" width="100%" alt="Tabela de classificação de impacto dos riscos do projeto"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 2.1.5.2 - Classificação de Probabilidade</sub><br>
-  <img src="./assets/matriz_de_risco/classificacao_de_probabilidade.png" width="100%" alt="Descrição breve"><br>
+  <img src="./assets/matriz_de_risco/classificacao_de_probabilidade.png" width="100%" alt="Tabela de classificação de probabilidade dos riscos do projeto"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
 <div align="center">
   <sub>Figura 2.1.5.3 - Matriz de Risco</sub><br>
-  <img src="./assets/matriz_de_risco/matriz_de_risco.png" width="100%" alt="Descrição breve"><br>
+  <img src="./assets/matriz_de_risco/matriz_de_risco.png" width="100%" alt="Matriz de risco combinando impacto e probabilidade"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1092,7 +1092,7 @@ Dessa forma, o diagrama permite visualizar como os principais fluxos identificad
 
 <div align="center">
   <sub>Figura 3.2.3.1.1 - Diagrama de Classes Arquitetural</sub><br>
-  <img src="/documentos/assets/diagrama_de_classes_arquitetural.png" width="100%" alt="Diagrama de Classes Arquitetural"><br>
+  <img src="./assets/diagrama_de_classes_arquitetural.png" width="100%" alt="Diagrama de Classes Arquitetural"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
 
@@ -1115,7 +1115,7 @@ No fluxo principal, o sistema valida e salva o novo usuário (201). Alternativam
 
 <div align="center">
   <sub>Figura 3.2.4.1 - Primeiro fluxo: Cadastro de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_01_cadastro_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 1"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_01_cadastro_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 1"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1126,7 +1126,7 @@ O fluxo principal valida o nível de acesso e cadastra o usuário (201). Alterna
 
 <div align="center">
   <sub>Figura 3.2.4.2 - Segundo fluxo: Cadastro de usuários (nivel de acesso)</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_02_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 2"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_02_cadastro_nivel_de_acesso.png" width="100%" alt="Diagrama de Sequencia 2"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1135,7 +1135,7 @@ No fluxo principal, o usuário acessa o sistema após validar credenciais (200).
 
 <div align="center">
   <sub>Figura 3.2.4.3 - Terceiro fluxo: Login de usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_03_login.png" width="100%" alt="Diagrama de Sequencia 3"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_03_login.png" width="100%" alt="Diagrama de Sequencia 3"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1144,7 +1144,7 @@ O fluxo principal desativa o usuário com sucesso (200). Alternativas barram IDs
 
 <div align="center">
   <sub>Figura 3.2.4.4 - Quarto fluxo: Inativação usuários</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_04_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_04_inativa_usuario.png" width="100%" alt="Diagrama de Sequencia 4"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1153,7 +1153,7 @@ No fluxo principal, o parceiro é validado e salvo (201). Alternativamente, o si
 
 <div align="center">
   <sub>Figura 3.2.4.5- Quinto fluxo: Cadastro de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_05_cadastro_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_05_cadastro_parceiros.png" width="100%" alt="Diagrama de Sequencia 5"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1162,7 +1162,7 @@ No fluxo principal, o administrador visualiza a trilha de auditoria e valores an
 
 <div align="center">
   <sub>Figura 3.2.4.6 - Sexto fluxo: Consulta histórico de parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_06_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 6"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_06_visualiza_historico.png" width="100%" alt="Diagrama de Sequencia 6"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1171,7 +1171,7 @@ No fluxo principal, o administrador atualiza as informações e o sistema persis
 
 <div align="center">
   <sub>Figura 3.2.4.7 - Sétimo fluxo: Edição dos dados do usuário</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_07_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 7"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_07_edicao_de_usuarios.png" width="100%" alt="Diagrama de Sequencia 7"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1180,7 +1180,7 @@ No fluxo principal, o administrador edita os dados e o sistema salva as alteraç
 
 <div align="center">
   <sub>Figura 3.2.4.8 - Oitavo fluxo: Edição dos dados dos parceiros</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_08_atualiza_parceiros.png" width="100%" alt="Diagrama de Sequencia 8"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_08_atualiza_parceiros.png" width="100%" alt="Diagrama de Sequencia 8"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1189,7 +1189,7 @@ No fluxo principal, o analista cadastra a área e o sistema a vincula à unidade
 
 <div align="center">
   <sub>Figura 3.2.4.9 - Nono fluxo: Cadastro de dados das terras</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_09_cadastro_terras.png" width="100%" alt="Diagrama de Sequencia 9"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_09_cadastro_terras.png" width="100%" alt="Diagrama de Sequencia 9"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1198,7 +1198,7 @@ No fluxo principal, o sistema atualiza as métricas da terra e valida a unidade 
 
 <div align="center">
   <sub>Figura 3.2.4.10 - Decimo fluxo: Edição de dados das terras</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_10_edicao_de_terras.png" width="100%" alt="Diagrama de Sequencia 10"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_10_edicao_de_terras.png" width="100%" alt="Diagrama de Sequencia 10"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1207,7 +1207,7 @@ No fluxo principal, o analista registra o contato e o sistema vincula o históri
 
 <div align="center">
   <sub>Figura 3.2.4.11 - Fluxo 11: Registro de interações</sub><br>
-  <img src="/documentos/assets/diagrama_de_sequencia/fluxo_11_registra_interacoes.png" width="100%" alt="Diagrama de Sequencia 11"><br>
+  <img src="./assets/diagrama_de_sequencia/fluxo_11_registra_interacoes.png" width="100%" alt="Diagrama de Sequencia 11"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -1514,7 +1514,7 @@ Já a interface do Coordenador concentra o cadastro, edição e acompanhamento d
 
 <div align="center">
   <sub>Figura 3.3.2 - Fluxo de cadastro de proprietários cedentes (US02)</sub><br>
-  <img src="./assets/wireframe/cadastrando_proprietarios.png" width="100%" alt="Wireframe do fluxo de cadastro de proprietários cedentes"><br>
+  <img src="./assets/wireframe/baixa_fidelidade/cadastrando_proprietarios.png" width="100%" alt="Wireframe do fluxo de cadastro de proprietários cedentes"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
@@ -1523,7 +1523,7 @@ Este fluxo cobre a US05 aplicada ao perfil de fornecedor de cana. O analista ace
 
 <div align="center">
   <sub>Figura 3.3.3 - Fluxo de atualização de fornecedores de cana (US05)</sub><br>
-  <img src="./assets/wireframe/atualizando_fornecedores.png" width="100%" alt="Wireframe do fluxo de atualização de fornecedores de cana"><br>
+  <img src="./assets/wireframe/baixa_fidelidade/atualizando_fornecedores.png" width="100%" alt="Wireframe do fluxo de atualização de fornecedores de cana"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
@@ -1532,7 +1532,7 @@ A versão da US05 voltada a proprietários cedentes funciona de forma análoga a
 
 <div align="center">
   <sub>Figura 3.3.4 - Fluxo de atualização de proprietários cedentes (US05)</sub><br>
-  <img src="./assets/wireframe/atualizando_proprietarios.png" width="100%" alt="Wireframe do fluxo de atualização de proprietários cedentes"><br>
+  <img src="./assets/wireframe/baixa_fidelidade/atualizando_proprietarios.png" width="100%" alt="Wireframe do fluxo de atualização de proprietários cedentes"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
@@ -1541,7 +1541,7 @@ Este fluxo atende simultaneamente à US04, visualização do perfil detalhado do
 
 <div align="center">
   <sub>Figura 3.3.5 - Fluxo de detalhes e histórico de interações dos fornecedores de cana (US03 e US04)</sub><br>
-  <img src="./assets/wireframe/historico_de_interacoes_e_detalhes_dos_fornecedores.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos fornecedores de cana"><br>
+  <img src="./assets/wireframe/baixa_fidelidade/historico_de_interacoes_e_detalhes_dos_fornecedores.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos fornecedores de cana"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
@@ -1550,7 +1550,7 @@ A versão equivalente para proprietários cedentes atende às mesmas US03 e US04
 
 <div align="center">
   <sub>Figura 3.3.6 - Fluxo de detalhes e histórico de interações dos proprietários cedentes (US03 e US04)</sub><br>
-  <img src="./assets/wireframe/historico_de_interacoes_e_detalhes_dos_proprietarios.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos proprietários cedentes"><br>
+  <img src="./assets/wireframe/baixa_fidelidade/historico_de_interacoes_e_detalhes_dos_proprietarios.png" width="100%" alt="Wireframe dos detalhes e histórico de interações dos proprietários cedentes"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
@@ -1559,7 +1559,7 @@ Este fluxo atende à US07, em que o coordenador exporta a lista de contatos dos 
 
 <div align="center">
   <sub>Figura 3.3.7 - Fluxo de exportação de lista de contatos em CSV (US07)</sub><br>
-  <img src="./assets/wireframe/exportando_CSV.png" width="100%" alt="Wireframe do fluxo de exportação de lista de contatos em CSV"><br>
+  <img src="./assets/wireframe/baixa_fidelidade/exportando_CSV.png" width="100%" alt="Wireframe do fluxo de exportação de lista de contatos em CSV"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Wireframe construído no Excalidraw)</sup>
 </div>
 
@@ -2078,7 +2078,7 @@ A importância do DER em qualquer projeto de software está na clareza e na prev
 
 <div align="center">
   <sub>Figura 3.6.2.1 - Diagrama Entidade-Relacionamento (DER)</sub><br>
-  <img src="/documentos/assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
+  <img src="./assets/diagrama_entidade_relacionamento.png" width="100%" alt="Diagrama Entidade-Relacionamento"><br>
   <sup>Fonte: Material produzido pelos autores, 2026. (Diagrama esquematizado no Mermaid)</sup>
 </div>
 
@@ -3122,13 +3122,13 @@ Os testes automatizados com Jest e Supertest foram desenvolvidos para validar fl
 
 <div align="center">
   <sub>Figura 4.1.1.1</sub><br>
-  <img src="documentos/assets/estrutura_de_pastas_back.png" width="100%" alt="Estrutura de Pastas do Backend"><br>
+  <img src="./assets/estrutura_de_pastas_back.png" width="100%" alt="Estrutura de pastas do backend"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div><br>
 
 <div align="center">
-  <sub>Figura 4.1.1.1</sub><br>
-  <img src="documentos/assets/testes_passando_backend.png" width="100%" alt="Testes do Backend no terminal"><br>
+  <sub>Figura 4.1.1.2</sub><br>
+  <img src="./assets/testes_passando_backend.png" width="100%" alt="Testes do backend executados no terminal"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div><br>
 
@@ -3987,7 +3987,7 @@ Os objetivos estratégicos pretendidos envolvem aumentar a eficiência da gestã
 
 ## 6.2 Análise de Mercado
 
-### 6.2.1 Visão geral do setor (até 250 palavras)
+### 6.2.1 Visão geral do setor
 
 O setor sucroenergético brasileiro está inserido em uma cadeia estratégica para a matriz energética, o agronegócio e o mercado global de commodities agrícolas. Identificou-se que a cana-de-açúcar sustenta a produção de açúcar, etanol e bioenergia, com forte concentração produtiva nas regiões Centro-Sul, Sudeste e Centro-Oeste. Na safra 2025/2026, a produção nacional de cana-de-açúcar foi estimada em 673,2 milhões de toneladas, mesmo diante da redução de produtividade causada por condições climáticas adversas (CONAB, 2026).
 
@@ -3995,7 +3995,7 @@ No campo regulatório, observou-se que o Programa RenovaBio amplia a relevância
 
 Nesse contexto, concluiu-se que soluções digitais de gestão, como o CRM proposto, tornam-se relevantes para empresas que precisam centralizar cadastros, preservar o histórico de relacionamento e garantir a rastreabilidade das interações com fornecedores e parceiros agrícolas.
 
-### 6.2.2 Tamanho e crescimento do mercado (até 250 palavras)
+### 6.2.2 Tamanho e crescimento do mercado
 
 O mercado envolve duas dimensões principais: o setor sucroenergético e as soluções digitais de CRM.
 
@@ -4005,7 +4005,7 @@ No segmento de tecnologia, as soluções de relacionamento apresentam cresciment
 
 Na América Latina, esse mercado gerou US$ 4,944 bilhões em 2024, com previsão de alcançar US$ 10,931 bilhões até 2030 e expansão anual de 14,5%. O Brasil deve liderar esse crescimento na região, o que reforça a oportunidade para a adoção de ferramentas digitais de relacionamento voltadas ao agronegócio (GRAND VIEW RESEARCH, 2025).
 
-### 6.2.3 Tendências de mercado (até 300 palavras)
+### 6.2.3 Tendências de mercado
 
 Identificou-se que a digitalização do agronegócio é uma das principais tendências que influenciam o mercado da aplicação proposta. O Plano de Transformação Digital do Ministério da Agricultura e Pecuária aponta como objetivos a modernização de serviços, a integração de sistemas, a ampliação da transparência e a implementação de soluções inovadoras para atender às demandas do setor agropecuário (MAPA, 2026).
 
@@ -4032,7 +4032,7 @@ Também se destaca o recorte do MVP. A aplicação foi planejada para uso via na
 
 ## 6.4 Público-Alvo
 
-### 6.4.1 Segmentação de mercado (até 250 palavras)
+### 6.4.1 Segmentação de mercado
 
 A proposta de aplicação web atende ao mercado do setor agroindustrial e de bioenergia brasileiro, sendo segmentada com base em critérios institucionais e operacionais específicos da área. A macrosegmentação é voltada para o ambiente de grandes corporações agrícolas que gerenciam altos volumes de contratos com arrendadores de terras, fornecedores de insumos e parceiros agrícolas. Nossa pesquisa tomou a ATVOS como referência, considerando um mercado analisado em grande escala, composto por 8 unidades agroindustriais e 2 escritórios corporativos espalhados pelas regiões Sudeste e Centro-Oeste do país.
 
@@ -4041,7 +4041,7 @@ Já na microsegmentação, nossa solução direciona-se de forma exclusiva aos d
 A União da Indústria de Cana-de-Açúcar e Bioenergia (ÚNICA) e o Centro de Estudos Avançados em Economia Aplicada (CEPEA-ESALQ/USP) foram considerados fontes confiáveis para validar essa segmentação, pois representam um setor que demanda ferramentas de gestão mais complexas e completas do que as utilizadas atualmente, as quais não atendem plenamente às exigências de competitividade e à alta regulamentação do mercado sucroenergético.
 
 
-### 6.4.2 Perfil do público-alvo (até 250 palavras)
+### 6.4.2 Perfil do público-alvo
 
 #### Aspectos demográficos
 
@@ -4057,7 +4057,7 @@ As principais dores estão relacionadas à falta de governança de dados e à pe
 
 ## 6.5 Posicionamento
 
-#### 6.5.1 Proposta de valor única (até 250 palavras)
+#### 6.5.1 Proposta de valor única
 
 A aplicação proposta tem como principal objetivo garantir a centralização e a governança dos dados de relacionamento com parceiros e fornecedores da cadeia agrícola. A construção da proposta de solução foi baseada no *Value Proposition Canvas*, de Alexander Osterwalder, por meio do qual as dores dos usuários são alinhadas à solução tecnológica desenvolvida (Osterwalder et al., 2014). A aplicação web soluciona um problema crônico do mercado: a dependência de planilhas dispersas e de controles manuais para o gerenciamento de dados (Inteli, 2026). Com a nova plataforma, a preservação das informações sobre os 1.137 parceiros de terras e os 108 fornecedores é garantida de forma integral (ATVOS, 2026). Quando analisado sob a ótica do framework, o valor gerado atinge, principalmente, duas frentes de alinhamento com o cliente corporativo:
 
@@ -4113,7 +4113,7 @@ O plano de divulgação interna será estruturado em três fases distintas:
 
 <div align="center">
   <sub>Figura 6.7.1 Business Model Canvas</sub><br>
-  <img src="/documentos/assets/business_model_canvas_safra_control.png" width="100%" alt="Estrutura de Pastas do Backend"><br>
+  <img src="./assets/business_model_canvas_safra_control.png" width="100%" alt="Business Model Canvas do Safra Control"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div><br>
 
