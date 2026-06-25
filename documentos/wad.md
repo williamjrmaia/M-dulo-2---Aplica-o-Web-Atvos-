@@ -3613,7 +3613,63 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 
 ## 4.3. Versão final da aplicação web (sprint 5)
 
-*Descreva e ilustre aqui o desenvolvimento da versão final do sistema web, com foco em refatorações, correções finais e na camada de autenticação/autorização entregue. Utilize prints de tela para ilustrar. Indique obrigatoriamente: (a) o que foi refinado ou adicionado desde a sprint 4, (b) pendências remanescentes, (c) dificuldades técnicas enfrentadas.*
+A Sprint 5 consolidou a versão final do CRM da ATVOS. O esforço concentrou-se em **refinar os fluxos já existentes**, **corrigir inconsistências** expostas pelo uso real, **endurecer a camada de autenticação/autorização** e **estabilizar a suíte de testes**, em vez de adicionar grandes funcionalidades novas. A estrutura do repositório também foi reorganizada para manter código e configurações em `src/`, com a raiz reservada a `.env`, documentação e README.
+
+### 4.3.1. O que foi refinado ou adicionado desde a sprint 4
+
+**Resiliência e configuração**
+- *Timeout de requisição* (`requestTimeout`) e tratamento de banco indisponível/erros de rede, respondendo `503` com cabeçalho `Retry-After` em vez de pendurar conexões (evolução de robustez da API).
+- *Fail-fast de configuração no boot*: o servidor valida variáveis obrigatórias (`JWT_SECRET`, `DATABASE_URL`) na inicialização e aborta com mensagem acionável (incluindo a dica `openssl rand -hex 32`), em vez de subir e quebrar apenas na primeira tentativa de login. No fluxo web, o erro de configuração de autenticação passou a ser exibido em **tela legível**, não mais como JSON cru.
+
+**Camada de autenticação/autorização**
+- Autenticação por **JWT** com **sessões persistidas** e **cookies HttpOnly**, login/logout, primeiro acesso e revogação de acesso.
+- Middlewares `requireAuth` e `authorizeRoles` controlando o acesso por perfil (analista, coordenador, administrador).
+- **Bloqueio de auto-inativação**: um administrador não pode mais inativar a própria conta — a opção é ocultada na interface e a tentativa é barrada no back-end (também pela rota direta), preservando o acesso administrativo.
+
+**Fluxos de parceiros e validação**
+- Papel do parceiro **fornecedor / proprietário / ambos**, representando o mesmo CPF/CNPJ por um único registro com `papel = 'ambos'`.
+- **Restrição de formato** de campos no cadastro (nome do acompanhante apenas letras; telefone apenas números/máscara), com validação no front e no back.
+- **Botão explícito** de envio para validação (antes embutido em um `select`) e **unificação** dos dois botões de cadastro em um único "Cadastrar Parceiro".
+- **Histórico de interações** do parceiro funcionando (listagem cronológica e registro via formulário).
+- **E-mail obrigatório no envio à validação** (RN10): a interface sinaliza que o e-mail é opcional no rascunho e obrigatório para enviar à validação, e o back-end aplica essa regra de forma consistente em todos os caminhos (cadastro, endpoint dedicado e edição).
+
+**Front-end e qualidade**
+- Correções de consistência visual e **acessibilidade** (badges, papéis de ARIA, feedback de busca vazia, confirmação em ações destrutivas).
+- Reorganização da estrutura do repositório (código e configs em `src/`), com README atualizado para o novo fluxo (`cd src && npm ...`).
+
+### 4.3.2. Pendências remanescentes
+
+- **RF024 — Upload de arquivos** vinculados a parceiro/relatório: ainda **Pendente**.
+- **RF025 — Rotina automática periódica** de identificação de registros sem alteração e notificação ao analista/coordenador: ainda **Pendente**.
+- **Dashboard de interações**: disponível apenas como endpoint JSON, **sem view** dedicada.
+- **Logotipo institucional**: a aplicação usa uma marca vetorial em CSS no lugar do ativo de imagem do protótipo de alta fidelidade (diferença visual conhecida em relação ao Figma).
+- **Cobertura de testes**: a camada de *views* é validada por testes de render, mas não há testes end-to-end de navegador automatizados.
+
+### 4.3.3. Dificuldades técnicas enfrentadas
+
+- **Testes contra banco Supabase remoto**: a ausência de um banco de teste isolado por padrão torna a suíte mais lenta (latência de rede) e exige limpeza cuidadosa das cadeias de chave estrangeira entre os testes; foi criado um helper de remoção self-healing para evitar violações de FK em `beforeEach`/`afterEach`.
+- **Consistência UI ↔ back-end**: regras anunciadas na interface (ex.: e-mail obrigatório na validação) precisavam ser garantidas em todos os caminhos de back-end, e não apenas em um deles — corrigido após revisão de código.
+- **Resolução de conflitos de merge request**: o paralelismo de várias tasks tocando as mesmas views/controllers de parceiros e usuários exigiu resolução de conflitos preservando todas as funcionalidades.
+- **Reorganização da estrutura**: mover `package.json` e configs para `src/` exigiu ajustar caminhos internos e o carregamento do `.env` (procurado também no diretório pai), mantendo os comandos `npm` funcionando a partir de `src/`.
+
+### 4.3.4. Evidências visuais (telas)
+
+As capturas da versão final estão em `documentos/assets/aplicacao_web_sprint5/` e ilustram os principais refinamentos da Sprint 5.
+
+![Tela de login](./assets/aplicacao_web_sprint5/login.png)
+*Tela de login da versão final.*
+
+![Listagem de parceiros](./assets/aplicacao_web_sprint5/parceiros-lista.png)
+*Listagem de parceiros com badge de papel (fornecedor/proprietário/ambos) e botão único "Cadastrar Parceiro".*
+
+![Cadastro de parceiro](./assets/aplicacao_web_sprint5/novo-parceiro.png)
+*Formulário de cadastro com seletor de papel e aviso de que o e-mail é opcional no rascunho e obrigatório no envio à validação.*
+
+![Envio para validação sem e-mail](./assets/aplicacao_web_sprint5/envio-validacao-email.png)
+*Tentativa de enviar para validação sem e-mail: a regra (RN10) é aplicada com mensagem clara.*
+
+![Gestão de usuários](./assets/aplicacao_web_sprint5/usuarios.png)
+*Gestão de usuários: a opção "Inativar" não aparece na linha do próprio usuário autenticado.*
 
 # <a name="c5"></a>5. Testes
 
