@@ -4194,11 +4194,45 @@ O plano de divulgação interna será estruturado em três fases distintas:
 
 # <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
 
-*Escreva de que formas a solução da aplicação web atingiu os objetivos descritos na seção 2 deste documento. Indique pontos fortes e pontos a melhorar de maneira geral.*
+O desenvolvimento da aplicação web atingiu os objetivos definidos na Seção 2 deste documento ao disponibilizar uma plataforma centralizada para a gestão de parceiros agrícolas da ATVOS. A solução substituiu o processo anteriormente baseado em planilhas eletrônicas e informações descentralizadas, oferecendo um ambiente único para cadastro de parceiros, gerenciamento de terras, registro de interações, controle de usuários e rastreabilidade das operações realizadas.
 
-*Relacione os pontos de melhorias evidenciados nos testes com planos de ações para serem implementadas. O grupo não precisa implementá-las, pode deixar registrado aqui o plano para ações futuras*
+Durante o desenvolvimento, foram implementados os principais requisitos funcionais identificados junto ao parceiro, contemplando mecanismos de autenticação, autorização baseada em perfis de acesso, validação de cadastros, histórico de alterações e consultas estruturadas às informações. A arquitetura adotada, baseada em Node.js, TypeScript, PostgreSQL e Supabase, proporcionou uma estrutura modular e escalável, favorecendo a separação de responsabilidades, a manutenção do código e a evolução futura da aplicação.
 
-*Relacione também quaisquer outras ideias que o grupo tenha para melhorias futuras*
+Entre os principais pontos fortes da solução destacam-se:
+
+- Centralização das informações de parceiros agrícolas em um único sistema.
+- Redução da dependência de planilhas eletrônicas e controles manuais.
+- Preservação do histórico de relacionamento com parceiros, evitando perda de conhecimento institucional.
+- Padronização dos processos de cadastro, validação e consulta de informações.
+- Implementação de controle de acesso baseado em perfis de usuários.
+- Registro e rastreabilidade das alterações realizadas no sistema.
+- Arquitetura em camadas que facilita manutenção, escalabilidade e evolução da aplicação.
+- Aderência às boas práticas de engenharia de software e arquitetura documentadas ao longo do projeto.
+
+Durante as etapas de validação e testes também foram identificadas oportunidades de melhoria. Embora os fluxos principais tenham atendido aos critérios de aceite estabelecidos, algumas funcionalidades podem ser aprimoradas para oferecer uma experiência ainda mais eficiente aos usuários.
+
+As principais ações planejadas para evolução da plataforma são:
+
+- Ampliar os filtros e mecanismos de pesquisa para facilitar a localização de informações.
+- Otimizar consultas ao banco de dados para melhorar o desempenho em cenários com grandes volumes de registros.
+- Evoluir a interface do usuário para reduzir a quantidade de interações necessárias em operações frequentes.
+- Aprimorar mensagens de feedback e tratamento de erros, tornando a utilização da plataforma mais intuitiva.
+- Expandir a cobertura de testes automatizados, incluindo testes de integração e testes end-to-end.
+- Implementar monitoramento contínuo da aplicação por meio de métricas, logs centralizados e alertas operacionais.
+- Reforçar os mecanismos de segurança com funcionalidades como autenticação multifator e políticas adicionais de proteção de acesso.
+
+Além das melhorias identificadas durante o processo de validação, a solução apresenta potencial para expansão funcional. Entre as possibilidades futuras destacam-se:
+
+- Desenvolvimento de dashboards gerenciais com indicadores estratégicos da área de Negócios Agrícolas.
+- Geração de relatórios analíticos e estatísticos para apoio à tomada de decisão.
+- Integração com outros sistemas corporativos utilizados pela ATVOS, reduzindo retrabalho e duplicidade de informações.
+- Implementação de notificações automáticas para validações pendentes e eventos relevantes.
+- Criação de funcionalidades de importação e exportação de dados em diferentes formatos.
+- Gerenciamento de documentos vinculados aos parceiros agrícolas.
+- Integração com serviços de georreferenciamento para visualização das propriedades rurais.
+- Utilização de técnicas de inteligência artificial para identificação de padrões, geração de recomendações e apoio ao planejamento estratégico.
+
+Em síntese, o projeto atingiu os objetivos estabelecidos durante as etapas iniciais de levantamento de requisitos, entregando uma solução aderente às necessidades da ATVOS e alinhada às boas práticas de arquitetura de software, engenharia de requisitos e desenvolvimento web. A aplicação estabeleceu uma base sólida para futuras evoluções, permitindo que novas funcionalidades sejam incorporadas de forma estruturada, mantendo a qualidade, a rastreabilidade e a governança das informações ao longo do ciclo de vida do sistema.
 
 # <a name="c8"></a>8. Referências (sprints 1 a 5)
 
