@@ -3038,19 +3038,35 @@ O acesso à aplicação é controlado por uma combinação de JWT, sessão persi
 
 ### 3.8.1. Autenticação
 
-*Descreva o fluxo de autenticação implementado: persistência de senha com hash bcrypt/argon2 (parâmetros de custo explícitos e justificados), validação de credenciais e criação de sessão. Senhas em texto plano no banco não são aceitas.*
+A autenticação do Safra Control é centralizada no fluxo de login por e-mail e senha, exposto em `GET /login` e `POST /login`. A requisição passa primeiro pela validação de payload (`loginSchema`), garantindo que apenas credenciais no formato esperado cheguem à camada de serviço. Em seguida, o `AuthService` normaliza o e-mail, consulta o usuário no repositório e aplica a mesma resposta genérica para usuário inexistente, usuário inativo, senha ausente ou senha incorreta: `Credenciais inválidas`. Essa abordagem reduz a exposição de informações sobre quais contas existem ou estão ativas no sistema.
+
+As senhas persistidas no banco não são armazenadas em texto plano. O projeto utiliza `bcrypt` para hash de senha e valida as credenciais com `bcrypt.compare`, comparando a senha informada com o campo `senha_hash` do usuário. Nos fluxos de criação/definição de senha, como primeiro acesso, a senha é persistida com `bcrypt.hash(senha, 10)`. O custo 10 foi adotado por equilibrar segurança e desempenho para o contexto do sistema: torna ataques de força bruta mais custosos, sem degradar de forma perceptível o login e a criação de usuários no volume esperado da aplicação.
+
+Quando as credenciais são válidas, o backend gera um JWT assinado com `JWT_SECRET`, contendo apenas dados mínimos de identificação (`sub`, com o id do usuário, e `email`). O token tem expiração de 8 horas. Para acessos via formulário web, o sistema grava os cookies `auth_token` e `auth_session_id` com `httpOnly`, `sameSite: lax`, `secure` em produção e `maxAge` compatível com a expiração de 8 horas. Para consumo JSON/API, o token, os dados públicos do usuário autenticado e o identificador da sessão são retornados no corpo da resposta. O sistema também possui fluxo de primeiro acesso com token aleatório de 32 bytes, armazenado no banco apenas como hash SHA-256, com validade de 24 horas e uso único para definição inicial de senha.
 
 ### 3.8.2. Controle de sessão
 
-*Descreva o controle de sessão baseado em `session id` persistido em tabela própria, com expiração. Se optar por JWT, justifique a escolha explicando os trade-offs (stateless, não revogável, payload exposto).*
+O controle de sessão combina JWT com uma sessão persistida em tabela própria (`auth_sessoes`). Essa escolha evita depender de um JWT puramente stateless: embora o token assinado facilite o transporte da autenticação por cookie ou cabeçalho `Authorization: Bearer`, a sessão no banco permite revogação, expiração controlada e verificação de vínculo com um usuário ainda ativo.
+
+A cada login bem-sucedido, o sistema cria uma sessão com `usuario_id`, `token`, flag `ativa`, data de criação, data de expiração e campos de revogação (`revogada_em` e `revogada_por`). Em rotas protegidas, o middleware `requireAuth` extrai o token do cabeçalho Bearer ou do cookie `auth_token`, valida a assinatura e a expiração do JWT, consulta uma sessão ativa pelo token e confirma que o usuário da sessão corresponde ao `sub` do JWT. Depois disso, o usuário é recarregado do banco e precisa continuar ativo para que a requisição prossiga.
+
+Esse desenho assume os trade-offs do uso de JWT de forma controlada. O token continua sendo um artefato portátil e assinado, mas seu payload é mínimo e não carrega informações sensíveis. A principal desvantagem é a necessidade de consultar o banco em cada rota protegida, porém esse custo é intencional para permitir revogação imediata. O logout encerra a sessão e remove os cookies; a rota `PUT /auth/sessoes/:id` permite revogação explícita; e a inativação de um usuário encerra todas as suas sessões ativas, impedindo que um token ainda dentro da validade continue acessando o sistema.
 
 ### 3.8.3. Autorização
 
-*Descreva as regras de autorização por rota e por operação, baseadas no perfil do usuário autenticado. A verificação deve ocorrer no backend — o frontend nunca é fonte de verdade para autorização.*
+A autorização é aplicada no backend por meio dos middlewares `requireAuth` e `authorizeRoles`. O frontend pode ocultar ou exibir ações para melhorar a experiência do usuário, mas não é fonte de verdade para autorização: toda rota protegida precisa passar pela autenticação e, quando necessário, pela checagem explícita de perfil antes de executar a operação.
+
+O sistema trabalha com três perfis principais: `analista`, `coordenador` e `administrador`. Rotas de usuários (`/usuarios` e `/api/usuarios`) são restritas ao perfil `administrador`, pois envolvem criação, edição, alteração de perfil e inativação de contas. Em parceiros e terras, operações de cadastro, vínculo, envio para validação e remoção lógica são liberadas para `analista` e `administrador`, enquanto consultas, listagens e edições operacionais podem ser acessadas pelos perfis autorizados no respectivo fluxo (`analista`, `coordenador` e `administrador`). As ações de validação, aprovação, devolução, exportação e dashboards gerenciais são restritas a `coordenador` e `administrador`.
+
+Quando um usuário não autenticado tenta acessar uma rota protegida, o backend redireciona para `/login` em fluxos HTML ou retorna `401` em chamadas JSON/API. Quando o usuário está autenticado, mas não possui o perfil exigido, o backend retorna `403` para API ou renderiza a página de erro apropriada no fluxo web. Assim, as permissões ficam concentradas nas rotas e operações do servidor, e não em controles visuais do cliente.
 
 ### 3.8.4. Estratégias de Resiliência
 
-*Descreva as estratégias aplicadas no tratamento de falhas de rede: timeout, retry com backoff exponencial, circuit breaker e idempotência em operações críticas (`PUT`, `DELETE`, operações de pagamento etc.).*
+O backend possui estratégias de resiliência voltadas principalmente para contenção de requisições lentas e tratamento uniforme de falhas transitórias. O middleware `requestTimeout` define um limite de tempo por requisição, configurável por `REQUEST_TIMEOUT_MS` e com padrão de 15 segundos. Quando esse limite é atingido antes de uma resposta, o servidor retorna `503 Service Unavailable` com cabeçalho `Retry-After: 5`, indicando ao cliente que a operação pode ser tentada novamente após curto intervalo. O temporizador é limpo nos eventos de `finish` e `close`, evitando vazamento de recursos.
+
+O tratamento global de erros (`errorHandler`) diferencia erros de domínio, erros inesperados e falhas de infraestrutura. Códigos comuns de rede, como `ECONNREFUSED`, `ENOTFOUND`, `ETIMEDOUT`, `EAI_AGAIN`, `ECONNRESET` e `EPIPE`, além de códigos SQLSTATE associados a indisponibilidade ou interrupção do PostgreSQL, são mapeados para `503` com `Retry-After: 5`. Erros conhecidos da aplicação preservam seus status específicos, enquanto falhas inesperadas são convertidas em resposta genérica `500`, sem expor detalhes internos ao usuário final.
+
+O projeto não implementa, nesta versão, um mecanismo interno de retry com backoff exponencial nem circuit breaker no backend. Em vez disso, sinaliza falhas transitórias de forma padronizada para que o cliente ou a camada de chamada possa decidir quando repetir a operação. Nas operações críticas implementadas, a resiliência é reforçada por validações de estado e identificador: encerramento de sessão já revogada retorna conflito controlado, exclusões são tratadas como inativação lógica quando aplicável, e atualizações `PUT` passam por validação de schema antes de alterar dados. Para operações futuras com maior risco de duplicidade, como pagamentos ou integrações externas sensíveis, recomenda-se acrescentar chaves de idempotência e política formal de retry/backoff.
 
 ## 3.9. Matriz de Rastreabilidade (RTM) (sprints 3 a 5)
 
@@ -3598,12 +3614,6 @@ A integração geral funciona assim: o usuário acessa uma view protegida; o mid
 
 ## 5.1. Relatório de testes de integração de endpoints automatizados (sprint 4)
 
-*Liste e descreva os testes automatizados dos endpoints criados e planejados para sua solução, implementados com **Jest**. Cubra as duas abordagens:*
-
-- ***White-box*** *— testes unitários de Service que exercitam ramos internos, exceções e regras de negócio (conhecimento da implementação).*
-- ***Black-box*** *— testes de integração dos endpoints via Jest + Supertest, verificando apenas o contrato HTTP (status, body, efeito observável), sem depender da implementação interna.*
-
-*Posicione aqui também o relatório de cobertura de testes Jest se houver (através de link ou transcrito para estrutura markdown).*
 
 ### 5.1.1 Estratégia de Testes
 
