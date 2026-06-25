@@ -3704,11 +3704,11 @@ Os cinco casos cobrem os três fluxos críticos citados na seção 5.1.1 e equil
 
 ### 5.1.3 Testes de Integração de Endpoints (black-box)
 
-Os testes de integração verificam o sistema do ponto de vista de quem consome a API. Cada caso envia uma requisição HTTP de verdade para um endpoint e confere três coisas: o status retornado, o corpo da resposta e o efeito gravado no banco. Diferente dos testes unitários da 5.1.2, que chamam o service direto e conhecem a implementação, esses testes tratam a aplicação como uma caixa preta, em que só importa o contrato que o endpoint promete cumprir. Esta subseção apresenta como o ambiente desses testes foi montado. Os casos cobertos por endpoint são detalhados na sequência.
+Os testes de integração verificam o sistema do ponto de vista de quem consome a API. Cada caso envia uma requisição HTTP real para um endpoint e confere três coisas: o status retornado, o corpo da resposta e o efeito gravado no banco. Diferentemente dos testes unitários da seção 5.1.2, que chamam o service diretamente e conhecem a implementação, esses testes tratam a aplicação como uma caixa preta, em que só importa o contrato que o endpoint promete cumprir. Esta subseção apresenta como o ambiente desses testes foi montado. Os casos cobertos por endpoint são detalhados na sequência.
 
 #### Ambiente de integração
 
-A ferramenta usada é o Supertest, em conjunto com o Jest. O Supertest recebe a aplicação Express exportada por src/app.ts e simula as requisições dentro do próprio processo de teste, sem abrir porta de rede. Para isso funcionar, o app.ts apenas monta middlewares e rotas e exporta o objeto da aplicação. Quem sobe o servidor de verdade é o src/server.ts, que chama listen somente quando executado de forma direta. Essa separação permite que cada spec importe o app e faça chamadas com request(app) como se fosse um cliente externo.
+A ferramenta usada é o Supertest, em conjunto com o Jest. O Supertest recebe a aplicação Express exportada por src/app.ts e simula as requisições dentro do próprio processo de teste, sem abrir porta de rede. Para que isso funcione, o app.ts apenas monta middlewares e rotas e exporta o objeto da aplicação. Quem sobe o servidor de verdade é o src/server.ts, que chama listen somente quando executado de forma direta. Essa separação permite que cada spec importe o app e faça chamadas com request(app) como se fosse um cliente externo.
 
 O banco usado pelos testes é definido pela variável de ambiente DATABASE_URL_TEST. Quando o Jest executa, a variável NODE_ENV recebe o valor test de forma automática, e o arquivo src/config/connection.ts passa a usar a URL de teste no lugar da URL principal. Assim, a conexão dos testes fica separada da configuração usada pelo servidor em operação normal. O arquivo src/tests/jest.setup.ts completa o ambiente carregando o .env e definindo valores padrão para as variáveis que os testes precisam, como o segredo de assinatura dos tokens de sessão.
 
@@ -3718,7 +3718,7 @@ A validação do ambiente é feita pela própria suíte. Os specs de controller 
 
 #### Casos cobertos por endpoint
 
-Os casos de integração foram organizados em quatro categorias, seguindo o contrato HTTP de cada endpoint: sucesso (200 ou 201), falha de validação de contrato (400 ou 422), regra de negócio violada (409) e recurso não encontrado (404). A tabela abaixo consolida onde cada categoria está coberta nos endpoints principais da seção 3.1.4. Quando a categoria não faz sentido para o endpoint, como um conflito de duplicidade em uma consulta, a célula indica que o cenário não se aplica.
+Os casos de integração foram organizados em quatro categorias, seguindo o contrato HTTP de cada endpoint: sucesso (200 ou 201), falha de validação de contrato (400 ou 422), regra de negócio violada (409) e recurso não encontrado (404). A tabela abaixo consolida em que cada categoria está coberta nos endpoints principais da seção 3.1.4. Quando a categoria não faz sentido para o endpoint, como um conflito de duplicidade em uma consulta, a célula indica que o cenário não se aplica.
 
 | Endpoint principal | Sucesso (200/201) | Validação (400/422) | Regra de negócio (409) | Não encontrado (404) |
 |---|---|---|---|---|
