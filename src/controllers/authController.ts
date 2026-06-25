@@ -100,7 +100,10 @@ export class AuthController {
     } catch (error) {
       const { status, message } = mapErroLogin(error);
 
-      if (status === 401) {
+      // No fluxo web, qualquer falha de login (credenciais ou configuração
+      // ausente) é exibida na própria tela de login, de forma legível, em vez
+      // de devolver um JSON cru ao usuário.
+      if (loginWeb) {
         return responderLogin(res, loginWeb, status, { error: message, email });
       }
       return res.status(status).json({ error: message });
