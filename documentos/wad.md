@@ -3896,11 +3896,11 @@ Os testes de usabilidade foram realizados com 5 participantes: 3 alunos da turma
 ### Priorização de melhorias
 
 | Tarefa | Severidade | Descrição do problema e potencial melhoria | Participantes afetados |
-|--------|-----------|---------------------------------------------|----------------------|
-| Tarefa 3 | **4 — Catastrófico** | O histórico de interações não está sendo registrado após o cadastro. A interação é aparentemente salva, mas não aparece listada no perfil do parceiro. Deve ser corrigido imediatamente antes de qualquer entrega do produto. | Todos (1, 2, 3, 4, 5) |
-| Tarefa 1 | **3 — Grave** | O botão/caminho para "Enviar para validação" não é intuitivo. Todos os participantes tiveram dificuldade ou falharam nessa etapa. Reavaliar nomenclatura, posicionamento ou destaque visual da ação. | Todos (1, 2, 3, 4, 5) |
-| Tarefa 2 | **3 — Grave** | Campos de texto do cadastro de parceiros não possuem validação adequada de tipo (apenas letras ou apenas números em determinados campos), permitindo entradas inválidas. | Participante 4 |
-| Tarefa 2 | **3 — Grave** | O sistema não permite usar o mesmo CPF para cadastrar uma pessoa como fornecedor e como proprietário simultaneamente. É necessário definir se esse comportamento é uma regra de negócio válida ou um bug a ser corrigido. | Participante 4 |
+|--------|------------|---------------------------------------------|------------------------|
+| Tarefa 3 | **4 — Catastrófico** | O histórico de interações não está sendo registrado após o cadastro. A interação aparentemente é salva, mas não aparece listada no perfil do parceiro. Esse problema deve ser corrigido imediatamente antes de qualquer entrega do produto. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 1 | **3 — Grave** | O botão ou caminho para "Enviar para validação" não é intuitivo. Todos os participantes tiveram dificuldade ou falharam nessa etapa. Recomenda-se reavaliar a nomenclatura, o posicionamento ou o destaque visual da ação. | Todos (1, 2, 3, 4, 5) |
+| Tarefa 2 | **3 — Grave** | Os campos de texto do cadastro de parceiros não possuem validação adequada quanto ao tipo de dado (apenas letras ou apenas números em determinados campos), permitindo a inserção de entradas inválidas. | Participante 4 |
+| Tarefa 2 | **3 — Grave** | O sistema não permite utilizar o mesmo CPF para cadastrar uma pessoa como fornecedora e como proprietária simultaneamente. É necessário definir se esse comportamento corresponde a uma regra de negócio válida ou se é um bug que deve ser corrigido. | Participante 4 |
 
 ---
 
