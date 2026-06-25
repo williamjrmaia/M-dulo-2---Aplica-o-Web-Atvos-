@@ -114,12 +114,12 @@ describe('controllers HTML de parceiros usam usuário autenticado', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('permite analista enviar rascunho de parceiro para pendente', async () => {
+  it('permite analista enviar rascunho de parceiro para pendente (com e-mail)', async () => {
     const usuarioId = randomUUID();
     const parceiroId = randomUUID();
     const req = {
       params: { id: parceiroId },
-      body: { status: 'pendente' },
+      body: { status: 'pendente', email: 'parceiro@atvos.com' },
       usuario: { id: usuarioId, perfil: 'analista' },
     };
     const res = criarResposta();
@@ -134,8 +134,32 @@ describe('controllers HTML de parceiros usam usuário autenticado', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('permite analista reenviar parceiro devolvido para pendente', async () => {
+  it('permite analista reenviar parceiro devolvido para pendente (com e-mail)', async () => {
     (obterParceiroPorId as jest.Mock).mockResolvedValueOnce({ status: 'devolvido' });
+    const usuarioId = randomUUID();
+    const parceiroId = randomUUID();
+    const req = {
+      params: { id: parceiroId },
+      body: { status: 'pendente', email: 'parceiro@atvos.com' },
+      usuario: { id: usuarioId, perfil: 'analista' },
+    };
+    const res = criarResposta();
+    const next = jest.fn();
+
+    await processarEdicao(req as any, res as any, next);
+
+    expect(editarParceiro).toHaveBeenCalledWith(
+      parceiroId,
+      expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  // RN10 / follow-up do #483: enviar para validação pela edição sem e-mail
+  // (nem no corpo nem no registro salvo) deve ser bloqueado, fechando a
+  // inconsistência entre o aviso da UI e o back-end.
+  it('bloqueia analista ao enviar parceiro para pendente sem e-mail', async () => {
+    (obterParceiroPorId as jest.Mock).mockResolvedValueOnce({ status: 'rascunho', email: null });
     const usuarioId = randomUUID();
     const parceiroId = randomUUID();
     const req = {
@@ -148,9 +172,13 @@ describe('controllers HTML de parceiros usam usuário autenticado', () => {
 
     await processarEdicao(req as any, res as any, next);
 
-    expect(editarParceiro).toHaveBeenCalledWith(
-      parceiroId,
-      expect.objectContaining({ status: 'pendente', atualizado_por: usuarioId })
+    expect(editarParceiro).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.render).toHaveBeenCalledWith(
+      'parceiros/edit',
+      expect.objectContaining({
+        error: 'Preencha o e-mail antes de enviar o parceiro para validação',
+      })
     );
     expect(next).not.toHaveBeenCalled();
   });
