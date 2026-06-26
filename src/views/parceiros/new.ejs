@@ -44,15 +44,27 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label" for="papel">Papel <span class="optional">(opcional)</span></label>
+            <select class="form-select" id="papel" name="papel">
+              <option value="">Selecione...</option>
+              <option value="fornecedor" <%= dados.papel === 'fornecedor' ? 'selected' : '' %>>Fornecedor</option>
+              <option value="proprietario" <%= dados.papel === 'proprietario' ? 'selected' : '' %>>Proprietário</option>
+              <option value="ambos" <%= dados.papel === 'ambos' ? 'selected' : '' %>>Ambos (fornecedor e proprietário)</option>
+            </select>
+            <p class="form-help">Use <strong>“Ambos”</strong> quando o mesmo parceiro (mesmo CPF/CNPJ) for fornecedor e proprietário.</p>
+          </div>
+
+          <div class="form-group">
             <label class="form-label" for="apelido">Apelido <span class="optional">(opcional)</span></label>
             <input class="form-control" type="text" id="apelido" name="apelido"
               value="<%= dados.apelido || '' %>" placeholder="Como o parceiro é conhecido" />
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="email">E-mail <span class="optional">(opcional)</span></label>
+            <label class="form-label" for="email">E-mail <span class="optional">(opcional no rascunho)</span></label>
             <input class="form-control" type="email" id="email" name="email"
               value="<%= dados.email || '' %>" placeholder="contato@parceiro.com.br" />
+            <p class="form-help">Pode ficar em branco ao salvar como rascunho, mas é <strong>obrigatório para enviar o registro à validação</strong>.</p>
           </div>
 
           <div class="form-group">
@@ -64,13 +76,15 @@
           <div class="form-group">
             <label class="form-label" for="nome_acompanhante">Nome do acompanhante <span class="optional">(opcional)</span></label>
             <input class="form-control" type="text" id="nome_acompanhante" name="nome_acompanhante"
-              value="<%= dados.nome_acompanhante || '' %>" placeholder="Pessoa de contato no parceiro" />
+              value="<%= dados.nome_acompanhante || '' %>" placeholder="Pessoa de contato no parceiro"
+              data-only-letters pattern="[A-Za-zÀ-ÿ\s'.\-]+" title="Apenas letras" />
           </div>
 
           <div class="form-group">
             <label class="form-label" for="telefone">Telefone <span class="optional">(opcional)</span></label>
             <input class="form-control" type="text" id="telefone" name="telefone"
-              value="<%= dados.telefone || '' %>" placeholder="(00) 00000-0000" data-mask="telefone" />
+              value="<%= dados.telefone || '' %>" placeholder="(00) 00000-0000" data-mask="telefone"
+              data-only-numbers inputmode="tel" pattern="[0-9()+\-\s]+" title="Apenas números" />
           </div>
 
           <div class="form-group">
@@ -124,5 +138,21 @@
     </div>
   </form>
 </section>
+
+<script>
+  // Restringe a digitação: campos "apenas letras" e "apenas números" (com máscara de telefone).
+  (function () {
+    document.querySelectorAll('[data-only-letters]').forEach(function (el) {
+      el.addEventListener('input', function () {
+        this.value = this.value.replace(/[^A-Za-zÀ-ÿ\s'.\-]/g, '');
+      });
+    });
+    document.querySelectorAll('[data-only-numbers]').forEach(function (el) {
+      el.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9()+\-\s]/g, '');
+      });
+    });
+  })();
+</script>
 
 <%- include('../partials/footer') %>

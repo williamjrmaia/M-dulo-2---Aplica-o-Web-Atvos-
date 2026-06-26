@@ -16,12 +16,16 @@ import {
   vincularTerraAoParceiro as vincularTerraAoParceiroService,
 } from '../services/parceiroService';
 import { AppError, ForbiddenError, NotFoundError, ValidationError } from '../errors/AppError';
+import { InteracaoService } from '../services/interacaoService';
+import { InteracaoRepository } from '../repositories/interacaoRepository';
 import { listarParceirosFiltrosSchema } from '../schemas/parceiroFiltros.schema';
 import { vincularTerraAoParceiroSchema } from '../schemas/parceiroTerra.schema';
 import { aprovarParceiroSchema } from '../schemas/parceiroAprovacao.schema';
 import { devolverParceiroSchema } from '../schemas/parceiroDevolucao.schema';
 import { enviarParceiroValidacaoSchema } from '../schemas/parceiroValidacao.schema';
 import { parseOrThrow } from '../helpers/validacaoZod';
+
+const interacaoService = new InteracaoService(new InteracaoRepository());
 
 type RequestComUsuario = Request & {
   usuario?: {
@@ -98,6 +102,7 @@ const CAMPOS_EDITAVEIS_FORMULARIO = [
   'tch_medio',
   'atr_medio',
   'observacoes',
+  'papel',
   'status',
 ] as const;
 
@@ -150,6 +155,50 @@ function validarTipoPessoa(tipoPessoa: unknown): void {
   }
 }
 
+// Apenas letras (com espaços, acentos, apóstrofo, ponto e hífen) — para nomes de pessoa.
+const REGEX_APENAS_LETRAS = /^[A-Za-zÀ-ÿ\s'.-]+$/;
+// Apenas números e símbolos de máscara de telefone (parênteses, +, hífen, espaço).
+const REGEX_TELEFONE = /^[0-9()+\-\s]+$/;
+
+// Valida o formato de campos específicos do cadastro de parceiro:
+// nome_acompanhante deve ter apenas letras; telefone apenas números (e máscara).
+// Campos vazios/ausentes são ignorados (validação de obrigatoriedade é separada).
+function validarFormatoCamposParceiro(campos: {
+  nome_acompanhante?: unknown;
+  telefone?: unknown;
+}): void {
+  const nomeAcompanhante = campos.nome_acompanhante;
+  if (
+    typeof nomeAcompanhante === 'string' &&
+    nomeAcompanhante.trim() !== '' &&
+    !REGEX_APENAS_LETRAS.test(nomeAcompanhante.trim())
+  ) {
+    throw new ValidationError('Nome do acompanhante deve conter apenas letras');
+  }
+
+  const telefone = campos.telefone;
+  if (
+    typeof telefone === 'string' &&
+    telefone.trim() !== '' &&
+    !REGEX_TELEFONE.test(telefone.trim())
+  ) {
+    throw new ValidationError('Telefone deve conter apenas números');
+  }
+}
+const PAPEIS_VALIDOS = ['fornecedor', 'proprietario', 'ambos'] as const;
+type PapelParceiro = (typeof PAPEIS_VALIDOS)[number];
+
+// Normaliza o papel do parceiro (fornecedor | proprietario | ambos). Vazio/ausente
+// vira undefined; valor inválido lança erro. "ambos" permite que um único CPF
+// represente fornecedor e proprietário ao mesmo tempo.
+function normalizarPapel(papel: unknown): PapelParceiro | undefined {
+  if (papel === undefined || papel === null || papel === '') return undefined;
+  if (typeof papel === 'string' && (PAPEIS_VALIDOS as readonly string[]).includes(papel)) {
+    return papel as PapelParceiro;
+  }
+  throw new ValidationError('papel deve ser "fornecedor", "proprietario" ou "ambos"');
+}
+
 function validarEntradaCreateParceiro(
   nome: unknown,
   tipoPessoa: unknown,
@@ -198,10 +247,12 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     tch_medio,
     atr_medio,
     observacoes,
+    papel,
     status,
   } = req.body;
 
   validarEntradaCreateParceiro(nome, tipo_pessoa, cpf_cnpj, criado_por);
+  validarFormatoCamposParceiro({ nome_acompanhante, telefone });
 
   const parceiro = await cadastrarParceiro({
     nome,
@@ -220,6 +271,7 @@ export const createParceiro = asyncHandler(async (req: Request, res: Response) =
     tch_medio: textoOpcional(tch_medio),
     atr_medio: textoOpcional(atr_medio),
     observacoes: textoOpcional(observacoes),
+    papel: normalizarPapel(papel),
     status: statusInicialParceiro(status),
   });
 
@@ -285,6 +337,12 @@ export const editarParceiro = asyncHandler(async (req: Request, res: Response) =
 
   if (perfilAutenticado === 'analista' && status !== undefined) {
     validarAlteracaoStatusAnalista(parceiroAtual.status, status);
+  }
+
+  // RN10: enviar para validação (status -> pendente) exige e-mail; considera o
+  // valor informado na edição ou, se ausente, o já salvo.
+  if (status === 'pendente') {
+    validarEmailParaValidacao(true, email !== undefined ? email : parceiroAtual.email);
   }
 
   const parceiro = await editarParceiroService(id, {
@@ -429,6 +487,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
     tch_medio,
     atr_medio,
     observacoes,
+    papel,
     acao,
   } = req.body;
   const enviarParaValidacao = acao === 'validacao';
@@ -436,6 +495,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
 
   try {
     validarCadastroParceiro(nome, tipo_pessoa, cpf_cnpj, enviarParaValidacao, email);
+    validarFormatoCamposParceiro({ nome_acompanhante, telefone });
 
     await cadastrarParceiro({
       nome,
@@ -454,6 +514,7 @@ export const processarCadastro = asyncHandler(async (req: Request, res: Response
       tch_medio: textoOpcional(tch_medio),
       atr_medio: textoOpcional(atr_medio),
       observacoes: textoOpcional(observacoes),
+      papel: normalizarPapel(papel),
       status: enviarParaValidacao ? 'pendente' : 'rascunho',
     });
 
@@ -486,11 +547,14 @@ export const renderDetalheParceiro = asyncHandler(async (req: Request, res: Resp
   const id = req.params.id as string;
 
   try {
+    const usuarioId = obterUsuarioAutenticadoIdOpcional(req, res);
     const parceiro = await obterParceiroPorIdService(id, {
       incluirInativos: obterPerfilAutenticado(req, res) === 'administrador',
-      rascunhosUsuarioId: obterUsuarioAutenticadoIdOpcional(req, res),
+      rascunhosUsuarioId: usuarioId,
     });
-    res.render('parceiros/show', { parceiro, naoEncontrado: false });
+    // Carrega as interações registradas para exibir no "Histórico de Interações".
+    const interacoes = await interacaoService.listarInteracoesPorParceiro(id);
+    res.render('parceiros/show', { parceiro, interacoes, usuarioId, naoEncontrado: false });
   } catch (err) {
     if (err instanceof NotFoundError) {
       res.status(404).render('parceiros/show', { parceiro: null, naoEncontrado: true });
@@ -524,6 +588,10 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 
   try {
     validarEdicaoParceiro(camposEditaveis, tipo_pessoa);
+    validarFormatoCamposParceiro(camposEditaveis);
+    if (camposEditaveis.papel !== undefined) {
+      camposEditaveis.papel = normalizarPapel(camposEditaveis.papel);
+    }
 
     const perfilAutenticado = obterPerfilAutenticado(req, res);
     validarStatusInativoCoordenador(perfilAutenticado, status);
@@ -535,6 +603,16 @@ export const processarEdicao = asyncHandler(async (req: Request, res: Response) 
 
     if (perfilAutenticado === 'analista' && status) {
       validarAlteracaoStatusAnalista(parceiroAtual.status, status);
+    }
+
+    // RN10: ao enviar o registro para validação (status -> pendente), o e-mail
+    // é obrigatório. Considera o valor resultante (o informado na edição ou,
+    // se não alterado, o que já está salvo). Fecha a inconsistência entre o
+    // aviso da UI e o back-end neste caminho de edição.
+    if (status === 'pendente') {
+      const emailResultante =
+        camposEditaveis.email !== undefined ? camposEditaveis.email : parceiroAtual.email;
+      validarEmailParaValidacao(true, emailResultante);
     }
 
     await editarParceiroService(id, { ...camposEditaveis, atualizado_por: usuarioId });

@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="flash flash-info" role="note">
+  <div class="flash flash-info" role="status">
     <span class="flash-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>
     <span class="flash-text"><strong>Preencha apenas os campos que deseja alterar.</strong> Campos em branco não serão modificados (comportamento PATCH).</span>
   </div>
@@ -53,13 +53,24 @@
           </div>
 
           <div class="form-group">
+            <label class="form-label" for="papel">Papel</label>
+            <select class="form-select" id="papel" name="papel">
+              <option value="">(não alterar)</option>
+              <option value="fornecedor" <%= dados.papel === 'fornecedor' ? 'selected' : '' %>>Fornecedor</option>
+              <option value="proprietario" <%= dados.papel === 'proprietario' ? 'selected' : '' %>>Proprietário</option>
+              <option value="ambos" <%= dados.papel === 'ambos' ? 'selected' : '' %>>Ambos (fornecedor e proprietário)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label class="form-label" for="apelido">Apelido</label>
             <input class="form-control" type="text" id="apelido" name="apelido" value="<%= dados.apelido || '' %>" />
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="email">E-mail</label>
+            <label class="form-label" for="email">E-mail <span class="optional">(opcional no rascunho)</span></label>
             <input class="form-control" type="email" id="email" name="email" value="<%= dados.email || '' %>" />
+            <p class="form-help">Pode ficar em branco ao salvar como rascunho, mas é <strong>obrigatório para enviar o registro à validação</strong>.</p>
           </div>
 
           <div class="form-group">
@@ -69,12 +80,12 @@
 
           <div class="form-group">
             <label class="form-label" for="nome_acompanhante">Nome do acompanhante</label>
-            <input class="form-control" type="text" id="nome_acompanhante" name="nome_acompanhante" value="<%= dados.nome_acompanhante || '' %>" />
+            <input class="form-control" type="text" id="nome_acompanhante" name="nome_acompanhante" value="<%= dados.nome_acompanhante || '' %>" data-only-letters pattern="[A-Za-zÀ-ÿ\s'.\-]+" title="Apenas letras" />
           </div>
 
           <div class="form-group">
             <label class="form-label" for="telefone">Telefone</label>
-            <input class="form-control" type="text" id="telefone" name="telefone" value="<%= dados.telefone || '' %>" data-mask="telefone" />
+            <input class="form-control" type="text" id="telefone" name="telefone" value="<%= dados.telefone || '' %>" data-mask="telefone" data-only-numbers inputmode="tel" pattern="[0-9()+\-\s]+" title="Apenas números" />
           </div>
 
           <div class="form-group">
@@ -109,13 +120,17 @@
 
           <div class="form-group">
             <label class="form-label" for="status">Status</label>
-            <select class="form-select" id="status" name="status">
-              <option value="">(não alterar)</option>
-              <% if (analistaAtual) { %>
-                <% if (['rascunho', 'devolvido'].includes(dados.status)) { %>
-                  <option value="pendente">Enviar para validação</option>
-                <% } %>
+            <% if (analistaAtual) { %>
+              <%# Analista nao altera o status por aqui: usa o botao explicito "Enviar para validacao". %>
+              <input type="hidden" name="status" id="status" value="" />
+              <% if (['rascunho', 'devolvido'].includes(dados.status)) { %>
+                <p class="form-help">Para enviar este registro para validação, use o botão <strong>“Enviar para validação”</strong> abaixo.</p>
               <% } else { %>
+                <p class="form-help">Status atual: <strong><%= dados.status %></strong></p>
+              <% } %>
+            <% } else { %>
+              <select class="form-select" id="status" name="status">
+                <option value="">(não alterar)</option>
                 <option value="rascunho" <%= dados.status === 'rascunho' ? 'selected' : '' %>>Rascunho</option>
                 <option value="pendente" <%= dados.status === 'pendente' ? 'selected' : '' %>>Pendente</option>
                 <option value="ativo" <%= dados.status === 'ativo' ? 'selected' : '' %>>Ativo</option>
@@ -123,8 +138,8 @@
                 <% if (!coordenadorAtual) { %>
                   <option value="inativo" <%= dados.status === 'inativo' ? 'selected' : '' %>>Inativo</option>
                 <% } %>
-              <% } %>
-            </select>
+              </select>
+            <% } %>
           </div>
 
           <div class="form-group span-2">
@@ -135,7 +150,7 @@
           <% if (analistaAtual && dados.status === 'devolvido' && dados.comentario_devolucao) { %>
             <div class="form-group span-2">
               <label class="form-label">Comentário da devolução</label>
-              <div class="flash flash-warning" role="note">
+              <div class="flash flash-warning" role="status">
                 <span class="flash-text"><%= dados.comentario_devolucao %></span>
               </div>
             </div>
@@ -147,8 +162,40 @@
     <div class="form-actions">
       <a href="/parceiros/<%= id %>" class="btn btn-secondary">Cancelar</a>
       <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+      <% if (analistaAtual && ['rascunho', 'devolvido'].includes(dados.status)) { %>
+        <button type="submit" class="btn btn-export" data-enviar-validacao>Enviar para validação</button>
+      <% } %>
     </div>
   </form>
+
+  <script>
+    // Restringe a digitação: campos "apenas letras" e "apenas números" (com máscara de telefone).
+    (function () {
+      document.querySelectorAll('[data-only-letters]').forEach(function (el) {
+        el.addEventListener('input', function () {
+          this.value = this.value.replace(/[^A-Za-zÀ-ÿ\s'.\-]/g, '');
+        });
+      });
+      document.querySelectorAll('[data-only-numbers]').forEach(function (el) {
+        el.addEventListener('input', function () {
+          this.value = this.value.replace(/[^0-9()+\-\s]/g, '');
+        });
+      });
+    })();
+  </script>
+
+  <% if (analistaAtual) { %>
+    <script>
+      (function () {
+        var btn = document.querySelector('[data-enviar-validacao]');
+        var statusInput = document.getElementById('status');
+        if (btn && statusInput) {
+          // Ao clicar no botao explicito, marca o envio para validacao (status=pendente).
+          btn.addEventListener('click', function () { statusInput.value = 'pendente'; });
+        }
+      })();
+    </script>
+  <% } %>
 </section>
 
 <%- include('../partials/footer') %>

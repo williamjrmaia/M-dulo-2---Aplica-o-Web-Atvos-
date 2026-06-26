@@ -47,7 +47,8 @@
                 <% } %>
                 <a href="/terras/<%= t.id %>/editar" class="btn btn-primary btn-sm">Editar</a>
                 <% if (podeInativarTerras && t.status !== 'inativo') { %>
-                  <form method="POST" action="/terras/<%= t.id %>/inativar">
+                  <form method="POST" action="/terras/<%= t.id %>/inativar" class="inline-form"
+                    onsubmit="return confirm('Tem certeza que deseja inativar a terra &quot;<%= t.nome %>&quot;? Esta ação faz a exclusão lógica do registro.');">
                     <button type="submit" class="btn btn-danger-outline btn-sm">Inativar</button>
                   </form>
                 <% } %>

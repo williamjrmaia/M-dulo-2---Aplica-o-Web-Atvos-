@@ -6,7 +6,19 @@
 
 # Safra Control
 
-Sistema web de CRM agrícola desenvolvido para a ATVOS no Módulo 2 do Inteli. A aplicação centraliza o cadastro e o relacionamento com fornecedores de cana-de-açúcar e proprietários cedentes, preservando histórico, responsáveis pelas alterações e vínculos com terras.
+Safra Control é uma aplicação web de CRM agrícola desenvolvida pelo grupo Atwatts, no Módulo 2 do Inteli, para apoiar a ATVOS na gestão do relacionamento com parceiros de terras, fornecedores de cana-de-açúcar e proprietários cedentes. O projeto responde a um problema operacional recorrente no setor sucroenergético: informações estratégicas dispersas em planilhas, e-mails, anotações individuais e bases pouco padronizadas, que dificultam a consulta, reduzem a rastreabilidade e fazem com que parte importante do histórico de relacionamento dependa da memória de cada colaborador. Ao transformar esses registros em uma base digital centralizada, o sistema busca preservar conhecimento institucional, reduzir retrabalho e oferecer mais segurança para decisões comerciais, agrícolas e administrativas.
+
+A solução foi concebida como uma aplicação full stack acessada pelo navegador, com frontend renderizado no servidor, backend em Node.js com TypeScript, Express, EJS, CSS e JavaScript próprios, banco PostgreSQL/Supabase e validação de dados com Zod. A arquitetura segue uma divisão em camadas, separando rotas, controllers, services, repositories, schemas, models, middlewares e tratamento de erros. Essa organização torna as regras de negócio mais fáceis de manter, permite testar partes críticas de forma isolada e evita que a interface seja a única responsável por controlar permissões ou validar operações sensíveis.
+
+No uso cotidiano, o Safra Control permite cadastrar, consultar, editar e acompanhar parceiros agrícolas, mantendo dados cadastrais, vínculos com terras, status de validação, histórico de alterações e interações registradas pela equipe. O sistema contempla fluxos de rascunho, envio para validação, aprovação e devolução com comentário, garantindo que cadastros relevantes passem por governança antes de se tornarem ativos. Também oferece filtros por nome, tipo, status, região, usina e dados agrícolas, além de exportação CSV para apoiar análises e atividades fora da plataforma.
+
+A gestão de terras é outro eixo central da solução. A modelagem considera relações muitos-para-muitos entre parceiros e propriedades, permitindo representar cenários reais como herdeiros, coproprietários, fornecedores vinculados a diferentes áreas e terras associadas a mais de uma unidade operacional. A separação entre identidade do parceiro, papel comercial e vínculo com terra evita duplicidade de cadastros e mantém coerência entre fornecedores, arrendadores e demais relações comerciais existentes no domínio da ATVOS.
+
+O controle de acesso foi estruturado em três perfis principais: analista, coordenador e administrador. Analistas podem cadastrar e atualizar registros, coordenadores revisam e validam informações, e administradores gerenciam usuários, perfis e operações amplas do sistema. A autenticação utiliza login, primeiro acesso com definição de senha, JWT, cookies HttpOnly e sessões persistidas, permitindo revogar acessos e impedir que usuários inativos continuem utilizando a aplicação.
+
+A experiência de uso também recebeu atenção específica. O design system define cores institucionais, tipografia, espaçamentos, botões, tabelas, cards, modais, alertas, estados vazios e componentes de histórico, buscando uma interface clara para cadastros longos e consultas frequentes. Os testes de usabilidade indicaram boa aceitação geral, ao mesmo tempo em que revelaram melhorias importantes para envio à validação, feedbacks de interação e exibição do histórico.
+
+Além das funcionalidades operacionais, o projeto valoriza rastreabilidade, qualidade e evolução futura. Alterações relevantes são associadas a responsáveis e timestamps, interações ficam organizadas em histórico consultável, e exclusões são tratadas de forma lógica para preservar auditoria. A solução foi documentada com requisitos, regras de negócio, diagramas, modelo de banco, endpoints, matriz de rastreabilidade, testes automatizados e avaliações de usabilidade. A suíte com Jest e Supertest cobre controllers, services, repositories, autenticação, parceiros, usuários, terras, validação, interações, exportação e dashboard JSON. Assim, o Safra Control consolida uma base técnica e funcional para substituir controles fragmentados por um fluxo confiável, rastreável e alinhado à transformação digital da gestão agrícola. Esse conjunto reforça continuidade operacional e oferece base para futuras integrações corporativas com dados confiáveis e governança.
 
 ## 🧑‍🎓 Integrantes do grupo Atwatts
 
@@ -32,9 +44,9 @@ Sistema web de CRM agrícola desenvolvido para a ATVOS no Módulo 2 do Inteli. A
 
 ## Estado da versão
 
-A segunda versão web está implementada com frontend renderizado no servidor e integração com o backend. Estão disponíveis autenticação, gestão de usuários, parceiros, terras, validação de parceiros, histórico, interações, vínculos e exportação CSV.
+A versão final da aplicação web está consolidada com frontend renderizado no servidor e integração completa com o backend. Estão disponíveis autenticação com JWT, cookies HttpOnly e sessões persistidas, primeiro acesso, gestão de usuários, controle de permissões por perfil, cadastro e edição de parceiros, papel do parceiro como fornecedor, proprietário ou ambos, gestão de terras, vínculos parceiro-terra, validação de parceiros, histórico de alterações, registro de interações, exportação CSV e dashboard de interações em JSON.
 
-Permanecem fora do escopo desta versão o upload de arquivos e a rotina automática de notificação de registros sem atualização. O dashboard de interações está disponível como resposta JSON, sem uma tela EJS específica.
+A Sprint 5 refinou os fluxos existentes, corrigiu inconsistências de interface e regras de negócio, adicionou resiliência para timeout e falhas de banco, reforçou autenticação/autorização, impediu auto-inativação de administradores e reorganizou a estrutura do projeto para execução a partir de `src/`. Permanecem fora do escopo final o upload de arquivos e a rotina automática de notificação de registros sem atualização, que são tratadas agora como possibilidades para atualizações futuras.
 
 ## Stack técnica
 
@@ -79,11 +91,7 @@ g06/
 ├── documentos/              # WAD, documentação técnica, evidências e materiais do projeto
 │   ├── assets/              # Imagens, diagramas, wireframes, personas e guia de estilos
 │   └── outros/              # Documentos complementares, endpoints e materiais auxiliares
-├── public/
-│   ├── css/                 # Estilos da interface renderizada no servidor
-│   ├── docs/                # Documentação estática da API
-│   └── js/                  # Scripts de busca, máscaras, modais e feedbacks visuais
-├── src/
+├── src/                     # Código-fonte e configurações da aplicação (npm roda a partir daqui)
 │   ├── app.ts               # Configuração do Express, middlewares, rotas e views
 │   ├── server.ts            # Inicialização do servidor HTTP
 │   ├── config/              # Configurações de autenticação e conexão com PostgreSQL/Supabase
@@ -94,6 +102,10 @@ g06/
 │   ├── helpers/             # Utilitários compartilhados, como tratamento assíncrono
 │   ├── middlewares/         # Autenticação, autorização e tratamento centralizado de erros
 │   ├── models/              # Tipos, interfaces e entidades do domínio
+│   ├── public/              # Assets estáticos servidos pelo Express (express.static)
+│   │   ├── css/             # Estilos da interface renderizada no servidor
+│   │   ├── docs/            # Documentação estática da API
+│   │   └── js/              # Scripts de busca, máscaras, modais e feedbacks visuais
 │   ├── repositories/        # Camada de persistência e consultas ao banco
 │   ├── routes/              # Mapeamento de rotas HTML e endpoints JSON
 │   ├── schemas/             # Schemas Zod para validação de entrada
@@ -101,46 +113,45 @@ g06/
 │   ├── test/                # Testes legados mantidos no projeto
 │   ├── tests/               # Suíte principal de testes automatizados
 │   │   └── helpers/         # Helpers usados pelos testes
-│   └── views/               # Templates EJS da camada de apresentação
-│       ├── errors/          # Páginas de erro
-│       ├── home/            # Tela inicial autenticada
-│       ├── layouts/         # Layouts base
-│       ├── login/           # Login e primeiro acesso
-│       ├── parceiros/       # Telas de parceiros e validação
-│       ├── partials/        # Partials reutilizáveis, como cabeçalho e rodapé
-│       ├── terras/          # Telas de terras e vínculo com parceiros
-│       └── usuarios/        # Telas de gestão de usuários
+│   ├── views/               # Templates EJS da camada de apresentação
+│   │   ├── errors/          # Páginas de erro
+│   │   ├── home/            # Tela inicial autenticada
+│   │   ├── layouts/         # Layouts base
+│   │   ├── login/           # Login e primeiro acesso
+│   │   ├── parceiros/       # Telas de parceiros e validação
+│   │   ├── partials/        # Partials reutilizáveis, como cabeçalho e rodapé
+│   │   ├── terras/          # Telas de terras e vínculo com parceiros
+│   │   └── usuarios/        # Telas de gestão de usuários
+│   ├── eslint.config.js     # Configuração do ESLint (SonarJS)
+│   ├── jest.config.js       # Configuração do Jest
+│   ├── package.json         # Dependências e scripts npm
+│   ├── requests.http        # Coleção de requisições para teste manual da API
+│   └── tsconfig.json        # Configuração do TypeScript
 ├── .env.example
-├── eslint.config.js
-├── jest.config.js
-├── package.json
-├── requests.http
-├── tsconfig.json
+├── .gitattributes
+├── .gitignore
 └── README.md
 ```
 
 ## Pré-requisitos
 
-- Node.js 20 ou versão compatível;
+- Node.js 20 ou versão compatível com TypeScript 5 e Express 5;
 - npm;
-- PostgreSQL acessível localmente ou por Supabase;
-- banco de testes separado para executar a suíte sem afetar dados de desenvolvimento.
+- PostgreSQL acessível localmente, por Supabase ou por outro provedor compatível;
+- banco de testes separado para executar a suíte sem afetar dados de desenvolvimento;
+- acesso de escrita ao banco para rodar migrations e seed.
 
 ## Configuração do ambiente
 
-1. Instale as dependências:
+> **Importante:** o `package.json` fica em `src/`, então **todos os comandos `npm` deste guia são executados a partir de `src/`** (ex.: `cd src && npm install`). O `.env` permanece na raiz do projeto.
 
-```bash
-npm install
-```
-
-2. Crie o arquivo local de ambiente:
+1. Crie o arquivo local de ambiente na raiz (onde ficam o `.env.example` e o `.env`):
 
 ```bash
 cp .env.example .env
 ```
 
-3. Preencha as variáveis sem versionar credenciais:
+2. Preencha as variáveis sem versionar credenciais. A forma recomendada é usar `DATABASE_URL`:
 
 ```dotenv
 DATABASE_URL=postgresql://usuario:senha@host:porta/banco
@@ -149,16 +160,39 @@ JWT_SECRET=valor-aleatorio-longo
 PORT=3000
 ```
 
-`JWT_SECRET` é obrigatório para assinar e validar os tokens. Um valor local pode ser gerado com `openssl rand -hex 32`. Nunca reutilize exemplos, tokens pessoais ou segredos de produção no repositório.
+Também é possível configurar a conexão por partes quando não houver URL única:
 
-4. Prepare a estrutura e os dados de demonstração:
+```dotenv
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=safra_control
+DB_USER=postgres
+DB_PASSWORD=senha
+```
+
+`JWT_SECRET` é obrigatório para assinar e validar os tokens. Um valor local pode ser gerado com:
+
+```bash
+openssl rand -hex 32
+```
+
+Nunca reutilize exemplos, tokens pessoais ou segredos de produção no repositório. Em testes, `DATABASE_URL_TEST` tem prioridade quando `NODE_ENV=test`; se ela não existir, a suíte usa `DATABASE_URL`.
+
+3. Entre em `src/` e instale as dependências (os comandos `npm` daqui em diante rodam a partir de `src/`):
+
+```bash
+cd src
+npm install
+```
+
+4. Prepare a estrutura e os dados de demonstração (ainda em `src/`):
 
 ```bash
 npm run migrate
 npm run seed
 ```
 
-As migrations são idempotentes para o fluxo normal do projeto. O seed atualiza os perfis e recria a senha dos usuários de demonstração.
+O comando `npm run migrate` aplica `src/db/migration.sql` e, em seguida, os arquivos `.sql` em `src/db/migrations/`, em ordem alfabética. O seed atualiza os perfis e recria a senha dos usuários de demonstração.
 
 ## Execução
 
@@ -166,7 +200,9 @@ As migrations são idempotentes para o fluxo normal do projeto. O seed atualiza 
 npm run dev
 ```
 
-Por padrão, a aplicação fica disponível em `http://localhost:3000`. A porta pode ser alterada por `PORT`.
+Por padrão, a aplicação fica disponível em `http://localhost:3000`. A porta pode ser alterada por `PORT`. O servidor procura o `.env` no diretório atual e no diretório pai; como os comandos rodam a partir de `src/`, ele carrega o `.env` mantido na raiz do projeto.
+
+Antes de acessar as telas internas, faça login com um usuário de demonstração ou crie um usuário administrador pelo seed. As rotas internas redirecionam para `/login` quando não há sessão válida.
 
 ### 🔑 Usuários de demonstração
 
@@ -180,7 +216,19 @@ A senha para todos os usuários é `demo123` (criada pelo seed). Essas contas s�
 
 ### Primeiro acesso
 
-Usuários administrativos podem ser cadastrados inicialmente sem senha. Nesse caso, o usuário acessa `GET /primeiro-acesso`, informa o e-mail cadastrado e define uma senha com pelo menos oito caracteres. O fluxo também possui endpoints JSON para emissão de token temporário e definição de senha; o token expira após 24 horas e só pode ser usado por usuário ativo que ainda não tenha senha.
+Usuários podem ser cadastrados inicialmente sem senha. Nesse caso, o usuário acessa `GET /primeiro-acesso`, informa o e-mail cadastrado e define uma senha com pelo menos oito caracteres. O fluxo também possui endpoints JSON para emissão de token temporário e definição de senha; o token expira após 24 horas e só pode ser usado por usuário ativo que ainda não tenha senha.
+
+## Validação ponta a ponta (E2E)
+
+Roteiro para validar os fluxos autenticados do zero usando apenas a interface web, sem depender de chamadas manuais à API. Pressupõe o ambiente já preparado (`.env` configurado, `npm run migrate`, `npm run seed`) e o servidor em execução (`npm run dev`) em `http://localhost:3000`.
+
+1. **Login como analista.** Acesse `http://localhost:3000/login` e entre com `juliano.soares@atvos.com` e senha `demo123`. Após autenticar, a aplicação redireciona para a lista de parceiros (`/parceiros`).
+2. **Cadastrar um parceiro e enviar para validação.** Em `/parceiros`, clique em **Cadastrar Parceiro** para abrir o formulário (`/parceiros/novo`). Escolha o papel do parceiro, preencha os campos obrigatórios e finalize no botão **Enviar para Validação**: o parceiro é criado já com status `pendente` e entra na fila de validação. (O botão **Salvar Rascunho** criaria o registro como rascunho, sem enviar.)
+3. **Trocar de usuário.** Faça **logout** e entre novamente como coordenador: `bianca.souza@atvos.com` e senha `demo123`.
+4. **Aprovar o parceiro.** Abra **Validação** (`/validacao`), localize o parceiro pendente e clique em **Revisar** (`/validacao/:id`). Na tela de revisão, clique em **Aprovar** e confirme em **Confirmar Aprovação**. O registro passa a aprovado e sai da fila.
+5. **Exportar CSV.** Volte para **Parceiros** (`/parceiros`) e clique em **Exportar CSV** (disponível para coordenador e administrador). Confirme no modal em **Exportar** para baixar o arquivo `.csv`, que já reflete o parceiro aprovado.
+
+Concluídos os cinco passos, ficam validados de ponta a ponta os fluxos de autenticação, autorização por perfil, cadastro, envio para validação, aprovação e exportação — sem necessidade de contato com a equipe.
 
 ## Rotas principais
 
@@ -199,8 +247,10 @@ Usuários administrativos podem ser cadastrados inicialmente sem senha. Nesse ca
 | GET | `/validacao` | Fila de parceiros pendentes. |
 | GET, POST | `/validacao/:id/...` | Revisar, aprovar ou devolver parceiro. |
 | GET, POST | `/terras` | Listar e cadastrar terras. |
+| GET | `/terras/nova` | Formulário de terra. |
 | GET, POST | `/terras/:id/editar` | Editar terra. |
-| GET, POST | `/terras/:id/vincular-parceiro` | Vincular parceiro a uma terra. |
+| GET | `/terras/:id/vincular-parceiro` | Formulário de vínculo entre terra e parceiro. |
+| POST | `/terras/:id/parceiros` | Processar vínculo entre terra e parceiro. |
 | GET, POST | `/usuarios...` | Gestão de usuários, perfis e inativação. |
 | GET | `/parceiros/exportar` | Exportar parceiros em CSV. |
 
@@ -219,23 +269,38 @@ Os métodos e contratos detalhados estão no WAD e nos documentos de endpoint em
 ## Testes e validações
 
 ```bash
+cd src
 npx tsc --noEmit
+npm run lint
 npm test
+npm run test:services
+```
+
+Comandos auxiliares disponíveis:
+
+```bash
+npm run test:cov
+npm run test:services
+npm run lint:complexity
+npm run cpd
+npm run circular
 ```
 
 A suíte usa `DATABASE_URL_TEST` quando definida e executa diversos testes com PostgreSQL real. Dependendo da latência do Supabase, a execução completa pode levar mais de dez minutos. Não aponte `DATABASE_URL_TEST` para um banco com dados que precisem ser preservados.
+
+`npm run test:services` roda a suíte com relatório de cobertura focado na camada de services (`src/services/`), gerado em `src/coverage/`.
 
 ## Troubleshooting
 
 ### `DATABASE_URL is not defined`
 
-Confirme que o `.env` existe na raiz e contém `DATABASE_URL`. Para testes, configure também `DATABASE_URL_TEST`.
+Confirme que o `.env` existe na raiz e contém `DATABASE_URL`. Como alternativa, configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` e `DB_PASSWORD`. Para testes, configure também `DATABASE_URL_TEST`.
 
 ### Falha de conexão com Supabase
 
 Confira host, usuário, senha com URL encoding, porta e modo de conexão. Para o pooler do Supabase, use a URI fornecida no painel do projeto e verifique se a porta corresponde ao modo escolhido.
 
-### `JWT_SECRET nao configurado`
+### `JWT_SECRET` não configurado
 
 Defina `JWT_SECRET` no `.env` e reinicie o servidor. Cookies emitidos com outro segredo deixam de ser válidos.
 
@@ -250,13 +315,18 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 ## Documentação
 
 - [WAD](documentos/wad.md)
-- [Documentação estática da API](public/docs/index.html)
+- [Documentação estática da API](src/public/docs/index.html)
 - [Documentos de endpoints](documentos/outros/)
 
 ## 🗃 Histórico de lançamentos
 
-* 0.5.0 - XX/XX/2024
-    * 
+* 0.5.0 - 24/06/2026
+    * Versão final com foco em qualidade de código e documentação (Art. 14)
+    * Ferramentas de diagnóstico integradas ao projeto: ESLint com SonarJS, jscpd e madge
+    * Redução da complexidade ciclomática e refatoração com guard clauses em services e controllers
+    * Remoção de código duplicado e de dependências circulares
+    * Teste de carga com autocannon e melhorias de resiliência (timeout de requisição e resposta 503 para indisponibilidade do banco)
+    * README da raiz finalizado com roteiro de validação ponta a ponta
 * 0.4.0 - 12/06/2026
     * Segunda versão web com frontend renderizado no servidor (EJS) integrado ao backend
     * Autenticação com login, logout, primeiro acesso/definição de senha e proteção de rotas por perfil
@@ -265,20 +335,26 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
     * Cadastro, edição, listagem e inativação lógica de terras e vínculos parceiro-terra
     * Histórico de alterações, registro de interações e exportação CSV de parceiros
     * Validação de entrada com Zod e métricas agregadas de interações (dashboard JSON)
-* 0.3.0 - 29/05/2024
+* 0.3.0 - 29/05/2026
     * Backend funcional com WebAPI e endpoints operantes
     * Protótipo de alta fidelidade e guia de estilos elaborados
     * Arquitetura em camadas documentada com diagramas atualizados
-* 0.2.0 - 15/05/2024
+* 0.2.0 - 15/05/2026
     * Wireframe com fluxo de navegação criado
     * Diagramas UML e modelagem do banco de dados elaborados
-* 0.1.0 - 01/05/2024
+* 0.1.0 - 01/05/2026
     * Análise de negócios e estrutura do WAD criados
     * Personas, User Stories e backlog elaborados
     * Requisitos funcionais, regras de negócio e casos de uso documentados
+
+## Link de Demonstração
+
+O vídeo demonstrativo da solução está disponível em:
+
+[Assistir ao vídeo demonstrativo](https://drive.google.com/drive/folders/1_wIQ6H_bFF6AVASXY4JUrhfyGXqmp3yC?usp=sharing)
 
 ## 📋 Licença/License
 
 Projeto desenvolvido no Inteli em parceria com a ATVOS. O conteúdo está licenciado sob [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
 
-<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/Intelihub/Template_M2/">MODELO GIT INTELI</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.inteli.edu.br/">Inteli</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/ant%C3%B4nio-neto-83971b23b/">Antonio</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/gabriel-gomes-pimentel/">Gabriel</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/haila-falcao/">Haila</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/jo%C3%A3o-paulo-barreto-ferreira-andrade-rodrigues-de-paula-b483203aa/">João</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/marianamoussa/">Mariana</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/tiago-brun-de-arruda-17959a3a9/">Tiago</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/william-maia-95785b323/">William</a> is licensed under <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Attribution 4.0 International</a>.</p>
+<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/Intelihub/Template_M2/">MODELO GIT INTELI</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.inteli.edu.br/">Inteli</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/ant%C3%B4nio-neto-83971b23b/">Antonio de Souza Dantas Neto</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/gabriel-gomes-pimentel/">Gabriel Gomes Pimentel</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/haila-falcao/">Haila Thauane Falcão Novaes</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/jo%C3%A3o-paulo-barreto-ferreira-andrade-rodrigues-de-paula-b483203aa/">João Paulo Barreto Ferreira Andrade Rodrigues de Paula</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/marianamoussa/">Mariana Pires de Carvalho Moussa</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/tiago-brun-de-arruda-17959a3a9/">Tiago Brun de Arruda</a>, <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.linkedin.com/in/william-maia-95785b323/">William Junior dos Santos Maia</a> is licensed under <a href="http://creativecommons.org/licenses/by/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">Attribution 4.0 International</a>.</p>
