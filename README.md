@@ -347,6 +347,12 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
     * Personas, User Stories e backlog elaborados
     * Requisitos funcionais, regras de negócio e casos de uso documentados
 
+## Link de Demonstração
+
+O vídeo demonstrativo da solução está disponível em:
+
+[Assistir ao vídeo demonstrativo](https://drive.google.com/drive/folders/1_wIQ6H_bFF6AVASXY4JUrhfyGXqmp3yC?usp=sharing)
+
 ## 📋 Licença/License
 
 Projeto desenvolvido no Inteli em parceria com a ATVOS. O conteúdo está licenciado sob [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
