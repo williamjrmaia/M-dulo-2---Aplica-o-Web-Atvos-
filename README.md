@@ -44,9 +44,9 @@ Além das funcionalidades operacionais, o projeto valoriza rastreabilidade, qual
 
 ## Estado da versão
 
-A segunda versão web está implementada com frontend renderizado no servidor e integração com o backend. Estão disponíveis autenticação, gestão de usuários, parceiros, terras, validação de parceiros, histórico, interações, vínculos e exportação CSV.
+A versão final da aplicação web está consolidada com frontend renderizado no servidor e integração completa com o backend. Estão disponíveis autenticação com JWT, cookies HttpOnly e sessões persistidas, primeiro acesso, gestão de usuários, controle de permissões por perfil, cadastro e edição de parceiros, papel do parceiro como fornecedor, proprietário ou ambos, gestão de terras, vínculos parceiro-terra, validação de parceiros, histórico de alterações, registro de interações, exportação CSV e dashboard de interações em JSON.
 
-Permanecem fora do escopo desta versão o upload de arquivos e a rotina automática de notificação de registros sem atualização. O dashboard de interações está disponível como resposta JSON, sem uma tela EJS específica.
+A Sprint 5 refinou os fluxos existentes, corrigiu inconsistências de interface e regras de negócio, adicionou resiliência para timeout e falhas de banco, reforçou autenticação/autorização, impediu auto-inativação de administradores e reorganizou a estrutura do projeto para execução a partir de `src/`. Permanecem fora do escopo final o upload de arquivos e a rotina automática de notificação de registros sem atualização, que são tratadas agora como possibilidades para atualizações futuras.
 
 ## Stack técnica
 
@@ -223,7 +223,7 @@ Usuários podem ser cadastrados inicialmente sem senha. Nesse caso, o usuário a
 Roteiro para validar os fluxos autenticados do zero usando apenas a interface web, sem depender de chamadas manuais à API. Pressupõe o ambiente já preparado (`.env` configurado, `npm run migrate`, `npm run seed`) e o servidor em execução (`npm run dev`) em `http://localhost:3000`.
 
 1. **Login como analista.** Acesse `http://localhost:3000/login` e entre com `juliano.soares@atvos.com` e senha `demo123`. Após autenticar, a aplicação redireciona para a lista de parceiros (`/parceiros`).
-2. **Cadastrar um parceiro e enviar para validação.** Em `/parceiros`, clique em **Novo Fornecedor** (ou **Novo Proprietário**) para abrir o formulário (`/parceiros/novo`). Preencha os campos obrigatórios e finalize no botão **Enviar para Validação**: o parceiro é criado já com status `pendente` e entra na fila de validação. (O botão **Salvar Rascunho** criaria o registro como rascunho, sem enviar.)
+2. **Cadastrar um parceiro e enviar para validação.** Em `/parceiros`, clique em **Cadastrar Parceiro** para abrir o formulário (`/parceiros/novo`). Escolha o papel do parceiro, preencha os campos obrigatórios e finalize no botão **Enviar para Validação**: o parceiro é criado já com status `pendente` e entra na fila de validação. (O botão **Salvar Rascunho** criaria o registro como rascunho, sem enviar.)
 3. **Trocar de usuário.** Faça **logout** e entre novamente como coordenador: `bianca.souza@atvos.com` e senha `demo123`.
 4. **Aprovar o parceiro.** Abra **Validação** (`/validacao`), localize o parceiro pendente e clique em **Revisar** (`/validacao/:id`). Na tela de revisão, clique em **Aprovar** e confirme em **Confirmar Aprovação**. O registro passa a aprovado e sai da fila.
 5. **Exportar CSV.** Volte para **Parceiros** (`/parceiros`) e clique em **Exportar CSV** (disponível para coordenador e administrador). Confirme no modal em **Exportar** para baixar o arquivo `.csv`, que já reflete o parceiro aprovado.
@@ -249,7 +249,8 @@ Concluídos os cinco passos, ficam validados de ponta a ponta os fluxos de auten
 | GET, POST | `/terras` | Listar e cadastrar terras. |
 | GET | `/terras/nova` | Formulário de terra. |
 | GET, POST | `/terras/:id/editar` | Editar terra. |
-| GET, POST | `/terras/:id/vincular-parceiro` | Vincular parceiro a uma terra. |
+| GET | `/terras/:id/vincular-parceiro` | Formulário de vínculo entre terra e parceiro. |
+| POST | `/terras/:id/parceiros` | Processar vínculo entre terra e parceiro. |
 | GET, POST | `/usuarios...` | Gestão de usuários, perfis e inativação. |
 | GET | `/parceiros/exportar` | Exportar parceiros em CSV. |
 
@@ -314,7 +315,7 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
 ## Documentação
 
 - [WAD](documentos/wad.md)
-- [Documentação estática da API](public/docs/index.html)
+- [Documentação estática da API](src/public/docs/index.html)
 - [Documentos de endpoints](documentos/outros/)
 
 ## 🗃 Histórico de lançamentos

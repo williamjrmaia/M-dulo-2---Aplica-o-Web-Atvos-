@@ -582,7 +582,7 @@ Além dos oito eixos de RNF, o projeto possui restrições de design que delimit
 
 ### 3.1.4. Matriz RF → RN → Endpoint (sprints 3 a 5)
 
-A matriz diferencia contratos JSON, páginas renderizadas e submissões de formulário. O status considera a segunda versão disponível no repositório e não presume funcionalidades sem rota implementada.
+A matriz diferencia contratos JSON, páginas renderizadas e submissões de formulário. O status considera a versão final disponível no repositório e não presume funcionalidades sem rota implementada.
 
 | RF | US relacionada | RN associadas | Endpoint/Rota | Método | Tipo | Status | Observação |
 |---|---|---|---|---|---|---|---|
@@ -980,13 +980,13 @@ A modelagem funcional consolidada neste diagrama demonstra a viabilidade técnic
 
 ### 3.2.3. Diagrama de Classes do Domínio 
 
-### Imagem do diagrama
+#### Imagem do diagrama
 
 ![Diagrama de Classes do Domínio](./assets/diagrama_de_classes_do_dominio.png)
 
 [Acesse o diagrama de classes UML](https://editor.plantuml.com/uml/hLXRZ-Cq57xFhx261supmmw25LImmgGf1CqcLIyZBaB8axYjsSGEjZExWFO18O64n0iIFm1uG23nX7ZXDV-4Ny9nBctYf9qEeYjjEpuNV-Vu-3kstrAQI9sdYQEPJYWQCxAM92KefiXDY59KeLYWiKYBFpWJZlCiUdFV1sHk64pyTvOpN7nRV1sYAt--n9S7RHAwqaWB9Dbwer7C98qq4znnr2F6Cm9OK6HmOAqbkyurzIF1v-mBYkwrLDI6nE8nuskq8ecYBKd2EDMVPnG9gJUY9U0YfefcwEBrjYD9-AF-Q4RYs3Y_UBcD2qif7ay4roMSYrS7HVfpoEgrI69RkjYmw16dIg6By_ksq1M9aEYPbylFaDzQuLxvwIKBVUaWz3Q97gsbo7bSAqzUC_-CHCYOodhqrV83eost5-N7UTfsJ7cUxl4xcRpYtRVzOdmV0xHR_NAXwLw_hxklzFpUVytuVNfRANh1yg5N5kAFtloWRWOJapL59nw4I2KfVYt-eke4GC7SPTWBbeafB9KW9LA4ffFgwptuUjfHks8yoXDHwqt2MU2vtZYSVUBY09TZU3RpWZ4sOmjlDiCT5tDDTAwwJl32lmhBNtwm--q5hh4UXpq8OGP1HAGnTsS-Td5OkuBzw7-u_TjxtxrSpd7buzQKJl7CzVnPE4SUkYg-3zpbPNXaQgT4HfH9eH05qp_Ay1Ho1UGxOeGrsQwgjr6k0pXZyGWjb_wu-ek3qGWI9M57LYDwkpoZrb9LiYXRkJpxj6j0Ky8IomS59XBSyXmJJGAY8fPIhiK8ZOccEnGu4cb6-8PmRTbjcD92iaZu88B545G1DFf4L-Apykl5YCH4QKdaSyzN0x3s965V4EbM4j48WFDKdW1LZu7dL3dwT9UlkboQR2R3USlghFgTKRshsL6xW2kfAijnr2tBNMfypYBMIOiPdR2qFIIk5PKtTGxQIJfhWcOtknHG7b4vb98AWXrwKofBpc8Iqxj4dbSctK637qFrG1fX1xN3QD1MGcbDRECgrsaY9ASHZO6s1d7TLFdi8g3fDM5Fm5nsnzSvaJ4ZbdOgOaYFGU02pKfYYdGmntKMBLo3iA79K1wJky7kxyhRrxsDQJUfZMbXwk4EI0RNjG-FI4hgdC5cUnUeOqnXdvEaHf_1WQ5srHCQsodqBMvsMqyQKKua4zZ4TqJaPNnrqBTIy7A-BBwQ-U7y52q37xg8PyWOkzvy7Xx7n4kL5py1F0KUgl0C9-F8S6Q7XGzkgKZ4R6tLsa2EOMk3qjj299Jm0xiUGBG6slkRoXLBAdJ7jWD9Fykfn9aKDzKcximFKqN0p6HueyHqnJYJC6tAO4hQ8nn8drdSFKJJGdjR_Gtq84MXbxnBrERuBCA1c6k8fi-NkqvnABzrE0VNEgzq_a_sx4wxZzHTOGv-V3yJxI7s8Rp_MxkITCtAfjsWWqZjvcMBMh7DAdE14zqvfHsJSxFK9bzuHGrdMVLK2_ljlJaFZZgdmoO1XdlD8OK9QI9-Rnu6BL4WReGr2alSOA_oje3JqN2Ajeh7qjlCkyIk7mRueHSiu9mvdVc1wq-nRuwP6ALm1c9P0gjOLYk1zOS-XZXHA0CgXoyFxXD85dzgStm68WOKoS4vdUrXy-JY1BrmTePExfsVlt3IFrIDq1lN3oxGFz_yW8p66ozTFt2SdbRR2_oqpm5T9nUbawDyj9hoqJx4BfggYGw6q4d0pi8-MGtPDhAxM-un_Uymsrmn2BNcxVzclSVSOi_ZKtI4eTDfVOFcTu7Qvvr1uyFRS-nDuUfQV0Tx4i-H6puiRzc7hu2xXJi_Vz2-IOzGhaY_S1kjvWvyGArxMQuK-t4s3hVNuahnbb23S04XUkzFBttNNBhnBL6MpnZbOvPORSlA2H6fdgq46hWIefLWJaeCSGDPYHJ-8saca8QB8dJnKmUkVIiXKs0w9EcAok9tS-8q3t9n_I1txW0hb6yeDOHheRL83GWxPKwBXg3c8i897Fp8ZbTWK9lzv_3Y5m7OpEiCt2zeOlYdmgVowwXw5JnrCi4Koa65Af0qhHY86FnaGgcSIISj_YuP6-nljhV-Q7lhHuePIYz-vbIeSyS9geaPC3kGFBGuj85KyU9NOcYzn29WNWddEuElYQOJXG8VZcbxoWJKpBgTD3b5PNYbXhDYJogz1lw1V9RSv5GCPJ1Mbmy3alHoNMT7qHmcvcOzOSbe1hwfMRq6bRD5PJ3KGPHF3QSGL8cJW15HZYcG-aq0hIalVZELP5nD1u0VhknB_46uN20_kFBdnVTNtgLvry78cqznyMtLU0-NUciFdtsqOJ4GvyUnUCpFEky7xJrigNLV4xgxUC3ZziIoen9BgrVgFRgm3AosxDXjUgjUFakVsItOiLkohL_LIfV2BGWrJM_fUbXSTmZ7QXYMSe_qTltLqhHwisFtwZtghVxeE6z1r7cQ_0i0)
 
-### Explicação textual detalhada do diagrama
+#### Explicação textual detalhada do diagrama
 
 O diagrama de classes do domínio representa a estrutura conceitual das principais entidades envolvidas na aplicação. Ele descreve quais informações são armazenadas, como essas informações se relacionam e quais responsabilidades cada classe possui dentro do sistema. A modelagem foi construída com foco no domínio da gestão de parceiros externos, vínculos comerciais, terras, usuários internos, unidades operacionais, interações e auditoria de alterações.
 
@@ -1014,7 +1014,7 @@ Também foram criadas classes associativas para representar relações muitos-pa
 
 Por fim, o diagrama usa enumerações para representar campos com valores limitados e pré-definidos. A enumeração `TipoPessoa` define se o parceiro é pessoa física ou jurídica. A enumeração `TipoVinculo` define os tipos possíveis de vínculo comercial. A enumeração `StatusVinculo` define os estados possíveis de um vínculo. A enumeração `TipoOperacao` define quais tipos de alteração podem ser registrados na auditoria.
 
-### Tabela de classes do domínio
+#### Tabela de classes do domínio
 
 | Classe | Tipo | Papel no domínio |
 |---|---|---|
@@ -1036,7 +1036,7 @@ Por fim, o diagrama usa enumerações para representar campos com valores limita
 | `StatusVinculo` | Enumeração | Define os estados possíveis de um vínculo comercial. |
 | `TipoOperacao` | Enumeração | Define os tipos de operação registrados na auditoria. |
 
-### Tabela de relacionamentos principais
+#### Tabela de relacionamentos principais
 
 | Relacionamento | Tipo UML | Multiplicidade | Interpretação |
 |---|---|---|---|
@@ -1060,7 +1060,7 @@ Por fim, o diagrama usa enumerações para representar campos com valores limita
 | `VinculoComercial` — `StatusVinculo` | Dependência | — | A classe `VinculoComercial` usa `StatusVinculo` para indicar a situação atual do vínculo. |
 | `RegistroAlteracao` — `TipoOperacao` | Dependência | — | A classe `RegistroAlteracao` usa `TipoOperacao` para indicar se a alteração foi criação, atualização ou exclusão. |
 
-### Explicação dos tipos de relacionamento UML utilizados
+#### Explicação dos tipos de relacionamento UML utilizados
 
 No diagrama, foram utilizados diferentes tipos de relacionamento UML para representar corretamente as dependências entre as classes: associação simples, agregação, composição, dependência e classes associativas.
 
@@ -1076,7 +1076,7 @@ As classes associativas foram utilizadas para representar relações muitos-para
 
 As dependências foram usadas para indicar o uso de enumerações por determinadas classes. `Parceiro` depende de `TipoPessoa`, `VinculoComercial` depende de `TipoVinculo` e `StatusVinculo`, e `RegistroAlteracao` depende de `TipoOperacao`. Essas enumerações limitam os valores possíveis de determinados atributos, reduzindo inconsistências e facilitando a validação das regras de negócio.
 
-### Justificativa sobre herança
+#### Justificativa sobre herança
 
 A herança não foi aplicada no diagrama porque os diferentes papéis comerciais de um parceiro não representam subclasses fixas de `Parceiro`. No domínio do sistema, um parceiro pode atuar como fornecedor de cana, arrendador de terra ou exercer mais de um papel ao mesmo tempo. Se fossem criadas subclasses como `Fornecedor` e `Arrendador`, haveria risco de duplicar a identidade do parceiro ou restringir indevidamente sua atuação.
 
@@ -1420,7 +1420,7 @@ flowchart TB
         direction TB
         WEB["safra-control<br/>(app.ts / server.ts)<br/>Bootstrap Express.js"]:::artifact
         CTRL["Controllers / Services /<br/>Repositories"]:::artifact
-        PRES["Camada de Apresentação<br/>Views EJS (src/views/*.ejs)<br/>Assets Estáticos (public/)"]:::artifact
+        PRES["Camada de Apresentação<br/>Views EJS (src/views/*.ejs)<br/>Assets Estáticos (src/public/)"]:::artifact
         JWT["Middleware de Autenticação JWT<br/>(requireAuth.ts)"]:::artifact
     end
 
@@ -1435,7 +1435,7 @@ flowchart TB
 
 O diagrama de implantação utiliza um esquema de cores para representar os estereótipos UML, conforme indicado na legenda: azul claro representa o dispositivo do usuário (`device`), amarelo claro representa um nó de execução (`node`), azul acinzentado representa artefatos de software (`artifact`) e azul-marinho representa o artefato de persistência de dados. Essa convenção evita a dependência de símbolos de estereótipo (`<<>>`/`«»`) cuja renderização varia entre visualizadores Mermaid, mantendo a leitura fiel à notação UML por meio de codificação visual consistente.
 
-O acesso é realizado pelos perfis Administrador, Coordenador e Analista por meio de um navegador web (device), que se comunica de forma bidirecional com o nó "Servidor de Aplicação" — um ambiente de execução Node.js na porta 3000 — enviando requisições HTTP/HTTPS e recebendo como resposta páginas HTML renderizadas (rotas de navegação) ou dados em JSON (rotas `/api/...`). Esse nó concentra quatro artefatos implantados a partir do mesmo pacote `safra-control`: o módulo de inicialização (`app.ts`/`server.ts`), responsável por configurar o Express e registrar as rotas; a camada de Controllers/Services/Repositories, que contém as regras de negócio e o acesso a dados; a camada de apresentação, que reúne as views EJS (`src/views/*.ejs`) e os assets estáticos servidos via `express.static` a partir de `public/` (CSS, JS, imagens); e o middleware de autenticação JWT (`requireAuth.ts`), responsável pela validação de sessões. Todos esses artefatos coexistem no mesmo runtime e processo, sem necessidade de canais de rede entre si.
+O acesso é realizado pelos perfis Administrador, Coordenador e Analista por meio de um navegador web (device), que se comunica de forma bidirecional com o nó "Servidor de Aplicação" — um ambiente de execução Node.js na porta 3000 — enviando requisições HTTP/HTTPS e recebendo como resposta páginas HTML renderizadas (rotas de navegação) ou dados em JSON (rotas `/api/...`). Esse nó concentra quatro artefatos implantados a partir do mesmo pacote `safra-control`: o módulo de inicialização (`app.ts`/`server.ts`), responsável por configurar o Express e registrar as rotas; a camada de Controllers/Services/Repositories, que contém as regras de negócio e o acesso a dados; a camada de apresentação, que reúne as views EJS (`src/views/*.ejs`) e os assets estáticos de repositório em `src/public/`, servidos em runtime via `express.static`; e o middleware de autenticação JWT (`requireAuth.ts`), responsável pela validação de sessões. Todos esses artefatos coexistem no mesmo runtime e processo, sem necessidade de canais de rede entre si.
 
 A persistência ocorre em uma instância PostgreSQL hospedada no Supabase Cloud, acessada pelo servidor de aplicação por meio de uma conexão SQL sobre TCP/SSL na porta 5432, via biblioteca `pg` (`config/connection.ts`). Esse canal único atende tanto às consultas de negócio quanto às consultas de autenticação (usuários e sessões), já que ambas partem do mesmo pool de conexão dentro do nó de aplicação.
 
@@ -1585,7 +1585,7 @@ A paleta visual do Safra Control foi definida a partir da identidade institucion
   <img src="./assets/guia_de_estilos/cores_institucionais.png" width="100%" alt="Paleta visual do Safra Control derivada da identidade institucional da ATVOS"><br>
   <sup>Fonte: Material produzido pelos autores, 2026.</sup>
 </div>
-O laranja escuro #FF681A é usado em CTAs, botões primários e ações de destaque, como "Entrar", "Novo Fornecedor" e "Salvar Fornecedor". Ele foi escolhido por remeter à energia, movimento e identidade institucional da ATVOS, além de orientar a ação prioritária do usuário. O laranja médio #FF8100 aparece em estados de hover e variações de destaque, indicando interatividade sem romper a consistência da ação principal. O laranja claro #FFA500 é usado em highlights e indicadores visuais secundários, principalmente quando é necessário destacar uma informação sem transformá-la em CTA.
+O laranja escuro #FF681A é usado em CTAs, botões primários e ações de destaque, como "Entrar", "Cadastrar Parceiro", "Salvar Rascunho" e "Enviar para Validação". Ele foi escolhido por remeter à energia, movimento e identidade institucional da ATVOS, além de orientar a ação prioritária do usuário. O laranja médio #FF8100 aparece em estados de hover e variações de destaque, indicando interatividade sem romper a consistência da ação principal. O laranja claro #FFA500 é usado em highlights e indicadores visuais secundários, principalmente quando é necessário destacar uma informação sem transformá-la em CTA.
 
 O **amarelo ATVOS `#FFCD00`** é utilizado com moderação em estados de atenção, indicadores e badges informativos. Sua função é chamar atenção para pendências, prazos ou avisos sem competir com o botão primário. Ele representa a **identidade institucional da ATVOS** e aparece em métricas, tags e destaques de conteúdo. O **amarelo de alerta `#F59E0B`** é reservado exclusivamente para **feedbacks do sistema**, como documentação incompleta, prazo próximo ou validação pendente — sempre acompanhado de ícone e texto para não depender apenas da cor. Apesar da proximidade visual, as duas cores têm contextos distintos: o amarelo ATVOS marca informação institucional, enquanto o amarelo de alerta sinaliza necessidade de ação do usuário. O **azul ATVOS `#3F5B70`** aparece em navbar, botões secundários, avatar, textos de apoio e componentes corporativos, pois transmite confiança, estabilidade e clareza operacional.
 <div align="center">
@@ -1817,7 +1817,7 @@ Para acesso ao caminho de telas do protótipo de alta fidelidade, utilize o link
 ### 3.6.1. Modelo Entidade-Relacionamento (ER) (sprint 2)
 
 
-### Introdução
+#### Introdução
 
 O Modelo Entidade-Relacionamento Conceitual representa a **fundação lógica** do sistema CRM da ATVOS: descreve **quais entidades existem no domínio**, **quais informações cada uma carrega** e **como elas se relacionam**, sem comprometer-se ainda com decisões de implementação técnica.
 
@@ -1826,7 +1826,7 @@ Esta seção tem como objetivo oferecer uma visão abstrata e compreensível por
 A modelagem foi conduzida com base em **dois pilares complementares**: (1) o **minimundo** descrito no início deste documento, com regras de negócio, fluxos prioritários e personas; e (2) os **dados reais** disponibilizados pela ATVOS, em particular as planilhas operacionais utilizadas hoje pela equipe (Base de Dados Oficial, Contatos de Parceiros e Fornecedores, Base Geral de Fornecedores de Cana e Estrutura de Cadastro). O princípio adotado foi **modelar o que tem evidência de uso**: todo atributo presente neste modelo possui origem identificável (planilha, regra de negócio ou requisito do WAD), evitando especulação ou complexidade desnecessária.
 
 
-### Notação e visão geral
+#### Notação e visão geral
 
 A notação adotada é **Chen**, com retângulos para entidades, losangos para relacionamentos e elipses para atributos, mantida coerente nas seções 3.6.2 e 3.2.3. Considerando o banco implementado em `src/db/migration.sql`, foram identificadas **16 tabelas reais** distribuídas em quatro grupos lógicos, conforme apresentado a seguir:
 
@@ -1839,7 +1839,7 @@ A notação adotada é **Chen**, com retângulos para entidades, losangos para r
 - **Auditoria e associações**: `registro_alteracao`, `parceiro_coordenador`, `parceiro_unidade`, `usuario_unidade` e `terra_unidade`. Implementa o **fluxo de aprovação de alterações** (RN11, RN12), o **histórico de coordenação** entre parceiros e colaboradores, e os **relacionamentos N:N** entre as entidades dos outros grupos. `registro_alteracao` identifica a entidade auditada por `entidade_afetada` e `entidade_id`, sem chave estrangeira direta para a entidade auditável.
 
 
-### Decisões estruturais relevantes
+#### Decisões estruturais relevantes
 
 Quatro decisões de modelagem merecem destaque por serem fundamentais para a robustez do sistema:
 
@@ -1854,7 +1854,7 @@ Quatro decisões de modelagem merecem destaque por serem fundamentais para a rob
 Adicionalmente, a relação entre Parceiro e Terra foi modelada como **N:N** via entidade associativa ParceiroTerra, refletindo diretamente as regras RN13, RN14 e RF015: herdeiros, meeiros ou coproprietários podem compartilhar a mesma gleba, e um mesmo parceiro pode vincular-se a múltiplas terras.
 
 
-### Modelos Entidade Relacionamento (MER)
+#### Modelos Entidade Relacionamento (MER)
 
 **Grupo 1 — Núcleo do parceiro externo**
 
@@ -2013,7 +2013,7 @@ flowchart TB
 
 > **Nota sobre auditoria:** `registro_alteracao` identifica a entidade auditada por `entidade_afetada` e `entidade_id`. Por isso, o banco real não possui relacionamentos FK diretos entre essa tabela e cada entidade auditável.
 
-### Resumo dos relacionamentos
+#### Resumo dos relacionamentos
 
 | # | Relacionamento | Cardinalidade | Descrição |
 |---|---|---|---|
@@ -2039,7 +2039,7 @@ flowchart TB
 | 17 | Usuario / Unidade via UsuarioUnidade | N:N | Um colaborador pode atuar em múltiplas unidades industriais. |
 
 
-### Boas práticas aplicadas no modelo
+#### Boas práticas aplicadas no modelo
 
 - **Modelagem dirigida por evidência.** Cada atributo de negócio possui origem identificável: ou está presente nas planilhas operacionais da ATVOS, ou deriva diretamente de regra de negócio explicitada no minimundo. A entidade Interacao segue o mesmo princípio: os atributos implementados (`parceiro_id`, `registrado_por`, `tipo`, `descricao`, `data`, `criado_em` e `status`) refletem o uso atual do sistema e permanecem abertos a evolução conforme validação com a ATVOS.
 
@@ -2058,7 +2058,7 @@ flowchart TB
 - **Documentação de pendências.** Decisões que dependem de validação com a ATVOS (Top 15, Portal PMF, definições de áreas, atributos específicos por tipo de vínculo, entre outras) foram explicitamente preservadas como questões em aberto, evitando que sejam modeladas precipitadamente e demonstrando rigor metodológico.
 
 
-### Conclusão
+#### Conclusão
 
 A modelagem ER Conceitual apresentada nesta seção não é apenas um artefato formal de documentação: é a **espinha dorsal técnica** que viabiliza concretamente os requisitos do sistema CRM da ATVOS. Cada decisão tomada aqui responde a uma necessidade operacional específica e mensurável.
 
@@ -2090,7 +2090,9 @@ No contexto do sistema de gestão de parceiros agrícolas da ATVOS, o DER possui
 
 O diagrama encontra-se alinhado à estrutura implementada no banco de dados da aplicação, incluindo as entidades `auth_sessoes` e `primeiro_acesso_tokens`, refletindo fielmente a modelagem física utilizada pela solução entregue.
 
-### 3.6.3.1 Modelo Relacional e Modelo Físico (sprints 2 e 4)
+### 3.6.3. Modelo Relacional e Modelo Físico (sprints 2 e 4)
+
+#### 3.6.3.1 Modelo Relacional
 <br>
 A modelagem relacional serviu como base estrutural para a implementação do banco de dados, permitindo visualizar de maneira organizada como as informações são armazenadas e relacionadas no ambiente computacional.
 
@@ -2104,7 +2106,7 @@ O modelo apresentado encontra-se alinhado à estrutura efetivamente implementada
 
 <br><br> 
 
-### 3.6.3.2 Modelo Físico
+#### 3.6.3.2 Modelo Físico
 <br>
 Com base no modelo relacional apresentado anteriormente, foi desenvolvido o modelo físico do banco de dados utilizando o PostgreSQL. Nessa etapa, as estruturas lógicas foram convertidas em comandos SQL executáveis (DDL), incluindo a criação de tabelas, tipos personalizados, restrições de integridade (NOT NULL, CHECK, UNIQUE e FOREIGN KEY) e índices para otimização de consultas.
 
@@ -2521,7 +2523,7 @@ Cada fluxo possui condições de controle ou filtragem, combinadas por operadore
 As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no domínio, mas não foram tratadas como proposições principais. Isso ocorre porque o objetivo da lógica proposicional nesta seção é representar as condições booleanas de filtragem, controle ou validação de retorno efetivamente avaliadas pelo back-end em cada operação.
 
 
-### Rastreabilidade das consultas
+#### Rastreabilidade das consultas
 
 | Consulta | Tipo | Tabelas envolvidas | Finalidade no back-end |
 |---|---|---|---|
@@ -2535,7 +2537,7 @@ As cláusulas `JOIN` foram utilizadas para combinar entidades relacionadas no do
 | 08 | SELECT | `parceiros` | Gerar lista de parceiros ativos para exportação em CSV. |
 
 
-### Regras de negócio representadas pelas consultas
+#### Regras de negócio representadas pelas consultas
 
 | Consulta | Regra representada | Regras de Negócio associadas |
 |---|---|---|
@@ -2554,7 +2556,7 @@ As consultas foram elaboradas com duas a quatro proposições para permitir a co
 
 ---
 
-### 01 — Cadastro de um novo usuário
+#### 01 — Cadastro de um novo usuário
 
 
 | 01 | --- |
@@ -2590,7 +2592,7 @@ O backend executa duas consultas de validação antes do INSERT: uma para confir
 
 ---
 
-### 02 — Inativação de usuários 
+#### 02 — Inativação de usuários 
 
 
 | 02 | --- |
@@ -2628,7 +2630,7 @@ O comando UPDATE realiza a inativação lógica de um usuário, alterando o camp
 
 ---
 
-### 03 — Cadastro de parceiros
+#### 03 — Cadastro de parceiros
 
 
 | 03 | --- |
@@ -2664,7 +2666,7 @@ O comando INSERT utilizado no repository cria o parceiro e retorna o registro pe
 
 ---
 
-### 04 — Edição dos dados dos parceiros
+#### 04 — Edição dos dados dos parceiros
 
 
 | 04 | --- |
@@ -2701,7 +2703,7 @@ O comando UPDATE edita os dados cadastrais de um parceiro, registrando automatic
 
 ---
 
-### 05 — Visualização dos dados de um parceiro
+#### 05 — Visualização dos dados de um parceiro
 
 
 | 05 | --- |
@@ -2737,7 +2739,7 @@ A consulta retorna os dados de um parceiro específico. A cláusula WHERE exige 
 
 ---
 
-### 06 — Visualização dos parceiros por filtros 
+#### 06 — Visualização dos parceiros por filtros 
 
 
 | 06 | --- |
@@ -2774,7 +2776,7 @@ A consulta implementa a busca filtrada de parceiros não inativos. O filtro de n
 
 ---
 
-### 07 — Envio de parceiro para validação 
+#### 07 — Envio de parceiro para validação 
 
 
 | 07 | --- |
@@ -2811,7 +2813,7 @@ A consulta atualiza o status do parceiro para pendente e registra o usuário res
 
 ---
 
-### 08 — Exportação de dados
+#### 08 — Exportação de dados
 
 
 | 08 | --- |
@@ -2847,7 +2849,7 @@ A consulta gera a lista de dados para exportação em CSV conforme o RF017. A cl
 
 ---
 
-### Síntese de validação lógica
+#### Síntese de validação lógica
 
 As tabelas verdade confirmam que as expressões proposicionais preservam a lógica das consultas SQL. Cada consulta introduz uma estrutura proposicional distinta, refletindo diferentes padrões de filtragem e controle utilizados pelo back-end.
 <br>
@@ -2866,15 +2868,16 @@ As oito consultas apresentadas atendem ao objetivo da seção ao relacionar oper
 
 ## 3.7. WebAPI e endpoints (sprints 3 e 4)
 
-A documentação completa da WebAPI, incluindo endereços, métodos HTTP, headers, bodies, formatos de resposta e status codes, está disponível em: [`public/docs/index.html`](../public/docs/index.html).
+A documentação completa da WebAPI, incluindo endereços, métodos HTTP, headers, bodies, formatos de resposta e status codes, está disponível em: [`src/public/docs/index.html`](../src/public/docs/index.html).
 
 Base URL local: `http://localhost:3000` (ou a porta definida pela variável `PORT`).
 
-Comandos de execução do backend:
+Comandos de execução do backend, considerando que o `.env` fica na raiz do projeto e os scripts npm ficam em `src/`:
 
 ```bash
-npm install
 cp .env.example .env
+cd src
+npm install
 npm run migrate
 npm run seed
 npm run dev
