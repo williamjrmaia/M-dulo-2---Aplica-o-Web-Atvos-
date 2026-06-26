@@ -335,14 +335,14 @@ Grande parte da suíte integra com banco real e roda sequencialmente. Aguarde o 
     * Cadastro, edição, listagem e inativação lógica de terras e vínculos parceiro-terra
     * Histórico de alterações, registro de interações e exportação CSV de parceiros
     * Validação de entrada com Zod e métricas agregadas de interações (dashboard JSON)
-* 0.3.0 - 29/05/2024
+* 0.3.0 - 29/05/2026
     * Backend funcional com WebAPI e endpoints operantes
     * Protótipo de alta fidelidade e guia de estilos elaborados
     * Arquitetura em camadas documentada com diagramas atualizados
-* 0.2.0 - 15/05/2024
+* 0.2.0 - 15/05/2026
     * Wireframe com fluxo de navegação criado
     * Diagramas UML e modelagem do banco de dados elaborados
-* 0.1.0 - 01/05/2024
+* 0.1.0 - 01/05/2026
     * Análise de negócios e estrutura do WAD criados
     * Personas, User Stories e backlog elaborados
     * Requisitos funcionais, regras de negócio e casos de uso documentados
