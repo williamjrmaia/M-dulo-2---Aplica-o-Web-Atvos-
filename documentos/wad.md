@@ -4217,7 +4217,7 @@ As principais ações planejadas para evolução da plataforma são:
 - Otimizar consultas ao banco de dados para melhorar o desempenho em cenários com grandes volumes de registros.
 - Evoluir a interface do usuário para reduzir a quantidade de interações necessárias em operações frequentes.
 - Aprimorar mensagens de feedback e tratamento de erros, tornando a utilização da plataforma mais intuitiva.
-- Expandir a cobertura de testes automatizados, incluindo testes de integração e testes end-to-end.
+- Expandir a cobertura de testes automatizados por meio da implementação de testes end-to-end (E2E) em ambiente de navegador, complementando a suíte de testes de integração já existente.
 - Implementar monitoramento contínuo da aplicação por meio de métricas, logs centralizados e alertas operacionais.
 - Reforçar os mecanismos de segurança com funcionalidades como autenticação multifator e políticas adicionais de proteção de acesso.
 
